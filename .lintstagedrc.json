@@ -1,0 +1,4 @@
+{
+	"{src,test}/**/*.{ts,tsx}": ["pnpm lint --fix", "eslint --fix", "prettier --write", "git add"],
+	"{src}/**/*.{json}": ["prettier --write", "git add"]
+}

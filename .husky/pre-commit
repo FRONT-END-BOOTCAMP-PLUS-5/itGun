@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '허스키 테스트 시작합니다'
+npx lint-staged
+pnpm build
