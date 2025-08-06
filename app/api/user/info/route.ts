@@ -18,7 +18,7 @@ export async function PUT(request: NextRequest) {
     await usecase.execute(user)
 
     return NextResponse.json({ message: "success" })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "error" }, { status: 500 })
   }
 }
