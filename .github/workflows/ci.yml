@@ -28,16 +28,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Clean Prisma cache
-        run: rm -rf node_modules/.prisma
-
       - name: Prisma set
         run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run lint
         run: pnpm lint
 
       - name: Run build
         run: pnpm build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
