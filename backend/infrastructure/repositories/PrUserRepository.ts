@@ -1,25 +1,23 @@
-import prisma from "../../../utils/prisma";
-import { User, Gender } from "../../domain/entities/User";
-import { UserRepository } from "../../domain/repositories/UserRepository";
+import prisma from "../../../utils/prisma"
+import { User, Gender } from "../../domain/entities/User"
+import { UserRepository } from "../../domain/repositories/UserRepository"
 
 export class PrUserRepository implements UserRepository {
-
   async findAll(): Promise<User[]> {
-    const users = await prisma.user.findMany();
-    return users.map(this.toDomain);
+    const users = await prisma.user.findMany()
+    return users.map(this.toDomain)
   }
 
   async findById(id: string): Promise<User | null> {
     const user = await prisma.user.findUnique({
-      where: { id }
-    });
-    return user ? this.toDomain(user) : null;
+      where: { id },
+    })
+    return user ? this.toDomain(user) : null
   }
 
-  async save(user: User): Promise<User> {
-    const savedUser = await prisma.user.create({
+  async create(user: User): Promise<User> {
+    const createdUser = await prisma.user.create({
       data: {
-        id: user.id,
         email: user.email,
         nickName: user.nickName,
         password: user.password,
@@ -30,11 +28,9 @@ export class PrUserRepository implements UserRepository {
         isSocialLogin: user.isSocialLogin,
         characterColor: user.characterColor,
         characterId: user.characterId,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
-    });
-    return this.toDomain(savedUser);
+      },
+    })
+    return this.toDomain(createdUser)
   }
 
   async update(id: string, userData: Partial<User>): Promise<User | null> {
@@ -49,27 +45,40 @@ export class PrUserRepository implements UserRepository {
           ...(userData.gender && { gender: userData.gender }),
           ...(userData.height !== undefined && { height: userData.height }),
           ...(userData.weight !== undefined && { weight: userData.weight }),
-          ...(userData.isSocialLogin !== undefined && { isSocialLogin: userData.isSocialLogin }),
-          ...(userData.characterColor && { characterColor: userData.characterColor }),
-          ...(userData.characterId !== undefined && { characterId: userData.characterId }),
-          updatedAt: new Date()
-        }
-      });
-      return this.toDomain(updatedUser);
+          ...(userData.isSocialLogin !== undefined && {
+            isSocialLogin: userData.isSocialLogin,
+          }),
+          ...(userData.characterColor && {
+            characterColor: userData.characterColor,
+          }),
+          ...(userData.characterId !== undefined && {
+            characterId: userData.characterId,
+          }),
+          updatedAt: new Date(),
+        },
+      })
+      return this.toDomain(updatedUser)
     } catch (error) {
-      return null;
+      return null
     }
   }
 
   async delete(id: string): Promise<boolean> {
     try {
       await prisma.user.delete({
-        where: { id }
-      });
-      return true;
+        where: { id },
+      })
+      return true
     } catch (error) {
-      return false;
+      return false
     }
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    })
+    return user ? this.toDomain(user) : null
   }
 
   private toDomain(user: any): User {
@@ -87,6 +96,6 @@ export class PrUserRepository implements UserRepository {
       user.characterId,
       user.createdAt,
       user.updatedAt
-    );
+    )
   }
 }
