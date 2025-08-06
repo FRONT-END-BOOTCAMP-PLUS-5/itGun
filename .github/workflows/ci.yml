@@ -33,6 +33,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Debug prisma
+        run: |
+          echo "Checking Prisma CLI version:"
+          pnpm prisma --version
+          echo "Checking if .env exists:"
+          ls -la .env || echo ".env not found"
+          echo "Checking generated client:"
+          ls -la node_modules/.prisma/client/ || echo "Client not generated"
+
       - name: Run lint
         run: pnpm lint
 
