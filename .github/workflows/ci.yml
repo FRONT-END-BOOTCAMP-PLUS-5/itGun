@@ -33,7 +33,7 @@ jobs:
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
       - name: Prisma set
-        run: npx prisma generate
+        run: pnpm prisma generate
 
       - name: Run lint
         run: pnpm lint
