@@ -19,17 +19,44 @@ export class PrWorkoutRepository implements WorkoutRepository {
   async save(workout: Workout): Promise<Workout> {
     const savedWorkout = await prisma.workout.create({
       data: {
-        id: workout.id,
         seq: workout.seq,
         exerciseName: workout.exerciseName,
         setCount: workout.setCount,
         weight: workout.weight,
         repetitionCount: workout.repetitionCount,
         distance: workout.distance,
-        durationSeconds: workout.durationSeconds
-      }
-    });
-    return this.toDomain(savedWorkout);
+        durationSeconds: workout.durationSeconds,
+      },
+    })
+    return this.toDomain(savedWorkout)
+  }
+
+  async saveMany(workouts: Omit<Workout, "id">[]): Promise<Workout[]> {
+
+    // const savedWorkouts = await prisma.$transaction(
+    //   workouts.map((workout) => prisma.workout.create({
+    //     data: workout
+    //   }))
+    // )
+
+    const savedWorkouts = await prisma.workout.createMany({
+      data: workouts.map((workout) => ({
+        seq: workout.seq,
+        exerciseName: workout.exerciseName,
+        setCount: workout.setCount,
+        weight: workout.weight,
+        repetitionCount: workout.repetitionCount,
+        distance: workout.distance,
+        durationSeconds: workout.durationSeconds,
+      })),
+    })
+
+    const createdWorkouts = await prisma.workout.findMany({
+      orderBy: { id: "desc" },
+      take: savedWorkouts.count,
+    })
+
+    return createdWorkouts.map(this.toDomain).reverse()
   }
 
   async update(id: number, workoutData: Partial<Workout>): Promise<Workout | null> {
