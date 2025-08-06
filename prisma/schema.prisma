@@ -1,12 +1,9 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "/app/generated/prisma"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -14,10 +11,137 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id       String @id @default(uuid())
-  email    String @unique
-  nickName String @map("nick_name")
-  password String
-  age      Int?
+enum Gender {
+  none
+  male
+  female
+}
+
+enum CalIconType {
+  cardio
+  upper
+  lower
+}
+
+enum BodyPart {
+  arms
+  legs
+  torso
+}
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  nickName        String  @map("nick_name")
+  password        String
+  age             Int?
+  gender          Gender?
+  height          Float?
+  weight          Float?
+  isSocialLogin   Boolean  @default(false) @map("is_social_login")
+  characterColor  String  @map("character_color") @default("#fdfdfd")
+  characterId     Int     @map("character_id") @default(1)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  userBadges        UserBadge[]
+  bodyPartGauges    BodyPartGauge[]
+  logs              Log[]
+
+  @@map("users")
+}
+
+model CharacterAsset {
+  id       Int      @id @default(autoincrement())
+  level    Int      @default(1)
+  bodyPart BodyPart @map("body_part")
+  svg      String  // SVG 데이터 또는 파일 경로
+  characterId Int   @map("character_id")
+
+  @@map("character_assets")
+}
+
+model Badge {
+  id             Int    @id @default(autoincrement())
+  name           String
+  expirationDays Int?   @map("expiration_days")
+  description    String
+
+  // Relations
+  userBadges UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id        Int      @id @default(autoincrement())
+  badgeId   Int      @map("badge_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_badges")
+}
+
+model BodyPartGauge {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  arms      Float?   @default(0)
+  legs      Float?   @default(0)
+  shoulders Float?   @default(0)
+  back      Float?   @default(0)
+  chest     Float?   @default(0)
+  core      Float?   @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("body_part_gauges")
+}
+
+model Log {
+  id            Int         @id @default(autoincrement())
+  userId        String      @map("user_id")
+  calIconType   CalIconType @map("cal_icon_type")
+  totalDuration Int         @map("total_duration") // 분 단위
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  // Relations
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logWorkouts LogWorkout[]
+
+  @@map("logs")
+}
+
+model LogWorkout {
+  id        Int @id @default(autoincrement())
+  logId     Int @map("log_id")
+  workoutId Int @map("workout_id")
+
+  // Relations
+  log     Log     @relation(fields: [logId], references: [id], onDelete: Cascade)
+  workout Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+
+  @@map("log_workouts")
+}
+
+model Workout {
+  id               Int    @id @default(autoincrement())
+  seq              Int
+  exerciseName     String @map("exercise_name")
+  setCount         Int     @map("set_count")
+  weight           Int?
+  repetitionCount  Int?   @map("repetition_count")
+  distance         Int?
+  durationSeconds  Int?   @map("duration_seconds")
+
+  // Relations
+  logWorkouts LogWorkout[]
+
+  @@map("workouts")
 }
