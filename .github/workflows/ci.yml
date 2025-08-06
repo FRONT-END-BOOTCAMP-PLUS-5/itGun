@@ -25,12 +25,13 @@ jobs:
           node-version: "20"
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
-
       - name: create .env
         run: |
+          touch .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run lint
         run: pnpm lint
