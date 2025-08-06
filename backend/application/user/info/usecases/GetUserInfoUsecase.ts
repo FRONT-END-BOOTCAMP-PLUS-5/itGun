@@ -20,6 +20,6 @@ export class GetUserInfoUsecase {
       weight: user.weight,
       characterId: user.characterId,
       characterColor: user.characterColor,
-    } as GetUserInfoResponseDto
+    } as GetUserInfoResponseDto;
   }
 }
