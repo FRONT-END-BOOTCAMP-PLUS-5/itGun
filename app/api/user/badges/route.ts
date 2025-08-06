@@ -5,7 +5,7 @@ import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrU
 import { NextRequest, NextResponse } from "next/server"
 
 // GET /api/user/badges?limit=갯수&period=기간
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const { userId } = await req.json()
   const { searchParams } = new URL(req.url)
   const limit = Number(searchParams.get("limit"))
