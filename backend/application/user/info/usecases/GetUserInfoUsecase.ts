@@ -8,15 +8,15 @@ export class GetUserInfoUsecase {
     const user = await this.userRepository.findById(request.userId);
     if (!user) return null;
     return {
-      user_id: user.id,
+      userId: user.id,
       email: user.email,
-      nick_name: user.nickName,
+      nickName: user.nickName,
       age: user.age,
       gender: user.gender,
       height: user.height,
       weight: user.weight,
       characterId: user.characterId,
       characterColor: user.characterColor,
-    };
+    } as GetUserInfoResponseDto;
   }
 } 

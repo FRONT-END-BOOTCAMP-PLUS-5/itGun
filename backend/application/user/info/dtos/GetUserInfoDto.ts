@@ -5,13 +5,13 @@ export interface GetUserInfoRequestDto {
 
 // 회원정보 조회 응답 DTO
 export interface GetUserInfoResponseDto {
-  user_id: string;
+  userId: string;
   email: string;
-  nick_name: string;
+  nickName: string;
   age?: number;
   gender?: string;
   height?: number;
   weight?: number;
   characterId?: number;
   characterColor?: string;
-} 
+}  
