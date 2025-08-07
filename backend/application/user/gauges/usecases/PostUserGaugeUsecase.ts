@@ -1,5 +1,5 @@
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
-import { PostUserGaugeQueryDto } from "../dtos/PostUserGaugeQueryDto"
+import { PostUserGaugeRequestDto } from "../dtos/PostUserGaugeRequestDto"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
 import { PostUserGaugeDto } from "../dtos/PostUserGaugeDto"
 
@@ -32,9 +32,9 @@ export class PostUserGaugeUsecase {
     }
   }
 
-  async execute(query: PostUserGaugeQueryDto): Promise<PostUserGaugeDto> {
+  async execute(request: PostUserGaugeRequestDto): Promise<PostUserGaugeDto> {
     const latest: BodyPartGauge | null =
-      await this.bodyPartGaugeRepository.findLatestOneByUserId(query.userId)
+      await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
     if (latest) {
       const now = new Date()
       const latestDate = latest.createdAt
