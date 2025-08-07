@@ -5,7 +5,7 @@ export interface UserRepository {
   findById(id: string): Promise<User | null>
   findCharacterInfoById(id: string): Promise<{ id: number; color: string }>
   save(user: User): Promise<User>
-  update(id: string, user: Partial<User>): Promise<User | null>
+  update(user: Partial<User>): Promise<void>
   delete(id: string): Promise<boolean>
   findByEmail(email: string): Promise<User | null>
 }
