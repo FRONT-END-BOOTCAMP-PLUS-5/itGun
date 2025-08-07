@@ -39,15 +39,15 @@ export class BodyPartGaugeCalculator {
     for (const workout of workouts) {
       // 볼륨 계산 (무게 * 횟수 * 세트)
       const weight = workout.weight || 0
-      const reps = workout.repetition_count || 0
-      const sets = workout.set_count || 1
+      const reps = workout.repetitionCount || 0
+      const sets = workout.setCount || 1
       const volume = weight * reps * sets
 
       // 기본 포인트 계산
       const basePoints = volume / 10000
 
       // 운동의 bodyParts를 프로젝트 부위로 매핑
-      const targetBodyParts = this.mapExerciseBodyPartsToProject(workout.exercise_info.bodyParts)
+      const targetBodyParts = this.mapExerciseBodyPartsToProject(workout.exerciseInfo.bodyParts)
 
       // 여러 부위에 걸친 운동인 경우 부위별로 균등 분배
       const pointsPerBodyPart = targetBodyParts.length > 0 ? basePoints / targetBodyParts.length : 0

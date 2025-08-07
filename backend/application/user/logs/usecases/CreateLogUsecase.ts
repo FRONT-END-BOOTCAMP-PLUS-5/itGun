@@ -25,10 +25,10 @@ export class CreateLogUsecase {
     try {
       const log = new Log(
         0,
-        request.user_id,
-        request.cal_icon_type,
-        request.total_duration,
-        request.created_at || new Date(),
+        request.userId,
+        request.calIconType,
+        request.totalDuration,
+        request.createdAt || new Date(),
       )
 
       const savedLog = await this.logRepository.save(log)
@@ -38,12 +38,12 @@ export class CreateLogUsecase {
           new Workout(
             0,
             workout.seq,
-            workout.exercise_name,
-            workout.set_count,
+            workout.exerciseName,
+            workout.setCount,
             workout.weight,
-            workout.repetition_count,
+            workout.repetitionCount,
             workout.distance,
-            workout.duration_seconds,
+            workout.durationSeconds,
           ),
       )
 
@@ -64,7 +64,7 @@ export class CreateLogUsecase {
       }
 
       // 최신 body part gauge 데이터 조회
-      const latestGauge = await this.bodyPartGaugeRepository.findLatestOneByUserId(request.user_id)
+      const latestGauge = await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
 
       // 현재 게이지를 BodyPartGaugeUpdate 형태로 변환
       const currentGauge = {
@@ -82,7 +82,7 @@ export class CreateLogUsecase {
       // 새로운 body part gauge 생성 (기존 값 + 증가분)
       const newBodyPartGauge = new BodyPartGauge(
         0,
-        request.user_id,
+        request.userId,
         currentGauge.arms + gaugeUpdate.arms,
         currentGauge.legs + gaugeUpdate.legs,
         currentGauge.shoulders + gaugeUpdate.shoulders,
