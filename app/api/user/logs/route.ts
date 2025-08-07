@@ -3,6 +3,7 @@ import { CreateLogUsecase } from "../../../../backend/application/user/logs/usec
 import { PrLogRepository } from "../../../../backend/infrastructure/repositories/PrLogRepository"
 import { PrWorkoutRepository } from "../../../../backend/infrastructure/repositories/PrWorkoutRepository"
 import { PrLogWorkoutRepository } from "../../../../backend/infrastructure/repositories/PrLogWorkoutRepository"
+import { PrBodyPartGaugeRepository } from "../../../../backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 import { CreateLogRequestDto } from "../../../../backend/application/user/logs/dtos/CreateLogRequestDto"
 
 export async function POST(request: NextRequest) {
@@ -12,11 +13,13 @@ export async function POST(request: NextRequest) {
     const logRepository = new PrLogRepository()
     const workoutRepository = new PrWorkoutRepository()
     const logWorkoutRepository = new PrLogWorkoutRepository()
+    const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
 
     const createLogUsecase = new CreateLogUsecase(
       logRepository,
       workoutRepository,
       logWorkoutRepository,
+      bodyPartGaugeRepository,
     )
 
     const result = await createLogUsecase.execute(body)
