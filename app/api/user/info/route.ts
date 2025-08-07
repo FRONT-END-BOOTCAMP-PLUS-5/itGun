@@ -7,8 +7,13 @@ import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUs
 // GET /api/user/info?userId=xxx
 export async function GET(req: NextRequest) {
   try {
+<<<<<<< HEAD
     const { searchParams } = new URL(req.url)
     const userId = searchParams.get("userId")
+=======
+    const body = await req.json()
+    const userId = body.userId
+>>>>>>> ca37f51 (fix: #5 회원 정보 조회  api 코멘트 보고 수정)
     if (!userId) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
@@ -22,6 +27,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
+<<<<<<< HEAD
 
 // PUT /api/user/info
 export async function PUT(request: NextRequest) {
@@ -49,3 +55,6 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 } 
+=======
+                                                                                                                                                                                                                                                                                                                                                                                                                        
+>>>>>>> ca37f51 (fix: #5 회원 정보 조회  api 코멘트 보고 수정)
