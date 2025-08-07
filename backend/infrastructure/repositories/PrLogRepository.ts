@@ -1,19 +1,49 @@
-import prisma from "../../../utils/prisma";
-import { Log, CalIconType } from "../../domain/entities/Log";
-import { LogRepository } from "../../domain/repositories/LogRepository";
+import prisma from "../../../utils/prisma"
+import { Log, CalIconType } from "../../domain/entities/Log"
+import { LogRepository } from "../../domain/repositories/LogRepository"
 
 export class PrLogRepository implements LogRepository {
-
   async findAll(): Promise<Log[]> {
-    const logs = await prisma.log.findMany();
-    return logs.map(this.toDomain);
+    const logs = await prisma.log.findMany()
+    return logs.map(this.toDomain)
+  }
+
+  async findAllByUserIdAndMonth(
+    userId: string,
+    year: number,
+    month: number
+  ): Promise<Log[]> {
+    const startDate = new Date(year, month - 1, 1)
+    const endDate = new Date(year, month, 1)
+
+    const logs = await prisma.log.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+      include: {
+        logWorkouts: {
+          include: {
+            workout: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+
+    return logs as Log[]
   }
 
   async findById(id: number): Promise<Log | null> {
     const log = await prisma.log.findUnique({
-      where: { id }
-    });
-    return log ? this.toDomain(log) : null;
+      where: { id },
+    })
+    return log ? this.toDomain(log) : null
   }
 
   async save(log: Log): Promise<Log> {
@@ -35,23 +65,25 @@ export class PrLogRepository implements LogRepository {
         data: {
           ...(logData.userId && { userId: logData.userId }),
           ...(logData.calIconType && { calIconType: logData.calIconType }),
-          ...(logData.totalDuration !== undefined && { totalDuration: logData.totalDuration })
-        }
-      });
-      return this.toDomain(updatedLog);
+          ...(logData.totalDuration !== undefined && {
+            totalDuration: logData.totalDuration,
+          }),
+        },
+      })
+      return this.toDomain(updatedLog)
     } catch (error) {
-      return null;
+      return null
     }
   }
 
   async delete(id: number): Promise<boolean> {
     try {
       await prisma.log.delete({
-        where: { id }
-      });
-      return true;
+        where: { id },
+      })
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -61,7 +93,8 @@ export class PrLogRepository implements LogRepository {
       log.userId,
       log.calIconType as CalIconType,
       log.totalDuration,
-      log.createdAt
-    );
+      log.createdAt,
+      log.logWorkouts
+    )
   }
 }
