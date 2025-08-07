@@ -19,12 +19,22 @@ export class PrLogWorkoutRepository implements LogWorkoutRepository {
   async save(logWorkout: LogWorkout): Promise<LogWorkout> {
     const savedLogWorkout = await prisma.logWorkout.create({
       data: {
-        id: logWorkout.id,
         logId: logWorkout.logId,
-        workoutId: logWorkout.workoutId
-      }
-    });
-    return this.toDomain(savedLogWorkout);
+        workoutId: logWorkout.workoutId,
+      },
+    })
+    return this.toDomain(savedLogWorkout)
+  }
+
+  async saveMany(logWorkouts: Omit<LogWorkout, "id">[]): Promise<{ count: number }> {
+    const savedLogWorkouts = await prisma.logWorkout.createMany({
+      data: logWorkouts.map((logWorkout) => ({
+        logId: logWorkout.logId,
+        workoutId: logWorkout.workoutId,
+      })),
+    })
+
+    return { count: savedLogWorkouts.count }
   }
 
   async update(id: number, logWorkoutData: Partial<LogWorkout>): Promise<LogWorkout | null> {
