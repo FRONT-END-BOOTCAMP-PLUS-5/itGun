@@ -23,6 +23,7 @@ enum CalIconType {
 }
 
 enum BodyPart {
+  face
   arms
   legs
   torso
