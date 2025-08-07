@@ -29,10 +29,17 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     return userBodyPartGauge ? this.toDomain(userBodyPartGauge) : null
   }
 
+  async findLatestOneByUserId(userId: string): Promise<BodyPartGauge | null> {
+    const gauge = await prisma.bodyPartGauge.findFirst({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    })
+    return gauge ? this.toDomain(gauge) : null
+  }
+
   async save(bodyPartGauge: BodyPartGauge): Promise<BodyPartGauge> {
     const savedGauge = await prisma.bodyPartGauge.create({
       data: {
-        id: bodyPartGauge.id,
         userId: bodyPartGauge.userId,
         arms: bodyPartGauge.arms,
         legs: bodyPartGauge.legs,

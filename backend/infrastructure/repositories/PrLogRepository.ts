@@ -19,14 +19,13 @@ export class PrLogRepository implements LogRepository {
   async save(log: Log): Promise<Log> {
     const savedLog = await prisma.log.create({
       data: {
-        id: log.id,
         userId: log.userId,
         calIconType: log.calIconType,
         totalDuration: log.totalDuration,
-        createdAt: log.createdAt
-      }
-    });
-    return this.toDomain(savedLog);
+        createdAt: log.createdAt,
+      },
+    })
+    return this.toDomain(savedLog)
   }
 
   async update(id: number, logData: Partial<Log>): Promise<Log | null> {
