@@ -15,6 +15,33 @@ export class PrUserRepository implements UserRepository {
     return user ? this.toDomain(user) : null
   }
 
+  async findCharacterInfoById(
+    id: string
+  ): Promise<{ id: number; color: string }> {
+    const whereCondition = { id }
+    const resultInfo = {
+      id: 1,
+      color: "#FDFDFD",
+    }
+
+    const characterInfo = await prisma.user.findUnique({
+      where: whereCondition,
+      select: {
+        characterId: true,
+        characterColor: true,
+      },
+    })
+
+    if (characterInfo?.characterId) {
+      resultInfo.id = characterInfo.characterId
+    }
+    if (characterInfo?.characterColor) {
+      resultInfo.color = characterInfo.characterColor
+    }
+
+    return resultInfo
+  }
+
   async save(user: User): Promise<User> {
     const savedUser = await prisma.user.create({
       data: {
