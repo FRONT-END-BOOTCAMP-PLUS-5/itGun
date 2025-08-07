@@ -1,19 +1,32 @@
-import prisma from "../../../utils/prisma";
-import { BodyPartGauge } from "../../domain/entities/BodyPartGauge";
-import { BodyPartGaugeRepository } from "../../domain/repositories/BodyPartGaugeRepository";
+import prisma from "../../../utils/prisma"
+import { BodyPartGauge } from "../../domain/entities/BodyPartGauge"
+import { BodyPartGaugeRepository } from "../../domain/repositories/BodyPartGaugeRepository"
 
 export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
-
   async findAll(): Promise<BodyPartGauge[]> {
-    const gauges = await prisma.bodyPartGauge.findMany();
-    return gauges.map(this.toDomain);
+    const gauges = await prisma.bodyPartGauge.findMany()
+    return gauges.map(this.toDomain)
   }
 
   async findById(id: number): Promise<BodyPartGauge | null> {
     const gauge = await prisma.bodyPartGauge.findUnique({
-      where: { id }
-    });
-    return gauge ? this.toDomain(gauge) : null;
+      where: { id },
+    })
+    return gauge ? this.toDomain(gauge) : null
+  }
+
+  async findByUserId(id: string, date?: Date): Promise<BodyPartGauge | null> {
+    const whereCondition: any = { userId: id }
+
+    if (date) {
+      whereCondition.createdAt = date
+    }
+
+    const userBodyPartGauge = await prisma.bodyPartGauge.findUnique({
+      where: whereCondition,
+    })
+
+    return userBodyPartGauge ? this.toDomain(userBodyPartGauge) : null
   }
 
   async save(bodyPartGauge: BodyPartGauge): Promise<BodyPartGauge> {
@@ -27,13 +40,16 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         back: bodyPartGauge.back,
         chest: bodyPartGauge.chest,
         core: bodyPartGauge.core,
-        createdAt: bodyPartGauge.createdAt
-      }
-    });
-    return this.toDomain(savedGauge);
+        createdAt: bodyPartGauge.createdAt,
+      },
+    })
+    return this.toDomain(savedGauge)
   }
 
-  async update(id: number, gaugeData: Partial<BodyPartGauge>): Promise<BodyPartGauge | null> {
+  async update(
+    id: number,
+    gaugeData: Partial<BodyPartGauge>
+  ): Promise<BodyPartGauge | null> {
     try {
       const updatedGauge = await prisma.bodyPartGauge.update({
         where: { id },
@@ -41,26 +57,28 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
           ...(gaugeData.userId && { userId: gaugeData.userId }),
           ...(gaugeData.arms !== undefined && { arms: gaugeData.arms }),
           ...(gaugeData.legs !== undefined && { legs: gaugeData.legs }),
-          ...(gaugeData.shoulders !== undefined && { shoulders: gaugeData.shoulders }),
+          ...(gaugeData.shoulders !== undefined && {
+            shoulders: gaugeData.shoulders,
+          }),
           ...(gaugeData.back !== undefined && { back: gaugeData.back }),
           ...(gaugeData.chest !== undefined && { chest: gaugeData.chest }),
-          ...(gaugeData.core !== undefined && { core: gaugeData.core })
-        }
-      });
-      return this.toDomain(updatedGauge);
+          ...(gaugeData.core !== undefined && { core: gaugeData.core }),
+        },
+      })
+      return this.toDomain(updatedGauge)
     } catch (error) {
-      return null;
+      return null
     }
   }
 
   async delete(id: number): Promise<boolean> {
     try {
       await prisma.bodyPartGauge.delete({
-        where: { id }
-      });
-      return true;
+        where: { id },
+      })
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -75,6 +93,6 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       gauge.chest,
       gauge.core,
       gauge.createdAt
-    );
+    )
   }
 }

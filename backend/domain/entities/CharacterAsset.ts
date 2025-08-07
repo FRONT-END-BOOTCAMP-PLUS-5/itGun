@@ -1,7 +1,8 @@
 export enum BodyPart {
+  FACE = "face",
   ARMS = "arms",
   LEGS = "legs",
-  TORSO = "torso"
+  TORSO = "torso",
 }
 
 export class CharacterAsset {
