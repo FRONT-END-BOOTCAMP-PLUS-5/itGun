@@ -1,8 +1,15 @@
+export enum BodyPart {
+  FACE = "face",
+  ARMS = "arms",
+  LEGS = "legs",
+  TORSO = "torso",
+}
+
 export class CharacterAssetDto {
   constructor(
     public id: number,
     public level: number,
-    public bodyPart: string, //enum으로 해야하나
+    public bodyPart: BodyPart,
     public svg: string
   ) {}
 }
