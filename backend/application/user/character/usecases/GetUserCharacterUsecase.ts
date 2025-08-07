@@ -25,11 +25,12 @@ export class GetUserCharacterUsecase {
       throw new Error("User not found")
     }
 
-    const userGauges: BodyPartGauge | null =
-      await this.bodyPartGaugeRepository.findByUserId(
-        query.userId,
-        query.date ? yymmddToDate(query.date) : undefined
-      )
+    const userGauges: BodyPartGauge | null = query.date
+      ? await this.bodyPartGaugeRepository.findByUserId(
+          query.userId,
+          yymmddToDate(query.date)
+        )
+      : await this.bodyPartGaugeRepository.findLatestOneByUserId(query.userId)
 
     const levels = {
       face: 1, // 얼굴은 항상 1레벨
