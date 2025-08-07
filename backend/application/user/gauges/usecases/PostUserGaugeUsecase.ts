@@ -18,8 +18,8 @@ export class PostUserGaugeUsecase {
 
     const decreasedValue = (value: number): number => {
       const weight = getWeight(value)
-      const decayed = value - 0.1 * weight
-      return Math.max(0, decayed)
+      const decreased = value - 0.1 * weight
+      return Math.max(0, decreased)
     }
 
     return {
