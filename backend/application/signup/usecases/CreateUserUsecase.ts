@@ -10,34 +10,15 @@ export class CreateUserUsecase {
 
   async execute(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     try {
-      // 1. 입력값 검증
       const validationResult = this.validateInput(dto)
       if (validationResult) return validationResult
 
-      // 2. 이메일 중복 확인
       const duplicateCheck = await this.checkDuplicateEmail(dto.email)
       if (duplicateCheck) return duplicateCheck
 
-      // 3. 사용자 생성 및 저장
       const user = await this.createUser(dto)
 
-      // 4. JWT 토큰 생성
       const tokens = this.generateTokens(user)
-
-      // const userForTokens = new User(
-      //   "", // id will be set by DB
-      //   dto.email,
-      //   dto.nickName,
-      //   dto.password,
-      //   dto.age,
-      //   dto.gender,
-      //   dto.height,
-      //   dto.weight,
-      //   false,
-      //   dto.characterColor || "#fdfdfd",
-      //   dto.characterId || 1
-      // )
-      // const tokens = this.generateTokens(userForTokens)
 
       return {
         message: "회원가입이 완료되었습니다.",
@@ -67,17 +48,31 @@ export class CreateUserUsecase {
       return { message: "필수값 누락: nickName", status: 400 }
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(dto.email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email)) {
       return { message: "올바른 이메일 형식이 아닙니다.", status: 400 }
     }
 
-    if (dto.password.length < 6) {
-      return { message: "비밀번호는 최소 6자 이상이어야 합니다.", status: 400 }
+    if (
+      dto.nickName.length < 1 ||
+      dto.nickName.length > 20 ||
+      !/^[a-zA-Z0-9가-힣]+$/.test(dto.nickName)
+    ) {
+      return { message: "닉네임은 1-20자, 특수문자 불가입니다.", status: 400 }
     }
 
-    if (dto.nickName.length < 2 || dto.nickName.length > 20) {
-      return { message: "닉네임은 2자 이상 20자 이하여야 합니다.", status: 400 }
+    if (dto.password.length < 8 || dto.password.length > 20) {
+      return { message: "비밀번호는 8-20자여야 합니다.", status: 400 }
+    }
+
+    const types = [/[!@#$%^&*(),.?":{}|<>]/, /[a-zA-Z]/, /\d/].filter((regex) =>
+      regex.test(dto.password)
+    )
+    if (types.length < 2) {
+      return {
+        message:
+          "비밀번호는 특수문자, 문자, 숫자 중 2가지 이상 포함해야 합니다.",
+        status: 400,
+      }
     }
 
     return null

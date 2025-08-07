@@ -7,11 +7,9 @@ export async function POST(req: NextRequest) {
   try {
     const body: CreateUserRequestDto = await req.json()
 
-    // UseCase 인스턴스 생성
     const userRepository = new PrUserRepository()
     const createUserUsecase = new CreateUserUsecase(userRepository)
 
-    // UseCase 실행
     const result = await createUserUsecase.execute(body)
 
     return NextResponse.json(result, { status: result.status })
