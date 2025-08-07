@@ -3,7 +3,6 @@ import { UserRepository } from "../../../domain/repositories/UserRepository"
 import { CreateUserRequestDto } from "../dtos/CreateUserRequestDto"
 import { CreateUserResponseDto } from "../dtos/CreateUserResponseDto"
 import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
 
 export class CreateUserUsecase {
   constructor(private userRepository: UserRepository) {}
@@ -18,13 +17,20 @@ export class CreateUserUsecase {
 
       const user = await this.createUser(dto)
 
-      const tokens = this.generateTokens(user)
-
       return {
         message: "회원가입이 완료되었습니다.",
         status: 201,
-        accessToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
+        user: {
+          id: user.id,
+          email: user.email,
+          nickName: user.nickName,
+          age: user.age,
+          gender: user.gender,
+          height: user.height,
+          weight: user.weight,
+          characterColor: user.characterColor,
+          characterId: user.characterId,
+        },
       }
     } catch (error) {
       return {
@@ -108,49 +114,5 @@ export class CreateUserUsecase {
     )
 
     return await this.userRepository.save(user)
-  }
-
-  private generateTokens(user: User): {
-    accessToken: string
-    refreshToken: string
-  } {
-    const jwtSecret = process.env.JWT_SECRET
-    const refreshTokenSecret = process.env.JWT_REFRESH_SECRET
-
-    if (!jwtSecret) {
-      throw new Error("JWT_SECRET_NOT_SET")
-    }
-
-    if (!refreshTokenSecret) {
-      throw new Error("JWT_REFRESH_SECRET_NOT_SET")
-    }
-
-    const accessToken = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        nickName: user.nickName,
-        age: user.age,
-        gender: user.gender,
-        height: user.height,
-        weight: user.weight,
-        characterColor: user.characterColor,
-        characterId: user.characterId,
-        type: "access",
-      },
-      jwtSecret,
-      { expiresIn: "2h" } // 2시간으로 단축
-    )
-
-    const refreshToken = jwt.sign(
-      {
-        userId: user.id,
-        type: "refresh",
-      },
-      refreshTokenSecret,
-      { expiresIn: "2w" } // 2주로 단축
-    )
-
-    return { accessToken, refreshToken }
   }
 }
