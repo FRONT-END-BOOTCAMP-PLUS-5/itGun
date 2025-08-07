@@ -22,11 +22,11 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       whereCondition.createdAt = date
     }
 
-    const userBodyPartGage = await prisma.bodyPartGauge.findUnique({
+    const userBodyPartGauge = await prisma.bodyPartGauge.findUnique({
       where: whereCondition,
     })
 
-    return userBodyPartGage ? this.toDomain(userBodyPartGage) : null
+    return userBodyPartGauge ? this.toDomain(userBodyPartGauge) : null
   }
 
   async save(bodyPartGauge: BodyPartGauge): Promise<BodyPartGauge> {
