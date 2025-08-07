@@ -33,7 +33,7 @@ export async function DELETE(
     const squatRecordRepository = new PrSquatRecordRepository()
     const runningRecordRepository = new PrRunningRecordRepository()
     const bigThreeRecordRepository = new PrBigThreeRecordRepository()
-    
+
     const badgeDeletionService = new BadgeDeletionService(
       userBadgeRepository,
       badgeRepository,
@@ -44,7 +44,7 @@ export async function DELETE(
       runningRecordRepository,
       bigThreeRecordRepository
     )
-    
+
     const deleteLogUsecase = new DeleteLogUsecase(
       logRepository,
       bodyPartGaugeRepository,

@@ -23,6 +23,18 @@ export class DeleteLogUsecase {
         }
       }
 
+      // 로그 삭제
+      const deleteSuccess = await this.logRepository.delete(request.logId)
+
+      if (!deleteSuccess) {
+        return {
+          success: false,
+          message: "운동 로그 삭제에 실패했습니다.",
+        }
+      }
+
+      await this.badgeDeletionService.handleBadgeDeletion(logToDelete)
+
       // 현재 최신 bodypart gague 조회
       const latestGauge =
         await this.bodyPartGaugeRepository.findLatestOneByUserId(
@@ -35,18 +47,6 @@ export class DeleteLogUsecase {
           message: "사용자의 게이지 정보를 찾을 수 없습니다.",
         }
       }
-
-      // 로그 삭제
-      const deleteSuccess = await this.logRepository.delete(request.logId)
-
-      if (!deleteSuccess) {
-        return {
-          success: false,
-          message: "운동 로그 삭제에 실패했습니다.",
-        }
-      }
-
-      await this.badgeDeletionService.handleBadgeDeletion(logToDelete)
 
       // gaugeChanges에서 각 부위별 값을 감소시킨 새로운 body_part_gauge 생성
       const gaugeChanges = logToDelete.gaugeChanges || {}
