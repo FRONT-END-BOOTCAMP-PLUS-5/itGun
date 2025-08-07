@@ -13,19 +13,19 @@ export interface ExerciseInfo {
 
 export interface WorkoutData {
   seq: number;
-  exercise_name: string;
-  set_count: number;
+  exerciseName: string;
+  setCount: number;
   weight?: number;
-  repetition_count?: number;
+  repetitionCount?: number;
   distance?: number;
-  duration_seconds?: number;
-  exercise_info: ExerciseInfo;
+  durationSeconds?: number;
+  exerciseInfo: ExerciseInfo;
 }
 
 export interface CreateLogRequestDto {
-  user_id: string;
-  cal_icon_type: CalIconType;
-  total_duration: number;
-  created_at?: Date;
+  userId: string;
+  calIconType: CalIconType;
+  totalDuration: number;
+  createdAt?: Date;
   workouts: WorkoutData[];
 }

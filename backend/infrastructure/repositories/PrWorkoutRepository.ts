@@ -33,12 +33,6 @@ export class PrWorkoutRepository implements WorkoutRepository {
 
   async saveMany(workouts: Omit<Workout, "id">[]): Promise<Workout[]> {
 
-    // const savedWorkouts = await prisma.$transaction(
-    //   workouts.map((workout) => prisma.workout.create({
-    //     data: workout
-    //   }))
-    // )
-
     const savedWorkouts = await prisma.workout.createMany({
       data: workouts.map((workout) => ({
         seq: workout.seq,
