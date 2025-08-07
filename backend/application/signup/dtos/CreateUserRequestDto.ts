@@ -1,6 +1,6 @@
 import { Gender } from "../../../domain/entities/User"
 
-export interface CreateAuthDto {
+export interface CreateUserRequestDto {
   email: string
   password: string
   nickName: string
@@ -10,12 +10,4 @@ export interface CreateAuthDto {
   weight?: number
   characterColor?: string
   characterId?: number
-}
-
-export interface CreateAuthResponseDto {
-  message: string
-  status: number
-  error?: string
-  accessToken?: string
-  refreshToken?: string
 }

@@ -1,13 +1,14 @@
 import { User } from "../../../domain/entities/User"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
-import { CreateAuthDto, CreateAuthResponseDto } from "../dtos/CreateAuthDto"
+import { CreateUserRequestDto } from "../dtos/CreateUserRequestDto"
+import { CreateUserResponseDto } from "../dtos/CreateUserResponseDto"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
 export class CreateUserUsecase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(dto: CreateAuthDto): Promise<CreateAuthResponseDto> {
+  async execute(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     try {
       // 1. 입력값 검증
       const validationResult = this.validateInput(dto)
@@ -53,7 +54,9 @@ export class CreateUserUsecase {
     }
   }
 
-  private validateInput(dto: CreateAuthDto): CreateAuthResponseDto | null {
+  private validateInput(
+    dto: CreateUserRequestDto
+  ): CreateUserResponseDto | null {
     if (!dto.email) {
       return { message: "필수값 누락: email", status: 400 }
     }
@@ -82,7 +85,7 @@ export class CreateUserUsecase {
 
   private async checkDuplicateEmail(
     email: string
-  ): Promise<CreateAuthResponseDto | null> {
+  ): Promise<CreateUserResponseDto | null> {
     const existingUser = await this.userRepository.findByEmail(email)
 
     if (existingUser) {
@@ -92,7 +95,7 @@ export class CreateUserUsecase {
     return null
   }
 
-  private async createUser(dto: CreateAuthDto): Promise<User> {
+  private async createUser(dto: CreateUserRequestDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(dto.password, 10)
 
     const user = new User(

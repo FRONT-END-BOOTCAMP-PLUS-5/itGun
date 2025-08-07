@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { CreateAuthDto } from "@/backend/application/signup/dtos/CreateAuthDto"
+import { CreateUserRequestDto } from "@/backend/application/signup/dtos/CreateUserRequestDto"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
 import { CreateUserUsecase } from "@/backend/application/signup/usecases/CreateUserUsecase"
 
 export async function POST(req: NextRequest) {
   try {
-    const body: CreateAuthDto = await req.json()
+    const body: CreateUserRequestDto = await req.json()
 
     // UseCase 인스턴스 생성
     const userRepository = new PrUserRepository()
