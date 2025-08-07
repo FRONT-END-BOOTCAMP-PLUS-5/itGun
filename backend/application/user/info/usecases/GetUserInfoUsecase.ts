@@ -1,8 +1,6 @@
 import { PrUserRepository } from "../../../../infrastructure/repositories/PrUserRepository"
-import {
-  GetUserInfoRequestDto,
-  GetUserInfoResponseDto,
-} from "../dtos/GetUserInfoDto"
+import { GetUserInfoResponseDto } from "../dtos/GetUserInfoResponseDto"
+import { GetUserInfoRequestDto } from "../dtos/GetUserInfoRequestDto"
 
 export class GetUserInfoUsecase {
   constructor(private userRepository: PrUserRepository) {}
