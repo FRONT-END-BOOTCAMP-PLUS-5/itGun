@@ -4,6 +4,7 @@ export interface BodyPartGaugeRepository {
   findAll(): Promise<BodyPartGauge[]>
   findById(id: number): Promise<BodyPartGauge | null>
   findByUserId(id: string, date?: Date): Promise<BodyPartGauge | null>
+  findLatestOneByUserId(userId: string): Promise<BodyPartGauge | null>
   save(bodyPartGauge: BodyPartGauge): Promise<BodyPartGauge>
   update(
     id: number,
