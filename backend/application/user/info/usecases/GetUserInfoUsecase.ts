@@ -1,12 +1,17 @@
-import { PrUserRepository } from '../../../../infrastructure/repositories/PrUserRepository';
-import { GetUserInfoRequestDto, GetUserInfoResponseDto } from '../dtos/GetUserInfoDto';
+import { PrUserRepository } from "../../../../infrastructure/repositories/PrUserRepository"
+import {
+  GetUserInfoRequestDto,
+  GetUserInfoResponseDto,
+} from "../dtos/GetUserInfoDto"
 
 export class GetUserInfoUsecase {
   constructor(private userRepository: PrUserRepository) {}
 
-  async execute(request: GetUserInfoRequestDto): Promise<GetUserInfoResponseDto | null> {
-    const user = await this.userRepository.findById(request.userId);
-    if (!user) return null;
+  async execute(
+    request: GetUserInfoRequestDto
+  ): Promise<GetUserInfoResponseDto | null> {
+    const user = await this.userRepository.findById(request.userId)
+    if (!user) return null
     return {
       userId: user.id,
       email: user.email,
@@ -17,6 +22,6 @@ export class GetUserInfoUsecase {
       weight: user.weight,
       characterId: user.characterId,
       characterColor: user.characterColor,
-    } as GetUserInfoResponseDto;
+    } as GetUserInfoResponseDto
   }
-} 
+}
