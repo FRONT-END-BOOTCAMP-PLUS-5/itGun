@@ -1,32 +1,19 @@
-import prisma from "../../../utils/prisma";
-import { User, Gender } from "../../domain/entities/User";
-import { UserRepository } from "../../domain/repositories/UserRepository";
+import prisma from "../../../utils/prisma"
+import { User, Gender } from "../../domain/entities/User"
+import { UserRepository } from "../../domain/repositories/UserRepository"
+import { UserInfoRepository } from '../../domain/repositories/UserInfoRepository';
 
 export class PrUserRepository implements UserRepository {
-
   async findAll(): Promise<User[]> {
-    const users = await prisma.user.findMany();
-    return users.map(this.toDomain);
+    const users = await prisma.user.findMany()
+    return users.map(this.toDomain)
   }
 
   async findById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { id } });
-    if (!user) return null;
-    return new User(
-      user.id,
-      user.email,
-      user.nickName,
-      user.password,
-      user.age ?? undefined,
-      user.gender as Gender,
-      user.height ?? undefined,
-      user.weight ?? undefined,
-      user.isSocialLogin,
-      user.characterColor,
-      user.characterId,
-      user.createdAt,
-      user.updatedAt
-    );
+    const user = await prisma.user.findUnique({
+      where: { id }
+    });
+    return user ? this.toDomain(user) : null;
   }
 
   async save(user: User): Promise<User> {
@@ -44,45 +31,58 @@ export class PrUserRepository implements UserRepository {
         characterColor: user.characterColor,
         characterId: user.characterId,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
-    });
-    return this.toDomain(savedUser);
+        updatedAt: user.updatedAt,
+      },
+    })
+    return this.toDomain(savedUser)
   }
 
-  async update(id: string, userData: Partial<User>): Promise<User | null> {
+  async update(userData: Partial<User>): Promise<void> {
     try {
-      const updatedUser = await prisma.user.update({
-        where: { id },
+      await prisma.user.update({
+        where: { id: userData.id },
         data: {
-          ...(userData.email && { email: userData.email }),
           ...(userData.nickName && { nickName: userData.nickName }),
           ...(userData.password && { password: userData.password }),
           ...(userData.age !== undefined && { age: userData.age }),
           ...(userData.gender && { gender: userData.gender }),
           ...(userData.height !== undefined && { height: userData.height }),
           ...(userData.weight !== undefined && { weight: userData.weight }),
-          ...(userData.isSocialLogin !== undefined && { isSocialLogin: userData.isSocialLogin }),
-          ...(userData.characterColor && { characterColor: userData.characterColor }),
-          ...(userData.characterId !== undefined && { characterId: userData.characterId }),
-          updatedAt: new Date()
-        }
-      });
-      return this.toDomain(updatedUser);
+          ...(userData.characterColor && {
+            characterColor: userData.characterColor,
+          }),
+          ...(userData.characterId !== undefined && {
+            characterId: userData.characterId,
+          }),
+          updatedAt: new Date(),
+        },
+      })
     } catch (error) {
-      return null;
+      throw new Error(`유저 정보 수정 실패: ${error}`)
     }
   }
 
   async delete(id: string): Promise<boolean> {
     try {
       await prisma.user.delete({
-        where: { id }
-      });
-      return true;
+        where: { id },
+      })
+      return true
     } catch (error) {
-      return false;
+      return false
     }
+  }
+
+  async findCharacterInfoById(id: string): Promise<{ id: number; color: string }> {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        characterId: true,
+        characterColor: true,
+      },
+    })
+    if (!user) throw new Error('User not found')
+    return { id: user.characterId, color: user.characterColor }
   }
 
   private toDomain(user: any): User {
@@ -95,6 +95,28 @@ export class PrUserRepository implements UserRepository {
       user.gender as Gender,
       user.height,
       user.weight,
+      user.isSocialLogin,
+      user.characterColor,
+      user.characterId,
+      user.createdAt,
+      user.updatedAt
+    )
+  }
+}
+
+export class PrUserInfoRepository implements UserInfoRepository {
+  async findUserInfoById(id: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) return null;
+    return new User(
+      user.id,
+      user.email,
+      user.nickName,
+      user.password,
+      user.age ?? undefined,
+      user.gender as Gender,
+      user.height ?? undefined,
+      user.weight ?? undefined,
       user.isSocialLogin,
       user.characterColor,
       user.characterId,
