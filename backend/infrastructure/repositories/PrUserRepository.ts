@@ -1,7 +1,6 @@
 import prisma from "../../../utils/prisma"
 import { User, Gender } from "../../domain/entities/User"
 import { UserRepository } from "../../domain/repositories/UserRepository"
-import { UserInfoRepository } from '../../domain/repositories/UserInfoRepository';
 
 export class PrUserRepository implements UserRepository {
   async findAll(): Promise<User[]> {
@@ -10,10 +9,23 @@ export class PrUserRepository implements UserRepository {
   }
 
   async findById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({
-      where: { id }
-    });
-    return user ? this.toDomain(user) : null;
+    const user = await prisma.user.findUnique({ where: { id } })
+    if (!user) return null
+    return new User(
+      user.id,
+      user.email,
+      user.nickName,
+      user.password,
+      user.age ?? undefined,
+      user.gender as Gender,
+      user.height ?? undefined,
+      user.weight ?? undefined,
+      user.isSocialLogin,
+      user.characterColor,
+      user.characterId,
+      user.createdAt,
+      user.updatedAt
+    )
   }
 
   async save(user: User): Promise<User> {
@@ -73,7 +85,9 @@ export class PrUserRepository implements UserRepository {
     }
   }
 
-  async findCharacterInfoById(id: string): Promise<{ id: number; color: string }> {
+  async findCharacterInfoById(
+    id: string
+  ): Promise<{ id: number; color: string }> {
     const user = await prisma.user.findUnique({
       where: { id },
       select: {
@@ -81,7 +95,7 @@ export class PrUserRepository implements UserRepository {
         characterColor: true,
       },
     })
-    if (!user) throw new Error('User not found')
+    if (!user) throw new Error("User not found")
     return { id: user.characterId, color: user.characterColor }
   }
 
@@ -101,27 +115,5 @@ export class PrUserRepository implements UserRepository {
       user.createdAt,
       user.updatedAt
     )
-  }
-}
-
-export class PrUserInfoRepository implements UserInfoRepository {
-  async findUserInfoById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { id } });
-    if (!user) return null;
-    return new User(
-      user.id,
-      user.email,
-      user.nickName,
-      user.password,
-      user.age ?? undefined,
-      user.gender as Gender,
-      user.height ?? undefined,
-      user.weight ?? undefined,
-      user.isSocialLogin,
-      user.characterColor,
-      user.characterId,
-      user.createdAt,
-      user.updatedAt
-    );
   }
 }
