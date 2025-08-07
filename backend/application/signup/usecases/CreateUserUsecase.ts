@@ -112,7 +112,7 @@ export class CreateUserUsecase {
       dto.characterId || 1
     )
 
-    return await this.userRepository.create(user)
+    return await this.userRepository.save(user)
   }
 
   private generateTokens(user: User): {

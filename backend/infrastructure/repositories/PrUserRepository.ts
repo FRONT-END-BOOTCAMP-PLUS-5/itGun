@@ -57,7 +57,7 @@ export class PrUserRepository implements UserRepository {
         characterId: user.characterId,
       },
     })
-    return this.toDomain(createdUser)
+    return this.toDomain(savedUser)
   }
 
   async update(userData: Partial<User>): Promise<void> {
