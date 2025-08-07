@@ -51,8 +51,8 @@ export class PostUserGaugeUsecase {
         await this.bodyPartGaugeRepository.save(updateGauge)
         return { message: "게이지가 감소되었습니다." } as PostUserGaugeDto
       }
+      return { message: "14일 이내 운동 기록 있음" } as PostUserGaugeDto
     }
-
-    return { message: "14일 이내 운동 기록 있음" } as PostUserGaugeDto
+    return { message: "운동기록이 없음" } as PostUserGaugeDto
   }
 }
