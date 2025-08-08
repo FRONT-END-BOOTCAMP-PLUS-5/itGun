@@ -28,6 +28,33 @@ export class PrUserRepository implements UserRepository {
     )
   }
 
+  async findCharacterInfoById(
+    id: string
+  ): Promise<{ id: number; color: string }> {
+    const whereCondition = { id }
+    const resultInfo = {
+      id: 1,
+      color: "#FDFDFD",
+    }
+
+    const characterInfo = await prisma.user.findUnique({
+      where: whereCondition,
+      select: {
+        characterId: true,
+        characterColor: true,
+      },
+    })
+
+    if (characterInfo?.characterId) {
+      resultInfo.id = characterInfo.characterId
+    }
+    if (characterInfo?.characterColor) {
+      resultInfo.color = characterInfo.characterColor
+    }
+
+    return resultInfo
+  }
+
   async save(user: User): Promise<User> {
     const savedUser = await prisma.user.create({
       data: {
@@ -82,20 +109,6 @@ export class PrUserRepository implements UserRepository {
     } catch (error) {
       throw new Error(`회원 탈퇴 실패: ${error}`)
     }
-  }
-
-  async findCharacterInfoById(
-    id: string
-  ): Promise<{ id: number; color: string }> {
-    const user = await prisma.user.findUnique({
-      where: { id },
-      select: {
-        characterId: true,
-        characterColor: true,
-      },
-    })
-    if (!user) throw new Error("User not found")
-    return { id: user.characterId, color: user.characterColor }
   }
 
   private toDomain(user: any): User {
