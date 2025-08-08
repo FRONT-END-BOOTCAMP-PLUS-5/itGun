@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
 
 import { CreateUserUsecase } from "@/backend/application/signup/usecases/CreateUserUsecase"
+import { SignInUsecase } from "@/backend/application/signin/usecases/SignInUsecase"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -44,7 +45,31 @@ export const authOptions: NextAuthOptions = {
           }
         }
 
-        return null
+        try {
+          const userRepository = new PrUserRepository()
+
+          const signInUsecase = new SignInUsecase(userRepository)
+
+          const result = await signInUsecase.execute({
+            email: credentials.email,
+
+            password: credentials.password,
+          })
+
+          if (result.status === 200 && result.user) {
+            return result.user
+          }
+
+          if (result.status === 400 || result.status === 401) {
+            console.log("🚫 인증 실패:", result.message)
+          }
+
+          return null
+        } catch (error) {
+          console.error("NextAuth authorize error:", error)
+
+          return null
+        }
       },
     }),
   ],
