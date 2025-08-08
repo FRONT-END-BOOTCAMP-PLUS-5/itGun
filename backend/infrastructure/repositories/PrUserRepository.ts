@@ -88,14 +88,13 @@ export class PrUserRepository implements UserRepository {
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<void> {
     try {
       await prisma.user.delete({
         where: { id },
       })
-      return true
     } catch (error) {
-      return false
+      throw new Error(`회원 탈퇴 실패: ${error}`)
     }
   }
 
