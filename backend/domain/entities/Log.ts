@@ -1,7 +1,9 @@
+import { LogWorkout } from "./LogWorkout"
+
 export enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
-  LOWER = "lower"
+  LOWER = "lower",
 }
 
 export class Log {
@@ -10,6 +12,9 @@ export class Log {
     public readonly userId: string,
     public readonly calIconType: CalIconType,
     public readonly totalDuration: number,
-    public readonly createdAt: Date = new Date()
+    public readonly createdAt: Date = new Date(),
+
+    // Relations
+    public readonly logWorkouts?: LogWorkout[]
   ) {}
 }
