@@ -1,13 +1,13 @@
-import { Log } from "../../../../domain/entities/Log"
-import { Workout } from "../../../../domain/entities/Workout"
-import { BodyPartGauge } from "../../../../domain/entities/BodyPartGauge"
-import { LogRepository } from "../../../../domain/repositories/LogRepository"
-import { BodyPartGaugeRepository } from "../../../../domain/repositories/BodyPartGaugeRepository"
-import { PrWorkoutRepository } from "../../../../infrastructure/repositories/PrWorkoutRepository"
-import { PrLogWorkoutRepository } from "../../../../infrastructure/repositories/PrLogWorkoutRepository"
-import { CreateLogRequestDto } from "../dtos/CreateLogRequestDto"
-import { CreateLogResponseDto } from "../dtos/CreateLogResponseDto"
-import { BodyPartGaugeCalculator } from "../services/BodyPartGaugeCalculator"
+import { Log } from "@/backend/domain/entities/Log"
+import { Workout } from "@/backend/domain/entities/Workout"
+import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
+import { LogRepository } from "@/backend/domain/repositories/LogRepository"
+import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
+import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWorkoutRepository"
+import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
+import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
+import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
+import { BodyPartGaugeCalculator } from "@/backend/application/user/logs/services/BodyPartGaugeCalculator"
 
 export class CreateLogUsecase {
   private bodyPartGaugeCalculator: BodyPartGaugeCalculator
@@ -33,23 +33,84 @@ export class CreateLogUsecase {
 
       const savedLog = await this.logRepository.save(log)
 
-      const workouts = request.workouts.map(
-        (workout) =>
-          new Workout(
+      const allCriteria: Partial<Workout>[] = []
+      const workoutDataMap = new Map<string, WorkoutData>()
+
+      for (const workoutData of request.workouts) {
+        const isCardio = workoutData.exerciseInfo.bodyParts.includes("cardio")
+
+        let matchingCriteria: Partial<Workout>
+
+        if (isCardio) {
+          matchingCriteria = {
+            seq: workoutData.seq,
+            exerciseName: workoutData.exerciseName,
+            setCount: workoutData.setCount,
+            distance: workoutData.distance,
+            durationSeconds: workoutData.durationSeconds,
+          }
+        } else {
+          matchingCriteria = {
+            seq: workoutData.seq,
+            exerciseName: workoutData.exerciseName,
+            setCount: workoutData.setCount,
+            weight: workoutData.weight,
+            repetitionCount: workoutData.repetitionCount,
+          }
+        }
+
+        const criteriaKey = JSON.stringify(matchingCriteria)
+        allCriteria.push(matchingCriteria)
+        workoutDataMap.set(criteriaKey, workoutData)
+      }
+
+      const existingWorkouts = await this.workoutRepository.findByMultipleCriteria(allCriteria)
+      const existingWorkoutsMap = new Map<string, Workout>()
+
+      for (const workout of existingWorkouts) {
+        const key = JSON.stringify({
+          seq: workout.seq,
+          exerciseName: workout.exerciseName,
+          setCount: workout.setCount,
+          ...(workout.weight !== undefined && { weight: workout.weight }),
+          ...(workout.repetitionCount !== undefined && { repetitionCount: workout.repetitionCount }),
+          ...(workout.distance !== undefined && { distance: workout.distance }),
+          ...(workout.durationSeconds !== undefined && { durationSeconds: workout.durationSeconds })
+        })
+        existingWorkoutsMap.set(key, workout)
+      }
+
+      const workoutsToProcess: Workout[] = []
+      const newWorkoutsToCreate: Workout[] = []
+
+      for (const criteria of allCriteria) {
+        const criteriaKey = JSON.stringify(criteria)
+        const existingWorkout = existingWorkoutsMap.get(criteriaKey)
+        
+        if (existingWorkout) {
+          workoutsToProcess.push(existingWorkout)
+        } else {
+          const workoutData = workoutDataMap.get(criteriaKey)
+          const newWorkout = new Workout(
             0,
-            workout.seq,
-            workout.exerciseName,
-            workout.setCount,
-            workout.weight,
-            workout.repetitionCount,
-            workout.distance,
-            workout.durationSeconds
+            workoutData!.seq,
+            workoutData!.exerciseName,
+            workoutData!.setCount,
+            workoutData!.weight,
+            workoutData!.repetitionCount,
+            workoutData!.distance,
+            workoutData!.durationSeconds
           )
-      )
+          newWorkoutsToCreate.push(newWorkout)
+        }
+      }
 
-      const savedWorkouts = await this.workoutRepository.saveMany(workouts)
+      if (newWorkoutsToCreate.length > 0) {
+        const savedNewWorkouts = await this.workoutRepository.saveMany(newWorkoutsToCreate)
+        workoutsToProcess.push(...savedNewWorkouts)
+      }
 
-      const logWorkouts = savedWorkouts.map((workout) => ({
+      const logWorkouts = workoutsToProcess.map((workout) => ({
         logId: savedLog.id,
         workoutId: workout.id,
       }))
@@ -57,7 +118,7 @@ export class CreateLogUsecase {
       const logWorkoutResult =
         await this.logWorkoutRepository.saveMany(logWorkouts)
 
-      if (logWorkoutResult.count !== savedWorkouts.length) {
+      if (logWorkoutResult.count !== workoutsToProcess.length) {
         return {
           success: false,
           message: "운동 로그 연결 중 일부 실패가 발생했습니다.",
