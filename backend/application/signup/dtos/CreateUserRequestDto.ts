@@ -1,5 +1,8 @@
-import { Gender } from "../../../domain/entities/User"
-
+enum Gender {
+  NONE = "none",
+  MALE = "male",
+  FEMALE = "female",
+}
 export interface CreateUserRequestDto {
   email: string
   password: string
