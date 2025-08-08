@@ -16,7 +16,7 @@ export class CreateLogUsecase {
     private logRepository: LogRepository,
     private workoutRepository: PrWorkoutRepository,
     private logWorkoutRepository: PrLogWorkoutRepository,
-    private bodyPartGaugeRepository: BodyPartGaugeRepository,
+    private bodyPartGaugeRepository: BodyPartGaugeRepository
   ) {
     this.bodyPartGaugeCalculator = new BodyPartGaugeCalculator()
   }
@@ -28,7 +28,7 @@ export class CreateLogUsecase {
         request.userId,
         request.calIconType,
         request.totalDuration,
-        request.createdAt || new Date(),
+        request.createdAt || new Date()
       )
 
       const savedLog = await this.logRepository.save(log)
@@ -43,8 +43,8 @@ export class CreateLogUsecase {
             workout.weight,
             workout.repetitionCount,
             workout.distance,
-            workout.durationSeconds,
-          ),
+            workout.durationSeconds
+          )
       )
 
       const savedWorkouts = await this.workoutRepository.saveMany(workouts)
@@ -54,7 +54,8 @@ export class CreateLogUsecase {
         workoutId: workout.id,
       }))
 
-      const logWorkoutResult = await this.logWorkoutRepository.saveMany(logWorkouts)
+      const logWorkoutResult =
+        await this.logWorkoutRepository.saveMany(logWorkouts)
 
       if (logWorkoutResult.count !== savedWorkouts.length) {
         return {
@@ -64,7 +65,8 @@ export class CreateLogUsecase {
       }
 
       // 최신 body part gauge 데이터 조회
-      const latestGauge = await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
+      const latestGauge =
+        await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
 
       // 현재 게이지를 BodyPartGaugeUpdate 형태로 변환
       const currentGauge = {
@@ -77,11 +79,13 @@ export class CreateLogUsecase {
       }
 
       // 새로운 운동으로 인한 게이지 증가 계산 (부위별 레벨 적용)
-      const gaugeUpdate = this.bodyPartGaugeCalculator.calculateGaugeUpdates(request.workouts, currentGauge)
+      const gaugeUpdate = this.bodyPartGaugeCalculator.calculateGaugeUpdates(
+        request.workouts,
+        currentGauge
+      )
 
       // 새로운 body part gauge 생성 (기존 값 + 증가분)
       const newBodyPartGauge = new BodyPartGauge(
-        0,
         request.userId,
         currentGauge.arms + gaugeUpdate.arms,
         currentGauge.legs + gaugeUpdate.legs,
@@ -90,6 +94,7 @@ export class CreateLogUsecase {
         currentGauge.chest + gaugeUpdate.chest,
         currentGauge.core + gaugeUpdate.core,
         new Date(),
+        0
       )
 
       await this.bodyPartGaugeRepository.save(newBodyPartGauge)
