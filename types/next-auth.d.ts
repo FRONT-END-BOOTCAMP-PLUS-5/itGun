@@ -12,6 +12,10 @@ declare module "next-auth" {
     weight?: number
     characterColor: string
     characterId: number
+    accessToken?: string
+    refreshToken?: string
+    accessTokenExpiry?: number
+    refreshTokenExpiry?: number
   }
 
   interface Session {
@@ -25,6 +29,10 @@ declare module "next-auth" {
       weight?: number
       characterColor: string
       characterId: number
+      accessToken: string | undefined
+      refreshToken: string | undefined
+      accessTokenExpiry: number | undefined
+      refreshTokenExpiry: number | undefined
     }
   }
 }
@@ -40,5 +48,9 @@ declare module "next-auth/jwt" {
     weight?: number
     characterColor: string
     characterId: number
+    accessToken?: string
+    refreshToken?: string
+    accessTokenExpiry?: number
+    refreshTokenExpiry?: number
   }
 }

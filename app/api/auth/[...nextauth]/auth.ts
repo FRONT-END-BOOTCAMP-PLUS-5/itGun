@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
-
+import { JwtTokenRepository } from "@/backend/infrastructure/repositories/JwtTokenRepository"
 import { CreateUserUsecase } from "@/backend/application/signup/usecases/CreateUserUsecase"
 import { SignInUsecase } from "@/backend/application/signin/usecases/SignInUsecase"
 
@@ -19,9 +19,15 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        const userRepository = new PrUserRepository()
+        const tokenRepository = new JwtTokenRepository()
+
+        //닉네임 값 있는 경우 회원정보 로직!
         if (credentials.nickname) {
-          const userRepository = new PrUserRepository()
-          const createUserUsecase = new CreateUserUsecase(userRepository)
+          const createUserUsecase = new CreateUserUsecase(
+            userRepository,
+            tokenRepository
+          )
 
           try {
             const result = await createUserUsecase.execute({
@@ -30,8 +36,23 @@ export const authOptions: NextAuthOptions = {
               nickName: credentials.nickname,
             })
 
-            if (result.status === 201 && result.user) {
-              return result.user
+            if (result.status === 201 && result.user && result.tokens) {
+              const user = {
+                id: result.user.id,
+                email: result.user.email,
+                nickName: result.user.nickName,
+                age: result.user.age,
+                gender: result.user.gender,
+                height: result.user.height,
+                weight: result.user.weight,
+                characterColor: result.user.characterColor,
+                characterId: result.user.characterId,
+                accessToken: result.tokens.accessToken,
+                refreshToken: result.tokens.refreshToken,
+                accessTokenExpiry: result.tokens.accessTokenExpiry,
+                refreshTokenExpiry: result.tokens.refreshTokenExpiry,
+              }
+              return user
             }
 
             if (result.status === 400 || result.status === 401) {
@@ -46,18 +67,35 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const userRepository = new PrUserRepository()
-
-          const signInUsecase = new SignInUsecase(userRepository)
+          //닉네임 값 없는 경우 로그인 로직!
+          const signInUsecase = new SignInUsecase(
+            userRepository,
+            tokenRepository
+          )
 
           const result = await signInUsecase.execute({
             email: credentials.email,
-
             password: credentials.password,
           })
 
-          if (result.status === 200 && result.user) {
-            return result.user
+          if (result.status === 200 && result.user && result.tokens) {
+            const user = {
+              id: result.user.id,
+              email: result.user.email,
+              nickName: result.user.nickName,
+              age: result.user.age,
+              gender: result.user.gender,
+              height: result.user.height,
+              weight: result.user.weight,
+              characterColor: result.user.characterColor,
+              characterId: result.user.characterId,
+              accessToken: result.tokens.accessToken,
+              refreshToken: result.tokens.refreshToken,
+              accessTokenExpiry: result.tokens.accessTokenExpiry,
+              refreshTokenExpiry: result.tokens.refreshTokenExpiry,
+            }
+
+            return user
           }
 
           if (result.status === 400 || result.status === 401) {
@@ -67,7 +105,6 @@ export const authOptions: NextAuthOptions = {
           return null
         } catch (error) {
           console.error("NextAuth authorize error:", error)
-
           return null
         }
       },
@@ -82,7 +119,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log(123, user)
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -93,11 +129,14 @@ export const authOptions: NextAuthOptions = {
         token.weight = user.weight
         token.characterColor = user.characterColor
         token.characterId = user.characterId
+        token.accessToken = user.accessToken
+        token.refreshToken = user.refreshToken
+        token.accessTokenExpiry = user.accessTokenExpiry
+        token.refreshTokenExpiry = user.refreshTokenExpiry
       }
       return token
     },
     async session({ session, token }) {
-      console.log(456, token)
       if (token && session.user) {
         session.user.id = token.id
         session.user.email = token.email
@@ -108,6 +147,10 @@ export const authOptions: NextAuthOptions = {
         session.user.weight = token.weight
         session.user.characterColor = token.characterColor
         session.user.characterId = token.characterId
+        session.user.accessToken = token.accessToken
+        session.user.refreshToken = token.refreshToken
+        session.user.accessTokenExpiry = token.accessTokenExpiry
+        session.user.refreshTokenExpiry = token.refreshTokenExpiry
       }
       return session
     },
