@@ -1,4 +1,11 @@
-import { Gender } from "../../../domain/entities/User"
+export type Gender = "none" | "male" | "female"
+
+export interface AuthTokens {
+  accessToken: string
+  refreshToken: string
+  accessTokenExpiry: number
+  refreshTokenExpiry: number
+}
 
 export interface SignInResponseDto {
   message: string
@@ -14,5 +21,6 @@ export interface SignInResponseDto {
     characterColor: string
     characterId: number
   }
+  tokens?: AuthTokens
   error?: string
 }

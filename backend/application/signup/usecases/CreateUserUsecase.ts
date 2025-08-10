@@ -1,11 +1,15 @@
 import { User } from "../../../domain/entities/User"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
+import { TokenRepository } from "../../../domain/repositories/TokenRepository"
 import { CreateUserRequestDto } from "../dtos/CreateUserRequestDto"
 import { CreateUserResponseDto } from "../dtos/CreateUserResponseDto"
 import bcrypt from "bcryptjs"
 
 export class CreateUserUsecase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private tokenRepository: TokenRepository
+  ) {}
 
   async execute(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     try {
@@ -16,6 +20,10 @@ export class CreateUserUsecase {
       if (duplicateCheck) return duplicateCheck
 
       const user = await this.createUser(dto)
+
+      const tokens = this.tokenRepository.generateTokenPair({
+        userId: user.id,
+      })
 
       return {
         message: "회원가입이 완료되었습니다.",
@@ -31,6 +39,7 @@ export class CreateUserUsecase {
           characterColor: user.characterColor,
           characterId: user.characterId,
         },
+        tokens,
       }
     } catch (error) {
       return {

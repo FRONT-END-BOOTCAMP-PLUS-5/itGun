@@ -1,11 +1,15 @@
 import { User } from "../../../domain/entities/User"
 import { UserRepository } from "../../../domain/repositories/UserRepository"
+import { TokenRepository } from "../../../domain/repositories/TokenRepository"
 import { SignInRequestDto } from "../dtos/SignInRequestDto"
 import { SignInResponseDto } from "../dtos/SignInResponseDto"
 import bcrypt from "bcryptjs"
 
 export class SignInUsecase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private tokenRepository: TokenRepository
+  ) {}
 
   async execute(dto: SignInRequestDto): Promise<SignInResponseDto> {
     try {
@@ -31,6 +35,11 @@ export class SignInUsecase {
         }
       }
 
+      // 🎯 토큰 생성
+      const tokens = this.tokenRepository.generateTokenPair({
+        userId: user.id,
+      })
+
       return {
         message: "로그인이 완료되었습니다.",
         status: 200,
@@ -45,6 +54,7 @@ export class SignInUsecase {
           characterColor: user.characterColor,
           characterId: user.characterId,
         },
+        tokens,
       }
     } catch (error) {
       return {
