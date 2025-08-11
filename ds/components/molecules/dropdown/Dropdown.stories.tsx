@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Dropdown, { DropdownOption, DropdownProps } from "./Dropdown"
-import type { Meta, StoryObj } from "@storybook/react"
+
+import type { Meta, StoryObj } from "@storybook/nextjs"
 
 const options: DropdownOption[] = [
   { label: "10", value: 10 },
