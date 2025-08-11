@@ -15,6 +15,14 @@ export class Log {
     public readonly createdAt: Date = new Date(),
 
     // Relations
-    public readonly logWorkouts?: LogWorkout[]
+    public readonly logWorkouts?: LogWorkout[],
+    public readonly gaugeChanges: Record<string, number> = {
+      legs: 0,
+      back: 0,
+      chest: 0,
+      shoulders: 0,
+      arms: 0,
+      core: 0,
+    }
   ) {}
 }
