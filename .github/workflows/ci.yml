@@ -31,7 +31,7 @@ jobs:
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Debug prisma
         run: |

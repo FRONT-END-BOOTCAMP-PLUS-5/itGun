@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
-import "./globals.css"
 import { galmuri } from "@/utils/fonts"
+import "./globals.css"
+import Providers from "./providers"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${galmuri.className} antialiased`}>{children}</body>
+      <body className={`${galmuri.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
