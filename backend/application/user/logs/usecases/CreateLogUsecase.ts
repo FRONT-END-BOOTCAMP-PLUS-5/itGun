@@ -7,19 +7,15 @@ import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWor
 import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
 import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
-import { BodyPartGaugeCalculator } from "@/backend/application/user/logs/services/BodyPartGaugeCalculator"
+import { calculateGaugeUpdates } from "@/backend/application/user/logs/services/BodyPartGaugeCalculator"
 
 export class CreateLogUsecase {
-  private bodyPartGaugeCalculator: BodyPartGaugeCalculator
-
   constructor(
     private logRepository: LogRepository,
     private workoutRepository: PrWorkoutRepository,
     private logWorkoutRepository: PrLogWorkoutRepository,
     private bodyPartGaugeRepository: BodyPartGaugeRepository
-  ) {
-    this.bodyPartGaugeCalculator = new BodyPartGaugeCalculator()
-  }
+  ) {}
 
   async execute(request: CreateLogRequestDto): Promise<CreateLogResponseDto> {
     try {
