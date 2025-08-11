@@ -1,4 +1,4 @@
-export type ProjectBodyPart = "legs" | "back" | "chest" | "shoulders" | "arms" | "core"
+export type ProjectBodyPart = "legs" | "back" | "chest" | "shoulders" | "arms" | "core" | "stamina"
 
 // exerciseDB의 bodyParts와 projectBodyPart와의 매핑
 export const BODY_PART_MAPPING: Record<string, ProjectBodyPart[]> = {
@@ -30,6 +30,7 @@ export const BODY_PART_MULTIPLIERS: Record<ProjectBodyPart, number> = {
   shoulders: 1.2,
   arms: 1.3,
   core: 1.1,
+  stamina: 1,
 }
 
 // 레벨별 포인트 구간
