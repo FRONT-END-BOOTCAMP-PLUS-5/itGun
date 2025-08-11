@@ -1,4 +1,8 @@
-export type Gender = "none" | "male" | "female"
+enum Gender {
+  NONE = "none",
+  MALE = "male",
+  FEMALE = "female",
+}
 
 export interface AuthTokens {
   accessToken: string
