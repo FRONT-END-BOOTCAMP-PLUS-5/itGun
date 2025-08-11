@@ -58,7 +58,6 @@ export class PrUserRepository implements UserRepository {
   async save(user: User): Promise<User> {
     const savedUser = await prisma.user.create({
       data: {
-        id: user.id,
         email: user.email,
         nickName: user.nickName,
         password: user.password,
@@ -69,8 +68,6 @@ export class PrUserRepository implements UserRepository {
         isSocialLogin: user.isSocialLogin,
         characterColor: user.characterColor,
         characterId: user.characterId,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
       },
     })
     return this.toDomain(savedUser)
@@ -109,6 +106,13 @@ export class PrUserRepository implements UserRepository {
     } catch (error) {
       throw new Error(`회원 탈퇴 실패: ${error}`)
     }
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    })
+    return user ? this.toDomain(user) : null
   }
 
   private toDomain(user: any): User {
