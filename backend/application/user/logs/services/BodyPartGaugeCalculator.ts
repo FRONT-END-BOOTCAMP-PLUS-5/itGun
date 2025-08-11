@@ -1,21 +1,13 @@
-import { WorkoutData } from "../dtos/CreateLogRequestDto"
+import { WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
+import { BodyPartsGroup } from "@/backend/domain/entities/Log"
 import {
-  ProjectBodyPart,
   BODY_PART_MAPPING,
   BODY_PART_MULTIPLIERS,
   LEVEL_THRESHOLDS,
   LEVEL_MULTIPLIERS,
 } from "./BodyPartGaugeConstants"
 
-export interface BodyPartGaugeUpdate {
-  legs: number
-  back: number
-  chest: number
-  shoulders: number
-  arms: number
-  core: number
-  stamina: number
-}
+export type BodyPartGaugeUpdate = Record<BodyPartsGroup, number>
 
 export class BodyPartGaugeCalculator {
   // 부위별 레벨 계산
@@ -80,8 +72,8 @@ export class BodyPartGaugeCalculator {
 
   private mapExerciseBodyPartsToProject(
     exerciseBodyParts: string[]
-  ): ProjectBodyPart[] {
-    const mappedParts: ProjectBodyPart[] = []
+  ): BodyPartsGroup[] {
+    const mappedParts: BodyPartsGroup[] = []
 
     for (const part of exerciseBodyParts) {
       const normalizedPart = part.toLowerCase().trim()

@@ -1,7 +1,7 @@
-export type ProjectBodyPart = "legs" | "back" | "chest" | "shoulders" | "arms" | "core" | "stamina"
+import { BodyPartsGroup } from "@/backend/domain/entities/Log"
 
 // exerciseDB의 bodyParts와 projectBodyPart와의 매핑
-export const BODY_PART_MAPPING: Record<string, ProjectBodyPart[]> = {
+export const BODY_PART_MAPPING: Record<string, BodyPartsGroup[]> = {
   "BACK": ["back"],
   "CALVES": ["legs"],
   "CHEST": ["chest"],
@@ -23,7 +23,7 @@ export const BODY_PART_MAPPING: Record<string, ProjectBodyPart[]> = {
 }
 
 // 부위별 가중치
-export const BODY_PART_MULTIPLIERS: Record<ProjectBodyPart, number> = {
+export const BODY_PART_MULTIPLIERS: Record<BodyPartsGroup, number> = {
   legs: 0.7,
   back: 0.8,
   chest: 1.0,
