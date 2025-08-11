@@ -27,6 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    ".storybook/**/*.tsx",
     "backend/user/character"
   ],
   "exclude": ["node_modules"]
