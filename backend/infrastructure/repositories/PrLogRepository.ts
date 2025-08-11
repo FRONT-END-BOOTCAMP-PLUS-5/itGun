@@ -1,6 +1,6 @@
-import prisma from "../../../utils/prisma"
-import { Log, CalIconType } from "../../domain/entities/Log"
-import { LogRepository } from "../../domain/repositories/LogRepository"
+import prisma from "@/utils/prisma"
+import { Log, CalIconType } from "@/backend/domain/entities/Log"
+import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 
 export class PrLogRepository implements LogRepository {
   async findAll(): Promise<Log[]> {
@@ -52,6 +52,7 @@ export class PrLogRepository implements LogRepository {
         userId: log.userId,
         calIconType: log.calIconType,
         totalDuration: log.totalDuration,
+        gaugeChanges: log.gaugeChanges,
         createdAt: log.createdAt,
       },
     })
@@ -67,6 +68,9 @@ export class PrLogRepository implements LogRepository {
           ...(logData.calIconType && { calIconType: logData.calIconType }),
           ...(logData.totalDuration !== undefined && {
             totalDuration: logData.totalDuration,
+          }),
+          ...(logData.gaugeChanges !== undefined && {
+            gaugeChanges: logData.gaugeChanges,
           }),
         },
       })
@@ -94,7 +98,8 @@ export class PrLogRepository implements LogRepository {
       log.calIconType as CalIconType,
       log.totalDuration,
       log.createdAt,
-      log.logWorkouts
+      log.logWorkouts,
+      log.gaugeChanges
     )
   }
 }

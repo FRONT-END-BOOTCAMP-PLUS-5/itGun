@@ -1,10 +1,10 @@
 import { WorkoutData } from "../dtos/CreateLogRequestDto"
-import { 
+import {
   ProjectBodyPart,
   BODY_PART_MAPPING,
   BODY_PART_MULTIPLIERS,
   LEVEL_THRESHOLDS,
-  LEVEL_MULTIPLIERS
+  LEVEL_MULTIPLIERS,
 } from "./BodyPartGaugeConstants"
 
 export interface BodyPartGaugeUpdate {
@@ -14,10 +14,10 @@ export interface BodyPartGaugeUpdate {
   shoulders: number
   arms: number
   core: number
+  stamina: number
 }
 
 export class BodyPartGaugeCalculator {
-
   // 부위별 레벨 계산
   calculateBodyPartLevel(totalPoints: number): number {
     const threshold = LEVEL_THRESHOLDS.find(
@@ -26,7 +26,10 @@ export class BodyPartGaugeCalculator {
     return threshold ? threshold.level : 5 // 기본값 5단계
   }
 
-  calculateGaugeUpdates(workouts: WorkoutData[], currentGauge?: BodyPartGaugeUpdate): BodyPartGaugeUpdate {
+  calculateGaugeUpdates(
+    workouts: WorkoutData[],
+    currentGauge?: BodyPartGaugeUpdate
+  ): BodyPartGaugeUpdate {
     const gaugeUpdate: BodyPartGaugeUpdate = {
       legs: 0,
       back: 0,
@@ -34,6 +37,7 @@ export class BodyPartGaugeCalculator {
       shoulders: 0,
       arms: 0,
       core: 0,
+      stamina: 0,
     }
 
     for (const workout of workouts) {
@@ -47,22 +51,26 @@ export class BodyPartGaugeCalculator {
       const basePoints = volume / 10000
 
       // 운동의 bodyParts를 프로젝트 부위로 매핑
-      const targetBodyParts = this.mapExerciseBodyPartsToProject(workout.exerciseInfo.bodyParts)
+      const targetBodyParts = this.mapExerciseBodyPartsToProject(
+        workout.exerciseInfo.bodyParts
+      )
 
       // 여러 부위에 걸친 운동인 경우 부위별로 균등 분배
-      const pointsPerBodyPart = targetBodyParts.length > 0 ? basePoints / targetBodyParts.length : 0
+      const pointsPerBodyPart =
+        targetBodyParts.length > 0 ? basePoints / targetBodyParts.length : 0
 
       // 각 부위별 포인트 계산 및 누적
       for (const bodyPart of targetBodyParts) {
         // 해당 부위의 현재 포인트로 레벨 계산
         const currentBodyPartPoints = currentGauge ? currentGauge[bodyPart] : 0
         const bodyPartLevel = this.calculateBodyPartLevel(currentBodyPartPoints)
-        
+
         // 부위별 가중치 및 레벨 가중치 적용
         const bodyPartMultiplier = BODY_PART_MULTIPLIERS[bodyPart]
         const levelMultiplier = LEVEL_MULTIPLIERS[bodyPartLevel] || 1.0
-        const finalPoints = pointsPerBodyPart * bodyPartMultiplier * levelMultiplier
-        
+        const finalPoints =
+          pointsPerBodyPart * bodyPartMultiplier * levelMultiplier
+
         gaugeUpdate[bodyPart] += finalPoints
       }
     }
@@ -70,13 +78,15 @@ export class BodyPartGaugeCalculator {
     return gaugeUpdate
   }
 
-  private mapExerciseBodyPartsToProject(exerciseBodyParts: string[]): ProjectBodyPart[] {
+  private mapExerciseBodyPartsToProject(
+    exerciseBodyParts: string[]
+  ): ProjectBodyPart[] {
     const mappedParts: ProjectBodyPart[] = []
 
     for (const part of exerciseBodyParts) {
       const normalizedPart = part.toLowerCase().trim()
       const projectParts = BODY_PART_MAPPING[normalizedPart]
-      
+
       if (projectParts && projectParts.length > 0) {
         mappedParts.push(...projectParts)
       }

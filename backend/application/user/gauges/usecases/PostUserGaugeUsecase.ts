@@ -29,6 +29,7 @@ export class PostUserGaugeUsecase {
       back: decreasedValue(gauge.back),
       chest: decreasedValue(gauge.chest),
       core: decreasedValue(gauge.core),
+      stamina: decreasedValue(gauge.stamina),
     }
   }
 
