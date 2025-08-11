@@ -47,6 +47,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         back: bodyPartGauge.back,
         chest: bodyPartGauge.chest,
         core: bodyPartGauge.core,
+        stamina: bodyPartGauge.stamina,
         createdAt: bodyPartGauge.createdAt,
       },
     })
@@ -70,6 +71,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
           ...(gaugeData.back !== undefined && { back: gaugeData.back }),
           ...(gaugeData.chest !== undefined && { chest: gaugeData.chest }),
           ...(gaugeData.core !== undefined && { core: gaugeData.core }),
+          ...(gaugeData.stamina !== undefined && { core: gaugeData.stamina }),
         },
       })
       return this.toDomain(updatedGauge)
@@ -99,6 +101,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       gauge.back,
       gauge.chest,
       gauge.core,
+      gauge.stamina,
       gauge.createdAt
     )
   }

@@ -76,6 +76,7 @@ export class CreateLogUsecase {
         shoulders: latestGauge?.shoulders || 0,
         arms: latestGauge?.arms || 0,
         core: latestGauge?.core || 0,
+        stamina: latestGauge?.stamina || 0,
       }
 
       // 새로운 운동으로 인한 게이지 증가 계산 (부위별 레벨 적용)
@@ -93,6 +94,7 @@ export class CreateLogUsecase {
         currentGauge.back + gaugeUpdate.back,
         currentGauge.chest + gaugeUpdate.chest,
         currentGauge.core + gaugeUpdate.core,
+        currentGauge.stamina + gaugeUpdate.stamina,
         new Date(),
         0
       )

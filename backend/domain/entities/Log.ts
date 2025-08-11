@@ -23,6 +23,7 @@ export class Log {
       shoulders: 0,
       arms: 0,
       core: 0,
+      stamina: 0,
     }
   ) {}
 }
