@@ -1,4 +1,5 @@
 import React from "react"
+import "../../../styles/globals.css"
 import { textVariants } from "../../../styles/text/textVariants"
 import { TextProps } from "./Text.types"
 
