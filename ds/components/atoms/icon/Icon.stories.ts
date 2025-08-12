@@ -42,10 +42,26 @@ const meta = {
       },
     },
     color: {
-      control: "color",
+      control: "select",
+      options: [
+        "primary",
+        "secondary",
+        "secondary-purple",
+        "secondary-pink",
+        "secondary-blue",
+        "secondary-yellow",
+        "white-100",
+        "white-200",
+        "disable",
+        "error",
+        "accent",
+        "success",
+        "info",
+        "#f3f3f3",
+      ],
     },
     fillColor: {
-      control: "color",
+      control: "text",
     },
     strokeWidth: {
       control: {
@@ -65,5 +81,6 @@ export const SvgIcon: Story = {
     name: "leftArrow",
     size: 24,
     color: "#000000",
+    fillColor: "secondary-yellow",
   },
 }
