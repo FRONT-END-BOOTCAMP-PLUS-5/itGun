@@ -31,6 +31,7 @@ const Toast: React.FC<ToastProps> = ({
   }, [visible, onDismiss])
 
   const baseClasses = [
+    "cursor-default",
     "fixed",
     "left-1/2",
     "-translate-x-1/2",
