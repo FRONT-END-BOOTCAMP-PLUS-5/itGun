@@ -5,7 +5,7 @@ import {
   BODY_PART_MULTIPLIERS,
   LEVEL_THRESHOLDS,
   LEVEL_MULTIPLIERS,
-} from "./BodyPartGaugeConstants"
+} from "@/backend/application/user/logs/constants/BodyPartGaugeConstants"
 
 export type BodyPartGaugeUpdate = Record<BodyPartsGroup, number>
 
