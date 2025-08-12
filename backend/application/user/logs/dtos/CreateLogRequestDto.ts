@@ -1,5 +1,16 @@
-import { ExerciseApiData } from "@/backend/application/exercises/dtos/ExerciseApiResponse";
-import { CalIconType } from "../../../../domain/entities/Log";
+import { CalIconType } from "@/backend/domain/entities/Log";
+
+export type ExerciseInfo = {
+  exerciseId: string
+  name: string
+  imageUrl: string
+  videoUrl: string
+  bodyParts: string[]
+  equipments: string[]
+  exerciseType: string
+  instructions: string[]
+  exerciseTips: string[]
+}
 
 export interface WorkoutData {
   seq: number;
@@ -9,7 +20,7 @@ export interface WorkoutData {
   repetitionCount?: number;
   distance?: number;
   durationSeconds?: number;
-  exerciseInfo: ExerciseApiData;
+  exerciseInfo: ExerciseInfo;
 }
 
 export interface CreateLogRequestDto {
