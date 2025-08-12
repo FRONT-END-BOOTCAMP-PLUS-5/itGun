@@ -35,7 +35,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       return null
     }
 
-    return userBadges.map(this.toDomain)
+    return userBadges as UserBadge[]
   }
 
   async save(userBadge: UserBadge): Promise<UserBadge> {
@@ -48,6 +48,22 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       },
     })
     return this.toDomain(savedUserBadge)
+  }
+
+  async saveMany(userBadges: UserBadge[]): Promise<UserBadge[]> {
+    const savedUserBadges = await prisma.$transaction(
+      userBadges.map((userBadge) =>
+        prisma.userBadge.create({
+          data: {
+            badgeId: userBadge.badgeId,
+            userId: userBadge.userId,
+            createdAt: userBadge.createdAt,
+          },
+        })
+      )
+    )
+
+    return savedUserBadges as UserBadge[]
   }
 
   async update(

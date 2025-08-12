@@ -3,19 +3,35 @@ import { Workout } from "@/backend/domain/entities/Workout"
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
+import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
+import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
+import { UserRecordRepository } from "@/backend/domain/repositories/UserRecordRepository"
 import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWorkoutRepository"
 import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
 import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
 import { calculateGaugeUpdates } from "@/backend/application/user/logs/services/BodyPartGaugeCalculator"
+import { BadgeAchievementService } from "@/backend/application/user/logs/services/BadgeAchievementService"
 
 export class CreateLogUsecase {
+  private badgeAchievementService: BadgeAchievementService
+
   constructor(
     private logRepository: LogRepository,
     private workoutRepository: PrWorkoutRepository,
     private logWorkoutRepository: PrLogWorkoutRepository,
-    private bodyPartGaugeRepository: BodyPartGaugeRepository
-  ) {}
+    private bodyPartGaugeRepository: BodyPartGaugeRepository,
+    private badgeRepository: BadgeRepository,
+    private userBadgeRepository: UserBadgeRepository,
+    private userRecordRepository: UserRecordRepository
+  ) {
+    this.badgeAchievementService = new BadgeAchievementService(
+      badgeRepository,
+      userBadgeRepository,
+      userRecordRepository,
+      logRepository
+    )
+  }
 
   async execute(request: CreateLogRequestDto): Promise<CreateLogResponseDto> {
     try {
@@ -155,9 +171,15 @@ export class CreateLogUsecase {
 
       await this.bodyPartGaugeRepository.save(newBodyPartGauge)
 
+      // 뱃지 달성 체크 및 사용자 기록 업데이트 (한 번에 처리)
+      const { badges: awardedBadges } = await this.badgeAchievementService.checkAndAwardBadges(
+        request.userId,
+        request.workouts
+      )
+
       return {
         success: true,
-        message: "운동 로그가 성공적으로 생성되었습니다.",
+        message: `운동 로그가 성공적으로 생성되었습니다.${awardedBadges.length > 0 ? ` ${awardedBadges.length}개의 뱃지를 획득했습니다!` : ''}`,
         logId: savedLog.id,
       }
     } catch (error) {

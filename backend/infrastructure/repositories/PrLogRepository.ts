@@ -39,6 +39,27 @@ export class PrLogRepository implements LogRepository {
     return logs as Log[]
   }
 
+  async findByUserIdAndDateRange(
+    userId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<Log[]> {
+    const logs = await prisma.log.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+
+    return logs.map(this.toDomain)
+  }
+
   async findById(id: number): Promise<Log | null> {
     const log = await prisma.log.findUnique({
       where: { id },
