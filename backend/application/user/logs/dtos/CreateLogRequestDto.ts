@@ -1,6 +1,6 @@
 import { CalIconType } from "@/backend/domain/entities/Log";
 
-export type ExerciseInfo = {
+export interface ExerciseInfo {
   exerciseId: string
   name: string
   imageUrl: string

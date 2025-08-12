@@ -164,7 +164,7 @@ export class BadgeAchievementService {
         }
       }
 
-      if (maxConsecutive >= 7) {
+      if (maxConsecutive === 7) {
         return new UserBadge(0, consecutiveBadge.id, userId, new Date())
       }
     }
