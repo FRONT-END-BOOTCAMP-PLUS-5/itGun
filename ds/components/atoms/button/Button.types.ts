@@ -1,4 +1,5 @@
-import { ButtonSize, ButtonVariant } from "@/ds/styles/tokens/button/variants"
+import { ButtonSize } from "@/ds/styles/tokens/button/sizes"
+import { ButtonVariant } from "@/ds/styles/tokens/button/variants"
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

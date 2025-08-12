@@ -1,6 +1,7 @@
 import React from "react"
 import { ButtonProps } from "./Button.types"
-import { buttonSizes, buttonVariants } from "@/ds/styles/tokens/button/variants"
+import { buttonVariants } from "@/ds/styles/tokens/button/variants"
+import { buttonSizes } from "@/ds/styles/tokens/button/sizes"
 
 export const Button: React.FC<ButtonProps> = ({
   children,
