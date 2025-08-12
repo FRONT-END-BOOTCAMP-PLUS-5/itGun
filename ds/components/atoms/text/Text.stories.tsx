@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import Text from "./Text"
-import { B1, B2, C1, C2, Display, H1, H2, S1, S2 } from "./TextWrapper"
+import { B1, B2, C1, C2, D1, H1, H2, S1, S2 } from "./TextWrapper"
 
 const meta = {
   title: "Components/Atoms/Text",
@@ -25,7 +25,7 @@ export const Default: Story = {
 
 // Display
 export const DisplayText: Story = {
-  render: (args) => <Display {...args} />,
+  render: (args) => <D1 {...args} />,
   args: {
     children: "Display Text",
     variant: "primary",

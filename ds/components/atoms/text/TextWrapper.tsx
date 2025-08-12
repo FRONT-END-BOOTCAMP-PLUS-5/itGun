@@ -1,7 +1,7 @@
 import Text from "./Text"
 import { TextProps } from "./Text.types"
 
-const Display: React.FC<TextProps> = ({
+const D1: React.FC<TextProps> = ({
   children,
   size = "text-[32px]",
   fontWeight = "bold",
@@ -172,4 +172,4 @@ const C2: React.FC<TextProps> = ({
   </Text>
 )
 
-export { Display, H1, H2, S1, S2, B1, B2, C1, C2 }
+export { D1, H1, H2, S1, S2, B1, B2, C1, C2 }
