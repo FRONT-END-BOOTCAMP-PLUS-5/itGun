@@ -1,82 +1,48 @@
 import React from "react"
+import type { DropdownOption, DropdownProps } from "./Dropdown.types"
+import Icon from "../../atoms/icon/Icon"
 
-export type DropdownOption = {
-  label: string
-  value: string | number
-}
-
-export type DropdownProps = {
-  size?: "sm" | "md" | "lg"
-  variant?: "default" | "outlined"
-  options: DropdownOption[]
-  value?: string | number
-  placeholder?: string
-  onChange?: (value: string | number) => void
-  disabled?: boolean
-}
-
-const sizeStyle = {
-  sm: { fontSize: "14px", height: "32px" },
-  md: { fontSize: "16px", height: "40px" },
-  lg: { fontSize: "18px", height: "48px" },
+const sizeClassBySize: Record<NonNullable<DropdownProps["size"]>, string> = {
+  sm: "text-[16px] h-21",
+  md: "text-[16px] h-[30px]",
+  lg: "text-[16px] h-42",
 }
 
 const Dropdown = ({
   size = "md",
-  variant = "default",
   options,
   value,
   placeholder = "",
   onChange,
   disabled = false,
 }: DropdownProps) => {
+  const sizeClasses = sizeClassBySize[size]
+
   return (
-    <div
-      style={{
-        borderBottom: "2px solid #6B617A",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        width: "240px",
-        position: "relative",
-        background: "#fff",
-      }}
-    >
+    <div className="relative flex w-[240px] flex-row items-center border-b-2 border-[#6B617A] bg-white">
       <select
         value={value ?? ""}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
-        style={{
-          border: "none",
-          outline: "none",
-          width: "100%",
-          background: "transparent",
-          color: "#6B617A",
-          padding: "16px 32px 6px 0",
-          appearance: "none",
-          ...sizeStyle[size],
-        }}
+        className={[
+          "w-full appearance-none border-none bg-transparent text-[#6B617A] outline-none",
+          "pt-[3px] pr-8 pb-[6px] pl-0 leading-[21px]",
+          sizeClasses,
+        ].join(" ")}
       >
         {placeholder && (
           <option value="" disabled hidden>
             {placeholder}
           </option>
         )}
-        {options.map((opt) => (
+        {options.map((opt: DropdownOption) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
         ))}
       </select>
-      <span
-        style={{
-          position: "absolute",
-          right: 0,
-          pointerEvents: "none",
-          color: "#6B617A",
-        }}
-      >
-        ▼
+      <span className="pointer-events-none absolute right-0 rotate-90 text-[#6B617A]">
+        <Icon name="rightArrow" size={16} color="#6B617A" />
       </span>
     </div>
   )
