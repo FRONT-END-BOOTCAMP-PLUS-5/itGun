@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
 
 const protectedRoutes = [
+  "/api/:path*",
   "/",
   "/logs",
   "/menus",
@@ -38,14 +39,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/logs",
-    "/menus",
-    "/user/:path*",
-    "/exercises",
-    "/landing",
-    "/signup",
-    "/signin",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 }
