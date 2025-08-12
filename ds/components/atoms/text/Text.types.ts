@@ -1,4 +1,4 @@
-import { TextVariant } from "../../../styles/tokens/text/textVariants"
+import { TextVariant } from "../../../styles/tokens/text/variants"
 
 export type FontWeight = "normal" | "bold"
 
