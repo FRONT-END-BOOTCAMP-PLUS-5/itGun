@@ -19,12 +19,32 @@ export class CreateLogUsecase {
 
   async execute(request: CreateLogRequestDto): Promise<CreateLogResponseDto> {
     try {
+      // 먼저 최신 body part gauge 데이터 조회
+      const latestGauge = await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
+
+      // 현재 게이지를 BodyPartGaugeUpdate 형태로 변환
+      const currentGauge = {
+        legs: latestGauge?.legs || 0,
+        back: latestGauge?.back || 0,
+        chest: latestGauge?.chest || 0,
+        shoulders: latestGauge?.shoulders || 0,
+        arms: latestGauge?.arms || 0,
+        core: latestGauge?.core || 0,
+        stamina: latestGauge?.stamina || 0,
+      }
+
+      // 새로운 운동으로 인한 게이지 증가 계산
+      const gaugeUpdate = calculateGaugeUpdates(request.workouts, currentGauge)
+
+      // 로그 생성
       const log = new Log(
         0,
         request.userId,
         request.calIconType,
         request.totalDuration,
-        request.createdAt || new Date()
+        request.createdAt || new Date(),
+        undefined, // logWorkouts
+        gaugeUpdate
       )
 
       const savedLog = await this.logRepository.save(log)
@@ -33,16 +53,14 @@ export class CreateLogUsecase {
       const workoutDataMap = new Map<string, WorkoutData>()
 
       for (const workoutData of request.workouts) {
-        const isCardio = workoutData.exerciseInfo.bodyParts.includes("cardio")
-
         let matchingCriteria: Partial<Workout>
 
-        if (isCardio) {
+        if (workoutData.durationSeconds) {
           matchingCriteria = {
             seq: workoutData.seq,
             exerciseName: workoutData.exerciseName,
             setCount: workoutData.setCount,
-            distance: workoutData.distance,
+            distance: workoutData.distance || 0,
             durationSeconds: workoutData.durationSeconds,
           }
         } else {
@@ -50,7 +68,7 @@ export class CreateLogUsecase {
             seq: workoutData.seq,
             exerciseName: workoutData.exerciseName,
             setCount: workoutData.setCount,
-            weight: workoutData.weight,
+            weight: workoutData.weight || 0,
             repetitionCount: workoutData.repetitionCount,
           }
         }
@@ -120,27 +138,6 @@ export class CreateLogUsecase {
           message: "운동 로그 연결 중 일부 실패가 발생했습니다.",
         }
       }
-
-      // 최신 body part gauge 데이터 조회
-      const latestGauge =
-        await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
-
-      // 현재 게이지를 BodyPartGaugeUpdate 형태로 변환
-      const currentGauge = {
-        legs: latestGauge?.legs || 0,
-        back: latestGauge?.back || 0,
-        chest: latestGauge?.chest || 0,
-        shoulders: latestGauge?.shoulders || 0,
-        arms: latestGauge?.arms || 0,
-        core: latestGauge?.core || 0,
-        stamina: latestGauge?.stamina || 0,
-      }
-
-      // 새로운 운동으로 인한 게이지 증가 계산 (부위별 레벨 적용)
-      const gaugeUpdate = this.bodyPartGaugeCalculator.calculateGaugeUpdates(
-        request.workouts,
-        currentGauge
-      )
 
       // 새로운 body part gauge 생성 (기존 값 + 증가분)
       const newBodyPartGauge = new BodyPartGauge(

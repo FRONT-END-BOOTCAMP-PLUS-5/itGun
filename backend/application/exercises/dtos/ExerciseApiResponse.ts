@@ -16,6 +16,7 @@ export interface ExerciseApiData {
   videoUrl: string
   bodyParts: string[]
   equipments: string[]
+  exerciseType: string
   instructions: string[]
   exerciseTips: string[]
 }

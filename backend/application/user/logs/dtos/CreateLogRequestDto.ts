@@ -1,15 +1,5 @@
+import { ExerciseApiData } from "@/backend/application/exercises/dtos/ExerciseApiResponse";
 import { CalIconType } from "../../../../domain/entities/Log";
-
-export interface ExerciseInfo {
-  exerciseId: string;
-  name: string;
-  gifUrl: string;
-  targetMuscles: string[];
-  bodyParts: string[];
-  equipments: string[];
-  secondaryMuscles: string[];
-  instructions: string[];
-}
 
 export interface WorkoutData {
   seq: number;
@@ -19,7 +9,7 @@ export interface WorkoutData {
   repetitionCount?: number;
   distance?: number;
   durationSeconds?: number;
-  exerciseInfo: ExerciseInfo;
+  exerciseInfo: ExerciseApiData;
 }
 
 export interface CreateLogRequestDto {

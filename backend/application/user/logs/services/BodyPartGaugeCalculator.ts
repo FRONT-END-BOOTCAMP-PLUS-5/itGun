@@ -51,37 +51,91 @@ export const calculateGaugeUpdates = (
   }
 
   for (const workout of workouts) {
-    // 볼륨 계산 (무게 * 횟수 * 세트)
     const weight = workout.weight || 0
     const reps = workout.repetitionCount || 0
+    const distance = workout.distance || 0
+    const duration = workout.durationSeconds || 0
     const sets = workout.setCount || 1
-    const volume = weight * reps * sets
 
-    // 기본 포인트 계산
-    const basePoints = volume / 10000
+    let basePoints = 0
 
-    // 운동의 bodyParts를 프로젝트 부위로 매핑
-    const targetBodyParts = mapExerciseBodyPartsToProject(
-      workout.exerciseInfo.bodyParts
-    )
+    // 포인트 계산 로직
+    if (weight && reps) {
+      // 무게 * 횟수 * 세트 (기존 로직)
+      const volume = weight * reps * sets
+      basePoints = volume / 10000
+    } else if (distance && duration) {
+      // 거리(m) * 시간(초) / 50000000
+      basePoints = (distance * duration) / 50000000
+    } else if (duration) {
+      // 시간(초) / 40000
+      basePoints = duration / 40000
+    } else if (reps) {
+      // 횟수 * 세트 / 10000
+      basePoints = (reps * sets) / 10000
+    }
 
-    // 여러 부위에 걸친 운동인 경우 부위별로 균등 분배
-    const pointsPerBodyPart =
-      targetBodyParts.length > 0 ? basePoints / targetBodyParts.length : 0
+    // CARDIO 타입 운동인지 확인
+    const isCardio = workout.exerciseInfo.exerciseType === "CARDIO"
 
-    // 각 부위별 포인트 계산 및 누적
-    for (const bodyPart of targetBodyParts) {
-      // 해당 부위의 현재 포인트로 레벨 계산
-      const currentBodyPartPoints = currentGauge ? currentGauge[bodyPart] : 0
-      const bodyPartLevel = calculateBodyPartLevel(currentBodyPartPoints)
+    if (isCardio) {
+      // 유산소: 0.6은 stamina, 0.4는 bodyParts에 균등 분배
+      const staminaPoints = basePoints * 0.6
+      const bodyPartsPoints = basePoints * 0.4
 
-      // 부위별 가중치 및 레벨 가중치 적용
-      const bodyPartMultiplier = BODY_PART_MULTIPLIERS[bodyPart]
-      const levelMultiplier = LEVEL_MULTIPLIERS[bodyPartLevel] || 1.0
-      const finalPoints =
-        pointsPerBodyPart * bodyPartMultiplier * levelMultiplier
+      // stamina 포인트 적용
+      const currentStaminaPoints = currentGauge ? currentGauge.stamina : 0
+      const staminaLevel = calculateBodyPartLevel(currentStaminaPoints)
+      const staminaMultiplier = BODY_PART_MULTIPLIERS.stamina
+      const staminaLevelMultiplier = LEVEL_MULTIPLIERS[staminaLevel] || 1.0
+      const finalStaminaPoints =
+        staminaPoints * staminaMultiplier * staminaLevelMultiplier
+      gaugeUpdate.stamina += finalStaminaPoints
 
-      gaugeUpdate[bodyPart] += finalPoints
+      // bodyParts 포인트를 각 부위에 균등 분배
+      const targetBodyParts = mapExerciseBodyPartsToProject(
+        workout.exerciseInfo.bodyParts
+      )
+
+      if (targetBodyParts.length > 0) {
+        const pointsPerBodyPart = bodyPartsPoints / targetBodyParts.length
+
+        for (const bodyPart of targetBodyParts) {
+          if (bodyPart !== "stamina") {
+            // stamina는 이미 처리했으므로 제외
+            const currentBodyPartPoints = currentGauge
+              ? currentGauge[bodyPart]
+              : 0
+            const bodyPartLevel = calculateBodyPartLevel(currentBodyPartPoints)
+            const bodyPartMultiplier = BODY_PART_MULTIPLIERS[bodyPart]
+            const levelMultiplier = LEVEL_MULTIPLIERS[bodyPartLevel] || 1.0
+            const finalPoints =
+              pointsPerBodyPart * bodyPartMultiplier * levelMultiplier
+            gaugeUpdate[bodyPart] += finalPoints
+          }
+        }
+      }
+    } else {
+      // 근력 운동
+      const targetBodyParts = mapExerciseBodyPartsToProject(
+        workout.exerciseInfo.bodyParts
+      )
+
+      if (targetBodyParts.length > 0) {
+        const pointsPerBodyPart = basePoints / targetBodyParts.length
+
+        for (const bodyPart of targetBodyParts) {
+          const currentBodyPartPoints = currentGauge
+            ? currentGauge[bodyPart]
+            : 0
+          const bodyPartLevel = calculateBodyPartLevel(currentBodyPartPoints)
+          const bodyPartMultiplier = BODY_PART_MULTIPLIERS[bodyPart]
+          const levelMultiplier = LEVEL_MULTIPLIERS[bodyPartLevel] || 1.0
+          const finalPoints =
+            pointsPerBodyPart * bodyPartMultiplier * levelMultiplier
+          gaugeUpdate[bodyPart] += finalPoints
+        }
+      }
     }
   }
 
