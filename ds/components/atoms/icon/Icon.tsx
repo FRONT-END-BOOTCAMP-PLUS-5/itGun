@@ -1,12 +1,5 @@
 import { svgList } from "@/static/svgs/svgList"
-
-interface IconProps {
-  name: keyof typeof svgList
-  size?: number
-  color?: string
-  strokeWidth?: number
-  fillColor?: string
-}
+import { IconProps } from "./Icon.types"
 
 const Icon: React.FC<IconProps> = ({
   name,
