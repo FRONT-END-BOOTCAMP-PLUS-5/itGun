@@ -88,6 +88,7 @@ export class BadgeAchievementService {
     existingBadges: UserBadge[] | null
   ): UserBadge | null {
     const firstWorkoutBadge = badges.find(
+      // badge 정보 가져오는 코드들은 badge 테이블에 실제 데이터 생성 후에 그에 맞게 수정할 예정입니다.
       (badge) =>
         badge.name.includes("첫 운동") || badge.name.includes("first workout")
     )
@@ -101,7 +102,6 @@ export class BadgeAchievementService {
 
     if (alreadyHas) return null
 
-    // 첫 운동 뱃지는 CreateLogUsecase에서 첫 로그인지 확인 후 호출
     return new UserBadge(0, firstWorkoutBadge.id, userId, new Date())
   }
 
@@ -122,7 +122,7 @@ export class BadgeAchievementService {
       ?.filter(ub => ub.badgeId === consecutiveBadge.id)
       ?.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]
 
-    // 마지막 뱃지 수여일로부터 7일 후를 시작점으로 설정
+    // 마지막 뱃지 수여일 다음날을 시작점으로 설정
     const startDate = lastConsecutiveBadge 
       ? new Date(lastConsecutiveBadge.createdAt.getTime() + 1 * 24 * 60 * 60 * 1000) // 다음날부터
       : new Date(0) // 처음이면 모든 기간
