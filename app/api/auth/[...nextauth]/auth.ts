@@ -115,7 +115,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 60 * 60 * 24 * 7,
   },
   pages: {
-    signIn: "/signin",
+    signIn: "/landing", //인증 만료시 랜딩페이지로 리다이랙트
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -133,7 +133,52 @@ export const authOptions: NextAuthOptions = {
         token.refreshToken = user.refreshToken
         token.accessTokenExpiry = user.accessTokenExpiry
         token.refreshTokenExpiry = user.refreshTokenExpiry
+        return token
       }
+
+      if (token.accessTokenExpiry && Date.now() < token.accessTokenExpiry) {
+        console.log("✅ 액세스 토큰이 아직 유효합니다")
+        return token
+      }
+
+      if (token.refreshTokenExpiry && Date.now() < token.refreshTokenExpiry) {
+        console.log("🔄 액세스 토큰 갱신 시도")
+        try {
+          const tokenRepository = new JwtTokenRepository()
+          if (!token.refreshToken) {
+            token.error = "RefreshTokenError"
+            return token
+          }
+          const newTokens = await tokenRepository.refreshAccessToken(
+            token.refreshToken
+          )
+          console.log("‼️newAccessToken생성되었습니다", newTokens)
+
+          if (!newTokens) {
+            token.error = "RefreshTokenError"
+            return token
+          }
+
+          return {
+            ...token,
+            accessToken: newTokens.accessToken,
+            refreshToken: newTokens.refreshToken,
+            accessTokenExpiry: newTokens.accessTokenExpiry,
+            refreshTokenExpiry: newTokens.refreshTokenExpiry,
+            exp: Math.floor(newTokens.refreshTokenExpiry / 1000),
+          }
+        } catch (error) {
+          console.error("Error refreshing access_token", error)
+          token.error = "RefreshTokenError"
+          return token
+        }
+      }
+      console.log(
+        "🚫 모든 토큰이 만료되었습니다.",
+        token.refreshTokenExpiry,
+        Date.now()
+      )
+      token.error = "RefreshTokenError"
       return token
     },
     async session({ session, token }) {
