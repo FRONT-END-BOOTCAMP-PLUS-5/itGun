@@ -1,4 +1,5 @@
 import { WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
+import { AwardedBadgeDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
 import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { UserRecord } from "@/backend/domain/entities/UserRecord"
@@ -23,7 +24,7 @@ export class BadgeAchievementService {
   async checkAndAwardBadges(
     userId: string,
     workouts: WorkoutData[]
-  ): Promise<{ badges: UserBadge[], userRecord: UserRecord }> {
+  ): Promise<{ badges: AwardedBadgeDto[], userRecord: UserRecord }> {
     // 모든 데이터를 한 번에 조회
     const [badges, existingBadges, userRecord] = await Promise.all([
       this.badgeRepository.findAll(),
@@ -50,18 +51,28 @@ export class BadgeAchievementService {
       userId,
       workouts,
       badges,
-      existingBadges,
       userRecord
     )
     badgesToAward.push(...recordBadges)
 
     // 5. 뱃지와 UserRecord 저장
-    let awardedBadges: UserBadge[] = []
+    let awardedBadges: AwardedBadgeDto[] = []
     let savedUserRecord = updatedUserRecord
 
     if (badgesToAward.length > 0 || needsRecordSave) {
       if (badgesToAward.length > 0) {
-        awardedBadges = await this.userBadgeRepository.saveMany(badgesToAward)
+        const savedUserBadges = await this.userBadgeRepository.saveMany(badgesToAward)
+        
+        // UserBadge를 AwardedBadgeDto로 변환
+        awardedBadges = savedUserBadges.map(userBadge => {
+          const badge = badges.find(b => b.id === userBadge.badgeId)!
+          return {
+            badgeId: userBadge.badgeId,
+            badgeName: badge.name,
+            badgeDescription: badge.description,
+            createdAt: userBadge.createdAt
+          }
+        })
       }
       if (needsRecordSave) {
         savedUserRecord = await this.userRecordRepository.save(updatedUserRecord)
@@ -210,7 +221,6 @@ export class BadgeAchievementService {
     userId: string,
     workouts: WorkoutData[],
     badges: Badge[],
-    existingBadges: UserBadge[] | null,
     userRecord: UserRecord | null
   ): { recordBadges: UserBadge[], updatedUserRecord: UserRecord, needsRecordSave: boolean } {
     const awardedBadges: UserBadge[] = []

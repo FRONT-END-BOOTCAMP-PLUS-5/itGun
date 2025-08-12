@@ -181,6 +181,7 @@ export class CreateLogUsecase {
         success: true,
         message: `운동 로그가 성공적으로 생성되었습니다.${awardedBadges.length > 0 ? ` ${awardedBadges.length}개의 뱃지를 획득했습니다!` : ''}`,
         logId: savedLog.id,
+        awardedBadges: awardedBadges,
       }
     } catch (error) {
       return {
