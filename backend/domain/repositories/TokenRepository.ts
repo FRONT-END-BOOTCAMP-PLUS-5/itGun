@@ -11,7 +11,9 @@ export interface AuthTokens {
 
 export interface RefreshResult {
   accessToken: string
-  expiry: number
+  refreshToken: string
+  accessTokenExpiry: number
+  refreshTokenExpiry: number
   userId: string
 }
 

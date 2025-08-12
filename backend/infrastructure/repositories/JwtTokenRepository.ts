@@ -19,7 +19,6 @@ const JWT_CONFIG = {
   ACCESS_EXPIRY_MS: 24 * 60 * 60 * 1000, // 1일
   REFRESH_EXPIRY_MS: 7 * 24 * 60 * 60 * 1000, // 7일
 } as const
-
 export class JwtTokenRepository implements TokenRepository {
   private readonly accessSecret: string
   private readonly refreshSecret: string
@@ -69,13 +68,15 @@ export class JwtTokenRepository implements TokenRepository {
         return null
       }
 
-      const newAccessToken = this.createAccessToken({
-        userId: decoded.userId,
-      })
+      const userInfo = { userId: decoded.userId }
+      const newAccessToken = this.createAccessToken(userInfo)
+      const newRefreshToken = this.createRefreshToken(userInfo)
 
       return {
         accessToken: newAccessToken,
-        expiry: Date.now() + JWT_CONFIG.ACCESS_EXPIRY_MS,
+        refreshToken: newRefreshToken,
+        accessTokenExpiry: Date.now() + JWT_CONFIG.ACCESS_EXPIRY_MS,
+        refreshTokenExpiry: Date.now() + JWT_CONFIG.REFRESH_EXPIRY_MS,
         userId: decoded.userId,
       }
     } catch (error) {
