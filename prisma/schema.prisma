@@ -48,6 +48,7 @@ model User {
   userBadges        UserBadge[]
   bodyPartGauges    BodyPartGauge[]
   logs              Log[]
+  userRecord        UserRecord?
 
   @@map("users")
 }
@@ -96,6 +97,7 @@ model BodyPartGauge {
   back      Float?   @default(0)
   chest     Float?   @default(0)
   core      Float?   @default(0)
+  stamina   Float?   @default(0)
   createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
@@ -109,6 +111,7 @@ model Log {
   userId        String      @map("user_id")
   calIconType   CalIconType @map("cal_icon_type")
   totalDuration Int         @map("total_duration") // 분 단위
+  gaugeChanges  Json?       @map("gauge_changes") // 게이지 변화 데이터
   createdAt     DateTime    @default(now()) @map("created_at")
 
   // Relations
@@ -144,4 +147,20 @@ model Workout {
   logWorkouts LogWorkout[]
 
   @@map("workouts")
+}
+
+model UserRecord {
+  id            Int      @id @default(autoincrement())
+  userId        String   @unique @map("user_id")
+  benchPressMax Float?   @map("bench_press_max")
+  squatMax      Float?   @map("squat_max")
+  deadliftMax   Float?   @map("deadlift_max")
+  runningMax    Float?   @map("running_max")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_records")
 }
