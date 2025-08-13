@@ -8,6 +8,7 @@ export interface UserBadgeRepository {
     period?: number
   ): Promise<UserBadge[] | null>
   save(userBadge: UserBadge): Promise<UserBadge>
+  saveMany(userBadges: UserBadge[]): Promise<UserBadge[]>
   update(id: number, userBadge: Partial<UserBadge>): Promise<UserBadge | null>
   delete(id: number): Promise<boolean>
 }
