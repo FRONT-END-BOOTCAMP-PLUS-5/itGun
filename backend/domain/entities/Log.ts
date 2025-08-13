@@ -6,6 +6,8 @@ export enum CalIconType {
   LOWER = "lower",
 }
 
+export type BodyPartsGroup = "legs" | "back" | "chest" | "shoulders" | "arms" | "core" | "stamina"
+
 export class Log {
   constructor(
     public readonly id: number,
@@ -16,7 +18,7 @@ export class Log {
 
     // Relations
     public readonly logWorkouts?: LogWorkout[],
-    public readonly gaugeChanges: Record<string, number> = {
+    public readonly gaugeChanges: Record<BodyPartsGroup, number> = {
       legs: 0,
       back: 0,
       chest: 0,
