@@ -1,48 +1,74 @@
-import { ExerciseApiResponse } from "../dtos/ExerciseApiResponse"
-import { ExerciseDto, GetExerciseListDto } from "../dtos/GetExerciseListDto"
+import { Exercise } from "@/backend/domain/entities/Exercise"
+import {
+  ExerciseDto,
+  GetExerciseListReponseDto,
+} from "../dtos/GetExerciseListReponseDto"
 import { GetExerciseListQueryDto } from "../dtos/GetExerciseListQueryDto"
-
-const EXERCISE_API_URL = "https://v2.exercisedb.dev/api/v1/exercises"
+import { ExerciseRepository } from "@/backend/domain/repositories/ExerciseRepository"
+import { GetExerciseListRequestDto } from "../dtos/GetExerciseListRequestDto"
 
 export class GetExerciseListUsecase {
-  constructor() {}
-  async execute(query: GetExerciseListQueryDto): Promise<GetExerciseListDto> {
-    let url = `${EXERCISE_API_URL}?limit=10`
+  constructor(private exerciseRepository: ExerciseRepository) {}
 
-    if (query.q) {
-      url += `&keywords=${query.q}`
-      url += `&name=${query.q}`
-    }
-    if (query.bodyPart) {
-      url += `&bodyParts=${query.bodyPart}`
-    }
-    if (query.equipment) {
-      url += `&equipments=${query.equipment}`
-    }
-
+  async execute(
+    query: GetExerciseListQueryDto,
+    request: GetExerciseListRequestDto
+  ): Promise<GetExerciseListReponseDto> {
     try {
-      const response = await fetch(url)
-      const data: ExerciseApiResponse = await response.json()
-      let exerciseDtos: ExerciseDto[] = []
-      if (data.success) {
-        exerciseDtos = data.data.map(
-          (exercise) =>
-            new ExerciseDto(
-              exercise.exerciseId,
-              exercise.name,
-              exercise.imageUrl,
-              exercise.videoUrl,
-              exercise.bodyParts,
-              exercise.equipments,
-              exercise.instructions,
-              exercise.exerciseTips
-            )
-        )
+      const page = request.page || 1
+      const limit = request.limit || 10
+
+      const bodyParts: string[] | undefined = query.bodyPart
+        ?.replace("+", " ")
+        .split("%2")
+      const equipments: string[] | undefined = query.equipment
+        ?.replace("+", " ")
+        .split("%2")
+      const keywords: string[] | undefined = query.q
+        ?.replace("+", " ")
+        .split("%2")
+
+      const result = await this.exerciseRepository.find({
+        page,
+        limit,
+        bodyParts,
+        equipments,
+        keywords,
+      })
+
+      if (!result) {
+        return new GetExerciseListReponseDto([])
       }
 
-      return new GetExerciseListDto(exerciseDtos, data.meta)
-    } catch {
-      return new GetExerciseListDto([])
+      const { exercises, total } = result
+
+      return new GetExerciseListReponseDto(exercises.map(this.toDto), {
+        total,
+        page,
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1,
+      })
+    } catch (e) {
+      console.error(e)
+      throw new Error("운동 목록을 가져오는 중 에러가 발생했습니다.")
     }
+  }
+
+  private toDto(exercise: Exercise): ExerciseDto {
+    return new ExerciseDto(
+      exercise.id,
+      exercise.name,
+      exercise.imageUrl,
+      exercise.videoUrl,
+      exercise.equipments,
+      exercise.bodyParts,
+      exercise.exerciseType,
+      exercise.keywords,
+      exercise.overview,
+      exercise.instructions,
+      exercise.exerciseTips,
+      exercise.variations,
+      exercise.relatedExerciseIds
+    )
   }
 }

@@ -1,5 +1,7 @@
 import { GetExerciseListQueryDto } from "@/backend/application/exercises/dtos/GetExerciseListQueryDto"
+import { GetExerciseListRequestDto } from "@/backend/application/exercises/dtos/GetExerciseListRequestDto"
 import { GetExerciseListUsecase } from "@/backend/application/exercises/usecases/GetExerciseListUsecase"
+import { PrExerciseRepository } from "@/backend/infrastructure/repositories/PrExerciseRepository"
 import { NextRequest, NextResponse } from "next/server"
 
 // GET /api/exercises?q=&bodyPart=&equipment=
@@ -7,16 +9,18 @@ import { NextRequest, NextResponse } from "next/server"
 // -> chest workout,barbell 이렇게 두개가 넣고 싶으면
 // => chest+workout%2Cbarbell 이런 형식으로 보내야 합니다.
 export async function GET(req: NextRequest) {
+  const { page, limit }: GetExerciseListRequestDto = await req.json()
   const { searchParams } = new URL(req.url)
   const q = searchParams.get("q")
   const bodyPart = searchParams.get("bodyPart")
   const equipment = searchParams.get("equipment")
 
-  const usecase = new GetExerciseListUsecase()
+  const usecase = new GetExerciseListUsecase(new PrExerciseRepository())
   const queryDto = new GetExerciseListQueryDto(q, bodyPart, equipment)
+  const requestDto = new GetExerciseListRequestDto(page, limit)
 
   try {
-    const result = await usecase.execute(queryDto)
+    const result = await usecase.execute(queryDto, requestDto)
 
     return NextResponse.json(result)
   } catch {
