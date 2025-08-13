@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { DeleteLogUsecase } from "@/backend/application/user/logs/usecases/DeleteLogUsecase"
 import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepository"
 import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/DeleteLogRequestDto"
+import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 
 export async function DELETE(
   request: NextRequest,
@@ -16,7 +17,8 @@ export async function DELETE(
     }
 
     const logRepository = new PrLogRepository()
-    const deleteLogUsecase = new DeleteLogUsecase(logRepository)
+    const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
+    const deleteLogUsecase = new DeleteLogUsecase(logRepository, bodyPartGaugeRepository)
 
     const requestDto: DeleteLogRequestDto = { logId }
     const result = await deleteLogUsecase.execute(requestDto)
