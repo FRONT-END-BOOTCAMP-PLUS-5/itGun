@@ -47,7 +47,7 @@ export class PrLogRepository implements LogRepository {
       },
     })
 
-    return log as Log || null
+    return (log as Log) || null
   }
 
   async findById(id: number): Promise<Log | null> {
@@ -62,7 +62,7 @@ export class PrLogRepository implements LogRepository {
       },
     })
 
-    return log as Log || null
+    return (log as Log) || null
   }
 
   async save(log: Log): Promise<Log> {
