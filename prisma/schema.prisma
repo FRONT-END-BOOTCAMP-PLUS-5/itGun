@@ -164,3 +164,28 @@ model UserRecord {
 
   @@map("user_records")
 }
+
+model Exercise {
+  id                 String   @id @map("exercise_id")
+  name               String
+  nameKo             String   @map("name_ko")
+  imageUrl           String   @map("image_url")
+  videoUrl           String   @map("video_url")
+  equipments         String[]
+  equipmentsKo       String[] @map("equipments_ko")
+  bodyParts          String[] @map("body_parts")
+  bodyPartsKo        String[] @map("body_parts_ko")
+  exerciseType       String   @map("exercise_type")
+  keywords           String[]
+  keywordsKo         String[] @map("keywords_ko")
+  overview           String   @db.Text
+  overviewKo         String   @map("overview_ko") @db.Text
+  instructions       String[]
+  instructionsKo     String[] @map("instructions_ko")
+  exerciseTips       String[] @map("exercise_tips") @db.Text
+  exerciseTipsKo     String[] @map("exercise_tips_ko")  @db.Text
+  variations         String[] @db.Text
+  relatedExerciseIds String[] @map("related_exercise_ids")
+
+  @@map("exercises")
+}
