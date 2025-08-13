@@ -12,9 +12,9 @@ export const buttonVariants = {
   "secondary-yellow":
     "bg-[var(--color-secondary-yellow)] text-[var(--color-primary)] cursor-pointer",
   "white-200":
-    "bg--[var(--color-white-200)] text-[var(--color-primary)] cursor-pointer",
+    "bg-[var(--color-white-200)] text-[var(--color-primary)] cursor-pointer",
   outline:
-    "border border-2 border-[var(--color-primary)] text-[var(--color-primary)] cursor-pointer",
+    "border border-2 border-[var(--color-primary)] bg-[var(--color-white-200)] text-[var(--color-primary)] cursor-pointer",
   underline:
     "border-b-1 bg-transparent border-[var(--color-secondary)] text-[var(--color-secondary)] cursor-pointer",
   "underline-disable":
