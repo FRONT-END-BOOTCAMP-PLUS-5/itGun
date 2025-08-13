@@ -10,7 +10,7 @@ import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWor
 import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
 import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
-import { calculateGaugeUpdates } from "@/backend/application/user/logs/services/BodyPartGaugeCalculator"
+import { calculateGaugeUpdates } from "@/backend/application/user/logs/utils/bodyPartGaugeCalculator"
 import { BadgeAchievementService } from "@/backend/application/user/logs/services/BadgeAchievementService"
 
 export class CreateLogUsecase {

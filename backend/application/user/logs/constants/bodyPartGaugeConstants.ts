@@ -37,9 +37,9 @@ export const BODY_PART_MULTIPLIERS: Record<BodyPartsGroup, number> = {
 export const LEVEL_THRESHOLDS = [
   { min: 0, max: 1.0, level: 1 },
   { min: 1.0, max: 2.0, level: 2 },
-  { min: 2.0, max: 3.5, level: 3 },
-  { min: 3.5, max: 5.5, level: 4 },
-  { min: 5.5, max: Infinity, level: 5 },
+  { min: 2.0, max: 3.0, level: 3 },
+  { min: 3.0, max: 4.0, level: 4 },
+  { min: 4.0, max: Infinity, level: 5 },
 ]
 
 // 레벨별 보정 계수
