@@ -4,13 +4,6 @@ enum Gender {
   FEMALE = "female",
 }
 
-export interface AuthTokens {
-  accessToken: string
-  refreshToken: string
-  accessTokenExpiry: number
-  refreshTokenExpiry: number
-}
-
 export interface CreateUserResponseDto {
   message: string
   status: number
@@ -25,6 +18,5 @@ export interface CreateUserResponseDto {
     characterColor: string
     characterId: number
   }
-  tokens?: AuthTokens
   error?: string
 }
