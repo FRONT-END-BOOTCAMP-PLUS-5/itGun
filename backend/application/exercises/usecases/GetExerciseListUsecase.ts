@@ -57,16 +57,16 @@ export class GetExerciseListUsecase {
   private toDto(exercise: Exercise): ExerciseDto {
     return new ExerciseDto(
       exercise.id,
-      exercise.name,
+      exercise.nameKo,
       exercise.imageUrl,
       exercise.videoUrl,
-      exercise.equipments,
-      exercise.bodyParts,
+      exercise.equipmentsKo,
+      exercise.bodyPartsKo,
       exercise.exerciseType,
-      exercise.keywords,
-      exercise.overview,
-      exercise.instructions,
-      exercise.exerciseTips,
+      exercise.keywordsKo,
+      exercise.overviewKo,
+      exercise.instructionsKo,
+      exercise.exerciseTipsKo,
       exercise.variations,
       exercise.relatedExerciseIds
     )
