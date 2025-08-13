@@ -11,7 +11,7 @@ import {
   RECORD_EXERCISE_IDS,
   RECORD_MINIMUMS,
   BIG_THREE_BADGE_UNIT,
-} from "@/backend/application/user/logs/constants/UserRecordConstants"
+} from "@/backend/application/user/logs/constants/userRecordConstants"
 
 export class BadgeAchievementService {
   constructor(
