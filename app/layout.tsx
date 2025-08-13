@@ -4,6 +4,7 @@ import "./globals.css"
 import { getServerSession } from "next-auth"
 import { authOptions } from "./api/auth/[...nextauth]/auth"
 import ToastContainer from "./components/ToastContainer"
+import DialogContainer from "./components/DialogContainer"
 import NextAuthSessionProviders from "./providers/NextAuthSessionProviders"
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <NextAuthSessionProviders session={session}>
           {children}
           <ToastContainer />
+          <DialogContainer />
         </NextAuthSessionProviders>
       </body>
     </html>
