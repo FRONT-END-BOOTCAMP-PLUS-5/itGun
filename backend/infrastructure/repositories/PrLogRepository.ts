@@ -57,7 +57,7 @@ export class PrLogRepository implements LogRepository {
       },
     })
 
-    return logs.map(this.toDomain)
+    return logs as Log[]
   }
 
   async findById(id: number): Promise<Log | null> {

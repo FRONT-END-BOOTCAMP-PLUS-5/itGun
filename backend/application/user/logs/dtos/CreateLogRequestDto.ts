@@ -1,4 +1,8 @@
-import { CalIconType } from "@/backend/domain/entities/Log";
+enum CalIconType {
+  CARDIO = "cardio",
+  UPPER = "upper",
+  LOWER = "lower",
+}
 
 export interface ExerciseInfo {
   exerciseId: string
