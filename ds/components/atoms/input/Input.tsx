@@ -52,7 +52,7 @@ export const Input: React.FC<InputProps> = ({
 
       {/* Validation */}
       {validations.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-5">
           {validations.map((rule, idx) => (
             <div className="flex flex-wrap items-center gap-[5px]">
               <C2
