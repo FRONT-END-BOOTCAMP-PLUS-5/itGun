@@ -1,88 +1,76 @@
 import React from "react"
-import type { ProgressBarProps } from "./ProgressBar.types"
+import type { ProgressBarProps, ProgressBarVariant } from "./ProgressBar.types"
+import { progressBarVariants } from "@/ds/styles/tokens/progressBar/variants"
+import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+
+const resolveVariant = (
+  variant?: ProgressBarProps["variant"]
+): ProgressBarVariant => {
+  if (!variant) return { borderColor: "#3D2C4B", fillColor: "#3D2C4B" }
+  if (typeof variant === "string") {
+    return (
+      progressBarVariants[variant] ?? {
+        borderColor: "#3D2C4B",
+        fillColor: "#3D2C4B",
+      }
+    )
+  }
+  return variant
+}
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   max,
   value,
   steps,
-  size = 12,
-  variant = {
-    borderColor: "#3D2C4B",
-    fillColor: "#3D2C4B",
-  },
-  onChange,
+  variant,
+  label,
+  showCounter = true,
 }) => {
   const safeMax = Math.max(1, max)
   const safeValue = Math.max(0, Math.min(value, safeMax))
   const clampedSteps = Math.max(1, steps)
   const filledCount = Math.round((safeValue / safeMax) * clampedSteps)
 
-  const handleClick = (index: number) => {
-    if (!onChange) return
-    const ratio = (index + 1) / clampedSteps
-    const nextValue = Math.max(
-      0,
-      Math.min(safeMax, Math.round(ratio * safeMax))
-    )
-    onChange(nextValue)
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!onChange) return
-    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-      e.preventDefault()
-      onChange(Math.min(safeMax, safeValue + 1))
-    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-      e.preventDefault()
-      onChange(Math.max(0, safeValue - 1))
-    } else if (e.key === "Home") {
-      e.preventDefault()
-      onChange(0)
-    } else if (e.key === "End") {
-      e.preventDefault()
-      onChange(safeMax)
-    }
-  }
+  const { borderColor, fillColor } = resolveVariant(variant)
 
   return (
     <div className="w-full">
-      <div className="flex w-full items-center gap-2 select-none">
-        {/* 여는 대괄호 */}
-        <span className="text-[#3D2C4B]" style={{ color: variant.borderColor }}>
-          [
-        </span>
+      {/* 헤더: 좌측 라벨, 우측 카운터 */}
+      <div className="mb-2 flex w-full items-center justify-between">
+        <S1 variant="primary" style={{ color: borderColor }}>
+          {label ?? ""}
+        </S1>
+        {showCounter && (
+          <S1 variant="primary" style={{ color: borderColor }}>
+            {safeValue} / {safeMax}
+          </S1>
+        )}
+      </div>
 
-        {/* 스텝 바 */}
-        <div
-          className="flex w-full gap-2 focus:outline-none"
-          role="slider"
-          aria-valuemin={0}
-          aria-valuemax={safeMax}
-          aria-valuenow={safeValue}
-          tabIndex={onChange ? 0 : -1}
-          onKeyDown={handleKeyDown}
-        >
+      {/* 바 본체 */}
+      <div className="flex w-full items-center gap-2 select-none">
+        <S1 variant="primary" style={{ color: borderColor }}>
+          [
+        </S1>
+        <div className="flex w-full gap-2">
           {Array.from({ length: clampedSteps }).map((_, idx) => {
             const isFilled = idx < filledCount
             return (
               <div
                 key={idx}
-                className="flex-1 cursor-pointer"
-                onClick={() => handleClick(idx)}
+                className="flex-1"
                 style={{
-                  height: `${size}px`,
-                  backgroundColor: isFilled ? variant.fillColor : "transparent",
-                  border: `2px solid ${variant.borderColor}`,
+                  height: `12px`,
+                  backgroundColor: isFilled ? fillColor : "transparent",
+                  border: `2px solid ${borderColor}`,
                 }}
               />
             )
           })}
         </div>
-
-        {/* 닫는 대괄호 */}
-        <span className="text-[#3D2C4B]" style={{ color: variant.borderColor }}>
+        <S1 variant="primary" style={{ color: borderColor }}>
           ]
-        </span>
+        </S1>
       </div>
     </div>
   )

@@ -16,7 +16,6 @@ const defaultArgs: ProgressBarProps = {
   max: 5,
   value: 1,
   steps: 10,
-  size: 12,
   variant: {
     fillColor: "#3D2C4B",
     borderColor: "#3D2C4B",
