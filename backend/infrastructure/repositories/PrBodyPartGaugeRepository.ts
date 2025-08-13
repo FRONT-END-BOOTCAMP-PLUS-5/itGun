@@ -51,7 +51,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         createdAt: bodyPartGauge.createdAt,
       },
     })
-    return this.toDomain(savedGauge)
+    return savedGauge as BodyPartGauge
   }
 
   async update(
