@@ -64,7 +64,7 @@ export class PrLogRepository implements LogRepository {
     const log = await prisma.log.findUnique({
       where: { id },
     })
-    return log ? this.toDomain(log) : null
+    return log as Log || null
   }
 
   async save(log: Log): Promise<Log> {
