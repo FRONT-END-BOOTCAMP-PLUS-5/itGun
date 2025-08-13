@@ -4,6 +4,7 @@ import "./globals.css"
 import Providers from "./providers"
 import { getServerSession } from "next-auth"
 import { authOptions } from "./api/auth/[...nextauth]/auth"
+import ToastContainer from "./components/ToastContainer"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${galmuri.className} antialiased`}>
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          {children}
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   )
