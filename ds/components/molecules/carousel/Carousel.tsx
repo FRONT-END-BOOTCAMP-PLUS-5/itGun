@@ -33,7 +33,7 @@ export const Carousel: FC<CarouselProps> = ({
   }, [currentIndex])
 
   const moveToSlide = (direction: "prev" | "next") => {
-    setTransitionSpeed(TRANSITION_DURATION) // 그 스르륵을 3초안에 끝내겠다
+    setTransitionSpeed(TRANSITION_DURATION)
     setCurrentIndex((prev) => (direction === "prev" ? prev - 1 : prev + 1))
 
     const shouldJump =
