@@ -9,7 +9,7 @@ const meta: Meta<typeof Header> = {
     showBackButton: true,
   },
   argTypes: {
-    onBack: { action: "뒤로 가기" },
+    onBack: { action: "뒤로 가" },
   },
 }
 
@@ -19,11 +19,5 @@ type Story = StoryObj<typeof Header>
 export const BackButtonOnly: Story = {
   args: {
     showBackButton: true,
-  },
-}
-
-export const WithLogo: Story = {
-  args: {
-    logoSrc: "/logo.png",
   },
 }
