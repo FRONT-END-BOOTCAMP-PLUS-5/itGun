@@ -6,7 +6,6 @@ import Icon from "../../atoms/icon/Icon"
 
 export const Header: React.FC<HeaderProps> = ({
   showBackButton = true,
-  logoSrc,
   className,
   onBack,
 }) => {
