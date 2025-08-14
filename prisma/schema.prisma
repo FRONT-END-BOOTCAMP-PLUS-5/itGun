@@ -51,7 +51,7 @@ model User {
   benchPressRecords    BenchPressRecord[]
   deadliftRecords      DeadliftRecord[]
   squatRecords         SquatRecord[]
-  bigThreeRecords      BigThreeRecords[]
+  bigThreeRecords      BigThreeRecord[]
   runningRecords       RunningRecord[]
 
   @@map("users")
@@ -189,7 +189,7 @@ model SquatRecord {
   @@map("sqaut_records")
 }
 
-model BigThreeRecords {
+model BigThreeRecord {
   id         Int      @id @default(autoincrement())
   userId     String   @unique @map("user_id")
   weight     Float
