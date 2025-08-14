@@ -5,18 +5,16 @@ import {
 } from "../dtos/GetExerciseListReponseDto"
 import { GetExerciseListQueryDto } from "../dtos/GetExerciseListQueryDto"
 import { ExerciseRepository } from "@/backend/domain/repositories/ExerciseRepository"
-import { GetExerciseListRequestDto } from "../dtos/GetExerciseListRequestDto"
 
 export class GetExerciseListUsecase {
   constructor(private exerciseRepository: ExerciseRepository) {}
 
   async execute(
-    query: GetExerciseListQueryDto,
-    request: GetExerciseListRequestDto
+    query: GetExerciseListQueryDto
   ): Promise<GetExerciseListReponseDto> {
     try {
-      const page = request.page || 1
-      const limit = request.limit || 10
+      const page = query.page || 1
+      const limit = query.limit || 10
 
       const bodyParts: string[] | undefined = query.bodyPart
         ?.replace("+", " ")
