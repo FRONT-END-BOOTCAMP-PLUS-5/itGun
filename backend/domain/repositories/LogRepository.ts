@@ -7,6 +7,11 @@ export interface LogRepository {
     year: number,
     month: number
   ): Promise<Log[]>
+  findByUserIdAndDateRange(
+    userId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<Log[]>
   findById(id: number): Promise<Log | null>
   save(log: Log): Promise<Log>
   update(id: number, log: Partial<Log>): Promise<Log | null>
