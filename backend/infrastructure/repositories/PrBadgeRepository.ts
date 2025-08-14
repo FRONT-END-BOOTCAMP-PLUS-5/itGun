@@ -1,11 +1,11 @@
-import prisma from "../../../utils/prisma"
-import { Badge } from "../../domain/entities/Badge"
-import { BadgeRepository } from "../../domain/repositories/BadgeRepository"
+import prisma from "@/utils/prisma"
+import { Badge } from "@/backend/domain/entities/Badge"
+import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
 
 export class PrBadgeRepository implements BadgeRepository {
   async findAll(): Promise<Badge[]> {
     const badges = await prisma.badge.findMany()
-    return badges.map(this.toDomain)
+    return badges as Badge[]
   }
 
   async findById(id: number): Promise<Badge | null> {

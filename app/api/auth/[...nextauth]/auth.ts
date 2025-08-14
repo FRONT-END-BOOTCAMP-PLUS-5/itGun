@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
-import { JwtTokenRepository } from "@/backend/infrastructure/repositories/JwtTokenRepository"
 import { CreateUserUsecase } from "@/backend/application/signup/usecases/CreateUserUsecase"
 import { SignInUsecase } from "@/backend/application/signin/usecases/SignInUsecase"
 
@@ -20,14 +19,10 @@ export const authOptions: NextAuthOptions = {
         }
 
         const userRepository = new PrUserRepository()
-        const tokenRepository = new JwtTokenRepository()
 
         //닉네임 값 있는 경우 회원정보 로직!
         if (credentials.nickname) {
-          const createUserUsecase = new CreateUserUsecase(
-            userRepository,
-            tokenRepository
-          )
+          const createUserUsecase = new CreateUserUsecase(userRepository)
 
           try {
             const result = await createUserUsecase.execute({
@@ -36,7 +31,7 @@ export const authOptions: NextAuthOptions = {
               nickName: credentials.nickname,
             })
 
-            if (result.status === 201 && result.user && result.tokens) {
+            if (result.status === 201 && result.user) {
               const user = {
                 id: result.user.id,
                 email: result.user.email,
@@ -47,10 +42,6 @@ export const authOptions: NextAuthOptions = {
                 weight: result.user.weight,
                 characterColor: result.user.characterColor,
                 characterId: result.user.characterId,
-                accessToken: result.tokens.accessToken,
-                refreshToken: result.tokens.refreshToken,
-                accessTokenExpiry: result.tokens.accessTokenExpiry,
-                refreshTokenExpiry: result.tokens.refreshTokenExpiry,
               }
               return user
             }
@@ -68,17 +59,14 @@ export const authOptions: NextAuthOptions = {
 
         try {
           //닉네임 값 없는 경우 로그인 로직!
-          const signInUsecase = new SignInUsecase(
-            userRepository,
-            tokenRepository
-          )
+          const signInUsecase = new SignInUsecase(userRepository)
 
           const result = await signInUsecase.execute({
             email: credentials.email,
             password: credentials.password,
           })
 
-          if (result.status === 200 && result.user && result.tokens) {
+          if (result.status === 200 && result.user) {
             const user = {
               id: result.user.id,
               email: result.user.email,
@@ -89,12 +77,7 @@ export const authOptions: NextAuthOptions = {
               weight: result.user.weight,
               characterColor: result.user.characterColor,
               characterId: result.user.characterId,
-              accessToken: result.tokens.accessToken,
-              refreshToken: result.tokens.refreshToken,
-              accessTokenExpiry: result.tokens.accessTokenExpiry,
-              refreshTokenExpiry: result.tokens.refreshTokenExpiry,
             }
-
             return user
           }
 
@@ -115,7 +98,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 60 * 60 * 24 * 7,
   },
   pages: {
-    signIn: "/signin",
+    signIn: "/landing", //인증 만료시 랜딩페이지로 리다이랙트
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -129,10 +112,6 @@ export const authOptions: NextAuthOptions = {
         token.weight = user.weight
         token.characterColor = user.characterColor
         token.characterId = user.characterId
-        token.accessToken = user.accessToken
-        token.refreshToken = user.refreshToken
-        token.accessTokenExpiry = user.accessTokenExpiry
-        token.refreshTokenExpiry = user.refreshTokenExpiry
       }
       return token
     },
@@ -147,10 +126,6 @@ export const authOptions: NextAuthOptions = {
         session.user.weight = token.weight
         session.user.characterColor = token.characterColor
         session.user.characterId = token.characterId
-        session.user.accessToken = token.accessToken
-        session.user.refreshToken = token.refreshToken
-        session.user.accessTokenExpiry = token.accessTokenExpiry
-        session.user.refreshTokenExpiry = token.refreshTokenExpiry
       }
       return session
     },

@@ -12,6 +12,17 @@
   }
 }
 
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 @theme {
   --font-galmuri: var(--font-galmuri);
   --breakpoint-mb: 425px;
@@ -30,6 +41,9 @@
   --color-accent: #f86d92;
   --color-success: #5bd3a0;
   --color-info: #5caeff;
+
+  /* animation */
+  --animate-slide-up: slide-up 0.2s ease-out forwards;
 }
 
 body {

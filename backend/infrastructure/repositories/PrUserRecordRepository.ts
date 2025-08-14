@@ -12,7 +12,7 @@ export class PrUserRecordRepository implements UserRecordRepository {
       return null
     }
 
-    return this.toDomain(userRecord)
+    return userRecord as UserRecord
   }
 
   async save(userRecord: UserRecord): Promise<UserRecord> {

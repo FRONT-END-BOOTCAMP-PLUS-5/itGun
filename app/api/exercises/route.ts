@@ -1,5 +1,6 @@
 import { GetExerciseListQueryDto } from "@/backend/application/exercises/dtos/GetExerciseListQueryDto"
 import { GetExerciseListUsecase } from "@/backend/application/exercises/usecases/GetExerciseListUsecase"
+import { PrExerciseRepository } from "@/backend/infrastructure/repositories/PrExerciseRepository"
 import { NextRequest, NextResponse } from "next/server"
 
 // GET /api/exercises?q=&bodyPart=&equipment=
@@ -11,9 +12,17 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q")
   const bodyPart = searchParams.get("bodyPart")
   const equipment = searchParams.get("equipment")
+  const page = Number(searchParams.get("page"))
+  const limit = Number(searchParams.get("limit"))
 
-  const usecase = new GetExerciseListUsecase()
-  const queryDto = new GetExerciseListQueryDto(q, bodyPart, equipment)
+  const usecase = new GetExerciseListUsecase(new PrExerciseRepository())
+  const queryDto = new GetExerciseListQueryDto(
+    q,
+    bodyPart,
+    equipment,
+    page,
+    limit
+  )
 
   try {
     const result = await usecase.execute(queryDto)

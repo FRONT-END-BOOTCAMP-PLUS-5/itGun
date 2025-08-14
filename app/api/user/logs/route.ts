@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { CreateLogUsecase } from "../../../../backend/application/user/logs/usecases/CreateLogUsecase"
-import { PrLogRepository } from "../../../../backend/infrastructure/repositories/PrLogRepository"
-import { PrWorkoutRepository } from "../../../../backend/infrastructure/repositories/PrWorkoutRepository"
-import { PrLogWorkoutRepository } from "../../../../backend/infrastructure/repositories/PrLogWorkoutRepository"
-import { PrBodyPartGaugeRepository } from "../../../../backend/infrastructure/repositories/PrBodyPartGaugeRepository"
-import { CreateLogRequestDto } from "../../../../backend/application/user/logs/dtos/CreateLogRequestDto"
+import { CreateLogUsecase } from "@/backend/application/user/logs/usecases/CreateLogUsecase"
+import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepository"
+import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWorkoutRepository"
+import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
+import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
+import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
+import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
+import { PrUserRecordRepository } from "@/backend/infrastructure/repositories/PrUserRecordRepository"
+import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
 import { GetUserLogListUsecase } from "@/backend/application/user/logs/usecases/GetUserLogListUsecase"
@@ -56,26 +59,36 @@ export async function POST(request: NextRequest) {
     const workoutRepository = new PrWorkoutRepository()
     const logWorkoutRepository = new PrLogWorkoutRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
+    const badgeRepository = new PrBadgeRepository()
+    const userBadgeRepository = new PrUserBadgeRepository()
+    const userRecordRepository = new PrUserRecordRepository()
 
     const createLogUsecase = new CreateLogUsecase(
       logRepository,
       workoutRepository,
       logWorkoutRepository,
-      bodyPartGaugeRepository
+      bodyPartGaugeRepository,
+      badgeRepository,
+      userBadgeRepository,
+      userRecordRepository
     )
 
     const result = await createLogUsecase.execute(body)
 
-    return NextResponse.json(result, {
-      status: result.success ? 200 : 400,
-    })
+    if (result.success) {
+      return NextResponse.json(
+        { 
+          message: "success", 
+          logId: result.logId,
+          awardedBadges: result.awardedBadges || []
+        },
+        { status: 200 }
+      )
+    } else {
+      return NextResponse.json({ message: "error" }, { status: 400 })
+    }
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "log creation failed",
-      },
-      { status: 500 }
-    )
+    console.log(error instanceof Error ? error.message : "log creation failed")
+    return NextResponse.json({ message: "error" }, { status: 500 })
   }
 }
