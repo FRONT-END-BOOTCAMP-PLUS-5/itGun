@@ -3,11 +3,13 @@ import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/Delete
 import { DeleteLogResponseDto } from "@/backend/application/user/logs/dtos/DeleteLogResponseDto"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
+import { BadgeDeletionService } from "@/backend/application/user/logs/services/BadgeDeletionService"
 
 export class DeleteLogUsecase {
   constructor(
     private logRepository: LogRepository,
-    private bodyPartGaugeRepository: BodyPartGaugeRepository
+    private bodyPartGaugeRepository: BodyPartGaugeRepository,
+    private badgeDeletionService: BadgeDeletionService
   ) {}
 
   async execute(request: DeleteLogRequestDto): Promise<DeleteLogResponseDto> {
@@ -43,6 +45,8 @@ export class DeleteLogUsecase {
           message: "운동 로그 삭제에 실패했습니다.",
         }
       }
+
+      await this.badgeDeletionService.handleBadgeDeletion(logToDelete)
 
       // gaugeChanges에서 각 부위별 값을 감소시킨 새로운 body_part_gauge 생성
       const gaugeChanges = logToDelete.gaugeChanges || {}

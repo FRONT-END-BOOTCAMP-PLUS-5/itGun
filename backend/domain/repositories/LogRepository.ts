@@ -8,6 +8,7 @@ export interface LogRepository {
     endDate: Date,
     includeWorkouts?: boolean
   ): Promise<Log[]>
+  findFirstByUserId(userId: string): Promise<Log | null>
   findById(id: number): Promise<Log | null>
   save(log: Log): Promise<Log>
   update(id: number, log: Partial<Log>): Promise<Log | null>
