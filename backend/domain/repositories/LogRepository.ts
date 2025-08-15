@@ -1,4 +1,4 @@
-import { Log } from "../entities/Log"
+import { Log } from "@/backend/domain/entities/Log"
 
 export interface LogRepository {
   findAll(): Promise<Log[]>
@@ -12,6 +12,7 @@ export interface LogRepository {
     startDate: Date,
     endDate: Date
   ): Promise<Log[]>
+  findFirstByUserId(userId: string): Promise<Log | null>
   findById(id: number): Promise<Log | null>
   save(log: Log): Promise<Log>
   update(id: number, log: Partial<Log>): Promise<Log | null>
