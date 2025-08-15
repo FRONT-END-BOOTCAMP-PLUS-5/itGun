@@ -3,6 +3,14 @@ import { DeleteLogUsecase } from "@/backend/application/user/logs/usecases/Delet
 import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepository"
 import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/DeleteLogRequestDto"
 import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
+import { BadgeDeletionService } from "@/backend/application/user/logs/services/BadgeDeletionService"
+import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
+import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
+import { PrBenchPressRecordRepository } from "@/backend/infrastructure/repositories/PrBenchPressRecordRepository"
+import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositories/PrDeadliftRecordRepository"
+import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/PrSquatRecordRepository"
+import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
+import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
 
 export async function DELETE(
   request: NextRequest,
@@ -18,7 +26,30 @@ export async function DELETE(
 
     const logRepository = new PrLogRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
-    const deleteLogUsecase = new DeleteLogUsecase(logRepository, bodyPartGaugeRepository)
+    const badgeRepository = new PrBadgeRepository()
+    const userBadgeRepository = new PrUserBadgeRepository()
+    const benchPressRecordRepository = new PrBenchPressRecordRepository()
+    const deadliftRecordRepository = new PrDeadliftRecordRepository()
+    const squatRecordRepository = new PrSquatRecordRepository()
+    const runningRecordRepository = new PrRunningRecordRepository()
+    const bigThreeRecordRepository = new PrBigThreeRecordRepository()
+    
+    const badgeDeletionService = new BadgeDeletionService(
+      userBadgeRepository,
+      badgeRepository,
+      logRepository,
+      benchPressRecordRepository,
+      deadliftRecordRepository,
+      squatRecordRepository,
+      runningRecordRepository,
+      bigThreeRecordRepository
+    )
+    
+    const deleteLogUsecase = new DeleteLogUsecase(
+      logRepository,
+      bodyPartGaugeRepository,
+      badgeDeletionService
+    )
 
     const requestDto: DeleteLogRequestDto = { logId }
     const result = await deleteLogUsecase.execute(requestDto)
