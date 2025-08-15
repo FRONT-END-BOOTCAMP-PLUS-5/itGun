@@ -1,21 +1,29 @@
 import React from "react"
 import type { ProgressBarProps, ProgressBarVariant } from "./ProgressBar.types"
 import { progressBarVariants } from "@/ds/styles/tokens/progressBar/variants"
-import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import { B2 } from "@/ds/components/atoms/text/TextWrapper"
 
 const resolveVariant = (
   variant?: ProgressBarProps["variant"]
-): ProgressBarVariant => {
-  if (!variant) return { borderColor: "#3D2C4B", fillColor: "#3D2C4B" }
-  if (typeof variant === "string") {
-    return (
-      progressBarVariants[variant] ?? {
-        borderColor: "#3D2C4B",
-        fillColor: "#3D2C4B",
-      }
-    )
+): {
+  style?: ProgressBarVariant
+  classes?: { fillClass: string; borderClass: string; textClass: string }
+} => {
+  if (!variant) {
+    return { style: { borderColor: "#3D2C4B", fillColor: "#3D2C4B" } }
   }
-  return variant
+  if (typeof variant === "string") {
+    const token = (progressBarVariants as any)[variant]
+    if (token) {
+      const borderClass: string =
+        token.border ?? "border-[var(--color-primary)]"
+      const fillClass: string = token.bg ?? "bg-[var(--color-primary)]"
+      const textClass: string = borderClass.replace(/^border-/, "text-")
+      return { classes: { fillClass, borderClass, textClass } }
+    }
+    return { style: { borderColor: "#3D2C4B", fillColor: "#3D2C4B" } }
+  }
+  return { style: variant }
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -31,46 +39,75 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const clampedSteps = Math.max(1, steps)
   const filledCount = Math.round((safeValue / safeMax) * clampedSteps)
 
-  const { borderColor, fillColor } = resolveVariant(variant)
+  const resolved = resolveVariant(variant)
+  const borderColor = resolved.style?.borderColor
+  const fillColor = resolved.style?.fillColor
+  const fillClass = resolved.classes?.fillClass
+  const borderClass = resolved.classes?.borderClass
+  const textClass = resolved.classes?.textClass
 
   return (
     <div className="w-full">
       {/* 헤더: 좌측 라벨, 우측 카운터 */}
       <div className="mb-2 flex w-full items-center justify-between">
-        <S1 variant="primary" style={{ color: borderColor }}>
+        <B2
+          variant="primary"
+          className={textClass}
+          style={borderColor ? { color: borderColor } : undefined}
+        >
           {label ?? ""}
-        </S1>
+        </B2>
         {showCounter && (
-          <S1 variant="primary" style={{ color: borderColor }}>
+          <B2
+            variant="primary"
+            className={textClass}
+            style={borderColor ? { color: borderColor } : undefined}
+          >
             {safeValue} / {safeMax}
-          </S1>
+          </B2>
         )}
       </div>
 
       {/* 바 본체 */}
       <div className="flex w-full items-center gap-2 select-none">
-        <S1 variant="primary" style={{ color: borderColor }}>
+        <B2
+          variant="primary"
+          className={textClass}
+          style={borderColor ? { color: borderColor } : undefined}
+        >
           [
-        </S1>
+        </B2>
         <div className="flex w-full gap-2">
           {Array.from({ length: clampedSteps }).map((_, idx) => {
             const isFilled = idx < filledCount
             return (
               <div
                 key={idx}
-                className="flex-1"
-                style={{
-                  height: `12px`,
-                  backgroundColor: isFilled ? fillColor : "transparent",
-                  border: `2px solid ${borderColor}`,
-                }}
+                className={[
+                  "flex-1 border-2",
+                  borderClass ?? "",
+                  isFilled ? (fillClass ?? "") : "bg-transparent",
+                ].join(" ")}
+                style={
+                  borderClass
+                    ? { height: `12px` }
+                    : {
+                        height: `12px`,
+                        backgroundColor: isFilled ? fillColor : "transparent",
+                        border: `2px solid ${borderColor}`,
+                      }
+                }
               />
             )
           })}
         </div>
-        <S1 variant="primary" style={{ color: borderColor }}>
+        <B2
+          variant="primary"
+          className={textClass}
+          style={borderColor ? { color: borderColor } : undefined}
+        >
           ]
-        </S1>
+        </B2>
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar"
 import type { ProgressBarProps } from "./ProgressBar.types"
 
 const meta: Meta<typeof ProgressBar> = {
-  title: "Molecules/ProgressBar",
+  title: "Components/Molecules/ProgressBar",
   component: ProgressBar,
   tags: ["autodocs"],
 }

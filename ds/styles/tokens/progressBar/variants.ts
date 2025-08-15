@@ -1,15 +1,15 @@
 export type ProgressBarVariantToken = {
-  borderColor: string
-  fillColor: string
+  bg: string
+  border: string
 }
 
 export const progressBarVariants: Record<string, ProgressBarVariantToken> = {
   primary: {
-    borderColor: "#3D2C4B",
-    fillColor: "#3D2C4B",
+    bg: "bg-[var(--color-primary)]",
+    border: "border-[var(--color-primary)]",
   },
-  outline: {
-    borderColor: "#3D2C4B",
-    fillColor: "transparent",
+  secondary: {
+    bg: "bg-[var(--color-secondary)]",
+    border: "border-[var(--color-secondary)]",
   },
 }
