@@ -45,10 +45,14 @@ model User {
   updatedAt       DateTime @updatedAt @map("updated_at")
 
   // Relations
-  userBadges        UserBadge[]
-  bodyPartGauges    BodyPartGauge[]
-  logs              Log[]
-  userRecord        UserRecord?
+  userBadges           UserBadge[]
+  bodyPartGauges       BodyPartGauge[]
+  logs                 Log[]
+  benchPressRecords    BenchPressRecord[]
+  deadliftRecords      DeadliftRecord[]
+  squatRecords         SquatRecord[]
+  bigThreeRecords      BigThreeRecord[]
+  runningRecords       RunningRecord[]
 
   @@map("users")
 }
@@ -149,18 +153,87 @@ model Workout {
   @@map("workouts")
 }
 
-model UserRecord {
-  id            Int      @id @default(autoincrement())
-  userId        String   @unique @map("user_id")
-  benchPressMax Float?   @map("bench_press_max")
-  squatMax      Float?   @map("squat_max")
-  deadliftMax   Float?   @map("deadlift_max")
-  runningMax    Float?   @map("running_max")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+model BenchPressRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  createdAt  DateTime @map("created_at")
 
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("user_records")
+  @@map("bench_press_records")
+}
+
+model DeadliftRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  createdAt  DateTime @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dead_lift_records")
+}
+
+model SquatRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  createdAt  DateTime @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sqaut_records")
+}
+
+model BigThreeRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  createdAt  DateTime @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("big_three_records")
+}
+
+model RunningRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  distance   Float
+  createdAt  DateTime @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("running_records")
+}
+
+model Exercise {
+  id                 String   @id @map("exercise_id")
+  name               String
+  nameKo             String   @map("name_ko")
+  imageUrl           String   @map("image_url")
+  videoUrl           String   @map("video_url")
+  equipments         String[]
+  equipmentsKo       String[] @map("equipments_ko")
+  bodyParts          String[] @map("body_parts")
+  bodyPartsKo        String[] @map("body_parts_ko")
+  exerciseType       String   @map("exercise_type")
+  keywords           String[]
+  keywordsKo         String[] @map("keywords_ko")
+  overview           String   @db.Text
+  overviewKo         String   @map("overview_ko") @db.Text
+  instructions       String[]
+  instructionsKo     String[] @map("instructions_ko")
+  exerciseTips       String[] @map("exercise_tips") @db.Text
+  exerciseTipsKo     String[] @map("exercise_tips_ko")  @db.Text
+  variations         String[] @db.Text
+  relatedExerciseIds String[] @map("related_exercise_ids")
+
+  @@map("exercises")
 }
