@@ -45,7 +45,6 @@ export const HeightDropdown: Story = {
     options: heightOptions,
     placeholder: "키를 선택하세요",
     size: "md",
-    variant: "default",
   },
 }
 
@@ -58,7 +57,6 @@ export const WeightDropdown: Story = {
     options: weightOptions,
     placeholder: "몸무게를 선택하세요",
     size: "md",
-    variant: "default",
   },
 }
 
@@ -71,7 +69,6 @@ export const AgeDropdown: Story = {
     options: ageOptions,
     placeholder: "나이를 선택하세요",
     size: "md",
-    variant: "default",
   },
 }
 
@@ -84,6 +81,5 @@ export const GenderDropdown: Story = {
     options: genderOptions,
     placeholder: "성별을 선택하세요",
     size: "md",
-    variant: "default",
   },
 }
