@@ -1,11 +1,11 @@
 import { Log } from "@/backend/domain/entities/Log"
 import { LogWorkout } from "@/backend/domain/entities/LogWorkout"
-import { LogRepository } from "../../../../domain/repositories/LogRepository"
-import { LogDto } from "../dtos/GetLogDto"
-import { GetUserLogsQueryDto } from "../dtos/GetUserLogsQueryDto"
-import { GetUserLogsRequestDto } from "../dtos/GetUserLogsRequestDto"
-import { GetUserLogsResponseDto } from "../dtos/GetUserLogsResponseDto"
-import { WorkoutDto } from "../dtos/GetWorkoutDto"
+import { LogRepository } from "@/backend/domain/repositories/LogRepository"
+import { LogDto } from "@/backend/application/user/logs/dtos/GetLogDto"
+import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
+import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
+import { GetUserLogsResponseDto } from "@/backend/application/user/logs/dtos/GetUserLogsResponseDto"
+import { WorkoutDto } from "@/backend/application/user/logs/dtos/GetWorkoutDto"
 
 export class GetUserLogListUsecase {
   constructor(private readonly logRepository: LogRepository) {}
@@ -22,9 +22,11 @@ export class GetUserLogListUsecase {
 
     const logDtos: LogDto[] = logs.map((log) => ({
       id: log.id,
+      userId: log.userId,
       calIconType: log.calIconType,
-      createdAt: log.createdAt.toISOString(),
+      createdAt: log.createdAt,
       totalDuration: log.totalDuration,
+      gaugeChanges: log.gaugeChanges,
       workouts: this.mapWorkouts(log),
     }))
 
