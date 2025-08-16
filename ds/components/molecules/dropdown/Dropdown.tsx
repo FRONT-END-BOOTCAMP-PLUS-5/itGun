@@ -109,8 +109,8 @@ const Dropdown = ({
       >
         {selectedLabel || placeholder}
       </button>
-      <span className="pointer-events-none absolute right-0 rotate-0 text-[#6B617A]">
-        <Icon name="downArrow" size={16} color="#6B617A" />
+      <span className="pointer-events-none absolute right-0 rotate-0 text-[var(--color-secondary)]">
+        <Icon name="downArrow" size={16} color="var[(--color-secondary)]" />
       </span>
 
       {open && !disabled && (
@@ -125,8 +125,8 @@ const Dropdown = ({
                   className={[
                     "w-full truncate rounded px-2 py-2 text-left text-[14px] leading-5",
                     typeof value === "string" && value === grp.value
-                      ? "bg-[#E9E6EF] text-[#3D2C4B]"
-                      : "hover:bg-[#F5F3F8]",
+                      ? "bg-[var(--color-white-200)] text-[var(--color-primary)]"
+                      : "",
                   ].join(" ")}
                   title={grp.label}
                 >
@@ -146,8 +146,8 @@ const Dropdown = ({
                     className={[
                       "w-full truncate rounded px-2 py-2 text-left text-[14px] leading-5",
                       isSelected
-                        ? "bg-[#E9E6EF] text-[#3D2C4B]"
-                        : "hover:bg-[#F5F3F8]",
+                        ? "bg-[var(--color-white-200)] text-[var(--color-primary)]"
+                        : "",
                     ].join(" ")}
                     title={opt.label}
                   >

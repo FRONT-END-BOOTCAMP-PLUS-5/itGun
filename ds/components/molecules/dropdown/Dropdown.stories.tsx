@@ -5,7 +5,7 @@ import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import type { Meta, StoryObj } from "@storybook/nextjs"
 
 const meta: Meta<typeof Dropdown> = {
-  title: "Molecules/Dropdown",
+  title: "Components/Molecules/Dropdown",
   component: Dropdown,
   tags: ["autodocs"],
 }
