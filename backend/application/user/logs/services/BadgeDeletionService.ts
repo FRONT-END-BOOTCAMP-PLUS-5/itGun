@@ -123,11 +123,7 @@ export class BadgeDeletionService {
 
     if (!hasWeeklyBadge) return
 
-<<<<<<< HEAD
     const weekLogs = await this.logRepository.findAllByUserIdAndDateRange(
-=======
-    const weekLogs = await this.logRepository.findByUserIdAndDateRange(
->>>>>>> b9b6a8e (feat: #27 운동 기록 삭제 시 연관 뱃지 체크 및 삭제 로직 추가)
       userId,
       startOfWeek,
       endOfWeek
@@ -183,11 +179,7 @@ export class BadgeDeletionService {
       endOfDay.setHours(23, 59, 59, 999)
 
       const logsOnSameDate = (
-<<<<<<< HEAD
         await this.logRepository.findAllByUserIdAndDateRange(
-=======
-        await this.logRepository.findByUserIdAndDateRange(
->>>>>>> b9b6a8e (feat: #27 운동 기록 삭제 시 연관 뱃지 체크 및 삭제 로직 추가)
           userId,
           logDate,
           endOfDay
@@ -296,3 +288,5 @@ export class BadgeDeletionService {
     }
   }
 }
+
+// 모든 레코드 삭제 실행
