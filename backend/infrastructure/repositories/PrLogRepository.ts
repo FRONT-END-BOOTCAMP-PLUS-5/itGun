@@ -8,41 +8,11 @@ export class PrLogRepository implements LogRepository {
     return logs.map(this.toDomain)
   }
 
-  async findAllByUserIdAndMonth(
-    userId: string,
-    year: number,
-    month: number
-  ): Promise<Log[]> {
-    const startDate = new Date(year, month - 1, 1)
-    const endDate = new Date(year, month, 1)
-
-    const logs = await prisma.log.findMany({
-      where: {
-        userId,
-        createdAt: {
-          gte: startDate,
-          lt: endDate,
-        },
-      },
-      include: {
-        logWorkouts: {
-          include: {
-            workout: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
-
-    return logs as Log[]
-  }
-
-  async findByUserIdAndDateRange(
+  async findAllByUserIdAndDateRange(
     userId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    includeWorkouts: boolean = false
   ): Promise<Log[]> {
     const logs = await prisma.log.findMany({
       where: {
@@ -52,6 +22,15 @@ export class PrLogRepository implements LogRepository {
           lte: endDate,
         },
       },
+      ...(includeWorkouts && {
+        include: {
+          logWorkouts: {
+            include: {
+              workout: true,
+            },
+          },
+        },
+      }),
       orderBy: {
         createdAt: "desc",
       },

@@ -1,4 +1,4 @@
-import { LogDto } from "./GetLogDto"
+import { LogDto } from "@/backend/application/user/logs/dtos/GetLogDto"
 
 export interface GetUserLogsResponseDto {
   success: boolean
