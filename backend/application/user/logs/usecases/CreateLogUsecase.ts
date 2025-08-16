@@ -16,6 +16,10 @@ import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/log
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
 import { calculateGaugeUpdates } from "@/backend/application/user/logs/utils/bodyPartGaugeCalculator"
 import { BadgeAchievementService } from "@/backend/application/user/logs/services/BadgeAchievementService"
+import { FirstWorkoutBadgeService } from "@/backend/application/user/logs/services/badge-achievement/FirstWorkoutBadgeService"
+import { ConsecutiveDaysBadgeService } from "@/backend/application/user/logs/services/badge-achievement/ConsecutiveDaysBadgeService"
+import { WeeklyWorkoutBadgeService } from "@/backend/application/user/logs/services/badge-achievement/WeeklyWorkoutBadgeService"
+import { RecordBadgeService } from "@/backend/application/user/logs/services/badge-achievement/RecordBadgeService"
 
 export class CreateLogUsecase {
   private badgeAchievementService: BadgeAchievementService
@@ -33,15 +37,24 @@ export class CreateLogUsecase {
     private runningRecordRepository: RunningRecordRepository,
     private bigThreeRecordRepository: BigThreeRecordRepository
   ) {
-    this.badgeAchievementService = new BadgeAchievementService(
-      badgeRepository,
-      userBadgeRepository,
-      logRepository,
+    const firstWorkoutBadgeService = new FirstWorkoutBadgeService(userBadgeRepository)
+    const consecutiveDaysBadgeService = new ConsecutiveDaysBadgeService(logRepository, userBadgeRepository)
+    const weeklyWorkoutBadgeService = new WeeklyWorkoutBadgeService(logRepository, userBadgeRepository)
+    const recordBadgeService = new RecordBadgeService(
       benchPressRecordRepository,
       squatRecordRepository,
       deadliftRecordRepository,
       runningRecordRepository,
       bigThreeRecordRepository
+    )
+
+    this.badgeAchievementService = new BadgeAchievementService(
+      badgeRepository,
+      userBadgeRepository,
+      firstWorkoutBadgeService,
+      consecutiveDaysBadgeService,
+      weeklyWorkoutBadgeService,
+      recordBadgeService
     )
   }
 
