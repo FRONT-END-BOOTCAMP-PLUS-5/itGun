@@ -14,10 +14,14 @@ export class GetUserLogListUsecase {
     request: GetUserLogsRequestDto,
     query: GetUserLogsQueryDto
   ): Promise<GetUserLogsResponseDto> {
-    const logs = await this.logRepository.findAllByUserIdAndMonth(
+    const startDate = new Date(query.year, query.month - 1, 1)
+    const endDate = new Date(query.year, query.month, 0, 23, 59, 59, 999)
+    
+    const logs = await this.logRepository.findAllByUserIdAndDateRange(
       request.userId,
-      query.year,
-      query.month
+      startDate,
+      endDate,
+      true
     )
 
     const logDtos: LogDto[] = logs.map((log) => ({
