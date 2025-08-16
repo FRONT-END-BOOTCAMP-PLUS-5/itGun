@@ -123,7 +123,7 @@ export class BadgeDeletionService {
 
     if (!hasWeeklyBadge) return
 
-    const weekLogs = await this.logRepository.findByUserIdAndDateRange(
+    const weekLogs = await this.logRepository.findAllByUserIdAndDateRange(
       userId,
       startOfWeek,
       endOfWeek
@@ -179,7 +179,7 @@ export class BadgeDeletionService {
       endOfDay.setHours(23, 59, 59, 999)
 
       const logsOnSameDate = (
-        await this.logRepository.findByUserIdAndDateRange(
+        await this.logRepository.findAllByUserIdAndDateRange(
           userId,
           logDate,
           endOfDay
