@@ -6,6 +6,11 @@ import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/Pr
 import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
 import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
+import { PrBenchPressRecordRepository } from "@/backend/infrastructure/repositories/PrBenchPressRecordRepository"
+import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/PrSquatRecordRepository"
+import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositories/PrDeadliftRecordRepository"
+import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
+import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
 import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
@@ -60,6 +65,11 @@ export async function POST(request: NextRequest) {
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
     const badgeRepository = new PrBadgeRepository()
     const userBadgeRepository = new PrUserBadgeRepository()
+    const benchPressRecordRepository = new PrBenchPressRecordRepository()
+    const squatRecordRepository = new PrSquatRecordRepository()
+    const deadliftRecordRepository = new PrDeadliftRecordRepository()
+    const runningRecordRepository = new PrRunningRecordRepository()
+    const bigThreeRecordRepository = new PrBigThreeRecordRepository()
     const createLogUsecase = new CreateLogUsecase(
       logRepository,
       workoutRepository,
@@ -67,6 +77,11 @@ export async function POST(request: NextRequest) {
       bodyPartGaugeRepository,
       badgeRepository,
       userBadgeRepository,
+      benchPressRecordRepository,
+      squatRecordRepository,
+      deadliftRecordRepository,
+      runningRecordRepository,
+      bigThreeRecordRepository
     )
 
     const result = await createLogUsecase.execute(body)

@@ -5,15 +5,20 @@ import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
 import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
+import { BenchPressRecordRepository } from "@/backend/domain/repositories/BenchPressRecordRepository"
+import { SquatRecordRepository } from "@/backend/domain/repositories/SquatRecordRepository"
+import { DeadliftRecordRepository } from "@/backend/domain/repositories/DeadliftRecordRepository"
+import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
+import { BigThreeRecordRepository } from "@/backend/domain/repositories/BigThreeRecordRepository"
 import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWorkoutRepository"
 import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
 import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
 import { calculateGaugeUpdates } from "@/backend/application/user/logs/utils/bodyPartGaugeCalculator"
-// import { BadgeAchievementService } from "@/backend/application/user/logs/services/BadgeAchievementService"
+import { BadgeAchievementService } from "@/backend/application/user/logs/services/BadgeAchievementService"
 
 export class CreateLogUsecase {
-  // private badgeAchievementService: BadgeAchievementService
+  private badgeAchievementService: BadgeAchievementService
 
   constructor(
     private logRepository: LogRepository,
@@ -22,14 +27,22 @@ export class CreateLogUsecase {
     private bodyPartGaugeRepository: BodyPartGaugeRepository,
     private badgeRepository: BadgeRepository,
     private userBadgeRepository: UserBadgeRepository,
-    // private userRecordRepository: UserRecordRepository
+    private benchPressRecordRepository: BenchPressRecordRepository,
+    private squatRecordRepository: SquatRecordRepository,
+    private deadliftRecordRepository: DeadliftRecordRepository,
+    private runningRecordRepository: RunningRecordRepository,
+    private bigThreeRecordRepository: BigThreeRecordRepository
   ) {
-    // this.badgeAchievementService = new BadgeAchievementService(
-    //   badgeRepository,
-    //   userBadgeRepository,
-    //   // userRecordRepository,
-    //   logRepository
-    // )
+    this.badgeAchievementService = new BadgeAchievementService(
+      badgeRepository,
+      userBadgeRepository,
+      logRepository,
+      benchPressRecordRepository,
+      squatRecordRepository,
+      deadliftRecordRepository,
+      runningRecordRepository,
+      bigThreeRecordRepository
+    )
   }
 
   async execute(request: CreateLogRequestDto): Promise<CreateLogResponseDto> {
@@ -170,17 +183,18 @@ export class CreateLogUsecase {
 
       await this.bodyPartGaugeRepository.save(newBodyPartGauge)
 
-      // 뱃지 달성 체크 및 사용자 기록 업데이트 (한 번에 처리)
-      // const { badges: awardedBadges } = await this.badgeAchievementService.checkAndAwardBadges(
-      //   request.userId,
-      //   request.workouts
-      // )
+      // 뱃지 달성 체크 및 신기록 저장
+      const { badges: awardedBadges } = await this.badgeAchievementService.checkAndAwardBadges(
+        request.userId,
+        request.workouts,
+        request.createdAt || new Date()
+      )
 
       return {
         success: true,
-        message: `운동 로그가 성공적으로 생성되었습니다.0개의 뱃지를 획득했습니다! ''}`,
+        message: `운동 로그가 성공적으로 생성되었습니다. ${awardedBadges.length}개의 뱃지를 획득했습니다!`,
         logId: savedLog.id,
-        // awardedBadges: awardedBadges,
+        awardedBadges: awardedBadges,
       }
     } catch (error) {
       return {

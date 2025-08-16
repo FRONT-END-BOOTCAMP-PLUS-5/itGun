@@ -3,24 +3,47 @@ import { RunningRecord } from "@/backend/domain/entities/RunningRecord"
 import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
 
 export class PrRunningRecordRepository implements RunningRecordRepository {
-  async findByUserId(userId: string): Promise<RunningRecord | null> {
-    const record = await prisma.runningRecord.findUnique({
-      where: { userId }
+  async findMaxByUserId(userId: string): Promise<RunningRecord | null> {
+    const record = await prisma.runningRecord.findFirst({
+      where: { userId },
+      orderBy: { distance: "desc" }
     })
-    return record ? this.toDomain(record) : null
+    return record as RunningRecord || null
+  }
+
+  async findByUserIdAndOptions(
+    userId: string,
+    startDate?: Date,
+    endDate?: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number
+  ): Promise<RunningRecord[]> {
+    const whereCondition: any = { userId }
+
+    if (startDate || endDate) {
+      whereCondition.createdAt = {}
+      if (startDate) whereCondition.createdAt.gte = startDate
+      if (endDate) whereCondition.createdAt.lte = endDate
+    }
+
+    const records = await prisma.runningRecord.findMany({
+      where: whereCondition,
+      orderBy: { createdAt: sortOrder || "desc" },
+      take: limit
+    })
+
+    return records as RunningRecord[]
   }
 
   async save(record: RunningRecord): Promise<RunningRecord> {
-    const savedRecord = await prisma.runningRecord.upsert({
-      where: { userId: record.userId },
-      update: { distance: record.distance },
-      create: {
+    const savedRecord = await prisma.runningRecord.create({
+      data: {
         userId: record.userId,
         distance: record.distance,
         createdAt: record.createdAt
       }
     })
-    return this.toDomain(savedRecord)
+    return savedRecord as RunningRecord
   }
 
   async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
@@ -37,12 +60,4 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     }
   }
 
-  private toDomain(record: any): RunningRecord {
-    return new RunningRecord(
-      record.id,
-      record.userId,
-      record.distance,
-      record.createdAt
-    )
-  }
 }
