@@ -1,14 +1,16 @@
 import { SquatRecord } from "@/backend/domain/entities/SquatRecord"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export interface SquatRecordRepository {
-  findMaxByUserId(userId: string): Promise<SquatRecord | null>
+  findMaxByUserId(userId: string, tx?: TransactionClient): Promise<SquatRecord | null>
   findByUserIdAndOptions(
     userId: string,
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<SquatRecord[]>
-  save(record: SquatRecord): Promise<SquatRecord>
-  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean>
+  save(record: SquatRecord, tx?: TransactionClient): Promise<SquatRecord>
+  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean>
 }

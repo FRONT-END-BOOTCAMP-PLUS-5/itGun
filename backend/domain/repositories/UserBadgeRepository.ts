@@ -1,11 +1,13 @@
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export interface UserBadgeRepository {
-  findAll(): Promise<UserBadge[]>
+  findAll(tx?: TransactionClient): Promise<UserBadge[]>
   findByUserId(
     userId: string,
     limit?: number,
-    period?: number
+    period?: number,
+    tx?: TransactionClient
   ): Promise<UserBadge[] | null>
   findByUserIdAndOptions(
     userId: string, 
@@ -13,11 +15,12 @@ export interface UserBadgeRepository {
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<UserBadge[]>
-  save(userBadge: UserBadge): Promise<UserBadge>
-  saveMany(userBadges: UserBadge[]): Promise<UserBadge[]>
-  update(id: number, userBadge: Partial<UserBadge>): Promise<UserBadge | null>
-  delete(id: number): Promise<boolean>
-  deleteMany(userBadgeIds: number[]): Promise<boolean>
+  save(userBadge: UserBadge, tx?: TransactionClient): Promise<UserBadge>
+  saveMany(userBadges: UserBadge[], tx?: TransactionClient): Promise<UserBadge[]>
+  update(id: number, userBadge: Partial<UserBadge>, tx?: TransactionClient): Promise<UserBadge | null>
+  delete(id: number, tx?: TransactionClient): Promise<boolean>
+  deleteMany(userBadgeIds: number[], tx?: TransactionClient): Promise<boolean>
 }

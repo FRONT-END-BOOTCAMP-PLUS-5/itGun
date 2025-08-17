@@ -1,14 +1,16 @@
 import { BenchPressRecord } from "@/backend/domain/entities/BenchPressRecord"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export interface BenchPressRecordRepository {
-  findMaxByUserId(userId: string): Promise<BenchPressRecord | null>
+  findMaxByUserId(userId: string, tx?: TransactionClient): Promise<BenchPressRecord | null>
   findByUserIdAndOptions(
     userId: string,
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<BenchPressRecord[]>
-  save(record: BenchPressRecord): Promise<BenchPressRecord>
-  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean>
+  save(record: BenchPressRecord, tx?: TransactionClient): Promise<BenchPressRecord>
+  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean>
 }

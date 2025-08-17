@@ -1,10 +1,12 @@
 import prisma from "@/utils/prisma"
 import { Badge } from "@/backend/domain/entities/Badge"
 import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrBadgeRepository implements BadgeRepository {
-  async findAll(): Promise<Badge[]> {
-    const badges = await prisma.badge.findMany()
+  async findAll(tx?: TransactionClient): Promise<Badge[]> {
+    const client = tx || prisma
+    const badges = await client.badge.findMany()
     return badges as Badge[]
   }
 

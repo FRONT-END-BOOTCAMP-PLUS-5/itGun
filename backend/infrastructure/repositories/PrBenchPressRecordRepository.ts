@@ -1,10 +1,12 @@
 import prisma from "@/utils/prisma"
 import { BenchPressRecord } from "@/backend/domain/entities/BenchPressRecord"
 import { BenchPressRecordRepository } from "@/backend/domain/repositories/BenchPressRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrBenchPressRecordRepository implements BenchPressRecordRepository {
-  async findMaxByUserId(userId: string): Promise<BenchPressRecord | null> {
-    const record = await prisma.benchPressRecord.findFirst({
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<BenchPressRecord | null> {
+    const client = tx || prisma
+    const record = await client.benchPressRecord.findFirst({
       where: { userId },
       orderBy: { weight: "desc" }
     })
@@ -16,7 +18,8 @@ export class PrBenchPressRecordRepository implements BenchPressRecordRepository 
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<BenchPressRecord[]> {
     const whereCondition: any = { userId }
 
@@ -26,7 +29,8 @@ export class PrBenchPressRecordRepository implements BenchPressRecordRepository 
       if (endDate) whereCondition.createdAt.lte = endDate
     }
 
-    const records = await prisma.benchPressRecord.findMany({
+    const client = tx || prisma
+    const records = await client.benchPressRecord.findMany({
       where: whereCondition,
       orderBy: { createdAt: sortOrder || "desc" },
       take: limit
@@ -35,8 +39,9 @@ export class PrBenchPressRecordRepository implements BenchPressRecordRepository 
     return records as BenchPressRecord[]
   }
 
-  async save(record: BenchPressRecord): Promise<BenchPressRecord> {
-    const savedRecord = await prisma.benchPressRecord.create({
+  async save(record: BenchPressRecord, tx?: TransactionClient): Promise<BenchPressRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.benchPressRecord.create({
       data: {
         userId: record.userId,
         weight: record.weight,
@@ -46,9 +51,10 @@ export class PrBenchPressRecordRepository implements BenchPressRecordRepository 
     return savedRecord as BenchPressRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.benchPressRecord.deleteMany({
+      const client = tx || prisma
+      await client.benchPressRecord.deleteMany({
         where: {
           userId,
           createdAt
