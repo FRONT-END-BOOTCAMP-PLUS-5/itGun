@@ -98,13 +98,7 @@ export const Carousel: FC<CarouselProps> = ({
     <div className={combinedClassName} {...props}>
       <div
         ref={containerRef}
-        className="flex-1 cursor-grab overflow-hidden select-none active:cursor-grabbing"
-        style={{
-          touchAction: "none",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-          msUserSelect: "none",
-        }}
+        className="select-none-all flex-1 cursor-grab touch-none overflow-hidden active:cursor-grabbing"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
