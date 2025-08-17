@@ -110,7 +110,7 @@ const Dropdown = ({
         {selectedLabel || placeholder}
       </button>
       <span className="pointer-events-none absolute right-0 rotate-0 text-[var(--color-secondary)]">
-        <Icon name="downArrow" size={16} color="var[(--color-secondary)]" />
+        <Icon name="downArrow" size={24} color="var[(--color-secondary)]" />
       </span>
 
       {open && !disabled && (
