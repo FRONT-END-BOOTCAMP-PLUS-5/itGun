@@ -9,7 +9,6 @@ const CircularIcon: React.FC<CircularIconProps> = ({
   iconSize = 24,
   variant = "primary",
 }) => {
-  const containerSize = iconSize + 16
   const baseClasses = [
     circularIconVariants[variant],
     "rounded-full",
@@ -19,18 +18,14 @@ const CircularIcon: React.FC<CircularIconProps> = ({
     "flex",
     "items-center",
     "justify-center",
+    "p-1",
     variant !== "disable" && "cursor-pointer",
   ]
     .join(" ")
     .trim()
 
   return (
-    <div
-      className={baseClasses}
-      style={{
-        width: `${containerSize}px`,
-      }}
-    >
+    <div className={baseClasses}>
       <Icon
         name={iconName}
         size={iconSize}
