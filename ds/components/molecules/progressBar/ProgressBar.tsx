@@ -55,7 +55,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
               <div
                 key={idx}
                 className={[
-                  "h-[15px] flex-1 border-2",
+                  "h-[24px] flex-1 border-2",
                   borderClass,
                   isFilled ? fillClass : "bg-transparent",
                 ].join(" ")}
