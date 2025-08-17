@@ -11,6 +11,7 @@ import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/P
 import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositories/PrDeadliftRecordRepository"
 import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
 import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
+import { PrTransactionManager } from "@/backend/infrastructure/repositories/PrTransactionManager"
 import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
@@ -59,6 +60,7 @@ export async function POST(request: NextRequest) {
   try {
     const body: CreateLogRequestDto = await request.json()
 
+    const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
     const workoutRepository = new PrWorkoutRepository()
     const logWorkoutRepository = new PrLogWorkoutRepository()
@@ -71,6 +73,7 @@ export async function POST(request: NextRequest) {
     const runningRecordRepository = new PrRunningRecordRepository()
     const bigThreeRecordRepository = new PrBigThreeRecordRepository()
     const createLogUsecase = new CreateLogUsecase(
+      transactionManager,
       logRepository,
       workoutRepository,
       logWorkoutRepository,

@@ -2,6 +2,7 @@ import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class WeeklyWorkoutBadgeService {
   constructor(
@@ -12,7 +13,8 @@ export class WeeklyWorkoutBadgeService {
   async check(
     userId: string,
     badges: Badge[],
-    logCreatedAt: Date
+    logCreatedAt: Date,
+    tx?: TransactionClient
   ): Promise<UserBadge | null> {
     const weeklyBadge = badges.find((badge) => badge.name.includes("3일"))
 
@@ -34,7 +36,9 @@ export class WeeklyWorkoutBadgeService {
     const weekLogs = await this.logRepository.findAllByUserIdAndDateRange(
       userId,
       startOfWeek,
-      endOfWeek
+      endOfWeek,
+      false,
+      tx
     )
 
     const workoutDatesThisWeek = new Set(
@@ -47,7 +51,10 @@ export class WeeklyWorkoutBadgeService {
         userId,
         [weeklyBadge.id],
         startOfWeek,
-        endOfWeek
+        endOfWeek,
+        undefined,
+        undefined,
+        tx
       )
 
       if (existingWeeklyBadges.length > 0) return null

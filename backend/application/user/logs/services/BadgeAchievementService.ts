@@ -7,6 +7,7 @@ import { FirstWorkoutBadgeService } from "@/backend/application/user/logs/servic
 import { ConsecutiveDaysBadgeService } from "@/backend/application/user/logs/services/badge-achievement/ConsecutiveDaysBadgeService"
 import { WeeklyWorkoutBadgeService } from "@/backend/application/user/logs/services/badge-achievement/WeeklyWorkoutBadgeService"
 import { RecordBadgeService } from "@/backend/application/user/logs/services/badge-achievement/RecordBadgeService"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class BadgeAchievementService {
   private firstWorkoutBadgeService: FirstWorkoutBadgeService
@@ -31,11 +32,12 @@ export class BadgeAchievementService {
   async checkAndAwardBadges(
     userId: string,
     workouts: WorkoutData[],
-    logCreatedAt: Date
+    logCreatedAt: Date,
+    tx?: TransactionClient
   ): Promise<{ badges: AwardedBadgeDto[] }> {
     const [badges, existingRecords] = await Promise.all([
-      this.badgeRepository.findAll(),
-      this.recordBadgeService.getMaxRecords(userId),
+      this.badgeRepository.findAll(tx),
+      this.recordBadgeService.getMaxRecords(userId, tx),
     ])
 
     const badgesToAward: UserBadge[] = []
@@ -44,7 +46,8 @@ export class BadgeAchievementService {
     const firstWorkoutBadge = await this.firstWorkoutBadgeService.check(
       userId,
       badges,
-      logCreatedAt
+      logCreatedAt,
+      tx
     )
     if (firstWorkoutBadge) badgesToAward.push(firstWorkoutBadge)
 
@@ -52,12 +55,13 @@ export class BadgeAchievementService {
     const consecutiveBadge = await this.consecutiveDaysBadgeService.check(
       userId,
       badges,
-      logCreatedAt
+      logCreatedAt,
+      tx
     )
     if (consecutiveBadge) badgesToAward.push(consecutiveBadge)
 
     // 3. 일주일에 3일 이상 뱃지 체크
-    const weeklyBadge = await this.weeklyWorkoutBadgeService.check(userId, badges, logCreatedAt)
+    const weeklyBadge = await this.weeklyWorkoutBadgeService.check(userId, badges, logCreatedAt, tx)
     if (weeklyBadge) badgesToAward.push(weeklyBadge)
 
     // 4. 신기록 뱃지들 체크 및 개별 Record 저장
@@ -66,7 +70,8 @@ export class BadgeAchievementService {
       workouts,
       badges,
       existingRecords,
-      logCreatedAt
+      logCreatedAt,
+      tx
     )
     badgesToAward.push(...recordBadges)
 
@@ -75,7 +80,7 @@ export class BadgeAchievementService {
 
     if (badgesToAward.length > 0) {
       const savedUserBadges =
-        await this.userBadgeRepository.saveMany(badgesToAward)
+        await this.userBadgeRepository.saveMany(badgesToAward, tx)
 
       awardedBadges = savedUserBadges.map((userBadge) => {
         const badge = badges.find((badge) => badge.id === userBadge.badgeId)!
