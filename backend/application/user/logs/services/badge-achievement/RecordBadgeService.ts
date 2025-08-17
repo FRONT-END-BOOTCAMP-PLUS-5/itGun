@@ -16,6 +16,7 @@ import {
   RECORD_MINIMUMS,
   BIG_THREE_BADGE_UNIT,
 } from "@/backend/application/user/logs/constants/userRecordConstants"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class RecordBadgeService {
   constructor(
@@ -26,13 +27,13 @@ export class RecordBadgeService {
     private bigThreeRecordRepository: BigThreeRecordRepository
   ) {}
 
-  async getMaxRecords(userId: string) {
+  async getMaxRecords(userId: string, tx?: TransactionClient) {
     const [benchPress, squat, deadlift, running, bigThree] = await Promise.all([
-      this.benchPressRecordRepository.findMaxByUserId(userId),
-      this.squatRecordRepository.findMaxByUserId(userId),
-      this.deadliftRecordRepository.findMaxByUserId(userId),
-      this.runningRecordRepository.findMaxByUserId(userId),
-      this.bigThreeRecordRepository.findMaxByUserId(userId),
+      this.benchPressRecordRepository.findMaxByUserId(userId, tx),
+      this.squatRecordRepository.findMaxByUserId(userId, tx),
+      this.deadliftRecordRepository.findMaxByUserId(userId, tx),
+      this.runningRecordRepository.findMaxByUserId(userId, tx),
+      this.bigThreeRecordRepository.findMaxByUserId(userId, tx),
     ])
 
     return {
@@ -55,7 +56,8 @@ export class RecordBadgeService {
       running: RunningRecord | null
       bigThree: BigThreeRecord | null
     },
-    logCreatedAt: Date
+    logCreatedAt: Date,
+    tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const awardedBadges: UserBadge[] = []
 
@@ -117,7 +119,7 @@ export class RecordBadgeService {
         logMaxRecords.benchPress,
         logCreatedAt
       )
-      await this.benchPressRecordRepository.save(newRecord)
+      await this.benchPressRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.benchPress >= RECORD_MINIMUMS.BENCH_PRESS) {
         const benchBadge = badges.find(
@@ -134,7 +136,7 @@ export class RecordBadgeService {
     // 스쿼트
     if (logMaxRecords.squat > (existingRecords.squat?.weight || 0)) {
       const newRecord = new SquatRecord(userId, logMaxRecords.squat, logCreatedAt)
-      await this.squatRecordRepository.save(newRecord)
+      await this.squatRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.squat >= RECORD_MINIMUMS.SQUAT) {
         const squatBadge = badges.find(
@@ -155,7 +157,7 @@ export class RecordBadgeService {
         logMaxRecords.deadlift,
         logCreatedAt
       )
-      await this.deadliftRecordRepository.save(newRecord)
+      await this.deadliftRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.deadlift >= RECORD_MINIMUMS.DEADLIFT) {
         const deadliftBadge = badges.find(
@@ -176,7 +178,7 @@ export class RecordBadgeService {
         logMaxRecords.running,
         logCreatedAt
       )
-      await this.runningRecordRepository.save(newRecord)
+      await this.runningRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.running >= RECORD_MINIMUMS.RUNNING) {
         const runningBadge = badges.find(
@@ -201,7 +203,7 @@ export class RecordBadgeService {
 
     if (currentBigThree > previousBigThree) {
       const newRecord = new BigThreeRecord(userId, currentBigThree, logCreatedAt)
-      await this.bigThreeRecordRepository.save(newRecord)
+      await this.bigThreeRecordRepository.save(newRecord, tx)
 
       if (currentLevel > previousLevel && currentBigThree >= BIG_THREE_BADGE_UNIT) {
         const bigThreeBadge = badges.find(

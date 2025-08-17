@@ -2,6 +2,7 @@ import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class ConsecutiveDaysBadgeService {
   constructor(
@@ -12,7 +13,8 @@ export class ConsecutiveDaysBadgeService {
   async check(
     userId: string,
     badges: Badge[],
-    logCreatedAt: Date
+    logCreatedAt: Date,
+    tx?: TransactionClient
   ): Promise<UserBadge | null> {
     const consecutiveBadge = badges.find((badge) =>
       badge.name.includes("연속 7일")
@@ -31,7 +33,9 @@ export class ConsecutiveDaysBadgeService {
     const recentLogs = await this.logRepository.findAllByUserIdAndDateRange(
       userId,
       sevenDaysAgo,
-      logDate
+      logDate,
+      false,
+      tx
     )
 
     // 최근 7일간 운동한 날짜들
@@ -60,7 +64,9 @@ export class ConsecutiveDaysBadgeService {
       [consecutiveBadge.id],
       sevenDaysAgo,
       logDate,
-      "desc"
+      "desc",
+      undefined,
+      tx
     )
 
     // 최근 7일 안에 이미 뱃지 받았으면 패스
