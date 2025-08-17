@@ -1,8 +1,6 @@
 import { Children, FC, TouchEvent, useMemo, useRef, useState } from "react"
 import { CarouselProps } from "./Carousel.types"
-
-const TRANSITION_DURATION = 300
-const SWIPE_THRESHOLD = 50
+import { SWIPE_THRESHOLD, TRANSITION_DURATION } from "./Carousel.constants"
 
 export const Carousel: FC<CarouselProps> = ({
   children,
