@@ -1,17 +1,20 @@
 import prisma from "@/utils/prisma"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrUserBadgeRepository implements UserBadgeRepository {
-  async findAll(): Promise<UserBadge[]> {
-    const userBadges = await prisma.userBadge.findMany()
+  async findAll(tx?: TransactionClient): Promise<UserBadge[]> {
+    const client = tx || prisma
+    const userBadges = await client.userBadge.findMany()
     return userBadges.map(this.toDomain)
   }
 
   async findByUserId(
     userId: string,
     limit?: number,
-    period?: number
+    period?: number,
+    tx?: TransactionClient
   ): Promise<UserBadge[] | null> {
     const whereCondition: any = { userId }
 
@@ -23,7 +26,8 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       }
     }
 
-    const userBadges = await prisma.userBadge.findMany({
+    const client = tx || prisma
+    const userBadges = await client.userBadge.findMany({
       where: whereCondition,
       take: limit,
       orderBy: {
@@ -45,6 +49,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     endDate?: Date,
     sortOrder?: "asc" | "desc",
     limit?: number,
+    tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const whereCondition: any = { userId }
 
@@ -54,14 +59,14 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       }
     }
 
-    if (startDate) {
-      whereCondition.createdAt.gte = startDate
-    }
-    if (endDate) {
-      whereCondition.createdAt.lte = endDate
+    if (startDate || endDate) {
+      whereCondition.createdAt = {}
+      if (startDate) whereCondition.createdAt.gte = startDate
+      if (endDate) whereCondition.createdAt.lte = endDate
     }
 
-    const userBadges = await prisma.userBadge.findMany({
+    const client = tx || prisma
+    const userBadges = await client.userBadge.findMany({
       where: whereCondition,
       take: limit,
       orderBy: {
@@ -72,8 +77,9 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     return userBadges as UserBadge[]
   }
 
-  async save(userBadge: UserBadge): Promise<UserBadge> {
-    const savedUserBadge = await prisma.userBadge.create({
+  async save(userBadge: UserBadge, tx?: TransactionClient): Promise<UserBadge> {
+    const client = tx || prisma
+    const savedUserBadge = await client.userBadge.create({
       data: {
         id: userBadge.id,
         badgeId: userBadge.badgeId,
@@ -84,20 +90,36 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     return this.toDomain(savedUserBadge)
   }
 
-  async saveMany(userBadges: UserBadge[]): Promise<UserBadge[]> {
-    const savedUserBadges = await prisma.$transaction(
-      userBadges.map((userBadge) =>
-        prisma.userBadge.create({
+  async saveMany(userBadges: UserBadge[], tx?: TransactionClient): Promise<UserBadge[]> {
+    const client = tx || prisma
+    
+    if (tx) {
+      const savedUserBadges: UserBadge[] = []
+      for (const userBadge of userBadges) {
+        const savedUserBadge = await client.userBadge.create({
           data: {
             badgeId: userBadge.badgeId,
             userId: userBadge.userId,
             createdAt: userBadge.createdAt,
           },
         })
+        savedUserBadges.push(savedUserBadge as UserBadge)
+      }
+      return savedUserBadges
+    } else {
+      const savedUserBadges = await prisma.$transaction(
+        userBadges.map((userBadge) =>
+          prisma.userBadge.create({
+            data: {
+              badgeId: userBadge.badgeId,
+              userId: userBadge.userId,
+              createdAt: userBadge.createdAt,
+            },
+          })
+        )
       )
-    )
-
-    return savedUserBadges as UserBadge[]
+      return savedUserBadges as UserBadge[]
+    }
   }
 
   async update(

@@ -1,10 +1,12 @@
 import prisma from "@/utils/prisma"
 import { BigThreeRecord } from "@/backend/domain/entities/BigThreeRecord"
 import { BigThreeRecordRepository } from "@/backend/domain/repositories/BigThreeRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
-  async findMaxByUserId(userId: string): Promise<BigThreeRecord | null> {
-    const record = await prisma.bigThreeRecord.findFirst({
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<BigThreeRecord | null> {
+    const client = tx || prisma
+    const record = await client.bigThreeRecord.findFirst({
       where: { userId },
       orderBy: { weight: "desc" }
     })
@@ -16,7 +18,8 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<BigThreeRecord[]> {
     const whereCondition: any = { userId }
 
@@ -26,7 +29,8 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
       if (endDate) whereCondition.createdAt.lte = endDate
     }
 
-    const records = await prisma.bigThreeRecord.findMany({
+    const client = tx || prisma
+    const records = await client.bigThreeRecord.findMany({
       where: whereCondition,
       orderBy: { createdAt: sortOrder || "desc" },
       take: limit
@@ -35,8 +39,9 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
     return records as BigThreeRecord[]
   }
 
-  async save(record: BigThreeRecord): Promise<BigThreeRecord> {
-    const savedRecord = await prisma.bigThreeRecord.create({
+  async save(record: BigThreeRecord, tx?: TransactionClient): Promise<BigThreeRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.bigThreeRecord.create({
       data: {
         userId: record.userId,
         weight: record.weight,
@@ -46,9 +51,10 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
     return savedRecord as BigThreeRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.bigThreeRecord.deleteMany({
+      const client = tx || prisma
+      await client.bigThreeRecord.deleteMany({
         where: {
           userId,
           createdAt

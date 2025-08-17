@@ -1,10 +1,12 @@
 import prisma from "@/utils/prisma"
 import { RunningRecord } from "@/backend/domain/entities/RunningRecord"
 import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrRunningRecordRepository implements RunningRecordRepository {
-  async findMaxByUserId(userId: string): Promise<RunningRecord | null> {
-    const record = await prisma.runningRecord.findFirst({
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<RunningRecord | null> {
+    const client = tx || prisma
+    const record = await client.runningRecord.findFirst({
       where: { userId },
       orderBy: { distance: "desc" }
     })
@@ -16,7 +18,8 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     startDate?: Date,
     endDate?: Date,
     sortOrder?: "asc" | "desc",
-    limit?: number
+    limit?: number,
+    tx?: TransactionClient
   ): Promise<RunningRecord[]> {
     const whereCondition: any = { userId }
 
@@ -26,7 +29,8 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
       if (endDate) whereCondition.createdAt.lte = endDate
     }
 
-    const records = await prisma.runningRecord.findMany({
+    const client = tx || prisma
+    const records = await client.runningRecord.findMany({
       where: whereCondition,
       orderBy: { createdAt: sortOrder || "desc" },
       take: limit
@@ -35,8 +39,9 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     return records as RunningRecord[]
   }
 
-  async save(record: RunningRecord): Promise<RunningRecord> {
-    const savedRecord = await prisma.runningRecord.create({
+  async save(record: RunningRecord, tx?: TransactionClient): Promise<RunningRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.runningRecord.create({
       data: {
         userId: record.userId,
         distance: record.distance,
@@ -46,9 +51,10 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     return savedRecord as RunningRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.runningRecord.deleteMany({
+      const client = tx || prisma
+      await client.runningRecord.deleteMany({
         where: {
           userId,
           createdAt

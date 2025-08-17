@@ -1,9 +1,11 @@
 import { LogWorkout } from "../entities/LogWorkout";
+import { TransactionClient } from "@/backend/domain/common/TransactionClient";
 
 export interface LogWorkoutRepository {
-  findAll(): Promise<LogWorkout[]>;
-  findById(id: number): Promise<LogWorkout | null>;
-  save(logWorkout: LogWorkout): Promise<LogWorkout>;
-  update(id: number, logWorkout: Partial<LogWorkout>): Promise<LogWorkout | null>;
-  delete(id: number): Promise<boolean>;
+  findAll(tx?: TransactionClient): Promise<LogWorkout[]>;
+  findById(id: number, tx?: TransactionClient): Promise<LogWorkout | null>;
+  save(logWorkout: LogWorkout, tx?: TransactionClient): Promise<LogWorkout>;
+  saveMany(logWorkouts: Omit<LogWorkout, "id">[], tx?: TransactionClient): Promise<{ count: number }>;
+  update(id: number, logWorkout: Partial<LogWorkout>, tx?: TransactionClient): Promise<LogWorkout | null>;
+  delete(id: number, tx?: TransactionClient): Promise<boolean>;
 }
