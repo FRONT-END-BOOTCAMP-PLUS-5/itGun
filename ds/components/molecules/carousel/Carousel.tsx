@@ -1,4 +1,12 @@
-import { Children, FC, TouchEvent, useMemo, useRef, useState } from "react"
+import {
+  Children,
+  FC,
+  TouchEvent,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react"
 import { CarouselProps } from "./Carousel.types"
 import { SWIPE_THRESHOLD, TRANSITION_DURATION } from "./Carousel.constants"
 
@@ -6,6 +14,7 @@ export const Carousel: FC<CarouselProps> = ({
   children,
   className,
   isIndicators = true,
+  autoSlideDelay,
   ...props
 }) => {
   const combinedClassName = `
@@ -92,6 +101,16 @@ export const Carousel: FC<CarouselProps> = ({
     setCurrentIndex(index + 1)
   }
 
+  useEffect(() => {
+    if (!autoSlideDelay) return
+
+    const timer = setTimeout(() => {
+      moveToSlide("next")
+    }, autoSlideDelay)
+
+    return () => clearTimeout(timer)
+  }, [currentIndex, autoSlideDelay])
+
   return (
     <div className={combinedClassName} {...props}>
       <div
@@ -126,7 +145,6 @@ export const Carousel: FC<CarouselProps> = ({
         </ul>
       </div>
 
-      {/* 인디케이터 */}
       {isIndicators && (
         <div className="mt-4 flex justify-center gap-2">
           {childrens.map((_, index) => (

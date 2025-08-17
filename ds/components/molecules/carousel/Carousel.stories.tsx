@@ -36,7 +36,7 @@ export const Default: Story = {
     ]
     return (
       <div className="h-96 w-96">
-        <Carousel>
+        <Carousel autoSlideDelay={2000}>
           {items.map((item) => (
             <Card
               key={item.id}
