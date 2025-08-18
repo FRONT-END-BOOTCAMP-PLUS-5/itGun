@@ -56,7 +56,7 @@ export class RecordBadgeService {
       running: RunningRecord | null
       bigThree: BigThreeRecord | null
     },
-    logCreatedAt: Date,
+    logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const awardedBadges: UserBadge[] = []
@@ -117,7 +117,7 @@ export class RecordBadgeService {
       const newRecord = new BenchPressRecord(
         userId,
         logMaxRecords.benchPress,
-        logCreatedAt
+        logDate
       )
       await this.benchPressRecordRepository.save(newRecord, tx)
 
@@ -127,7 +127,7 @@ export class RecordBadgeService {
             badge.name.includes("벤치프레스") && badge.name.includes("신기록")
         )
         if (benchBadge) {
-          const userBadge = new UserBadge(0, benchBadge.id, userId, logCreatedAt)
+          const userBadge = new UserBadge(0, benchBadge.id, userId, logDate)
           awardedBadges.push(userBadge)
         }
       }
@@ -135,7 +135,7 @@ export class RecordBadgeService {
 
     // 스쿼트
     if (logMaxRecords.squat > (existingRecords.squat?.weight || 0)) {
-      const newRecord = new SquatRecord(userId, logMaxRecords.squat, logCreatedAt)
+      const newRecord = new SquatRecord(userId, logMaxRecords.squat, logDate)
       await this.squatRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.squat >= RECORD_MINIMUMS.SQUAT) {
@@ -144,7 +144,7 @@ export class RecordBadgeService {
             badge.name.includes("스쿼트") && badge.name.includes("신기록")
         )
         if (squatBadge) {
-          const userBadge = new UserBadge(0, squatBadge.id, userId, logCreatedAt)
+          const userBadge = new UserBadge(0, squatBadge.id, userId, logDate)
           awardedBadges.push(userBadge)
         }
       }
@@ -155,7 +155,7 @@ export class RecordBadgeService {
       const newRecord = new DeadliftRecord(
         userId,
         logMaxRecords.deadlift,
-        logCreatedAt
+        logDate
       )
       await this.deadliftRecordRepository.save(newRecord, tx)
 
@@ -165,7 +165,7 @@ export class RecordBadgeService {
             badge.name.includes("데드리프트") && badge.name.includes("신기록")
         )
         if (deadliftBadge) {
-          const userBadge = new UserBadge(0, deadliftBadge.id, userId, logCreatedAt)
+          const userBadge = new UserBadge(0, deadliftBadge.id, userId, logDate)
           awardedBadges.push(userBadge)
         }
       }
@@ -176,7 +176,7 @@ export class RecordBadgeService {
       const newRecord = new RunningRecord(
         userId,
         logMaxRecords.running,
-        logCreatedAt
+        logDate
       )
       await this.runningRecordRepository.save(newRecord, tx)
 
@@ -186,7 +186,7 @@ export class RecordBadgeService {
             badge.name.includes("달리기") && badge.name.includes("신기록")
         )
         if (runningBadge) {
-          const userBadge = new UserBadge(0, runningBadge.id, userId, logCreatedAt)
+          const userBadge = new UserBadge(0, runningBadge.id, userId, logDate)
           awardedBadges.push(userBadge)
         }
       }
@@ -202,7 +202,7 @@ export class RecordBadgeService {
     const previousLevel = Math.floor(previousBigThree / BIG_THREE_BADGE_UNIT)
 
     if (currentBigThree > previousBigThree) {
-      const newRecord = new BigThreeRecord(userId, currentBigThree, logCreatedAt)
+      const newRecord = new BigThreeRecord(userId, currentBigThree, logDate)
       await this.bigThreeRecordRepository.save(newRecord, tx)
 
       if (currentLevel > previousLevel && currentBigThree >= BIG_THREE_BADGE_UNIT) {
@@ -211,7 +211,7 @@ export class RecordBadgeService {
         )
 
         if (bigThreeBadge) {
-          const userBadge = new UserBadge(0, bigThreeBadge.id, userId, logCreatedAt)
+          const userBadge = new UserBadge(0, bigThreeBadge.id, userId, logDate)
           awardedBadges.push(userBadge)
         }
       }

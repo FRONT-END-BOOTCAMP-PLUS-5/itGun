@@ -13,7 +13,7 @@ export class ConsecutiveDaysBadgeService {
   async check(
     userId: string,
     badges: Badge[],
-    logCreatedAt: Date,
+    logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
     const consecutiveBadge = badges.find((badge) =>
@@ -22,18 +22,18 @@ export class ConsecutiveDaysBadgeService {
 
     if (!consecutiveBadge) return null
 
-    const logDate = new Date(logCreatedAt)
-    logDate.setHours(23, 59, 59, 999)
+    const parsedDate = new Date(logDate)
+    parsedDate.setHours(23, 59, 59, 999)
 
     // 로그 날짜 포함 7일
-    const sevenDaysAgo = new Date(logDate)
-    sevenDaysAgo.setDate(logDate.getDate() - 6)
+    const sevenDaysAgo = new Date(parsedDate)
+    sevenDaysAgo.setDate(parsedDate.getDate() - 6)
     sevenDaysAgo.setHours(0, 0, 0, 0)
 
     const recentLogs = await this.logRepository.findAllByUserIdAndDateRange(
       userId,
       sevenDaysAgo,
-      logDate,
+      parsedDate,
       false,
       tx
     )
@@ -46,8 +46,8 @@ export class ConsecutiveDaysBadgeService {
     // 7일 연속 운동했는지 확인
     let consecutiveDays = 0
     for (let i = 0; i < 7; i++) {
-      const checkDate = new Date(logDate)
-      checkDate.setDate(logDate.getDate() - i)
+      const checkDate = new Date(parsedDate)
+      checkDate.setDate(parsedDate.getDate() - i)
 
       if (workoutDates.has(checkDate.toDateString())) {
         consecutiveDays++
@@ -63,7 +63,7 @@ export class ConsecutiveDaysBadgeService {
       userId,
       [consecutiveBadge.id],
       sevenDaysAgo,
-      logDate,
+      parsedDate,
       "desc",
       undefined,
       tx
@@ -74,6 +74,6 @@ export class ConsecutiveDaysBadgeService {
       return null
     }
 
-    return new UserBadge(0, consecutiveBadge.id, userId, logCreatedAt)
+    return new UserBadge(0, consecutiveBadge.id, userId, logDate)
   }
 }

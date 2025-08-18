@@ -9,7 +9,7 @@ export class FirstWorkoutBadgeService {
   async check(
     userId: string,
     badges: Badge[],
-    logCreatedAt: Date,
+    logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
     const firstWorkoutBadge = badges.find((badge) =>
@@ -30,6 +30,6 @@ export class FirstWorkoutBadgeService {
 
     if (existingBadge.length > 0) return null
 
-    return new UserBadge(0, firstWorkoutBadge.id, userId, logCreatedAt)
+    return new UserBadge(0, firstWorkoutBadge.id, userId, logDate)
   }
 }
