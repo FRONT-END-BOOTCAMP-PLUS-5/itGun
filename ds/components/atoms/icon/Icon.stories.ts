@@ -32,6 +32,7 @@ const meta = {
         "gauge",
         "leg",
         "arm",
+        "check",
       ],
     },
     size: {
