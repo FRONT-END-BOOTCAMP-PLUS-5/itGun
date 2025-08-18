@@ -29,28 +29,14 @@ export class BadgeDeletionService {
     ])
 
     const userBadgesToRemove: number[] = []
-    const deletePromises: Promise<boolean>[] = []
 
     // 1. 첫 운동 뱃지
-    // TODO: 뱃지 종류 가져오는 코드는 Badge 부여할 때와 마찬가지로 실제 badge 테이블의 데이터 작성 후, 수정이 필요합니다!
-    const firstWorkoutBadge = badges.find(
-      (badge) =>
-        badge.name.includes("첫 운동") || badge.name.includes("first workout")
+    await this.checkFirstWorkoutBadgeDeletion(
+      userId,
+      badges,
+      firstLog,
+      userBadgesToRemove
     )
-
-    if (firstWorkoutBadge) {
-      const userfirstWorkoutBadge =
-        await this.userBadgeRepository.findByUserIdAndOptions(userId, [
-          firstWorkoutBadge.id,
-        ])
-      const hasFirstWorkBadge = userfirstWorkoutBadge.length > 0
-
-      if (hasFirstWorkBadge) {
-        if (!firstLog) {
-          userBadgesToRemove.push(userfirstWorkoutBadge[0].id)
-        }
-      }
-    }
 
     // 2. 연속 7일 뱃지 체크
     await this.checkConsecutiveBadgeDeletion(
@@ -69,17 +55,53 @@ export class BadgeDeletionService {
     )
 
     // 4. 신기록 뱃지들 체크
-    await this.checkRecordBadgeDeletion(
+    await this.deleteRecordBadges(
       userId,
       logToDelete,
       badges,
       userBadgesToRemove,
-      deletePromises
     )
 
     // 5. 뱃지 삭제 실행
-    if (userBadgesToRemove.length > 0) {
-      await this.userBadgeRepository.deleteMany(userBadgesToRemove)
+    try {
+      if (userBadgesToRemove.length > 0) {
+        await this.userBadgeRepository.deleteMany(userBadgesToRemove)
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : "운동 로그 삭제 중 오류가 발생했습니다.",
+      }
+    }
+  }
+
+  private async checkFirstWorkoutBadgeDeletion(
+    userId: string,
+    badges: Badge[],
+    firstLog: Log | null,
+    userBadgesToRemove: number[]
+  ): Promise<void> {
+    // TODO: 뱃지 종류 가져오는 코드는 Badge 부여할 때와 마찬가지로 실제 badge 테이블의 데이터 작성 후, 수정이 필요합니다!
+    const firstWorkoutBadge = badges.find(
+      (badge) =>
+        badge.name.includes("첫 운동") || badge.name.includes("first workout")
+    )
+
+    if (firstWorkoutBadge) {
+      const userfirstWorkoutBadge =
+        await this.userBadgeRepository.findByUserIdAndOptions(userId, [
+          firstWorkoutBadge.id,
+        ])
+      const hasFirstWorkBadge = userfirstWorkoutBadge.length > 0
+
+      if (hasFirstWorkBadge) {
+        if (!firstLog) {
+          userBadgesToRemove.push(userfirstWorkoutBadge[0].id)
+        }
+      }
     }
   }
 
@@ -156,9 +178,24 @@ export class BadgeDeletionService {
 
     if (!consecutiveBadge) return
 
+     const logDate = new Date(logToDelete.createdAt)
+     logDate.setHours(0, 0, 0, 0)
+     const endOfDay = new Date(logDate)
+     endOfDay.setHours(23, 59, 59, 999)
+
+     const logsOnSameDate = (
+       await this.logRepository.findAllByUserIdAndDateRange(
+         userId,
+         logDate,
+         endOfDay
+       )
+     ).filter((log) => log.id !== logToDelete.id)
+
+     const hasLogOnSameDate = logsOnSameDate.length > 0
+
+     if (hasLogOnSameDate) return
+
     // 해당 로그의 날짜를 포함한 7일 후까지의 날짜 범위 계산
-    const logDate = new Date(logToDelete.createdAt)
-    logDate.setHours(0, 0, 0, 0)
     const sevenDaysAfter = new Date(logDate)
     sevenDaysAfter.setDate(logDate.getDate() + 6)
     sevenDaysAfter.setHours(23, 59, 59, 999)
@@ -175,31 +212,15 @@ export class BadgeDeletionService {
     const hasConsecutiveBadge = consecutiveBadgesInPeriod.length > 0
 
     if (hasConsecutiveBadge) {
-      const endOfDay = new Date(logDate)
-      endOfDay.setHours(23, 59, 59, 999)
-
-      const logsOnSameDate = (
-        await this.logRepository.findAllByUserIdAndDateRange(
-          userId,
-          logDate,
-          endOfDay
-        )
-      ).filter((log) => log.id !== logToDelete.id)
-
-      const shouldKeepConsecutiveBadge = logsOnSameDate.length > 0
-
-      if (!shouldKeepConsecutiveBadge) {
-        userBadgesToRemove.push(consecutiveBadgesInPeriod[0].id)
-      }
+      userBadgesToRemove.push(consecutiveBadgesInPeriod[0].id)
     }
   }
 
-  private async checkRecordBadgeDeletion(
+  private async deleteRecordBadges(
     userId: string,
     logToDelete: Log,
     badges: Badge[],
     userBadgesToRemove: number[],
-    deletePromises: Promise<boolean>[]
   ): Promise<void> {
     const deletedLogDate = new Date(logToDelete.createdAt)
 
@@ -240,6 +261,8 @@ export class BadgeDeletionService {
       )
 
     if (!recordBadgesOnDate || recordBadgesOnDate.length === 0) return
+
+    const deletePromises: Promise<boolean>[] = []
 
     recordBadgesOnDate.forEach((badge) => {
       userBadgesToRemove.push(badge.id)
@@ -284,7 +307,11 @@ export class BadgeDeletionService {
 
     // 모든 레코드 삭제 실행
     if (deletePromises.length > 0) {
-      await Promise.all(deletePromises)
+      try {
+        await Promise.all(deletePromises)
+      } catch (error) {
+        console.log(error instanceof Error ? error.message : "신기록 레코드를 삭제하는 중 오류가 발생했습니다.")
+      }
     }
   }
 }
