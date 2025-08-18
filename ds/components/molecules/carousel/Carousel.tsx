@@ -1,12 +1,4 @@
-import {
-  Children,
-  FC,
-  TouchEvent,
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-} from "react"
+import { Children, FC, TouchEvent, useRef, useState, useEffect } from "react"
 import { CarouselProps } from "./Carousel.types"
 import { SWIPE_THRESHOLD, TRANSITION_DURATION } from "./Carousel.constants"
 
@@ -33,11 +25,12 @@ export const Carousel: FC<CarouselProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
 
   const extendedChildren = [childrens.at(-1), ...childrens, childrens.at(0)]
-  const indicatorIndex = useMemo(() => {
+
+  const indicatorIndex = (() => {
     if (currentIndex === 0) return childrens.length - 1
-    else if (currentIndex === extendedChildren.length - 1) return 0
+    if (currentIndex === extendedChildren.length - 1) return 0
     return currentIndex - 1
-  }, [currentIndex])
+  })()
 
   const moveToSlide = (direction: "prev" | "next") => {
     setTransitionSpeed(TRANSITION_DURATION)
