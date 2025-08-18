@@ -1,10 +1,12 @@
 import prisma from "@/utils/prisma"
 import { Log, CalIconType } from "@/backend/domain/entities/Log"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrLogRepository implements LogRepository {
-  async findAll(): Promise<Log[]> {
-    const logs = await prisma.log.findMany()
+  async findAll(tx?: TransactionClient): Promise<Log[]> {
+    const client = tx || prisma
+    const logs = await client.log.findMany()
     return logs.map(this.toDomain)
   }
 
@@ -12,12 +14,14 @@ export class PrLogRepository implements LogRepository {
     userId: string,
     startDate: Date,
     endDate: Date,
-    includeWorkouts: boolean = false
+    includeWorkouts: boolean = false,
+    tx?: TransactionClient
   ): Promise<Log[]> {
-    const logs = await prisma.log.findMany({
+    const client = tx || prisma
+    const logs = await client.log.findMany({
       where: {
         userId,
-        createdAt: {
+        logDate: {
           gte: startDate,
           lte: endDate,
         },
@@ -32,36 +36,59 @@ export class PrLogRepository implements LogRepository {
         },
       }),
       orderBy: {
-        createdAt: "desc",
+        logDate: "desc",
       },
     })
 
     return logs as Log[]
   }
 
-  async findById(id: number): Promise<Log | null> {
-    const log = await prisma.log.findUnique({
-      where: { id },
+  async findFirstByUserId(userId: string, tx?: TransactionClient): Promise<Log | null> {
+    const client = tx || prisma
+    const log = await client.log.findFirst({
+      where: { userId },
+      orderBy: {
+        logDate: "asc",
+      },
     })
-    return log ? this.toDomain(log) : null
+
+    return log as Log || null
   }
 
-  async save(log: Log): Promise<Log> {
-    const savedLog = await prisma.log.create({
+  async findById(id: number, tx?: TransactionClient): Promise<Log | null> {
+    const client = tx || prisma
+    const log = await client.log.findUnique({
+      where: { id },
+      include: {
+        logWorkouts: {
+          include: {
+            workout: true,
+          },
+        },
+      },
+    })
+
+    return log as Log || null
+  }
+
+  async save(log: Log, tx?: TransactionClient): Promise<Log> {
+    const client = tx || prisma
+    const savedLog = await client.log.create({
       data: {
         userId: log.userId,
         calIconType: log.calIconType,
         totalDuration: log.totalDuration,
         gaugeChanges: log.gaugeChanges,
-        createdAt: log.createdAt,
+        logDate: log.logDate,
       },
     })
-    return this.toDomain(savedLog)
+    return savedLog as Log
   }
 
-  async update(id: number, logData: Partial<Log>): Promise<Log | null> {
+  async update(id: number, logData: Partial<Log>, tx?: TransactionClient): Promise<Log | null> {
     try {
-      const updatedLog = await prisma.log.update({
+      const client = tx || prisma
+      const updatedLog = await client.log.update({
         where: { id },
         data: {
           ...(logData.userId && { userId: logData.userId }),
@@ -80,9 +107,10 @@ export class PrLogRepository implements LogRepository {
     }
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: number, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.log.delete({
+      const client = tx || prisma
+      await client.log.delete({
         where: { id },
       })
       return true
@@ -97,6 +125,7 @@ export class PrLogRepository implements LogRepository {
       log.userId,
       log.calIconType as CalIconType,
       log.totalDuration,
+      log.logDate,
       log.createdAt,
       log.logWorkouts,
       log.gaugeChanges

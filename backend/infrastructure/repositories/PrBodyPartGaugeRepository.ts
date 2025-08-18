@@ -1,44 +1,50 @@
 import prisma from "../../../utils/prisma"
 import { BodyPartGauge } from "../../domain/entities/BodyPartGauge"
 import { BodyPartGaugeRepository } from "../../domain/repositories/BodyPartGaugeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
-  async findAll(): Promise<BodyPartGauge[]> {
-    const gauges = await prisma.bodyPartGauge.findMany()
+  async findAll(tx?: TransactionClient): Promise<BodyPartGauge[]> {
+    const client = tx || prisma
+    const gauges = await client.bodyPartGauge.findMany()
     return gauges.map(this.toDomain)
   }
 
-  async findById(id: number): Promise<BodyPartGauge | null> {
-    const gauge = await prisma.bodyPartGauge.findUnique({
+  async findById(id: number, tx?: TransactionClient): Promise<BodyPartGauge | null> {
+    const client = tx || prisma
+    const gauge = await client.bodyPartGauge.findUnique({
       where: { id },
     })
     return gauge ? this.toDomain(gauge) : null
   }
 
-  async findByUserId(id: string, date?: Date): Promise<BodyPartGauge | null> {
+  async findByUserId(id: string, date?: Date, tx?: TransactionClient): Promise<BodyPartGauge | null> {
     const whereCondition: any = { userId: id }
 
     if (date) {
-      whereCondition.createdAt = date
+      whereCondition.earnedAt = date
     }
 
-    const userBodyPartGauge = await prisma.bodyPartGauge.findUnique({
+    const client = tx || prisma
+    const userBodyPartGauge = await client.bodyPartGauge.findUnique({
       where: whereCondition,
     })
 
-    return userBodyPartGauge ? this.toDomain(userBodyPartGauge) : null
+    return userBodyPartGauge as BodyPartGauge || null
   }
 
-  async findLatestOneByUserId(userId: string): Promise<BodyPartGauge | null> {
-    const gauge = await prisma.bodyPartGauge.findFirst({
+  async findLatestOneByUserId(userId: string, tx?: TransactionClient): Promise<BodyPartGauge | null> {
+    const client = tx || prisma
+    const gauge = await client.bodyPartGauge.findFirst({
       where: { userId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { earnedAt: "desc" },
     })
-    return gauge ? this.toDomain(gauge) : null
+    return gauge as BodyPartGauge || null
   }
 
-  async save(bodyPartGauge: BodyPartGauge): Promise<BodyPartGauge> {
-    const savedGauge = await prisma.bodyPartGauge.create({
+  async save(bodyPartGauge: BodyPartGauge, tx?: TransactionClient): Promise<BodyPartGauge> {
+    const client = tx || prisma
+    const savedGauge = await client.bodyPartGauge.create({
       data: {
         userId: bodyPartGauge.userId,
         arms: bodyPartGauge.arms,
@@ -48,18 +54,21 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         chest: bodyPartGauge.chest,
         core: bodyPartGauge.core,
         stamina: bodyPartGauge.stamina,
-        createdAt: bodyPartGauge.createdAt,
+        earnedAt: bodyPartGauge.earnedAt,
+        createdAt: new Date(),
       },
     })
-    return this.toDomain(savedGauge)
+    return savedGauge as BodyPartGauge
   }
 
   async update(
     id: number,
-    gaugeData: Partial<BodyPartGauge>
+    gaugeData: Partial<BodyPartGauge>,
+    tx?: TransactionClient
   ): Promise<BodyPartGauge | null> {
     try {
-      const updatedGauge = await prisma.bodyPartGauge.update({
+      const client = tx || prisma
+      const updatedGauge = await client.bodyPartGauge.update({
         where: { id },
         data: {
           ...(gaugeData.userId && { userId: gaugeData.userId }),
@@ -80,9 +89,10 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     }
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: number, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.bodyPartGauge.delete({
+      const client = tx || prisma
+      await client.bodyPartGauge.delete({
         where: { id },
       })
       return true
@@ -102,6 +112,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       gauge.chest,
       gauge.core,
       gauge.stamina,
+      gauge.earnedAt,
       gauge.createdAt
     )
   }
