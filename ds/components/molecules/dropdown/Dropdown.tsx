@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
 import { dropdownSizeClasses } from "@/ds/styles/tokens/dropdown/size"
-
+//다시 확인 필요
 const sizeClassBySize: Record<
   NonNullable<DropdownProps["size"]>,
   string

@@ -1,3 +1,4 @@
+//다시 확인 필요
 export type DropdownOption = {
   label: string
   value: string | number

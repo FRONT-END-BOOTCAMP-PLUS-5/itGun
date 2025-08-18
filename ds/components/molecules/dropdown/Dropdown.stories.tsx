@@ -3,7 +3,7 @@ import Dropdown from "./Dropdown"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 
 import type { Meta, StoryObj } from "@storybook/nextjs"
-
+//다시 확인 필요
 const meta: Meta<typeof Dropdown> = {
   title: "Components/Molecules/Dropdown",
   component: Dropdown,
