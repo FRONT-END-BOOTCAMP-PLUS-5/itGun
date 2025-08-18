@@ -94,7 +94,14 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
   async saveMany(userBadges: UserBadge[], tx?: TransactionClient): Promise<UserBadge[]> {
     const client = tx || prisma
     
-    const savedUserBadges = await client.userBadge.createManyAndReturn({ data: userBadges })
+    const savedUserBadges = await client.userBadge.createManyAndReturn({
+      data: userBadges.map((userBadge) => ({
+        badgeId: userBadge.badgeId,
+        userId: userBadge.userId,
+        earnedAt: userBadge.earnedAt,
+        createdAt: userBadge.createdAt || new Date(),
+      })),
+    })
 
     return savedUserBadges as UserBadge[]
   }

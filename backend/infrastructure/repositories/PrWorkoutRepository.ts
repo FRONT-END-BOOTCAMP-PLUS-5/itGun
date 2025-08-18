@@ -37,7 +37,17 @@ export class PrWorkoutRepository implements WorkoutRepository {
   async saveMany(workouts: Omit<Workout, "id">[], tx?: TransactionClient): Promise<Workout[]> {
     const client = tx || prisma
 
-    const savedWorkouts = await client.workout.createManyAndReturn({ data: workouts })
+    const savedWorkouts = await client.workout.createManyAndReturn({
+      data: workouts.map((workout) => ({
+        seq: workout.seq,
+        exerciseName: workout.exerciseName,
+        setCount: workout.setCount,
+        weight: workout.weight,
+        repetitionCount: workout.repetitionCount,
+        distance: workout.distance,
+        durationSeconds: workout.durationSeconds,
+      })),
+    })
     
     return savedWorkouts as Workout[]
   }
