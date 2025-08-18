@@ -4,7 +4,6 @@ import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepo
 import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/DeleteLogRequestDto"
 import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 import { BadgeDeletionService } from "@/backend/application/user/logs/services/BadgeDeletionService"
-import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
 import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
 import { PrBenchPressRecordRepository } from "@/backend/infrastructure/repositories/PrBenchPressRecordRepository"
 import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositories/PrDeadliftRecordRepository"
@@ -28,7 +27,6 @@ export async function DELETE(
     const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
-    const badgeRepository = new PrBadgeRepository()
     const userBadgeRepository = new PrUserBadgeRepository()
     const benchPressRecordRepository = new PrBenchPressRecordRepository()
     const deadliftRecordRepository = new PrDeadliftRecordRepository()
@@ -38,7 +36,6 @@ export async function DELETE(
     
     const badgeDeletionService = new BadgeDeletionService(
       userBadgeRepository,
-      badgeRepository,
       logRepository,
       benchPressRecordRepository,
       deadliftRecordRepository,

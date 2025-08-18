@@ -1,4 +1,3 @@
-import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
 import { BenchPressRecordRepository } from "@/backend/domain/repositories/BenchPressRecordRepository"
@@ -6,14 +5,13 @@ import { DeadliftRecordRepository } from "@/backend/domain/repositories/Deadlift
 import { SquatRecordRepository } from "@/backend/domain/repositories/SquatRecordRepository"
 import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
 import { BigThreeRecordRepository } from "@/backend/domain/repositories/BigThreeRecordRepository"
+import { BADGE_IDS, RECORD_BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
 import { Log } from "@/backend/domain/entities/Log"
-import { Badge } from "@/backend/domain/entities/Badge"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class BadgeDeletionService {
   constructor(
     private userBadgeRepository: UserBadgeRepository,
-    private badgeRepository: BadgeRepository,
     private logRepository: LogRepository,
     private benchPressRecordRepository: BenchPressRecordRepository,
     private deadliftRecordRepository: DeadliftRecordRepository,
@@ -24,17 +22,13 @@ export class BadgeDeletionService {
 
   async handleBadgeDeletion(logToDelete: Log, tx?: TransactionClient) {
     const userId = logToDelete.userId
-    const [badges, firstLog] = await Promise.all([
-      this.badgeRepository.findAll(tx),
-      this.logRepository.findFirstByUserId(userId, tx),
-    ])
+    const firstLog = await this.logRepository.findFirstByUserId(userId, tx)
 
     const userBadgesToRemove: number[] = []
 
     // 1. 첫 운동 뱃지
     await this.checkFirstWorkoutBadgeDeletion(
       userId,
-      badges,
       firstLog,
       userBadgesToRemove,
       tx
@@ -44,7 +38,6 @@ export class BadgeDeletionService {
     await this.checkConsecutiveBadgeDeletion(
       userId,
       logToDelete,
-      badges,
       userBadgesToRemove,
       tx
     )
@@ -53,7 +46,6 @@ export class BadgeDeletionService {
     await this.checkWeeklyBadgeAfterDeletion(
       userId,
       logToDelete,
-      badges,
       userBadgesToRemove,
       tx
     )
@@ -62,7 +54,6 @@ export class BadgeDeletionService {
     await this.deleteRecordBadges(
       userId,
       logToDelete,
-      badges,
       userBadgesToRemove,
       tx
     )
@@ -85,53 +76,33 @@ export class BadgeDeletionService {
 
   private async checkFirstWorkoutBadgeDeletion(
     userId: string,
-    badges: Badge[],
     firstLog: Log | null,
     userBadgesToRemove: number[],
     tx?: TransactionClient
   ): Promise<void> {
-    // TODO: 뱃지 종류 가져오는 코드는 Badge 부여할 때와 마찬가지로 실제 badge 테이블의 데이터 작성 후, 수정이 필요합니다!
-    const firstWorkoutBadge = badges.find(
-      (badge) =>
-        badge.name.includes("첫 운동") || badge.name.includes("first workout")
-    )
+    const userfirstWorkoutBadge =
+      await this.userBadgeRepository.findByUserIdAndOptions(
+        userId, 
+        [BADGE_IDS.FIRST_WORKOUT], 
+        undefined, 
+        undefined, 
+        undefined, 
+        undefined, 
+        tx
+      )
+    const hasFirstWorkBadge = userfirstWorkoutBadge.length > 0
 
-    if (firstWorkoutBadge) {
-      const userfirstWorkoutBadge =
-        await this.userBadgeRepository.findByUserIdAndOptions(
-          userId, 
-          [firstWorkoutBadge.id], 
-          undefined, 
-          undefined, 
-          undefined, 
-          undefined, 
-          tx
-        )
-      const hasFirstWorkBadge = userfirstWorkoutBadge.length > 0
-
-      if (hasFirstWorkBadge) {
-        if (!firstLog) {
-          userBadgesToRemove.push(userfirstWorkoutBadge[0].id)
-        }
-      }
+    if (hasFirstWorkBadge && !firstLog) {
+      userBadgesToRemove.push(userfirstWorkoutBadge[0].id)
     }
   }
 
   private async checkWeeklyBadgeAfterDeletion(
     userId: string,
     logToDelete: Log,
-    badges: Badge[],
     userBadgesToRemove: number[],
     tx?: TransactionClient
   ): Promise<void> {
-    const weeklyBadge = badges.find(
-      (badge) =>
-        badge.name.includes("일주일 3일") ||
-        badge.name.includes("주 3일") ||
-        badge.name.includes("weekly 3")
-    )
-
-    if (!weeklyBadge) return
 
     const deletedLogDate = new Date(logToDelete.logDate)
     const dayOfWeek = deletedLogDate.getDay()
@@ -148,7 +119,7 @@ export class BadgeDeletionService {
     const weeklyBadgesInPeriod =
       await this.userBadgeRepository.findByUserIdAndOptions(
         userId,
-        [weeklyBadge.id],
+        [BADGE_IDS.WEEKLY_3_DAYS],
         startOfWeek,
         endOfWeek,
         "asc",
@@ -183,18 +154,9 @@ export class BadgeDeletionService {
   private async checkConsecutiveBadgeDeletion(
     userId: string,
     logToDelete: Log,
-    badges: Badge[],
     userBadgesToRemove: number[],
     tx?: TransactionClient
   ): Promise<void> {
-    const consecutiveBadge = badges.find(
-      (badge) =>
-        badge.name.includes("연속 7일") ||
-        badge.name.includes("7 days") ||
-        badge.name.includes("연속")
-    )
-
-    if (!consecutiveBadge) return
 
      const deletedLogDate = new Date(logToDelete.logDate)
      deletedLogDate.setHours(0, 0, 0, 0)
@@ -223,7 +185,7 @@ export class BadgeDeletionService {
     const consecutiveBadgesInPeriod =
       await this.userBadgeRepository.findByUserIdAndOptions(
         userId,
-        [consecutiveBadge.id],
+        [BADGE_IDS.CONSECUTIVE_7_DAYS],
         deletedLogDate,
         sevenDaysAfter,
         "asc",
@@ -241,44 +203,16 @@ export class BadgeDeletionService {
   private async deleteRecordBadges(
     userId: string,
     logToDelete: Log,
-    badges: Badge[],
     userBadgesToRemove: number[],
     tx?: TransactionClient
   ): Promise<void> {
     const deletedLogDate = new Date(logToDelete.logDate)
 
-    // 각 운동별 신기록 뱃지 찾기
-    const benchPressBadge = badges.find(
-      (badge) =>
-        badge.name.includes("벤치프레스") && badge.name.includes("신기록")
-    )
-    const squatBadge = badges.find(
-      (badge) => badge.name.includes("스쿼트") && badge.name.includes("신기록")
-    )
-    const deadliftBadge = badges.find(
-      (badge) =>
-        badge.name.includes("데드리프트") && badge.name.includes("신기록")
-    )
-    const runningBadge = badges.find(
-      (badge) => badge.name.includes("달리기") && badge.name.includes("신기록")
-    )
-    const bigThreeBadge = badges.find(
-      (badge) => badge.name.includes("3대") && badge.name.includes("달성")
-    )
-
-    const badgeIds = [
-      benchPressBadge,
-      squatBadge,
-      deadliftBadge,
-      runningBadge,
-      bigThreeBadge,
-    ].map((badge) => badge!.id)
-
     // 해당 로그와 같은 날짜 및 시간에 생성된 신기록 뱃지들 조회
     const recordBadgesOnDate =
       await this.userBadgeRepository.findByUserIdAndOptions(
         userId,
-        badgeIds,
+        [...RECORD_BADGE_IDS],
         deletedLogDate,
         deletedLogDate,
         undefined,
@@ -293,7 +227,7 @@ export class BadgeDeletionService {
     recordBadgesOnDate.forEach((userBadge) => {
       userBadgesToRemove.push(userBadge.id)
 
-      if (userBadge.badgeId === benchPressBadge?.id) {
+      if (userBadge.badgeId === BADGE_IDS.BENCH_PRESS_RECORD) {
         deletePromises.push(
           this.benchPressRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
@@ -301,7 +235,7 @@ export class BadgeDeletionService {
             tx
           )
         )
-      } else if (userBadge.badgeId === squatBadge?.id) {
+      } else if (userBadge.badgeId === BADGE_IDS.SQUAT_RECORD) {
         deletePromises.push(
           this.squatRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
@@ -309,7 +243,7 @@ export class BadgeDeletionService {
             tx
           )
         )
-      } else if (userBadge.badgeId === deadliftBadge?.id) {
+      } else if (userBadge.badgeId === BADGE_IDS.DEADLIFT_RECORD) {
         deletePromises.push(
           this.deadliftRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
@@ -317,7 +251,7 @@ export class BadgeDeletionService {
             tx
           )
         )
-      } else if (userBadge.badgeId === runningBadge?.id) {
+      } else if (userBadge.badgeId === BADGE_IDS.RUNNING_RECORD) {
         deletePromises.push(
           this.runningRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
@@ -325,7 +259,7 @@ export class BadgeDeletionService {
             tx
           )
         )
-      } else if (userBadge.badgeId === bigThreeBadge?.id) {
+      } else if (userBadge.badgeId === BADGE_IDS.BIG_THREE_RECORD) {
         deletePromises.push(
           this.bigThreeRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
