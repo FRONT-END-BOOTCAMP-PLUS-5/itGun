@@ -11,7 +11,6 @@ import { DeadliftRecordRepository } from "@/backend/domain/repositories/Deadlift
 import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
 import { BigThreeRecordRepository } from "@/backend/domain/repositories/BigThreeRecordRepository"
 import { WorkoutRepository } from "@/backend/domain/repositories/WorkoutRepository"
-import { LogWorkoutRepository } from "@/backend/domain/repositories/LogWorkoutRepository"
 import { CreateLogRequestDto, WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
 import { CreateLogResponseDto } from "@/backend/application/user/logs/dtos/CreateLogResponseDto"
 import { calculateGaugeUpdates } from "@/backend/application/user/logs/utils/bodyPartGaugeCalculator"
@@ -29,7 +28,6 @@ export class CreateLogUsecase {
     private transactionManager: TransactionManager,
     private logRepository: LogRepository,
     private workoutRepository: WorkoutRepository,
-    private logWorkoutRepository: LogWorkoutRepository,
     private bodyPartGaugeRepository: BodyPartGaugeRepository,
     private badgeRepository: BadgeRepository,
     private userBadgeRepository: UserBadgeRepository,
@@ -92,8 +90,6 @@ export class CreateLogUsecase {
           gaugeUpdate
         )
 
-        const savedLog = await this.logRepository.save(log, tx)
-
         const allCriteria: Partial<Workout>[] = []
         const workoutDataMap = new Map<string, WorkoutData>()
 
@@ -139,15 +135,15 @@ export class CreateLogUsecase {
           existingWorkoutsMap.set(key, workout)
         }
 
-        const workoutsToProcess: Workout[] = []
-        const newWorkoutsToCreate: Workout[] = []
+        const workoutToConnect: Pick<Workout, "id">[] = []
+        const workoutToCreate: Workout[] = []
 
         for (const criteria of allCriteria) {
           const criteriaKey = JSON.stringify(criteria)
           const existingWorkout = existingWorkoutsMap.get(criteriaKey)
           
           if (existingWorkout) {
-            workoutsToProcess.push(existingWorkout)
+            workoutToConnect.push({ id: existingWorkout.id })
           } else {
             const workoutData = workoutDataMap.get(criteriaKey)
             const newWorkout = new Workout(
@@ -160,30 +156,11 @@ export class CreateLogUsecase {
               workoutData!.distance,
               workoutData!.durationSeconds
             )
-            newWorkoutsToCreate.push(newWorkout)
+            workoutToCreate.push(newWorkout)
           }
         }
 
-        if (newWorkoutsToCreate.length > 0) {
-          const savedNewWorkouts = await this.workoutRepository.saveMany(newWorkoutsToCreate, tx)
-          workoutsToProcess.push(...savedNewWorkouts)
-        }
-
-        const logWorkouts = workoutsToProcess.map((workout) => ({
-          logId: savedLog.id,
-          workoutId: workout.id,
-          createdAt: new Date(),
-        }))
-
-        const logWorkoutResult =
-          await this.logWorkoutRepository.saveMany(logWorkouts, tx)
-
-        if (logWorkoutResult.count !== workoutsToProcess.length) {
-          return {
-            success: false,
-            message: "운동 로그 연결 중 일부 실패가 발생했습니다.",
-          }
-        }
+        const savedLog = await this.logRepository.saveWithRelations(log, workoutToCreate, workoutToConnect, tx)
 
         // 새로운 body part gauge 생성 (기존 값 + 증가분)
         const newBodyPartGauge = new BodyPartGauge(
@@ -220,7 +197,7 @@ export class CreateLogUsecase {
     } catch (error) {
       return {
         success: false,
-        message: "운동 로그 생성 중 오류가 발생했습니다.",
+        message: error instanceof Error ? error.message : "운동 로그 생성 중 오류가 발생했습니다.",
       }
     }
   }
