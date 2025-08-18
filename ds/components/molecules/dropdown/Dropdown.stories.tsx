@@ -16,15 +16,7 @@ type Story = StoryObj<typeof Dropdown>
 const range = (start: number, end: number) =>
   Array.from({ length: end - start + 1 }, (_, i) => start + i)
 
-const heightOptions: DropdownOption[] = range(140, 200).map((n) => ({
-  label: `${n}cm`,
-  value: n,
-}))
-
-const weightOptions: DropdownOption[] = range(40, 120).map((n) => ({
-  label: `${n}kg`,
-  value: n,
-}))
+// height/weight dropdown stories removed on request
 
 const ageOptions: DropdownOption[] = range(10, 100).map((n) => ({
   label: `${n}세`,
@@ -36,29 +28,7 @@ const genderOptions: DropdownOption[] = [
   { label: "여", value: "female" },
 ]
 
-export const HeightDropdown: Story = {
-  render: (args: DropdownProps) => {
-    const [value, setValue] = useState<string | number | undefined>()
-    return <Dropdown {...args} value={value} onChange={setValue} />
-  },
-  args: {
-    options: heightOptions,
-    placeholder: "키를 선택하세요",
-    size: "md",
-  },
-}
-
-export const WeightDropdown: Story = {
-  render: (args: DropdownProps) => {
-    const [value, setValue] = useState<string | number | undefined>()
-    return <Dropdown {...args} value={value} onChange={setValue} />
-  },
-  args: {
-    options: weightOptions,
-    placeholder: "몸무게를 선택하세요",
-    size: "md",
-  },
-}
+// Height/Weight stories removed
 
 export const AgeDropdown: Story = {
   render: (args: DropdownProps) => {

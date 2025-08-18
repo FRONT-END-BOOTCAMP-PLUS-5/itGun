@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
+import { dropdownSizeClasses } from "@/ds/styles/tokens/dropdown/size"
 
-const sizeClassBySize: Record<NonNullable<DropdownProps["size"]>, string> = {
-  sm: "text-[16px] h-21",
-  md: "text-[16px] h-[30px]",
-  lg: "text-[16px] h-42",
-}
+const sizeClassBySize: Record<
+  NonNullable<DropdownProps["size"]>,
+  string
+> = dropdownSizeClasses
 
 const Dropdown = ({
   size = "md",
@@ -21,19 +21,14 @@ const Dropdown = ({
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
-  const allNumeric = useMemo(
-    () => options.every((opt) => typeof opt.value === "number"),
-    [options]
-  )
+  const allNumeric = options.every((opt) => typeof opt.value === "number")
 
-  const unitSuffix = useMemo(() => {
-    if (!allNumeric || options.length === 0) return ""
-    const sample = options[0].label
-    const suffix = sample.replace(/^[-+]?\d+(?:\.\d+)?\s*/, "")
-    return suffix
-  }, [allNumeric, options])
+  const unitSuffix =
+    !allNumeric || options.length === 0
+      ? ""
+      : options[0].label.replace(/^[-+]?\d+(?:\.\d+)?\s*/, "")
 
-  const groupedRanges = useMemo(() => {
+  const groupedRanges = (() => {
     if (!allNumeric) return [] as { label: string; value: string }[]
     if (options.length === 0) return []
 
@@ -59,9 +54,9 @@ const Dropdown = ({
     }
 
     return groups
-  }, [allNumeric, options, unitSuffix])
+  })()
 
-  const selectedLabel = useMemo(() => {
+  const selectedLabel = (() => {
     const matched = options.find((opt) => opt.value === value)
     if (matched) return matched.label
     if (typeof value === "string" && value.includes("-")) {
@@ -75,7 +70,7 @@ const Dropdown = ({
       return value
     }
     return ""
-  }, [options, unitSuffix, value])
+  })()
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
