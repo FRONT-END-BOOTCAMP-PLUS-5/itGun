@@ -59,6 +59,7 @@ export class DeleteLogUsecase {
         Math.max(0, latestGauge.chest - (gaugeChanges.chest || 0)),
         Math.max(0, latestGauge.core - (gaugeChanges.core || 0)),
         Math.max(0, latestGauge.stamina - (gaugeChanges.stamina || 0)),
+        new Date(),
         new Date()
       )
 

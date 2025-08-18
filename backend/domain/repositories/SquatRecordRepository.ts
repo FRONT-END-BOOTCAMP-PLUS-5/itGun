@@ -12,5 +12,5 @@ export interface SquatRecordRepository {
     tx?: TransactionClient
   ): Promise<SquatRecord[]>
   save(record: SquatRecord, tx?: TransactionClient): Promise<SquatRecord>
-  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean>
+  deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean>
 }

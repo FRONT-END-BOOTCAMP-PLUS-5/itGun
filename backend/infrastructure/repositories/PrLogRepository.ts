@@ -21,7 +21,7 @@ export class PrLogRepository implements LogRepository {
     const logs = await client.log.findMany({
       where: {
         userId,
-        createdAt: {
+        logDate: {
           gte: startDate,
           lte: endDate,
         },
@@ -36,7 +36,7 @@ export class PrLogRepository implements LogRepository {
         },
       }),
       orderBy: {
-        createdAt: "desc",
+        logDate: "desc",
       },
     })
 
@@ -48,7 +48,7 @@ export class PrLogRepository implements LogRepository {
     const log = await client.log.findFirst({
       where: { userId },
       orderBy: {
-        createdAt: "asc",
+        logDate: "asc",
       },
     })
 
@@ -79,10 +79,10 @@ export class PrLogRepository implements LogRepository {
         calIconType: log.calIconType,
         totalDuration: log.totalDuration,
         gaugeChanges: log.gaugeChanges,
-        createdAt: log.createdAt,
+        logDate: log.logDate,
       },
     })
-    return this.toDomain(savedLog)
+    return savedLog as Log
   }
 
   async update(id: number, logData: Partial<Log>, tx?: TransactionClient): Promise<Log | null> {
@@ -125,6 +125,7 @@ export class PrLogRepository implements LogRepository {
       log.userId,
       log.calIconType as CalIconType,
       log.totalDuration,
+      log.logDate,
       log.createdAt,
       log.logWorkouts,
       log.gaugeChanges

@@ -12,5 +12,5 @@ export interface RunningRecordRepository {
     tx?: TransactionClient
   ): Promise<RunningRecord[]>
   save(record: RunningRecord, tx?: TransactionClient): Promise<RunningRecord>
-  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean>
+  deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean>
 }

@@ -8,6 +8,7 @@ export class BodyPartGauge {
     public readonly chest: number = 0,
     public readonly core: number = 0,
     public readonly stamina: number = 0,
+    public readonly earnedAt: Date = new Date(),
     public readonly createdAt: Date = new Date(),
     public readonly id?: number
   ) {}

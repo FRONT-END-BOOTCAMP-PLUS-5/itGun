@@ -24,15 +24,15 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     const whereCondition: any = { userId }
 
     if (startDate || endDate) {
-      whereCondition.createdAt = {}
-      if (startDate) whereCondition.createdAt.gte = startDate
-      if (endDate) whereCondition.createdAt.lte = endDate
+      whereCondition.earnedAt = {}
+      if (startDate) whereCondition.earnedAt.gte = startDate
+      if (endDate) whereCondition.earnedAt.lte = endDate
     }
 
     const client = tx || prisma
     const records = await client.runningRecord.findMany({
       where: whereCondition,
-      orderBy: { createdAt: sortOrder || "desc" },
+      orderBy: { earnedAt: sortOrder || "desc" },
       take: limit
     })
 
@@ -45,19 +45,19 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
       data: {
         userId: record.userId,
         distance: record.distance,
-        createdAt: record.createdAt
+        earnedAt: record.earnedAt
       }
     })
     return savedRecord as RunningRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
+  async deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
       const client = tx || prisma
       await client.runningRecord.deleteMany({
         where: {
           userId,
-          createdAt
+          earnedAt
         }
       })
       return true
