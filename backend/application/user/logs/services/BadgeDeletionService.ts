@@ -264,42 +264,42 @@ export class BadgeDeletionService {
 
     const deletePromises: Promise<boolean>[] = []
 
-    recordBadgesOnDate.forEach((ub) => {
-      userBadgesToRemove.push(ub.id)
+    recordBadgesOnDate.forEach((userBadge) => {
+      userBadgesToRemove.push(userBadge.id)
 
-      if (ub.badgeId === benchPressBadge?.id) {
+      if (userBadge.badgeId === benchPressBadge?.id) {
         deletePromises.push(
           this.benchPressRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
-            ub.earnedAt
+            userBadge.earnedAt
           )
         )
-      } else if (ub.badgeId === squatBadge?.id) {
+      } else if (userBadge.badgeId === squatBadge?.id) {
         deletePromises.push(
           this.squatRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
-            ub.earnedAt
+            userBadge.earnedAt
           )
         )
-      } else if (ub.badgeId === deadliftBadge?.id) {
+      } else if (userBadge.badgeId === deadliftBadge?.id) {
         deletePromises.push(
           this.deadliftRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
-            ub.earnedAt
+            userBadge.earnedAt
           )
         )
-      } else if (ub.badgeId === runningBadge?.id) {
+      } else if (userBadge.badgeId === runningBadge?.id) {
         deletePromises.push(
           this.runningRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
-            ub.earnedAt
+            userBadge.earnedAt
           )
         )
-      } else if (ub.badgeId === bigThreeBadge?.id) {
+      } else if (userBadge.badgeId === bigThreeBadge?.id) {
         deletePromises.push(
           this.bigThreeRecordRepository.deleteByUserIdAndEarnedAt(
             userId,
-            ub.earnedAt
+            userBadge.earnedAt
           )
         )
       }
