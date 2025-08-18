@@ -1,38 +1,37 @@
 export const svgList = {
   setting: (
     <>
-      <path d="M12.25 3.50002L13.5 3.50003L13.5 2.25002H12.25V3.50002Z" />
-      <path d="M9.75 3.50002L8.49999 3.50003L8.5 2.25002H9.75V3.50002Z" />
-      <path d="M18.5 9.75H19.75V8.5L18.5 8.50003L18.5 9.75Z" />
-      <path d="M3.5 9.75H2.25V8.5H3.5V9.75Z" />
-      <path d="M18.5 13.5H19.75L19.75 12.25L18.5 12.25V13.5Z" />
-      <path d="M3.5 13.5H2.25L2.25 12.25L3.5 12.25V13.5Z" />
-      <path d="M12.25 19.75L13.5 19.75L13.5 18.5L12.25 18.5L12.25 19.75Z" />
-      <path d="M9.75 19.75L8.5 19.75L8.49999 18.5L9.75 18.5L9.75 19.75Z" />
-      <path d="M14.75 8.5H13.5V13.5H14.75V8.5Z" />
-      <path d="M13.5 8.5L13.5 7.25003H8.5L8.49999 8.5H13.5Z" />
-      <path d="M8.49999 8.5H7.24999V13.5H8.49999V8.5Z" />
-      <path d="M13.5 14.75L13.5 13.5H8.49999L8.5 14.75H13.5Z" />
-      <path d="M4.75 17.25L4.75 18.5H8.49999V17.25L4.75 17.25Z" />
-      <path d="M3.5 17.25H4.75V13.5L3.5 13.5L3.5 17.25Z" />
-      <path d="M2.25 9.75L1 9.75002V12.25H2.25L2.25 9.75Z" />
-      <path d="M3.5 8.5L4.75 8.50003L4.75 4.75003L3.5 4.75L3.5 8.5Z" />
-      <path d="M8.49999 4.75003V3.50003H4.75V4.75003H8.49999Z" />
-      <path d="M12.25 2.25002L12.25 1H9.75L9.75 2.25002H12.25Z" />
-      <path d="M13.5 3.50003V4.75003H17.25V3.50003H13.5Z" />
-      <path d="M17.25 8.50003H18.5V4.75L17.25 4.75003L17.25 8.50003Z" />
-      <path d="M21 9.75002L19.75 9.75L19.75 12.25H21V9.75002Z" />
-      <path d="M17.25 17.25H18.5L18.5 13.5L17.25 13.5V17.25Z" />
-      <path d="M17.25 18.5L17.25 17.25L13.5 17.25V18.5H17.25Z" />
-      <path d="M12.25 21V19.75H9.75V21H12.25Z" />
-      <path d="M13.5 3.50003V4.75003H17.25M13.5 3.50003L12.25 3.50002V2.25002M13.5 3.50003L13.5 2.25002H12.25M13.5 3.50003H17.25V4.75003M8.49999 3.50003V4.75003H4.75M8.49999 3.50003L9.75 3.50002V2.25002M8.49999 3.50003L8.5 2.25002H9.75M8.49999 3.50003H4.75V4.75003M12.25 2.25002L12.25 1H9.75L9.75 2.25002M12.25 2.25002H9.75M18.5 8.50003H17.25L17.25 4.75003M18.5 8.50003L19.75 8.5V9.75M18.5 8.50003L18.5 9.75H19.75M18.5 8.50003V4.75L17.25 4.75003M19.75 9.75L21 9.75002V12.25H19.75M19.75 9.75L19.75 12.25M2.25 9.75H3.5V8.5M2.25 9.75V8.5H3.5M2.25 9.75L1 9.75002V12.25H2.25M2.25 9.75L2.25 12.25M3.5 8.5L4.75 8.50003L4.75 4.75003M3.5 8.5L3.5 4.75L4.75 4.75003M19.75 12.25L19.75 13.5H18.5M19.75 12.25L18.5 12.25V13.5M2.25 12.25L2.25 13.5H3.5M2.25 12.25L3.5 12.25V13.5M13.5 8.5H14.75V13.5H13.5M13.5 8.5L13.5 7.25003H8.5L8.49999 8.5M13.5 8.5V13.5M13.5 8.5H8.49999M8.49999 8.5H7.24999V13.5H8.49999M8.49999 8.5V13.5M13.5 13.5L13.5 14.75H8.5L8.49999 13.5M13.5 13.5H8.49999M17.25 17.25H18.5L18.5 13.5M17.25 17.25L17.25 18.5H13.5M17.25 17.25V13.5L18.5 13.5M17.25 17.25L13.5 17.25V18.5M4.75 17.25H3.5L3.5 13.5M4.75 17.25L4.75 18.5H8.49999M4.75 17.25V13.5L3.5 13.5M4.75 17.25L8.49999 17.25V18.5M12.25 19.75V21H9.75V19.75M12.25 19.75L13.5 19.75L13.5 18.5M12.25 19.75L12.25 18.5L13.5 18.5M12.25 19.75H9.75M9.75 19.75L8.5 19.75L8.49999 18.5M9.75 19.75L9.75 18.5L8.49999 18.5" />
+      <path d="M13 6.00001L14 6.00003L14 5.00001H13V6.00001Z" />
+      <path d="M11 6.00001L10 6.00003L10 5.00001H11V6.00001Z" />
+      <path d="M18 11H19V10L18 10L18 11Z" />
+      <path d="M6 11H5V10H6V11Z" />
+      <path d="M18 14H19L19 13L18 13V14Z" />
+      <path d="M6 14H5L5 13L6 13V14Z" />
+      <path d="M13 19L14 19L14 18L13 18L13 19Z" />
+      <path d="M11 19L10 19L10 18L11 18L11 19Z" />
+      <path d="M15 10H14V14H15V10Z" />
+      <path d="M14 10L14 9.00003H10L10 10H14Z" />
+      <path d="M10 10H9V14H10V10Z" />
+      <path d="M14 15L14 14H10L10 15H14Z" />
+      <path d="M7 17L7 18H10V17L7 17Z" />
+      <path d="M6 17H7V14L6 14L6 17Z" />
+      <path d="M5 11L4 11V13H5L5 11Z" />
+      <path d="M6 10L7 10L7 7.00003L6 7L6 10Z" />
+      <path d="M10 7.00003V6.00003H7V7.00003H10Z" />
+      <path d="M13 5.00001L13 4H11L11 5.00001H13Z" />
+      <path d="M14 6.00003V7.00003H17V6.00003H14Z" />
+      <path d="M17 10H18V7L17 7.00003L17 10Z" />
+      <path d="M20 11L19 11L19 13H20V11Z" />
+      <path d="M17 17H18L18 14L17 14V17Z" />
+      <path d="M17 18L17 17L14 17V18H17Z" />
+      <path d="M13 20V19H11V20H13Z" />
     </>
   ),
   rightArrow: (fillColor: string) => (
     <>
-      <path d="M7 6.99999H6V17H7V6.99999Z" />
-      <path d="M7.00003 6L7 6.99999L9.00001 7V6H7.00003Z" />
-      <path d="M9.00001 7L9 8.00001L11 7.99999L11 7.00001L9.00001 7Z" />
+      <path d="M6.99997 6.99999H5.99997V17H6.99997V6.99999Z" />
+      <path d="M7 6L6.99997 6.99999L8.99998 7V6H7Z" />
+      <path d="M8.99998 7L8.99997 8.00001L11 7.99999L11 7.00001L8.99998 7Z" />
       <path d="M11 7.99999V8.99999L13 9L13 7.99999H11Z" />
       <path d="M13 9V10L15 10L15 9H13Z" />
       <path d="M15 10V11L17 11L17 10H15Z" />
@@ -40,8 +39,8 @@ export const svgList = {
       <path d="M15 13V14H17L17 13L15 13Z" />
       <path d="M13 14V15H15L15 14L13 14Z" />
       <path d="M11 15V16H13L13 15L11 15Z" />
-      <path d="M9 16L9.00001 17L11 17L11 16L9 16Z" />
-      <path d="M7 17L7.00003 18H9.00001V17L7 17Z" />
+      <path d="M8.99997 16L8.99998 17L11 17L11 16L8.99997 16Z" />
+      <path d="M6.99997 17L7 18H8.99998V17L6.99997 17Z" />
       <path
         d="M9 7H7V17H9V16H11V15H13V14H15V13H17V11H15V10H13V9H11V8H9V7Z"
         fill={fillColor}
@@ -50,18 +49,18 @@ export const svgList = {
   ),
   leftArrow: (fillColor: string) => (
     <>
-      <path d="M17 6.99999H18V17H17V6.99999Z" />
-      <path d="M17 6L17 6.99999L15 7V6H17Z" />
-      <path d="M15 7L15 8.00001L13 7.99999L13 7.00001L15 7Z" />
+      <path d="M17.00003 6.99999H18.00003V17H17.00003V6.99999Z" />
+      <path d="M17 6L17.00003 6.99999L15.00002 7V6H17Z" />
+      <path d="M15.00002 7L15.00003 8.00001L13 7.99999L13 7.00001L15.00002 7Z" />
       <path d="M13 7.99999V8.99999L11 9L11 7.99999H13Z" />
-      <path d="M11 9V10L9 10L8.99999 9H11Z" />
-      <path d="M9 10V11L6.99999 11L6.99997 10H9Z" />
-      <path d="M6.99999 13H5.99999V11H6.99999V13Z" />
-      <path d="M9 13V14H6.99997L6.99999 13L9 13Z" />
-      <path d="M11 14V15H8.99999L9 14L11 14Z" />
+      <path d="M11 9V10L9 10L9 9H11Z" />
+      <path d="M9 10V11L7 11L7 10H9Z" />
+      <path d="M7 13H6V11H7V13Z" />
+      <path d="M9 13V14H7L7 13L9 13Z" />
+      <path d="M11 14V15H9L9 14L11 14Z" />
       <path d="M13 15V16H11L11 15L13 15Z" />
-      <path d="M15 16L15 17L13 17L13 16L15 16Z" />
-      <path d="M17 17L17 18H15V17L17 17Z" />
+      <path d="M15.00003 16L15.00002 17L13 17L13 16L15.00003 16Z" />
+      <path d="M17.00003 17L17 18H15.00002V17L17.00003 17Z" />
       <path
         d="M15 7H17V17H15V16H13V15H11V14H9V13H7V11H9V10H11V9H13V8H15V7Z"
         fill={fillColor}
@@ -91,48 +90,47 @@ export const svgList = {
   ),
   save: (
     <>
-      <path d="M2.66671 14.3333H1.66667L1.66669 13.3333H2.66667L2.66671 14.3333Z" />
-      <path d="M14.6667 14.3333H13.6667V13.3333H14.6667V14.3333Z" />
-      <path d="M8.66667 10.3333H7.66667V9.33334H8.66667V10.3333Z" />
-      <path d="M7.66667 9.33334H6.66669V8.33334H7.66667V9.33334Z" />
-      <path d="M6.66669 8.33334H5.66671V7.33334H6.66671L6.66669 8.33334Z" />
-      <path d="M9.66671 9.33334H8.66667V8.33334H9.66671V9.33334Z" />
-      <path d="M10.6667 8.33334H9.66671L9.66667 7.33334H10.6667V8.33334Z" />
-      <path d="M0.666687 13.3333H1.66669L1.66667 4.33334H0.666687V13.3333Z" />
-      <path d="M8.66667 0.333344H7.66667L7.66669 3.33334H1.66667V4.33334H7.66669L7.66667 8.33334H8.66667L8.66671 4.33334H14.6667V3.33334H8.66671L8.66667 0.333344Z" />
-      <path d="M15.6667 4.33334H14.6667V13.3333H15.6667L15.6667 4.33334Z" />
-      <path d="M2.66671 14.3333V15.3333H13.6667L13.6667 14.3333H2.66671Z" />
+      <path d="M6.66671 18.3333H5.66667L5.66669 17.3333H6.66667L6.66671 18.3333Z" />
+      <path d="M18.6667 18.3333H17.6667V17.3333H18.6667V18.3333Z" />
+      <path d="M12.6667 14.3333H11.6667V13.3333H12.6667V14.3333Z" />
+      <path d="M11.6667 13.3333H10.6667V12.3333H11.6667V13.3333Z" />
+      <path d="M10.6667 12.3333H9.66671V11.3333H10.6667L10.6667 12.3333Z" />
+      <path d="M13.6667 13.3333H12.6667V12.3333H13.6667V13.3333Z" />
+      <path d="M14.6667 12.3333H13.6667L13.6667 11.3333H14.6667V12.3333Z" />
+      <path d="M4.66669 17.3333H5.66669L5.66667 8.33334H4.66669V17.3333Z" />
+      <path d="M12.6667 4.33334H11.6667L11.6667 7.33334H5.66667V8.33334H11.6667L11.6667 12.3333H12.6667L12.6667 8.33334H18.6667V7.33334H12.6667L12.6667 4.33334Z" />
+      <path d="M19.6667 8.33334H18.6667V17.3333H19.6667L19.6667 8.33334Z" />
+      <path d="M6.66671 18.3333V19.3333H17.6667L17.6667 18.3333H6.66671Z" />
     </>
   ),
   hearts: (fillColor: string) => (
     <>
-      <path d="M9 2.5H10.25V3.75H9V2.5Z" />
-      <path d="M14 2.5H12.75V3.75H14V2.5Z" />
-      <path d="M4 2.5H5.25V3.75H4V2.5Z" />
-      <path d="M19 2.5H17.75V3.75H19V2.5Z" />
-      <path d="M2.75 3.75H4V5H2.75V3.75Z" />
-      <path d="M20.25 3.75H19V5H20.25V3.75Z" />
-      <path d="M2.75 10H4V11.25H2.75V10Z" />
-      <path d="M20.25 10H19V11.25H20.25V10Z" />
-      <path d="M7.75 15H9V16.25H7.75V15Z" />
-      <path d="M15.25 15H14V16.25H15.25V15Z" />
-      <path d="M9 16.25H10.25V17.5H9V16.25Z" />
-      <path d="M14 16.25H12.75V17.5H14V16.25Z" />
-      <path d="M6.5 13.75H7.75V15H6.5V13.75Z" />
-      <path d="M16.5 13.75H15.25V15H16.5V13.75Z" />
-      <path d="M5.25 12.5H6.5V13.75H5.25V12.5Z" />
-      <path d="M17.75 12.5H16.5V13.75H17.75V12.5Z" />
-      <path d="M4 11.25H5.25V12.5H4V11.25Z" />
-      <path d="M19 11.25H17.75V12.5H19V11.25Z" />
-      <path d="M5.25 1.25V2.5H9V1.25H5.25Z" />
-      <path d="M17.75 2.5V1.25H14V2.5H17.75Z" />
-      <path d="M20.25 10H21.5V5H20.25V10Z" />
-      <path d="M1.5 10H2.75V5H1.5V10Z" />
-      <path d="M10.25 17.5V18.75H12.75V17.5H10.25Z" />
-      <path d="M10.25 3.75V5H12.75V3.75H10.25Z" />
-      <path d="M10.25 17.5V18.75H12.75V17.5M10.25 17.5V16.25H9M10.25 17.5H9V16.25M10.25 17.5H12.75M12.75 17.5V16.25H14M12.75 17.5H14V16.25M10.25 3.75V5H12.75V3.75M10.25 3.75V2.5H9M10.25 3.75H9V2.5M10.25 3.75H12.75M12.75 3.75V2.5H14M12.75 3.75H14V2.5M9 2.5V1.25H5.25V2.5M9 2.5H5.25M14 2.5V1.25H17.75V2.5M14 2.5H17.75M5.25 2.5H4V3.75M5.25 2.5V3.75H4M17.75 2.5H19V3.75M17.75 2.5V3.75H19M4 3.75H2.75V5M4 3.75V5H2.75M19 3.75H20.25V5M19 3.75V5H20.25M2.75 5H1.5V10H2.75M2.75 5V10M20.25 5H21.5V10H20.25M20.25 5V10M2.75 10H4V11.25M2.75 10V11.25H4M4 11.25H5.25V12.5M4 11.25V12.5H5.25M20.25 10H19V11.25M20.25 10V11.25H19M19 11.25H17.75V12.5M19 11.25V12.5H17.75M7.75 15H9V16.25M7.75 15V16.25H9M7.75 15V13.75H6.5M7.75 15H6.5V13.75M15.25 15H14V16.25M15.25 15V16.25H14M15.25 15V13.75H16.5M15.25 15H16.5V13.75M6.5 13.75V12.5H5.25M6.5 13.75H5.25V12.5M16.5 13.75V12.5H17.75M16.5 13.75H17.75V12.5" />
+      <path d="M10 6H11V7H10V6Z" />
+      <path d="M14 6H13V7H14V6Z" />
+      <path d="M6 6H7V7H6V6Z" />
+      <path d="M18 6H17V7H18V6Z" />
+      <path d="M5 7H6V8H5V7Z" />
+      <path d="M19 7H18V8H19V7Z" />
+      <path d="M5 12H6V13H5V12Z" />
+      <path d="M19 12H18V13H19V12Z" />
+      <path d="M9 16H10V17H9V16Z" />
+      <path d="M15 16H14V17H15V16Z" />
+      <path d="M10 17H11V18H10V17Z" />
+      <path d="M14 17H13V18H14V17Z" />
+      <path d="M8 15H9V16H8V15Z" />
+      <path d="M16 15H15V16H16V15Z" />
+      <path d="M7 14H8V15H7V14Z" />
+      <path d="M17 14H16V15H17V14Z" />
+      <path d="M6 13H7V14H6V13Z" />
+      <path d="M18 13H17V14H18V13Z" />
+      <path d="M7 5V6H10V5H7Z" />
+      <path d="M17 6V5H14V6H17Z" />
+      <path d="M19 12H20V8H19V12Z" />
+      <path d="M4 12H5V8H4V12Z" />
+      <path d="M11 18V19H13V18H11Z" />
+      <path d="M11 7V8H13V7H11Z" />
       <path
-        d="M12.75 17.5H10.25V16.25H9V15H7.75V13.75H6.5V12.5H5.25V11.25H4V10H2.75V5H4V3.75H5.25V2.5H9V3.75H10.25V5H12.75V3.75H14V2.5H17.75V3.75H19V5H20.25V10H19V11.25H17.75V12.5H16.5V13.75H15.25V15H14V16.25H12.75V17.5Z"
+        d="M13 18H11V17H10V16H9V15H8V14H7V13H6V12H5V8H6V7H7V6H10V7H11V8H13V7H14V6H17V7H18V8H19V12H18V13H17V14H16V15H15V16H14V17H13V18Z"
         fill={fillColor}
       />
     </>
@@ -255,11 +253,11 @@ export const svgList = {
   ),
   plus: (
     <>
-      <path d="M6.66666 4.33334H7.66666V6.33334H9.66666V7.33334H7.66666V9.33334H6.66666V7.33334H4.66666V6.33334H6.66666V4.33334Z" />
-      <path d="M1.66666 0.333344V1.33334H12.6667V0.333344H1.66666Z" />
-      <path d="M13.6667 1.33334H12.6667V12.3333H13.6667V1.33334Z" />
-      <path d="M1.66666 12.3333V13.3333H12.6667V12.3333H1.66666Z" />
-      <path d="M0.666656 12.3333H1.66666V1.33334H0.666656V12.3333Z" />
+      <path d="M11.6667 9.33334H12.6667V11.3333H14.6667V12.3333H12.6667V14.3333H11.6667V12.3333H9.66666V11.3333H11.6667V9.33334Z" />
+      <path d="M6.66666 5.33334V6.33334H17.6667V5.33334H6.66666Z" />
+      <path d="M18.6667 6.33334H17.6667V17.3333H18.6667V6.33334Z" />
+      <path d="M6.66666 17.3333V18.3333H17.6667V17.3333H6.66666Z" />
+      <path d="M5.66666 17.3333H6.66666V6.33334H5.66666V17.3333Z" />
     </>
   ),
   calendar: (fillColor: string) => (
@@ -276,63 +274,63 @@ export const svgList = {
   ),
   clock: (
     <>
-      <path d="M9.99999 4.99997H11V5.99997H9.99999V4.99997Z" />
-      <path d="M9.99999 9.99999L11 10L11 11L10 11L9.99999 9.99999Z" />
-      <path d="M4.99999 10L5.99999 9.99999L6 11L4.99999 11L4.99999 10Z" />
-      <path d="M13 1.99997L14 2L14 3L13 3L13 1.99997Z" />
-      <path d="M13 13L14 13L14 14H13V13Z" />
-      <path d="M2 13H3L3.00001 14L2 14V13Z" />
-      <path d="M2 2L3 1.99999L3 3L1.99999 3L2 2Z" />
-      <path d="M5 5L6 4.99999L6 6L4.99999 6L5 5Z" />
-      <path d="M8 5.99999H9V6.99999L7.99999 6.99997L8 5.99999Z" />
-      <path d="M4.99999 0V1H11V0H4.99999Z" />
-      <path d="M3 0.999987V1.99999L4.99999 1.99997L4.99999 1L3 0.999987Z" />
-      <path d="M11 1L11 1.99997H13V0.999975L11 1Z" />
-      <path d="M15 3H14L14 4.99997L15 4.99997L15 3Z" />
-      <path d="M1.99999 3H0.999987L1 4.99997L1.99999 4.99997L1.99999 3Z" />
-      <path d="M1 4.99997H0V11H1V4.99997Z" />
-      <path d="M3.99999 10H4.99999V6H3.99999V10Z" />
-      <path d="M6 3.99999V4.99999L9.99999 4.99997L10 3.99999H6Z" />
-      <path d="M12 6L11 5.99997L11 10H12V6Z" />
-      <path d="M6.99999 9H7.99999V6.99997H6.99999V9Z" />
-      <path d="M10 12V11H6V12H10Z" />
-      <path d="M15 11H16V4.99997H15V11Z" />
-      <path d="M14 13H15L15 11L14 11L14 13Z" />
-      <path d="M11 14L11 15L13 15L13 14L11 14Z" />
-      <path d="M4.99999 15V16H11V15H4.99999Z" />
-      <path d="M4.99999 15L4.99999 14H3.00001V15L4.99999 15Z" />
-      <path d="M1.99999 11L1 11L0.999993 13L2 13L1.99999 11Z" />
+      <path d="M14 8.99997H15V9.99997H14V8.99997Z" />
+      <path d="M14 14L15 14L15 15L14 15L14 14Z" />
+      <path d="M8.99999 14L9.99999 14L10 15L8.99999 15L8.99999 14Z" />
+      <path d="M17 5.99997L18 6L18 7L17 7L17 5.99997Z" />
+      <path d="M17 17L18 17L18 18H17V17Z" />
+      <path d="M6 17H7L7.00001 18L6 18V17Z" />
+      <path d="M6 6L7 5.99999L7 7L5.99999 7L6 6Z" />
+      <path d="M9 9L10 8.99999L10 10L8.99999 10L9 9Z" />
+      <path d="M12 9.99999H13V11L12 11L12 9.99999Z" />
+      <path d="M8.99999 4V5H15V4H8.99999Z" />
+      <path d="M7 4.99999V5.99999L8.99999 5.99997L8.99999 5L7 4.99999Z" />
+      <path d="M15 5L15 5.99997H17V4.99997L15 5Z" />
+      <path d="M19 7H18L18 8.99997L19 8.99997L19 7Z" />
+      <path d="M5.99999 7H4.99999L5 8.99997L5.99999 8.99997L5.99999 7Z" />
+      <path d="M5 8.99997H4V15H5V8.99997Z" />
+      <path d="M7.99999 14H8.99999V10H7.99999V14Z" />
+      <path d="M10 7.99999V8.99999L14 8.99997L14 7.99999H10Z" />
+      <path d="M16 10L15 9.99997L15 14H16V10Z" />
+      <path d="M11 13H12V11H11V13Z" />
+      <path d="M14 16V15H10V16H14Z" />
+      <path d="M19 15H20V8.99997H19V15Z" />
+      <path d="M18 17H19L19 15L18 15L18 17Z" />
+      <path d="M15 18L15 19L17 19L17 18L15 18Z" />
+      <path d="M8.99999 19V20H15V19H8.99999Z" />
+      <path d="M8.99999 19L8.99999 18H7.00001V19L8.99999 19Z" />
+      <path d="M5.99999 15L5 15L4.99999 17L6 17L5.99999 15Z" />
     </>
   ),
   bin: (
     <>
-      <path d="M10.6667 13.6667H9.66666V14.6667H10.6667V13.6667Z" />
-      <path d="M2.66666 13.6667H1.66666L1.66666 14.6667H2.66666V13.6667Z" />
-      <path d="M10.6667 13.6667H11.6667V4.66666H10.6667V13.6667Z" />
-      <path d="M11.6667 2.66666V1.66666L7.66666 1.66666V0.666656L4.66666 0.666657V1.66666H0.666657L0.666657 2.66666H11.6667Z" />
-      <path d="M10.6667 4.66666V3.66666H1.66666L1.66666 4.66666H10.6667Z" />
-      <path d="M0.666657 13.6667H1.66666L1.66666 4.66666H0.666657V13.6667Z" />
-      <path d="M9.66666 15.6667V14.6667H2.66666L2.66666 15.6667H9.66666Z" />
+      <path d="M16.6667 17.6667H15.6667V18.6667H16.6667V17.6667Z" />
+      <path d="M8.66666 17.6667H7.66666L7.66666 18.6667H8.66666V17.6667Z" />
+      <path d="M16.6667 17.6667H17.6667V8.66666H16.6667V17.6667Z" />
+      <path d="M17.6667 6.66666V5.66666L13.6667 5.66666V4.66666L10.6667 4.66666V5.66666H6.66666L6.66666 6.66666H17.6667Z" />
+      <path d="M16.6667 8.66666V7.66666H7.66666L7.66666 8.66666H16.6667Z" />
+      <path d="M6.66666 17.6667H7.66666L7.66666 8.66666H6.66666V17.6667Z" />
+      <path d="M15.6667 19.6667V18.6667H8.66666L8.66666 19.6667H15.6667Z" />
     </>
   ),
   menu: (
     <>
-      <path d="M5.33333 6.66667V5.66666H1.33333L1.33333 6.66667H5.33333Z" />
-      <path d="M1.33333 1.66666L0.333328 1.66666L0.333328 5.66666H1.33333V1.66666Z" />
-      <path d="M5.33333 1.66666V0.666664L1.33333 0.666664V1.66666L5.33333 1.66666Z" />
-      <path d="M6.33333 1.66666L5.33333 1.66666V5.66666H6.33333V1.66666Z" />
-      <path d="M8.33333 1.66666L7.33333 1.66666V5.66666H8.33333V1.66666Z" />
-      <path d="M12.3333 1.66666V0.666664L8.33333 0.666664V1.66666L12.3333 1.66666Z" />
-      <path d="M12.3333 6.66667V5.66666H8.33333V6.66667H12.3333Z" />
-      <path d="M13.3333 1.66666L12.3333 1.66666V5.66666H13.3333V1.66666Z" />
-      <path d="M1.33333 8.66667H0.333328L0.333328 12.6667H1.33333V8.66667Z" />
-      <path d="M5.33333 8.66667V7.66667H1.33333V8.66667H5.33333Z" />
-      <path d="M5.33333 13.6667V12.6667H1.33333L1.33333 13.6667H5.33333Z" />
-      <path d="M6.33333 8.66667H5.33333V12.6667H6.33333V8.66667Z" />
-      <path d="M8.33333 8.66667H7.33333V12.6667H8.33333V8.66667Z" />
-      <path d="M12.3333 13.6667V12.6667H8.33333V13.6667H12.3333Z" />
-      <path d="M13.3333 8.66667H12.3333V12.6667H13.3333V8.66667Z" />
-      <path d="M12.3333 8.66667V7.66667H8.33333V8.66667H12.3333Z" />
+      <path d="M10.3333 11.6667V10.6667H6.33333L6.33333 11.6667H10.3333Z" />
+      <path d="M6.33333 6.66666L5.33333 6.66666L5.33333 10.6667H6.33333V6.66666Z" />
+      <path d="M10.3333 6.66666V5.66666L6.33333 5.66666V6.66666L10.3333 6.66666Z" />
+      <path d="M11.3333 6.66666L10.3333 6.66666V10.6667H11.3333V6.66666Z" />
+      <path d="M13.3333 6.66666L12.3333 6.66666V10.6667H13.3333V6.66666Z" />
+      <path d="M17.3333 6.66666V5.66666L13.3333 5.66666V6.66666L17.3333 6.66666Z" />
+      <path d="M17.3333 11.6667V10.6667H13.3333V11.6667H17.3333Z" />
+      <path d="M18.3333 6.66666L17.3333 6.66666V10.6667H18.3333V6.66666Z" />
+      <path d="M6.33333 13.6667H5.33333L5.33333 17.6667H6.33333V13.6667Z" />
+      <path d="M10.3333 13.6667V12.6667H6.33333V13.6667H10.3333Z" />
+      <path d="M10.3333 18.6667V17.6667H6.33333L6.33333 18.6667H10.3333Z" />
+      <path d="M11.3333 13.6667H10.3333V17.6667H11.3333V13.6667Z" />
+      <path d="M13.3333 13.6667H12.3333V17.6667H13.3333V13.6667Z" />
+      <path d="M17.3333 18.6667V17.6667H13.3333V18.6667H17.3333Z" />
+      <path d="M18.3333 13.6667H17.3333V17.6667H18.3333V13.6667Z" />
+      <path d="M17.3333 13.6667V12.6667H13.3333V13.6667H17.3333Z" />
     </>
   ),
   medal: (fillColor: string) => (
@@ -435,352 +433,134 @@ export const svgList = {
   ),
   leg: (fillColor: string) => (
     <>
-      <rect width="1" height="1" transform="translate(5 2)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 2)" />
-      <rect width="1" height="1" transform="translate(5 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 7)" fill={fillColor} />
-      <g clip-path="url(#clip0_385_5239)">
-        <rect
-          width="1"
-          height="1"
-          transform="translate(4 7)"
-          fill={fillColor}
-        />
-        <rect
-          width="1"
-          height="1"
-          transform="translate(4 7)"
-          fill={fillColor}
-        />
-        <rect
-          width="1"
-          height="1"
-          transform="translate(4 7)"
-          fill={fillColor}
-        />
-      </g>
-      <rect width="1" height="1" transform="translate(4 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 4)" />
-      <rect width="1" height="1" transform="translate(12 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 14)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 14)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 14)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(12 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 9)" fill={fillColor} />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 11)"
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 5)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 5)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(18 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(18 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 14)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 14)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 9)" />
+      <path
+        d="M9 6H10V7H9V6ZM9 7H10V8H9V7ZM8 7H9V8H8V7ZM8 8H9V9H8V8ZM9 8H10V9H9V8ZM10 7H11V8H10V7ZM11 8H12V9H11V8ZM10 8H11V9H10V8ZM10 9H11V10H10V9ZM11 9H12V10H11V9ZM12 8H13V9H12V8ZM12 9H13V10H12V9ZM13 9H14V10H13V9ZM13 10H14V11H13V10ZM13 11H14V12H13V11ZM13 12H14V13H13V12ZM12 10H13V11H12V10ZM11 10H12V11H11V10ZM12 11H13V12H12V11ZM11 11H12V12H11V11ZM10 11H11V12H10V11ZM10 12H11V13H10V12ZM9 11H10V12H9V11ZM9 12H10V13H9V12ZM11 12H12V13H11V12ZM16 11H17V12H16V11ZM16 12H17V13H16V12ZM17 12H18V13H17V12ZM11 17H12V18H11V17ZM10 16H11V17H10V16ZM10 17H11V18H10V17ZM9 16H10V17H9V16ZM9 17H10V18H9V17ZM10 18H11V19H10V18ZM12 18H13V19H12V18ZM13 18H14V19H13V18ZM11 18H12V19H11V18ZM13 17H14V18H13V17ZM12 17H13V18H12V17ZM11 16H12V17H11V16ZM12 16H13V17H12V16ZM13 16H14V17H13V16ZM10 15H11V16H10V15ZM11 15H12V16H11V15ZM11 14H12V15H11V14ZM10 14H11V15H10V14ZM12 14H13V15H12V14ZM12 15H13V16H12V15ZM13 15H14V16H13V15ZM13 14H14V15H13V14ZM13 13H14V14H13V13ZM14 15H15V16H14V15ZM14 14H15V15H14V14ZM15 13H16V14H15V13ZM14 13H15V14H14V13ZM15 12H16V13H15V12ZM14 12H15V13H14V12ZM15 11H16V12H15V11ZM14 11H15V12H14V11ZM15 10H16V11H15V10ZM14 10H15V11H14V10ZM14 9H15V10H14V9ZM6 6H7V7H6V6ZM6 7H7V8H6V7ZM7 7H8V8H7V7ZM6 9H7V10H6V9ZM6 10H7V11H6V10ZM7 10H8V11H7V10ZM8 10H9V11H8V10ZM15 14H16V15H15V14ZM8 11H9V12H8V11Z"
         fill={fillColor}
       />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 10)"
-        fill={fillColor}
-      />
-      <rect width="1" height="1" transform="translate(11 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 4)" />
-      <rect width="1" height="1" transform="translate(9 3)" />
-      <rect width="1" height="1" transform="translate(8 3)" />
-      <rect width="1" height="1" transform="translate(7 2)" />
-      <rect width="1" height="1" transform="translate(7 3)" />
-      <rect width="1" height="1" transform="translate(7 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 1)" />
-      <rect width="1" height="1" transform="translate(3 1)" />
-      <rect width="1" height="1" transform="translate(3 2)" />
-      <rect width="1" height="1" transform="translate(4 2)" />
-      <rect width="1" height="1" transform="translate(13 6)" />
-      <rect width="1" height="1" transform="translate(14 7)" />
-      <rect width="1" height="1" transform="translate(13 7)" />
-      <rect width="1" height="1" transform="translate(14 8)" />
-      <rect width="1" height="1" transform="translate(2 4)" />
-      <rect width="1" height="1" transform="translate(4 5)" />
-      <rect width="1" height="1" transform="translate(3 5)" />
-      <rect width="1" height="1" transform="translate(6 6)" />
-      <rect width="1" height="1" transform="translate(7 6)" />
-      <rect width="1" height="1" transform="translate(5 6)" />
-      <rect width="1" height="1" transform="translate(3 4)" />
-      <rect width="1" height="1" transform="translate(4 12)" />
-      <rect width="1" height="1" transform="translate(4 11)" />
-      <rect width="1" height="1" transform="translate(5 10)" />
-      <rect width="1" height="1" transform="translate(4 13)" />
-      <rect width="1" height="1" transform="translate(2 2)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 14)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 2)" />
-      <rect width="1" height="1" transform="translate(11 5)" />
-      <rect width="1" height="1" transform="translate(12 5)" />
-      <rect width="1" height="1" transform="translate(12 6)" />
-      <rect width="1" height="1" transform="translate(8 8)" />
-      <rect width="1" height="1" transform="translate(13 9)" />
-      <rect width="1" height="1" transform="translate(12 9)" />
-      <rect width="1" height="1" transform="translate(12 10)" />
-      <rect width="1" height="1" transform="translate(12 11)" />
-      <rect width="1" height="1" transform="translate(11 11)" />
-      <rect width="1" height="1" transform="translate(11 12)" />
-      <rect width="1" height="1" transform="translate(10 12)" />
-      <rect width="1" height="1" transform="translate(10 13)" />
-      <rect width="1" height="1" transform="translate(10 14)" />
-      <rect width="1" height="1" transform="translate(5 14)" />
-      <rect width="1" height="1" transform="translate(5 11)" />
-      <rect width="1" height="1" transform="translate(8 9)" />
-      <rect width="1" height="1" transform="translate(7 9)" />
-      <rect width="1" height="1" transform="translate(6 9)" />
-      <rect width="1" height="1" transform="translate(5 9)" />
-      <rect width="1" height="1" transform="translate(4 9)" />
-      <rect width="1" height="1" transform="translate(3 8)" />
-      <rect width="1" height="1" transform="translate(4 8)" />
-      <rect width="1" height="1" transform="translate(3 7)" />
-      <rect width="1" height="1" transform="translate(2 7)" />
-      <rect width="1" height="1" transform="translate(5 5)" />
-      <rect width="1" height="1" transform="translate(7 8)" fill={fillColor} />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(11 10)"
-        fill={fillColor}
-      />
-      <rect width="1" height="1" transform="translate(13 8)" fill={fillColor} />
-      <defs>
-        <clipPath id="clip0_385_5239">
-          <rect
-            width="1"
-            height="1"
-            fill={fillColor}
-            transform="translate(4 7)"
-          />
-        </clipPath>
-      </defs>
     </>
   ),
   arm: (fillColor: string) => (
     <>
-      <rect width="1" height="1" transform="translate(5 2)" />
-      <rect width="1" height="1" transform="translate(5 2)" />
-      <rect width="1" height="1" transform="translate(6 2)" />
-      <rect width="1" height="1" transform="translate(7 1)" />
-      <rect width="1" height="1" transform="translate(8 2)" />
-      <rect width="1" height="1" transform="translate(9 2)" />
-      <rect width="1" height="1" transform="translate(8 1)" />
-      <rect width="1" height="1" transform="translate(5 3)" />
-      <rect width="1" height="1" transform="translate(6 5)" />
-      <rect width="1" height="1" transform="translate(7 5)" />
-      <rect width="1" height="1" transform="translate(8 4)" />
-      <rect width="1" height="1" transform="translate(9 5)" />
-      <rect width="1" height="1" transform="translate(9 6)" />
-      <rect width="1" height="1" transform="translate(9 7)" />
-      <rect width="1" height="1" transform="translate(9 8)" />
-      <rect width="1" height="1" transform="translate(8 8)" />
-      <rect width="1" height="1" transform="translate(7 8)" />
-      <rect width="1" height="1" transform="translate(6 8)" />
-      <rect width="1" height="1" transform="translate(5 9)" />
-      <rect width="1" height="1" transform="translate(6 9)" />
-      <rect width="1" height="1" transform="translate(6 7)" />
-      <rect width="1" height="1" transform="translate(5 7)" />
-      <rect width="1" height="1" transform="translate(3 7)" />
-      <rect width="1" height="1" transform="translate(4 7)" />
-      <rect width="1" height="1" transform="translate(2 8)" />
-      <rect width="1" height="1" transform="translate(2 7)" />
-      <rect width="1" height="1" transform="translate(1 8)" />
-      <rect width="1" height="1" transform="translate(4 3)" />
-      <rect width="1" height="1" transform="translate(10 3)" />
-      <rect width="1" height="1" transform="translate(10 4)" />
-      <rect width="1" height="1" transform="translate(11 5)" />
-      <rect width="1" height="1" transform="translate(11 4)" />
-      <rect width="1" height="1" transform="translate(12 6)" />
-      <rect width="1" height="1" transform="translate(12 5)" />
-      <rect width="1" height="1" transform="translate(12 7)" />
-      <rect width="1" height="1" transform="translate(13 8)" />
-      <rect width="1" height="1" transform="translate(13 9)" />
-      <rect width="1" height="1" transform="translate(14 11)" />
-      <rect width="1" height="1" transform="translate(13 12)" />
-      <rect width="1" height="1" transform="translate(12 12)" />
-      <rect width="1" height="1" transform="translate(11 12)" />
-      <rect width="1" height="1" transform="translate(11 13)" />
-      <rect width="1" height="1" transform="translate(7 13)" />
-      <rect width="1" height="1" transform="translate(6 12)" />
-      <rect width="1" height="1" transform="translate(5 13)" />
-      <rect width="1" height="1" transform="translate(5 14)" />
-      <rect width="1" height="1" transform="translate(4 14)" />
-      <rect width="1" height="1" transform="translate(3 14)" />
-      <rect width="1" height="1" transform="translate(1 13)" />
-      <rect width="1" height="1" transform="translate(1 12)" />
-      <rect width="1" height="1" transform="translate(6 13)" />
-      <rect width="1" height="1" transform="translate(2 14)" />
-      <rect width="1" height="1" transform="translate(2 13)" />
-      <rect width="1" height="1" transform="translate(8 14)" />
-      <rect width="1" height="1" transform="translate(10 14)" />
-      <rect width="1" height="1" transform="translate(9 14)" />
-      <rect width="1" height="1" transform="translate(7 14)" />
-      <rect width="1" height="1" transform="translate(6 1)" />
-      <rect width="1" height="1" transform="translate(8 5)" />
-      <rect width="1" height="1" transform="translate(5 5)" />
-      <rect width="1" height="1" transform="translate(12 8)" />
-      <rect width="1" height="1" transform="translate(13 11)" />
-      <rect width="1" height="1" transform="translate(14 10)" />
-      <rect width="1" height="1" transform="translate(4 4)" />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 13)"
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 5)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 6)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 5)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(5 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 7)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 8)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 10)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 11)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 13)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(18 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(15 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(7 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(5 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(5 16)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(6 17)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(14 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(13 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(11 18)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(10 5)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(12 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(9 9)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(16 12)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(17 15)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(18 14)" />
+      <rect width="1" height="1" rx="0" ry="0" transform="translate(8 8)" />
+      <path
+        d="M14 17H15V18H14V17ZM13 17H14V18H13V17ZM12 17H13V18H12V17ZM11 16H12V17H11V16ZM12 16H13V17H12V16ZM14 16H15V17H14V16ZM13 16H14V17H13V16ZM8 17H9V18H8V17ZM7 17H8V18H7V17ZM6 16H7V17H6V16ZM7 16H8V17H7V16ZM8 16H9V17H8V16ZM9 16H10V17H9V16ZM9 15H10V16H9V15ZM8 15H9V16H8V15ZM7 15H8V16H7V15ZM6 15H7V16H6V15ZM5 15H6V16H5V15ZM5 14H6V15H5V14ZM5 13H6V14H5V13ZM6 13H7V14H6V13ZM7 13H8V14H7V13ZM7 12H8V13H7V12ZM8 12H9V13H8V12ZM9 12H10V13H9V12ZM8 13H9V14H8V13ZM6 14H7V15H6V14ZM7 14H8V15H7V14ZM8 14H9V15H8V14ZM9 14H10V15H9V14ZM10 14H11V15H10V14ZM10 15H11V16H10V15ZM11 15H12V16H11V15ZM11 14H12V15H11V14ZM11 13H12V14H11V13ZM12 13H13V14H12V13ZM12 14H13V15H12V14ZM12 15H13V16H12V15ZM13 15H14V16H13V15ZM13 14H14V15H13V14ZM13 13H14V14H13V13ZM14 15H15V16H14V15ZM15 15H16V16H15V15ZM16 15H17V16H16V15ZM17 14H18V15H17V14ZM16 14H17V15H16V14ZM15 14H16V15H15V14ZM14 14H15V15H14V14ZM16 13H17V14H16V13ZM15 13H16V14H15V13ZM14 13H15V14H14V13ZM15 12H16V13H15V12ZM14 12H15V13H14V12ZM15 11H16V12H15V11ZM14 11H15V12H14V11ZM15 10H16V11H15V10ZM14 10H15V11H14V10ZM14 9H15V10H14V9ZM13 8H14V9H13V8ZM13 7H14V8H13V7ZM12 7H13V8H12V7ZM11 6H12V7H11V6ZM11 7H12V8H11V7ZM11 8H12V9H11V8ZM10 8H11V9H10V8ZM10 7H11V8H10V7ZM9 8H10V9H9V8Z"
         fill={fillColor}
       />
-      <rect width="1" height="1" transform="translate(9 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 12)" fill={fillColor} />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 12)"
-        fill={fillColor}
-      />
-      <rect width="1" height="1" transform="translate(9 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 13)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 12)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(1 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(1 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(1 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(2 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(3 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(4 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 11)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 10)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 9)" fill={fillColor} />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 11)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(11 11)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(12 11)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(13 10)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(12 10)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(11 10)"
-        fill={fillColor}
-      />
-      <rect
-        width="1"
-        height="1"
-        transform="translate(10 10)"
-        fill={fillColor}
-      />
-      <rect width="1" height="1" transform="translate(12 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 9)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 8)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 7)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(11 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 6)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(10 5)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(9 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(8 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 2)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(7 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 4)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(6 3)" fill={fillColor} />
-      <rect width="1" height="1" transform="translate(5 4)" fill={fillColor} />
     </>
   ),
   check: (
