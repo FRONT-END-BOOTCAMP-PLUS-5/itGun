@@ -1,16 +1,12 @@
-import { Log } from "../entities/Log"
+import { Log } from "@/backend/domain/entities/Log"
 
 export interface LogRepository {
   findAll(): Promise<Log[]>
-  findAllByUserIdAndMonth(
-    userId: string,
-    year: number,
-    month: number
-  ): Promise<Log[]>
-  findByUserIdAndDateRange(
+  findAllByUserIdAndDateRange(
     userId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    includeWorkouts?: boolean
   ): Promise<Log[]>
   findById(id: number): Promise<Log | null>
   save(log: Log): Promise<Log>
