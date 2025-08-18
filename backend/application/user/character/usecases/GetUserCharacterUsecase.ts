@@ -8,7 +8,6 @@ import { UserRepository } from "@/backend/domain/repositories/UserRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
 import { yymmddToDate } from "@/utils/yymmddToDate"
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
-import { BodyPart } from "@/backend/domain/entities/CharacterAsset"
 
 export class GetUserCharacterUsecase {
   constructor(
@@ -18,46 +17,69 @@ export class GetUserCharacterUsecase {
   ) {}
 
   async execute(query: GetUserCharacterQueryDto): Promise<GetUserCharacterDto> {
-    const characterInfo = await this.userRepository.findCharacterInfoById(
-      query.userId
-    )
-    if (!characterInfo) {
-      throw new Error("User not found")
-    }
-
-    const userGauges: BodyPartGauge | null = query.date
-      ? await this.bodyPartGaugeRepository.findByUserId(
-          query.userId,
-          yymmddToDate(query.date)
-        )
-      : await this.bodyPartGaugeRepository.findLatestOneByUserId(query.userId)
-
     const levels = {
-      face: 1, // 얼굴은 항상 1레벨
-      torso: 1,
-      arms: 1,
-      legs: 1,
+      face: 0,
+      torso: 0,
+      arms: 0,
+      legs: 0,
     }
 
-    if (userGauges) {
-      levels.torso =
-        Math.floor(
-          (userGauges.shoulders +
-            userGauges.chest +
-            userGauges.back +
-            userGauges.core) /
-            4
-        ) + 1
-      levels.arms = Math.floor(userGauges.arms) + 1
-      levels.legs = Math.floor(userGauges.legs) + 1
+    const characterInfo = {
+      id: 1,
+      color: "#cdc1ff",
+    }
+
+    if (query.userId) {
+      const res = await this.userRepository.findCharacterInfoById(query.userId)
+      if (res) {
+        characterInfo.id = res.id
+        characterInfo.color = res.color
+
+        const userGauges: BodyPartGauge | null = query.date
+          ? await this.bodyPartGaugeRepository.findByUserId(
+              query.userId!!,
+              yymmddToDate(query.date)
+            )
+          : await this.bodyPartGaugeRepository.findLatestOneByUserId(
+              query.userId!!
+            )
+
+        if (userGauges) {
+          levels.torso =
+            Math.floor(
+              (userGauges.shoulders +
+                userGauges.chest +
+                userGauges.back +
+                userGauges.core) /
+                4
+            ) + 1
+          levels.arms = Math.floor(userGauges.arms) + 1
+          levels.legs = Math.floor(userGauges.legs) + 1
+        }
+      }
     }
 
     const requiredAssets = [
-      { bodyPart: BodyPart.FACE, level: levels.face },
-      { bodyPart: BodyPart.TORSO, level: levels.torso },
-      { bodyPart: BodyPart.ARMS, level: levels.arms },
-      { bodyPart: BodyPart.LEGS, level: levels.legs },
+      { type: "FACE", level: levels.face },
+      { type: "TORSO", level: levels.torso },
+      { type: "ARMS", level: levels.arms },
+      { type: "LEGS", level: levels.legs },
     ]
+
+    if (!query.userId) {
+      requiredAssets.push({
+        type: "DUMBBELL_LEFT",
+        level: 0,
+      })
+      requiredAssets.push({
+        type: "DUMBBELL_RIGHT",
+        level: 0,
+      })
+      requiredAssets.push({
+        type: "SWEAT",
+        level: 0,
+      })
+    }
 
     const characterAssets = await this.characterAssetRepository.findAssets(
       characterInfo.id,
@@ -66,10 +88,10 @@ export class GetUserCharacterUsecase {
 
     const assetsByPart = characterAssets.reduce(
       (accumulator, asset) => {
-        accumulator[asset.bodyPart] = new CharacterAssetDto(
+        accumulator[asset.type] = new CharacterAssetDto(
           asset.id,
           asset.level,
-          asset.bodyPart,
+          asset.type,
           asset.svg
         )
         return accumulator
