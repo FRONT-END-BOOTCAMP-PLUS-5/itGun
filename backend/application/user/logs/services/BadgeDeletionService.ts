@@ -29,7 +29,6 @@ export class BadgeDeletionService {
     ])
 
     const userBadgesToRemove: number[] = []
-    const deletePromises: Promise<boolean>[] = []
 
     // 1. 첫 운동 뱃지
     await this.checkFirstWorkoutBadgeDeletion(
@@ -56,12 +55,11 @@ export class BadgeDeletionService {
     )
 
     // 4. 신기록 뱃지들 체크
-    await this.checkRecordBadgeDeletion(
+    await this.deleteRecordBadges(
       userId,
       logToDelete,
       badges,
       userBadgesToRemove,
-      deletePromises
     )
 
     // 5. 뱃지 삭제 실행
@@ -76,21 +74,6 @@ export class BadgeDeletionService {
           error instanceof Error
             ? error.message
             : "운동 로그 삭제 중 오류가 발생했습니다.",
-      }
-    }
-
-    // 6. 신기록 테이블 데이터 삭제
-    if (deletePromises.length > 0) {
-      try {
-        await Promise.all(deletePromises)
-      } catch (error) {
-        return {
-          success: false,
-          message:
-            error instanceof Error
-              ? error.message
-              : "운동 로그 삭제 중 오류가 발생했습니다.",
-        }
       }
     }
   }
@@ -233,12 +216,11 @@ export class BadgeDeletionService {
     }
   }
 
-  private async checkRecordBadgeDeletion(
+  private async deleteRecordBadges(
     userId: string,
     logToDelete: Log,
     badges: Badge[],
     userBadgesToRemove: number[],
-    deletePromises: Promise<boolean>[],
   ): Promise<void> {
     const deletedLogDate = new Date(logToDelete.createdAt)
 
@@ -280,6 +262,7 @@ export class BadgeDeletionService {
 
     if (!recordBadgesOnDate || recordBadgesOnDate.length === 0) return
 
+    const deletePromises: Promise<boolean>[] = []
 
     recordBadgesOnDate.forEach((badge) => {
       userBadgesToRemove.push(badge.id)
@@ -321,5 +304,14 @@ export class BadgeDeletionService {
         )
       }
     })
+
+    // 모든 레코드 삭제 실행
+    if (deletePromises.length > 0) {
+      try {
+        await Promise.all(deletePromises)
+      } catch (error) {
+        console.log(error instanceof Error ? error.message : "신기록 레코드를 삭제하는 중 오류가 발생했습니다.")
+      }
+    }
   }
 }
