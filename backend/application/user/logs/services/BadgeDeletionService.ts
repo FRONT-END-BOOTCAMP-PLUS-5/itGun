@@ -315,5 +315,3 @@ export class BadgeDeletionService {
     }
   }
 }
-
-// 모든 레코드 삭제 실행
