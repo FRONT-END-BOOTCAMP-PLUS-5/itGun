@@ -1,0 +1,2 @@
+export const TRANSITION_DURATION = 300
+export const SWIPE_THRESHOLD = 50
