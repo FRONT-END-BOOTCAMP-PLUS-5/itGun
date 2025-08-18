@@ -43,7 +43,10 @@ export class PrLogRepository implements LogRepository {
     return logs as Log[]
   }
 
-  async findFirstByUserId(userId: string, tx?: TransactionClient): Promise<Log | null> {
+  async findFirstByUserId(
+    userId: string,
+    tx?: TransactionClient
+  ): Promise<Log | null> {
     const client = tx || prisma
     const log = await client.log.findFirst({
       where: { userId },
@@ -85,7 +88,11 @@ export class PrLogRepository implements LogRepository {
     return this.toDomain(savedLog)
   }
 
-  async update(id: number, logData: Partial<Log>, tx?: TransactionClient): Promise<Log | null> {
+  async update(
+    id: number,
+    logData: Partial<Log>,
+    tx?: TransactionClient
+  ): Promise<Log | null> {
     try {
       const client = tx || prisma
       const updatedLog = await client.log.update({
