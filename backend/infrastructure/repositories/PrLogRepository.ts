@@ -39,11 +39,30 @@ export class PrLogRepository implements LogRepository {
     return logs as Log[]
   }
 
+  async findFirstByUserId(userId: string): Promise<Log | null> {
+    const log = await prisma.log.findFirst({
+      where: { userId },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+
+    return log as Log || null
+  }
+
   async findById(id: number): Promise<Log | null> {
     const log = await prisma.log.findUnique({
       where: { id },
+      include: {
+        logWorkouts: {
+          include: {
+            workout: true,
+          },
+        },
+      },
     })
-    return log ? this.toDomain(log) : null
+
+    return log as Log || null
   }
 
   async save(log: Log): Promise<Log> {

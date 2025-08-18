@@ -1,6 +1,6 @@
-import prisma from "../../../utils/prisma"
-import { UserBadge } from "../../domain/entities/UserBadge"
-import { UserBadgeRepository } from "../../domain/repositories/UserBadgeRepository"
+import prisma from "@/utils/prisma"
+import { UserBadge } from "@/backend/domain/entities/UserBadge"
+import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
 
 export class PrUserBadgeRepository implements UserBadgeRepository {
   async findAll(): Promise<UserBadge[]> {
@@ -34,6 +34,40 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     if (!userBadges) {
       return null
     }
+
+    return userBadges as UserBadge[]
+  }
+
+  async findByUserIdAndOptions(
+    userId: string,
+    badgeIds?: number[],
+    startDate?: Date,
+    endDate?: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+  ): Promise<UserBadge[]> {
+    const whereCondition: any = { userId }
+
+    if (badgeIds && badgeIds.length > 0) {
+      whereCondition.badgeId = {
+        in: badgeIds
+      }
+    }
+
+    if (startDate) {
+      whereCondition.createdAt.gte = startDate
+    }
+    if (endDate) {
+      whereCondition.createdAt.lte = endDate
+    }
+
+    const userBadges = await prisma.userBadge.findMany({
+      where: whereCondition,
+      take: limit,
+      orderBy: {
+        createdAt: sortOrder || "desc",
+      },
+    })
 
     return userBadges as UserBadge[]
   }
@@ -95,6 +129,22 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
         where: { id },
       })
       return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  async deleteMany(userBadgeIds: number[]): Promise<boolean> {
+    try {
+      const deletedRecords = await prisma.userBadge.deleteMany({
+        where: {
+          id: {
+            in: userBadgeIds
+          }
+        }
+      })
+
+      return (deletedRecords.count === userBadgeIds.length)
     } catch (error) {
       return false
     }
