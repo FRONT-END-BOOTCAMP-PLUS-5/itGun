@@ -6,6 +6,7 @@ import { authOptions } from "./api/auth/[...nextauth]/auth"
 import ToastContainer from "./components/ToastContainer"
 import DialogContainer from "./components/DialogContainer"
 import NextAuthSessionProviders from "./providers/NextAuthSessionProviders"
+import ReactQueryProvider from "./providers/ReactQueryProvider"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +24,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${galmuri.className} antialiased`}>
         <NextAuthSessionProviders session={session}>
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
           <ToastContainer />
           <DialogContainer />
         </NextAuthSessionProviders>
