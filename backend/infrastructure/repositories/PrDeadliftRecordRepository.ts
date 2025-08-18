@@ -1,31 +1,60 @@
 import prisma from "@/utils/prisma"
 import { DeadliftRecord } from "@/backend/domain/entities/DeadliftRecord"
 import { DeadliftRecordRepository } from "@/backend/domain/repositories/DeadliftRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrDeadliftRecordRepository implements DeadliftRecordRepository {
-  async findByUserId(userId: string): Promise<DeadliftRecord | null> {
-    const record = await prisma.deadliftRecord.findUnique({
-      where: { userId }
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<DeadliftRecord | null> {
+    const client = tx || prisma
+    const record = await client.deadliftRecord.findFirst({
+      where: { userId },
+      orderBy: { weight: "desc" }
     })
-    return record ? this.toDomain(record) : null
+    return record as DeadliftRecord || null
   }
 
-  async save(record: DeadliftRecord): Promise<DeadliftRecord> {
-    const savedRecord = await prisma.deadliftRecord.upsert({
-      where: { userId: record.userId },
-      update: { weight: record.weight },
-      create: {
+  async findByUserIdAndOptions(
+    userId: string,
+    startDate?: Date,
+    endDate?: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+    tx?: TransactionClient
+  ): Promise<DeadliftRecord[]> {
+    const whereCondition: any = { userId }
+
+    if (startDate || endDate) {
+      whereCondition.createdAt = {}
+      if (startDate) whereCondition.createdAt.gte = startDate
+      if (endDate) whereCondition.createdAt.lte = endDate
+    }
+
+    const client = tx || prisma
+    const records = await client.deadliftRecord.findMany({
+      where: whereCondition,
+      orderBy: { createdAt: sortOrder || "desc" },
+      take: limit
+    })
+
+    return records as DeadliftRecord[]
+  }
+
+  async save(record: DeadliftRecord, tx?: TransactionClient): Promise<DeadliftRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.deadliftRecord.create({
+      data: {
         userId: record.userId,
         weight: record.weight,
         createdAt: record.createdAt
       }
     })
-    return this.toDomain(savedRecord)
+    return savedRecord as DeadliftRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.deadliftRecord.deleteMany({
+      const client = tx || prisma
+      await client.deadliftRecord.deleteMany({
         where: {
           userId,
           createdAt
@@ -37,12 +66,4 @@ export class PrDeadliftRecordRepository implements DeadliftRecordRepository {
     }
   }
 
-  private toDomain(record: any): DeadliftRecord {
-    return new DeadliftRecord(
-      record.id,
-      record.userId,
-      record.weight,
-      record.createdAt
-    )
-  }
 }

@@ -1,31 +1,60 @@
 import prisma from "@/utils/prisma"
 import { RunningRecord } from "@/backend/domain/entities/RunningRecord"
 import { RunningRecordRepository } from "@/backend/domain/repositories/RunningRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrRunningRecordRepository implements RunningRecordRepository {
-  async findByUserId(userId: string): Promise<RunningRecord | null> {
-    const record = await prisma.runningRecord.findUnique({
-      where: { userId }
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<RunningRecord | null> {
+    const client = tx || prisma
+    const record = await client.runningRecord.findFirst({
+      where: { userId },
+      orderBy: { distance: "desc" }
     })
-    return record ? this.toDomain(record) : null
+    return record as RunningRecord || null
   }
 
-  async save(record: RunningRecord): Promise<RunningRecord> {
-    const savedRecord = await prisma.runningRecord.upsert({
-      where: { userId: record.userId },
-      update: { distance: record.distance },
-      create: {
+  async findByUserIdAndOptions(
+    userId: string,
+    startDate?: Date,
+    endDate?: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+    tx?: TransactionClient
+  ): Promise<RunningRecord[]> {
+    const whereCondition: any = { userId }
+
+    if (startDate || endDate) {
+      whereCondition.createdAt = {}
+      if (startDate) whereCondition.createdAt.gte = startDate
+      if (endDate) whereCondition.createdAt.lte = endDate
+    }
+
+    const client = tx || prisma
+    const records = await client.runningRecord.findMany({
+      where: whereCondition,
+      orderBy: { createdAt: sortOrder || "desc" },
+      take: limit
+    })
+
+    return records as RunningRecord[]
+  }
+
+  async save(record: RunningRecord, tx?: TransactionClient): Promise<RunningRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.runningRecord.create({
+      data: {
         userId: record.userId,
         distance: record.distance,
         createdAt: record.createdAt
       }
     })
-    return this.toDomain(savedRecord)
+    return savedRecord as RunningRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.runningRecord.deleteMany({
+      const client = tx || prisma
+      await client.runningRecord.deleteMany({
         where: {
           userId,
           createdAt
@@ -37,12 +66,4 @@ export class PrRunningRecordRepository implements RunningRecordRepository {
     }
   }
 
-  private toDomain(record: any): RunningRecord {
-    return new RunningRecord(
-      record.id,
-      record.userId,
-      record.distance,
-      record.createdAt
-    )
-  }
 }

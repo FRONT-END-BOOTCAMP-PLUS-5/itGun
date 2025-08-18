@@ -1,22 +1,26 @@
 import prisma from "@/utils/prisma"
 import { Workout } from "@/backend/domain/entities/Workout"
 import { WorkoutRepository } from "@/backend/domain/repositories/WorkoutRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrWorkoutRepository implements WorkoutRepository {
-  async findAll(): Promise<Workout[]> {
-    const workouts = await prisma.workout.findMany()
+  async findAll(tx?: TransactionClient): Promise<Workout[]> {
+    const client = tx || prisma
+    const workouts = await client.workout.findMany()
     return workouts.map(this.toDomain)
   }
 
-  async findById(id: number): Promise<Workout | null> {
-    const workout = await prisma.workout.findUnique({
+  async findById(id: number, tx?: TransactionClient): Promise<Workout | null> {
+    const client = tx || prisma
+    const workout = await client.workout.findUnique({
       where: { id },
     })
     return workout ? this.toDomain(workout) : null
   }
 
-  async save(workout: Workout): Promise<Workout> {
-    const savedWorkout = await prisma.workout.create({
+  async save(workout: Workout, tx?: TransactionClient): Promise<Workout> {
+    const client = tx || prisma
+    const savedWorkout = await client.workout.create({
       data: {
         seq: workout.seq,
         exerciseName: workout.exerciseName,
@@ -30,10 +34,13 @@ export class PrWorkoutRepository implements WorkoutRepository {
     return this.toDomain(savedWorkout)
   }
 
-  async saveMany(workouts: Omit<Workout, "id">[]): Promise<Workout[]> {
-    const savedWorkouts = await prisma.$transaction(
-      workouts.map((workout) =>
-        prisma.workout.create({
+  async saveMany(workouts: Omit<Workout, "id">[], tx?: TransactionClient): Promise<Workout[]> {
+    const client = tx || prisma
+    
+    if (tx) {
+      const savedWorkouts: Workout[] = []
+      for (const workout of workouts) {
+        const savedWorkout = await client.workout.create({
           data: {
             seq: workout.seq,
             exerciseName: workout.exerciseName,
@@ -44,18 +51,37 @@ export class PrWorkoutRepository implements WorkoutRepository {
             durationSeconds: workout.durationSeconds,
           },
         })
+        savedWorkouts.push(savedWorkout as Workout)
+      }
+      return savedWorkouts
+    } else {
+      const savedWorkouts = await prisma.$transaction(
+        workouts.map((workout) =>
+          prisma.workout.create({
+            data: {
+              seq: workout.seq,
+              exerciseName: workout.exerciseName,
+              setCount: workout.setCount,
+              weight: workout.weight,
+              repetitionCount: workout.repetitionCount,
+              distance: workout.distance,
+              durationSeconds: workout.durationSeconds,
+            },
+          })
+        )
       )
-    )
-
-    return savedWorkouts as Workout[]
+      return savedWorkouts as Workout[]
+    }
   }
 
   async update(
     id: number,
-    workoutData: Partial<Workout>
+    workoutData: Partial<Workout>,
+    tx?: TransactionClient
   ): Promise<Workout | null> {
     try {
-      const updatedWorkout = await prisma.workout.update({
+      const client = tx || prisma
+      const updatedWorkout = await client.workout.update({
         where: { id },
         data: {
           ...(workoutData.seq !== undefined && { seq: workoutData.seq }),
@@ -85,9 +111,10 @@ export class PrWorkoutRepository implements WorkoutRepository {
     }
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: number, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.workout.delete({
+      const client = tx || prisma
+      await client.workout.delete({
         where: { id },
       })
       return true
@@ -97,7 +124,8 @@ export class PrWorkoutRepository implements WorkoutRepository {
   }
 
   async findByMultipleCriteria(
-    criteriaList: Partial<Workout>[]
+    criteriaList: Partial<Workout>[],
+    tx?: TransactionClient
   ): Promise<Workout[]> {
     const whereConditions = criteriaList.map((criteria) => ({
       seq: criteria.seq,
@@ -113,7 +141,8 @@ export class PrWorkoutRepository implements WorkoutRepository {
       }),
     }))
 
-    const workouts = await prisma.workout.findMany({
+    const client = tx || prisma
+    const workouts = await client.workout.findMany({
       where: {
         OR: whereConditions,
       },

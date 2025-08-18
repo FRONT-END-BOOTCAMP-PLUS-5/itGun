@@ -1,31 +1,60 @@
 import prisma from "@/utils/prisma"
 import { SquatRecord } from "@/backend/domain/entities/SquatRecord"
 import { SquatRecordRepository } from "@/backend/domain/repositories/SquatRecordRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrSquatRecordRepository implements SquatRecordRepository {
-  async findByUserId(userId: string): Promise<SquatRecord | null> {
-    const record = await prisma.squatRecord.findUnique({
-      where: { userId }
+  async findMaxByUserId(userId: string, tx?: TransactionClient): Promise<SquatRecord | null> {
+    const client = tx || prisma
+    const record = await client.squatRecord.findFirst({
+      where: { userId },
+      orderBy: { weight: "desc" }
     })
-    return record ? this.toDomain(record) : null
+    return record as SquatRecord || null
   }
 
-  async save(record: SquatRecord): Promise<SquatRecord> {
-    const savedRecord = await prisma.squatRecord.upsert({
-      where: { userId: record.userId },
-      update: { weight: record.weight },
-      create: {
+  async findByUserIdAndOptions(
+    userId: string,
+    startDate?: Date,
+    endDate?: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+    tx?: TransactionClient
+  ): Promise<SquatRecord[]> {
+    const whereCondition: any = { userId }
+
+    if (startDate || endDate) {
+      whereCondition.createdAt = {}
+      if (startDate) whereCondition.createdAt.gte = startDate
+      if (endDate) whereCondition.createdAt.lte = endDate
+    }
+
+    const client = tx || prisma
+    const records = await client.squatRecord.findMany({
+      where: whereCondition,
+      orderBy: { createdAt: sortOrder || "desc" },
+      take: limit
+    })
+
+    return records as SquatRecord[]
+  }
+
+  async save(record: SquatRecord, tx?: TransactionClient): Promise<SquatRecord> {
+    const client = tx || prisma
+    const savedRecord = await client.squatRecord.create({
+      data: {
         userId: record.userId,
         weight: record.weight,
         createdAt: record.createdAt
       }
     })
-    return this.toDomain(savedRecord)
+    return savedRecord as SquatRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date): Promise<boolean> {
+  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.squatRecord.deleteMany({
+      const client = tx || prisma
+      await client.squatRecord.deleteMany({
         where: {
           userId,
           createdAt
@@ -37,12 +66,4 @@ export class PrSquatRecordRepository implements SquatRecordRepository {
     }
   }
 
-  private toDomain(record: any): SquatRecord {
-    return new SquatRecord(
-      record.id,
-      record.userId,
-      record.weight,
-      record.createdAt
-    )
-  }
 }
