@@ -11,6 +11,7 @@ import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositorie
 import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/PrSquatRecordRepository"
 import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
 import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
+import { PrTransactionManager } from "@/backend/infrastructure/repositories/PrTransactionManager"
 
 export async function DELETE(
   request: NextRequest,
@@ -24,6 +25,7 @@ export async function DELETE(
       return NextResponse.json({ message: "error" }, { status: 400 })
     }
 
+    const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
     const badgeRepository = new PrBadgeRepository()
@@ -46,6 +48,7 @@ export async function DELETE(
     )
     
     const deleteLogUsecase = new DeleteLogUsecase(
+      transactionManager,
       logRepository,
       bodyPartGaugeRepository,
       badgeDeletionService
