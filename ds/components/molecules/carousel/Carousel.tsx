@@ -1,3 +1,5 @@
+"use client"
+
 import { Children, FC, TouchEvent, useRef, useState, useEffect } from "react"
 import { CarouselProps } from "./Carousel.types"
 import { SWIPE_THRESHOLD, TRANSITION_DURATION } from "./Carousel.constants"
