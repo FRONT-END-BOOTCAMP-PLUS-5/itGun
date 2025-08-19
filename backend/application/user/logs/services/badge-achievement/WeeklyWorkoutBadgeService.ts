@@ -1,8 +1,8 @@
-import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
 
 export class WeeklyWorkoutBadgeService {
   constructor(
@@ -12,13 +12,9 @@ export class WeeklyWorkoutBadgeService {
 
   async check(
     userId: string,
-    badges: Badge[],
     logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
-    const weeklyBadge = badges.find((badge) => badge.name.includes("3일"))
-
-    if (!weeklyBadge) return null
 
     // 로그 날짜가 속한 주의 시작일 계산 (월요일 기준)
     const parsedDate = new Date(logDate)
@@ -49,7 +45,7 @@ export class WeeklyWorkoutBadgeService {
     if (workoutDatesThisWeek.size === 3) {
         const existingWeeklyBadges = await this.userBadgeRepository.findByUserIdAndOptions(
         userId,
-        [weeklyBadge.id],
+        [BADGE_IDS.WEEKLY_3_DAYS],
         startOfWeek,
         endOfWeek,
         undefined,
@@ -59,7 +55,7 @@ export class WeeklyWorkoutBadgeService {
 
       if (existingWeeklyBadges.length > 0) return null
 
-      return new UserBadge(0, weeklyBadge.id, userId, logDate)
+      return new UserBadge(0, BADGE_IDS.WEEKLY_3_DAYS, userId, logDate)
     }
 
     return null

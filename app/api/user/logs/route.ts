@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { CreateLogUsecase } from "@/backend/application/user/logs/usecases/CreateLogUsecase"
 import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepository"
 import { PrWorkoutRepository } from "@/backend/infrastructure/repositories/PrWorkoutRepository"
-import { PrLogWorkoutRepository } from "@/backend/infrastructure/repositories/PrLogWorkoutRepository"
 import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
 import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
@@ -63,7 +62,6 @@ export async function POST(request: NextRequest) {
     const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
     const workoutRepository = new PrWorkoutRepository()
-    const logWorkoutRepository = new PrLogWorkoutRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
     const badgeRepository = new PrBadgeRepository()
     const userBadgeRepository = new PrUserBadgeRepository()
@@ -76,7 +74,6 @@ export async function POST(request: NextRequest) {
       transactionManager,
       logRepository,
       workoutRepository,
-      logWorkoutRepository,
       bodyPartGaugeRepository,
       badgeRepository,
       userBadgeRepository,
