@@ -4,11 +4,16 @@ import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories
 import { PrCharacterAssetRepository } from "@/backend/infrastructure/repositories/PrCharacterAssetRepository"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
 import { NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 
 // GET /api/user/character?date=
-// body - userId
 export async function GET(req: NextRequest) {
-  const { userId } = await req.json()
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    return NextResponse.json({ message: "error" }, { status: 500 })
+  }
   const { searchParams } = new URL(req.url)
   const date = searchParams.get("date")
 
