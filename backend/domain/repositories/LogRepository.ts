@@ -1,5 +1,6 @@
 import { Log } from "@/backend/domain/entities/Log"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { Workout } from "../entities/Workout"
 
 export interface LogRepository {
   findAll(tx?: TransactionClient): Promise<Log[]>
@@ -12,6 +13,7 @@ export interface LogRepository {
   ): Promise<Log[]>
   findFirstByUserId(userId: string, tx?: TransactionClient): Promise<Log | null>
   findById(id: number, tx?: TransactionClient): Promise<Log | null>
+  saveWithRelations(log: Log, workoutToCreate: Workout[], workoutToConnect: Pick<Workout, "id">[], tx?: TransactionClient): Promise<Log>
   save(log: Log, tx?: TransactionClient): Promise<Log>
   update(id: number, log: Partial<Log>, tx?: TransactionClient): Promise<Log | null>
   delete(id: number, tx?: TransactionClient): Promise<boolean>

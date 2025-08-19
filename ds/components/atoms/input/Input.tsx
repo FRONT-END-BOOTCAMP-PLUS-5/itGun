@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react"
 import { InputProps } from "./Input.types"
 import { inputSizes } from "@/ds/styles/tokens/input/sizes"
@@ -33,7 +35,7 @@ export const Input: React.FC<InputProps> = ({
   const combinedClassName = `
     border-b-1 border-[var(--color-secondary)] outline-none font-[var(--color-secondary)]
     ${inputSizes[size]}
-    ${isFullWidth ? "w-full" : "w-fit"}
+    ${isFullWidth ? "w-full" : ""}
     ${className || ""}
   `.trim()
 

@@ -1,26 +1,19 @@
-import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
 
 export class FirstWorkoutBadgeService {
   constructor(private userBadgeRepository: UserBadgeRepository) {}
 
   async check(
     userId: string,
-    badges: Badge[],
     logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
-    const firstWorkoutBadge = badges.find((badge) =>
-      badge.name.includes("첫 운동")
-    )
-
-    if (!firstWorkoutBadge) return null
-
     const existingBadge = await this.userBadgeRepository.findByUserIdAndOptions(
       userId,
-      [firstWorkoutBadge.id],
+      [BADGE_IDS.FIRST_WORKOUT],
       undefined,
       undefined,
       undefined,
@@ -30,6 +23,6 @@ export class FirstWorkoutBadgeService {
 
     if (existingBadge.length > 0) return null
 
-    return new UserBadge(0, firstWorkoutBadge.id, userId, logDate)
+    return new UserBadge(0, BADGE_IDS.FIRST_WORKOUT, userId, logDate)
   }
 }

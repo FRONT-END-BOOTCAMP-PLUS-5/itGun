@@ -4,13 +4,13 @@ import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepo
 import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/DeleteLogRequestDto"
 import { PrBodyPartGaugeRepository } from "@/backend/infrastructure/repositories/PrBodyPartGaugeRepository"
 import { BadgeDeletionService } from "@/backend/application/user/logs/services/BadgeDeletionService"
-import { PrBadgeRepository } from "@/backend/infrastructure/repositories/PrBadgeRepository"
 import { PrUserBadgeRepository } from "@/backend/infrastructure/repositories/PrUserBadgeRepository"
 import { PrBenchPressRecordRepository } from "@/backend/infrastructure/repositories/PrBenchPressRecordRepository"
 import { PrDeadliftRecordRepository } from "@/backend/infrastructure/repositories/PrDeadliftRecordRepository"
 import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/PrSquatRecordRepository"
 import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
 import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
+import { PrTransactionManager } from "@/backend/infrastructure/repositories/PrTransactionManager"
 
 export async function DELETE(
   request: NextRequest,
@@ -24,9 +24,9 @@ export async function DELETE(
       return NextResponse.json({ message: "error" }, { status: 400 })
     }
 
+    const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
     const bodyPartGaugeRepository = new PrBodyPartGaugeRepository()
-    const badgeRepository = new PrBadgeRepository()
     const userBadgeRepository = new PrUserBadgeRepository()
     const benchPressRecordRepository = new PrBenchPressRecordRepository()
     const deadliftRecordRepository = new PrDeadliftRecordRepository()
@@ -36,7 +36,6 @@ export async function DELETE(
     
     const badgeDeletionService = new BadgeDeletionService(
       userBadgeRepository,
-      badgeRepository,
       logRepository,
       benchPressRecordRepository,
       deadliftRecordRepository,
@@ -46,6 +45,7 @@ export async function DELETE(
     )
     
     const deleteLogUsecase = new DeleteLogUsecase(
+      transactionManager,
       logRepository,
       bodyPartGaugeRepository,
       badgeDeletionService

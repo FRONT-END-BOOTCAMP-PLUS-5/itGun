@@ -55,7 +55,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         core: bodyPartGauge.core,
         stamina: bodyPartGauge.stamina,
         earnedAt: bodyPartGauge.earnedAt,
-        createdAt: new Date(),
+        createdAt: bodyPartGauge.createdAt || new Date(),
       },
     })
     return savedGauge as BodyPartGauge

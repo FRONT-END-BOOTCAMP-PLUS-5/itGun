@@ -2,6 +2,7 @@ import prisma from "@/utils/prisma"
 import { Log, CalIconType } from "@/backend/domain/entities/Log"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { Workout } from "@/backend/domain/entities/Workout"
 
 export class PrLogRepository implements LogRepository {
   async findAll(tx?: TransactionClient): Promise<Log[]> {
@@ -69,6 +70,44 @@ export class PrLogRepository implements LogRepository {
     })
 
     return log as Log || null
+  }
+
+  async saveWithRelations(log: Log, workoutToCreate: Workout[], workoutToConnect: Pick<Workout, "id">[], tx?: TransactionClient): Promise<Log> {
+    const client = tx || prisma
+    const savedLog = await client.log.create({
+      data: {
+        userId: log.userId,
+        calIconType: log.calIconType,
+        totalDuration: log.totalDuration,
+        gaugeChanges: log.gaugeChanges,
+        logDate: log.logDate,
+
+        logWorkouts: {
+          create: [
+            ...workoutToCreate.map(workout => ({
+              workout: {
+                create: {
+                  seq: workout.seq,
+                  exerciseName: workout.exerciseName,
+                  setCount: workout.setCount,
+                  weight: workout.weight,
+                  repetitionCount: workout.repetitionCount,
+                  distance: workout.distance,
+                  durationSeconds: workout.durationSeconds
+                }
+              }
+            })),
+            ...workoutToConnect.map(workout => ({
+              workout: {
+                connect: { id: workout.id }
+              }
+            }))
+          ],
+        }
+      }
+    })
+
+    return savedLog as Log
   }
 
   async save(log: Log, tx?: TransactionClient): Promise<Log> {
