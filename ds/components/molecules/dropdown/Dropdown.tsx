@@ -1,161 +1,82 @@
 import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
-import { dropdownSizeClasses } from "@/ds/styles/tokens/dropdown/size"
-//다시 확인 필요
-const sizeClassBySize: Record<
-  NonNullable<DropdownProps["size"]>,
-  string
-> = dropdownSizeClasses
+import { dropdownSize } from "../../../styles/tokens/dropdown/size"
 
-const Dropdown = ({
+export const Dropdown: React.FC<DropdownProps> = ({
   size = "md",
   options,
   value,
-  placeholder = "",
   onChange,
-  disabled = false,
-}: DropdownProps) => {
-  const sizeClasses = sizeClassBySize[size]
-
-  const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement | null>(null)
-
-  const allNumeric = options.every((opt) => typeof opt.value === "number")
-
-  const unitSuffix =
-    !allNumeric || options.length === 0
-      ? ""
-      : options[0].label.replace(/^[-+]?\d+(?:\.\d+)?\s*/, "")
-
-  const groupedRanges = (() => {
-    if (!allNumeric) return [] as { label: string; value: string }[]
-    if (options.length === 0) return []
-
-    const sorted = [...options].sort(
-      (a, b) => (a.value as number) - (b.value as number)
-    )
-
-    const groups: { label: string; value: string }[] = []
-    const n = sorted.length
-
-    for (let i = 0; i < 4; i += 1) {
-      const startIdx = Math.floor((i * n) / 4)
-      const endIdxRaw = Math.floor(((i + 1) * n) / 4) - 1
-      if (startIdx >= n) continue
-      const endIdx = Math.max(startIdx, Math.min(endIdxRaw, n - 1))
-
-      const startVal = sorted[startIdx].value as number
-      const endVal = sorted[endIdx].value as number
-
-      const label = `${startVal}${unitSuffix} ~ ${endVal}${unitSuffix}`
-      const value = `${startVal}-${endVal}`
-      groups.push({ label, value })
-    }
-
-    return groups
-  })()
-
-  const selectedLabel = (() => {
-    const matched = options.find((opt) => opt.value === value)
-    if (matched) return matched.label
-    if (typeof value === "string" && value.includes("-")) {
-      // value가 범위 문자열인 경우 그대로 노출하거나 단위 붙여서 노출
-      if (unitSuffix) {
-        const [s, e] = value.split("-")
-        if (s && e && !Number.isNaN(Number(s)) && !Number.isNaN(Number(e))) {
-          return `${Number(s)}${unitSuffix} ~ ${Number(e)}${unitSuffix}`
-        }
-      }
-      return value
-    }
-    return ""
-  })()
+  placeholder = "선택해주세요",
+  ...props
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedValue, setSelectedValue] = useState<string | number | null>(
+    value || null
+  )
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!containerRef.current) return
-      if (containerRef.current.contains(e.target as Node)) return
-      setOpen(false)
+    if (value !== undefined) {
+      setSelectedValue(value)
     }
+  }, [value])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent): void => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  const handleSelect = (val: string | number) => {
-    onChange?.(val)
-    setOpen(false)
+  const handleSelect = (option: DropdownOption) => {
+    setSelectedValue(option.value)
+    onChange?.(option.value)
+    setIsOpen(false)
   }
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative flex w-[333px] flex-row items-center border-b-2 border-[var(--color-secondary)] bg-white"
-    >
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={() => !disabled && setOpen((p) => !p)}
-        className={[
-          "w-full appearance-none border-none bg-transparent text-left text-[var(--color-secondary)] outline-none",
-          "pt-[3px] pr-8 pb-[6px] pl-0 leading-[21px]",
-          sizeClasses,
-        ].join(" ")}
-      >
-        {selectedLabel || placeholder}
-      </button>
-      <span className="pointer-events-none absolute right-0 rotate-0 text-[var(--color-secondary)]">
-        <Icon name="downArrow" size={24} color="var[(--color-secondary)]" />
-      </span>
+  const selectedOption = options.find(
+    (option) => option.value === selectedValue
+  )
 
-      {open && !disabled && (
-        <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-md border border-[var(--color-secondary)] bg-white p-2 shadow-md">
-          {allNumeric ? (
-            <div className="flex h-32 flex-col overflow-auto pr-1">
-              {groupedRanges.map((grp) => (
-                <button
-                  key={grp.value}
-                  type="button"
-                  onClick={() => handleSelect(grp.value)}
-                  className={[
-                    "w-full truncate rounded px-2 py-2 text-left text-[14px] leading-5",
-                    typeof value === "string" && value === grp.value
-                      ? "bg-[var(--color-white-200)] text-[var(--color-primary)]"
-                      : "",
-                  ].join(" ")}
-                  title={grp.label}
-                >
-                  {grp.label}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div className="flex h-32 flex-col overflow-auto pr-1">
-              {options.map((opt: DropdownOption) => {
-                const isSelected = opt.value === value
-                return (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => handleSelect(opt.value)}
-                    className={[
-                      "w-full truncate rounded px-2 py-2 text-left text-[14px] leading-5",
-                      isSelected
-                        ? "bg-[var(--color-white-200)] text-[var(--color-primary)]"
-                        : "",
-                    ].join(" ")}
-                    title={opt.label}
-                  >
-                    {opt.label}
-                  </button>
-                )
-              })}
-            </div>
-          )}
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        className={`flex w-full items-center justify-between rounded border border-gray-300 bg-white px-3 py-2 text-left shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none ${dropdownSize[size]}`}
+        onClick={() => setIsOpen(!isOpen)}
+        {...props}
+      >
+        <span
+          className={`flex-1 ${selectedOption ? "text-gray-900" : "text-gray-500"}`}
+        >
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <div className="ml-2 flex items-center justify-center">
+          <Icon name="downArrow" color="primary" size={16} />
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              className="block w-full px-3 py-2 text-left text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+              onClick={() => handleSelect(option)}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       )}
     </div>
   )
 }
-
-export default Dropdown

@@ -1,7 +1,7 @@
-// Dropdown size classes for different component sizes
-//다시 확인 필요
-export const dropdownSizeClasses: Record<"sm" | "md" | "lg", string> = {
-  sm: "text-[16px] h-21",
+export type DropdownSize = "sm" | "md" | "lg"
+
+export const dropdownSize: Record<DropdownSize, string> = {
+  sm: "text-[16px] h-[21px]",
   md: "text-[16px] h-[30px]",
-  lg: "text-[16px] h-42",
+  lg: "text-[16px] h-[42px]",
 }
