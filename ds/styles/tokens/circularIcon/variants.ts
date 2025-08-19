@@ -14,7 +14,7 @@ export const circularIconVariants = {
   accent: "bg-[var(--color-accent)]",
   success: "bg-[var(--color-success)]",
   info: "bg-[var(--color-info)]",
-  disable: "bg-[var(--color-disable)] cursor-not-allowed",
+  disable: "bg-[var(--color-disable)]",
 } as const
 
 export type CircularIconVariant = keyof typeof circularIconVariants
