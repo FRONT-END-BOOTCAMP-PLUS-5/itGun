@@ -13,7 +13,7 @@ const D1: React.FC<TextProps> = ({
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[40px] font-bold ${className}`}
+    className={`leading-[40px] ${className}`}
     {...props}
   >
     {children}
@@ -32,7 +32,7 @@ const H1: React.FC<TextProps> = ({
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[36px] font-bold ${className}`}
+    className={`leading-[36px] ${className}`}
     {...props}
   >
     {children}
@@ -51,7 +51,7 @@ const H2: React.FC<TextProps> = ({
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[32px] font-bold ${className}`}
+    className={`leading-[32px] ${className}`}
     {...props}
   >
     {children}
@@ -63,14 +63,14 @@ const S1: React.FC<TextProps> = ({
   size = "text-xl",
   fontWeight = "bold",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[26px] font-normal ${className}`}
+    className={`leading-[26px] ${className}`.trim()}
     {...props}
   >
     {children}
@@ -82,14 +82,14 @@ const S2: React.FC<TextProps> = ({
   size = "text-base",
   fontWeight = "normal",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[24px] font-normal ${className}`}
+    className={`leading-[24px] ${className}`}
     {...props}
   >
     {children}
@@ -101,14 +101,14 @@ const B1: React.FC<TextProps> = ({
   size = "text-base",
   fontWeight = "normal",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[24px] font-normal ${className}`}
+    className={`leading-[24px] ${className}`}
     {...props}
   >
     {children}
@@ -120,14 +120,14 @@ const B2: React.FC<TextProps> = ({
   size = "text-sm",
   fontWeight = "normal",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[20px] font-normal ${className}`}
+    className={`leading-[20px] ${className}`}
     {...props}
   >
     {children}
@@ -139,14 +139,14 @@ const C1: React.FC<TextProps> = ({
   size = "text-xs",
   fontWeight = "normal",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[16px] font-normal ${className}`}
+    className={`leading-[16px] ${className}`}
     {...props}
   >
     {children}
@@ -158,14 +158,14 @@ const C2: React.FC<TextProps> = ({
   size = "text-[10px]",
   fontWeight = "normal",
   variant = "primary",
-  className,
+  className = "",
   ...props
 }) => (
   <Text
     size={size}
     fontWeight={fontWeight}
     variant={variant}
-    className={`leading-[14px] font-normal ${className}`}
+    className={`leading-[14px] ${className}`}
     {...props}
   >
     {children}
