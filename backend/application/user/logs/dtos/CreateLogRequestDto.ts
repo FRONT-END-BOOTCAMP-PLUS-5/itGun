@@ -31,6 +31,6 @@ export interface CreateLogRequestDto {
   userId: string;
   calIconType: CalIconType;
   totalDuration: number;
-  createdAt?: Date;
+  logDate?: Date;
   workouts: WorkoutData[];
 }

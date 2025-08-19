@@ -24,15 +24,15 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
     const whereCondition: any = { userId }
 
     if (startDate || endDate) {
-      whereCondition.createdAt = {}
-      if (startDate) whereCondition.createdAt.gte = startDate
-      if (endDate) whereCondition.createdAt.lte = endDate
+      whereCondition.earnedAt = {}
+      if (startDate) whereCondition.earnedAt.gte = startDate
+      if (endDate) whereCondition.earnedAt.lte = endDate
     }
 
     const client = tx || prisma
     const records = await client.bigThreeRecord.findMany({
       where: whereCondition,
-      orderBy: { createdAt: sortOrder || "desc" },
+      orderBy: { earnedAt: sortOrder || "desc" },
       take: limit
     })
 
@@ -45,19 +45,19 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
       data: {
         userId: record.userId,
         weight: record.weight,
-        createdAt: record.createdAt
+        earnedAt: record.earnedAt
       }
     })
     return savedRecord as BigThreeRecord
   }
 
-  async deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
+  async deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
       const client = tx || prisma
       await client.bigThreeRecord.deleteMany({
         where: {
           userId,
-          createdAt
+          earnedAt
         }
       })
       return true

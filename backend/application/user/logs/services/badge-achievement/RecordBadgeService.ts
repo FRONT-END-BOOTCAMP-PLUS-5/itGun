@@ -1,5 +1,4 @@
 import { WorkoutData } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
-import { Badge } from "@/backend/domain/entities/Badge"
 import { UserBadge } from "@/backend/domain/entities/UserBadge"
 import { BenchPressRecord } from "@/backend/domain/entities/BenchPressRecord"
 import { SquatRecord } from "@/backend/domain/entities/SquatRecord"
@@ -16,6 +15,7 @@ import {
   RECORD_MINIMUMS,
   BIG_THREE_BADGE_UNIT,
 } from "@/backend/application/user/logs/constants/userRecordConstants"
+import { BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class RecordBadgeService {
@@ -48,7 +48,6 @@ export class RecordBadgeService {
   async checkAndSaveRecords(
     userId: string,
     workouts: WorkoutData[],
-    badges: Badge[],
     existingRecords: {
       benchPress: BenchPressRecord | null
       squat: SquatRecord | null
@@ -56,7 +55,7 @@ export class RecordBadgeService {
       running: RunningRecord | null
       bigThree: BigThreeRecord | null
     },
-    logCreatedAt: Date,
+    logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const awardedBadges: UserBadge[] = []
@@ -117,36 +116,24 @@ export class RecordBadgeService {
       const newRecord = new BenchPressRecord(
         userId,
         logMaxRecords.benchPress,
-        logCreatedAt
+        logDate
       )
       await this.benchPressRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.benchPress >= RECORD_MINIMUMS.BENCH_PRESS) {
-        const benchBadge = badges.find(
-          (badge) =>
-            badge.name.includes("벤치프레스") && badge.name.includes("신기록")
-        )
-        if (benchBadge) {
-          const userBadge = new UserBadge(0, benchBadge.id, userId, logCreatedAt)
-          awardedBadges.push(userBadge)
-        }
+        const userBadge = new UserBadge(0, BADGE_IDS.BENCH_PRESS_RECORD, userId, logDate)
+        awardedBadges.push(userBadge)
       }
     }
 
     // 스쿼트
     if (logMaxRecords.squat > (existingRecords.squat?.weight || 0)) {
-      const newRecord = new SquatRecord(userId, logMaxRecords.squat, logCreatedAt)
+      const newRecord = new SquatRecord(userId, logMaxRecords.squat, logDate)
       await this.squatRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.squat >= RECORD_MINIMUMS.SQUAT) {
-        const squatBadge = badges.find(
-          (badge) =>
-            badge.name.includes("스쿼트") && badge.name.includes("신기록")
-        )
-        if (squatBadge) {
-          const userBadge = new UserBadge(0, squatBadge.id, userId, logCreatedAt)
-          awardedBadges.push(userBadge)
-        }
+        const userBadge = new UserBadge(0, BADGE_IDS.SQUAT_RECORD, userId, logDate)
+        awardedBadges.push(userBadge)
       }
     }
 
@@ -155,19 +142,13 @@ export class RecordBadgeService {
       const newRecord = new DeadliftRecord(
         userId,
         logMaxRecords.deadlift,
-        logCreatedAt
+        logDate
       )
       await this.deadliftRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.deadlift >= RECORD_MINIMUMS.DEADLIFT) {
-        const deadliftBadge = badges.find(
-          (badge) =>
-            badge.name.includes("데드리프트") && badge.name.includes("신기록")
-        )
-        if (deadliftBadge) {
-          const userBadge = new UserBadge(0, deadliftBadge.id, userId, logCreatedAt)
-          awardedBadges.push(userBadge)
-        }
+        const userBadge = new UserBadge(0, BADGE_IDS.DEADLIFT_RECORD, userId, logDate)
+        awardedBadges.push(userBadge)
       }
     }
 
@@ -176,19 +157,13 @@ export class RecordBadgeService {
       const newRecord = new RunningRecord(
         userId,
         logMaxRecords.running,
-        logCreatedAt
+        logDate
       )
       await this.runningRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.running >= RECORD_MINIMUMS.RUNNING) {
-        const runningBadge = badges.find(
-          (badge) =>
-            badge.name.includes("달리기") && badge.name.includes("신기록")
-        )
-        if (runningBadge) {
-          const userBadge = new UserBadge(0, runningBadge.id, userId, logCreatedAt)
-          awardedBadges.push(userBadge)
-        }
+        const userBadge = new UserBadge(0, BADGE_IDS.RUNNING_RECORD, userId, logDate)
+        awardedBadges.push(userBadge)
       }
     }
 
@@ -202,18 +177,12 @@ export class RecordBadgeService {
     const previousLevel = Math.floor(previousBigThree / BIG_THREE_BADGE_UNIT)
 
     if (currentBigThree > previousBigThree) {
-      const newRecord = new BigThreeRecord(userId, currentBigThree, logCreatedAt)
+      const newRecord = new BigThreeRecord(userId, currentBigThree, logDate)
       await this.bigThreeRecordRepository.save(newRecord, tx)
 
       if (currentLevel > previousLevel && currentBigThree >= BIG_THREE_BADGE_UNIT) {
-        const bigThreeBadge = badges.find(
-          (badge) => badge.name.includes("3대") && badge.name.includes("달성")
-        )
-
-        if (bigThreeBadge) {
-          const userBadge = new UserBadge(0, bigThreeBadge.id, userId, logCreatedAt)
-          awardedBadges.push(userBadge)
-        }
+        const userBadge = new UserBadge(0, BADGE_IDS.BIG_THREE_RECORD, userId, logDate)
+        awardedBadges.push(userBadge)
       }
     }
 

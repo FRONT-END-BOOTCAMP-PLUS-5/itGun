@@ -2,6 +2,7 @@ import prisma from "@/utils/prisma"
 import { Log, CalIconType } from "@/backend/domain/entities/Log"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { Workout } from "@/backend/domain/entities/Workout"
 
 export class PrLogRepository implements LogRepository {
   async findAll(tx?: TransactionClient): Promise<Log[]> {
@@ -21,7 +22,7 @@ export class PrLogRepository implements LogRepository {
     const logs = await client.log.findMany({
       where: {
         userId,
-        createdAt: {
+        logDate: {
           gte: startDate,
           lte: endDate,
         },
@@ -36,7 +37,7 @@ export class PrLogRepository implements LogRepository {
         },
       }),
       orderBy: {
-        createdAt: "desc",
+        logDate: "desc",
       },
     })
 
@@ -48,7 +49,7 @@ export class PrLogRepository implements LogRepository {
     const log = await client.log.findFirst({
       where: { userId },
       orderBy: {
-        createdAt: "asc",
+        logDate: "asc",
       },
     })
 
@@ -71,6 +72,44 @@ export class PrLogRepository implements LogRepository {
     return log as Log || null
   }
 
+  async saveWithRelations(log: Log, workoutToCreate: Workout[], workoutToConnect: Pick<Workout, "id">[], tx?: TransactionClient): Promise<Log> {
+    const client = tx || prisma
+    const savedLog = await client.log.create({
+      data: {
+        userId: log.userId,
+        calIconType: log.calIconType,
+        totalDuration: log.totalDuration,
+        gaugeChanges: log.gaugeChanges,
+        logDate: log.logDate,
+
+        logWorkouts: {
+          create: [
+            ...workoutToCreate.map(workout => ({
+              workout: {
+                create: {
+                  seq: workout.seq,
+                  exerciseName: workout.exerciseName,
+                  setCount: workout.setCount,
+                  weight: workout.weight,
+                  repetitionCount: workout.repetitionCount,
+                  distance: workout.distance,
+                  durationSeconds: workout.durationSeconds
+                }
+              }
+            })),
+            ...workoutToConnect.map(workout => ({
+              workout: {
+                connect: { id: workout.id }
+              }
+            }))
+          ],
+        }
+      }
+    })
+
+    return savedLog as Log
+  }
+
   async save(log: Log, tx?: TransactionClient): Promise<Log> {
     const client = tx || prisma
     const savedLog = await client.log.create({
@@ -79,10 +118,10 @@ export class PrLogRepository implements LogRepository {
         calIconType: log.calIconType,
         totalDuration: log.totalDuration,
         gaugeChanges: log.gaugeChanges,
-        createdAt: log.createdAt,
+        logDate: log.logDate,
       },
     })
-    return this.toDomain(savedLog)
+    return savedLog as Log
   }
 
   async update(id: number, logData: Partial<Log>, tx?: TransactionClient): Promise<Log | null> {
@@ -125,6 +164,7 @@ export class PrLogRepository implements LogRepository {
       log.userId,
       log.calIconType as CalIconType,
       log.totalDuration,
+      log.logDate,
       log.createdAt,
       log.logWorkouts,
       log.gaugeChanges

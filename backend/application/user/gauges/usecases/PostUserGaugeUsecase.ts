@@ -8,7 +8,7 @@ export class PostUserGaugeUsecase {
 
   private calculateDecreasedGauge(
     gauge: BodyPartGauge
-  ): Omit<BodyPartGauge, "userId" | "createdAt"> {
+  ): Omit<BodyPartGauge, "userId" | "earnedAt" | "createdAt"> {
     const getWeight = (value: number): number => {
       if (value < 1) return 0.6
       if (value < 2) return 0.85
@@ -47,6 +47,7 @@ export class PostUserGaugeUsecase {
         const updateGauge: BodyPartGauge = {
           userId: latest.userId,
           ...decayedValues,
+          earnedAt: now,
           createdAt: now,
         }
         await this.bodyPartGaugeRepository.save(updateGauge)

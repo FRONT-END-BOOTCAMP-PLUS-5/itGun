@@ -4,6 +4,6 @@ import { GetUserBadgeDto } from "./GetUserBadgeDto"
 export class GetUserBadgeListDto {
   constructor(
     public badges: GetBadgeDto[],
-    public usesBadges: GetUserBadgeDto[] | null
+    public userBadges: GetUserBadgeDto[] | null
   ) {}
 }
