@@ -1,11 +1,10 @@
-import { DropdownSize } from "../../../styles/tokens/dropdown/size"
 export type DropdownOption = {
   label: string
   value: string | number
 }
 
 export type DropdownProps = {
-  size?: DropdownSize
+  size?: "sm" | "md" | "lg"
   options: DropdownOption[]
   value?: string | number
   onChange?: (value: string | number) => void

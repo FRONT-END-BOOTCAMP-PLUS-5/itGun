@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
-import { dropdownSize } from "../../../styles/tokens/dropdown/size"
+import { dropdownSizeClasses } from "../../../styles/tokens/dropdown/size"
 
 export const Dropdown: React.FC<DropdownProps> = ({
   size = "md",
@@ -50,7 +50,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        className={`flex w-full items-center justify-between rounded border border-gray-300 bg-white px-3 py-2 text-left shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none ${dropdownSize[size]}`}
+        className={`flex w-full items-center justify-between rounded border border-gray-300 bg-white px-3 py-2 text-left shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none ${dropdownSizeClasses[size]}`}
         onClick={() => setIsOpen(!isOpen)}
         {...props}
       >
