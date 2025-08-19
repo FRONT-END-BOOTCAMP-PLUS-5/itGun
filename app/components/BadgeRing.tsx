@@ -5,6 +5,9 @@ import gsap from "gsap"
 import { MotionPathPlugin } from "gsap/MotionPathPlugin"
 import { svgList } from "@/static/svgs/svgList"
 import { moveByRingPath } from "@/utils/animations"
+import { signIn, useSession } from "next-auth/react"
+import { useEffect } from "react"
+import { useGetUserBadges } from "@/hooks/useGetUserBadges"
 
 interface Badge {
   color: string
@@ -12,6 +15,9 @@ interface Badge {
 }
 
 const BadgeRing = ({}) => {
+  const { data } = useGetUserBadges({ limit: 6 })
+  // console.log(data?.badges)
+
   const badges: Badge[] = [
     { color: "secondary-blue", iconName: "medal" },
     { color: "secondary-pink", iconName: "medal" },
