@@ -36,42 +36,20 @@ export class PrWorkoutRepository implements WorkoutRepository {
 
   async saveMany(workouts: Omit<Workout, "id">[], tx?: TransactionClient): Promise<Workout[]> {
     const client = tx || prisma
+
+    const savedWorkouts = await client.workout.createManyAndReturn({
+      data: workouts.map((workout) => ({
+        seq: workout.seq,
+        exerciseName: workout.exerciseName,
+        setCount: workout.setCount,
+        weight: workout.weight,
+        repetitionCount: workout.repetitionCount,
+        distance: workout.distance,
+        durationSeconds: workout.durationSeconds,
+      })),
+    })
     
-    if (tx) {
-      const savedWorkouts: Workout[] = []
-      for (const workout of workouts) {
-        const savedWorkout = await client.workout.create({
-          data: {
-            seq: workout.seq,
-            exerciseName: workout.exerciseName,
-            setCount: workout.setCount,
-            weight: workout.weight,
-            repetitionCount: workout.repetitionCount,
-            distance: workout.distance,
-            durationSeconds: workout.durationSeconds,
-          },
-        })
-        savedWorkouts.push(savedWorkout as Workout)
-      }
-      return savedWorkouts
-    } else {
-      const savedWorkouts = await prisma.$transaction(
-        workouts.map((workout) =>
-          prisma.workout.create({
-            data: {
-              seq: workout.seq,
-              exerciseName: workout.exerciseName,
-              setCount: workout.setCount,
-              weight: workout.weight,
-              repetitionCount: workout.repetitionCount,
-              distance: workout.distance,
-              durationSeconds: workout.durationSeconds,
-            },
-          })
-        )
-      )
-      return savedWorkouts as Workout[]
-    }
+    return savedWorkouts as Workout[]
   }
 
   async update(

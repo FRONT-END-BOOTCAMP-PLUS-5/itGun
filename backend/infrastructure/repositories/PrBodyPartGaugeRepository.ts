@@ -22,7 +22,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     const whereCondition: any = { userId: id }
 
     if (date) {
-      whereCondition.createdAt = date
+      whereCondition.earnedAt = date
     }
 
     const client = tx || prisma
@@ -30,16 +30,16 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       where: whereCondition,
     })
 
-    return userBodyPartGauge ? this.toDomain(userBodyPartGauge) : null
+    return userBodyPartGauge as BodyPartGauge || null
   }
 
   async findLatestOneByUserId(userId: string, tx?: TransactionClient): Promise<BodyPartGauge | null> {
     const client = tx || prisma
     const gauge = await client.bodyPartGauge.findFirst({
       where: { userId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { earnedAt: "desc" },
     })
-    return gauge ? this.toDomain(gauge) : null
+    return gauge as BodyPartGauge || null
   }
 
   async save(bodyPartGauge: BodyPartGauge, tx?: TransactionClient): Promise<BodyPartGauge> {
@@ -54,7 +54,8 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         chest: bodyPartGauge.chest,
         core: bodyPartGauge.core,
         stamina: bodyPartGauge.stamina,
-        createdAt: bodyPartGauge.createdAt,
+        earnedAt: bodyPartGauge.earnedAt,
+        createdAt: bodyPartGauge.createdAt || new Date(),
       },
     })
     return savedGauge as BodyPartGauge
@@ -111,6 +112,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
       gauge.chest,
       gauge.core,
       gauge.stamina,
+      gauge.earnedAt,
       gauge.createdAt
     )
   }

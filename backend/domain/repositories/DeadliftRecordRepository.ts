@@ -12,5 +12,5 @@ export interface DeadliftRecordRepository {
     tx?: TransactionClient
   ): Promise<DeadliftRecord[]>
   save(record: DeadliftRecord, tx?: TransactionClient): Promise<DeadliftRecord>
-  deleteByUserIdAndCreatedAt(userId: string, createdAt: Date, tx?: TransactionClient): Promise<boolean>
+  deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean>
 }

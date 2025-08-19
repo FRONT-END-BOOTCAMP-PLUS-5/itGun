@@ -36,6 +36,7 @@ export class PrLogWorkoutRepository implements LogWorkoutRepository {
       data: logWorkouts.map((logWorkout) => ({
         logId: logWorkout.logId,
         workoutId: logWorkout.workoutId,
+        createdAt: logWorkout.createdAt || new Date(),
       })),
     })
 
