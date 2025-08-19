@@ -1,4 +1,4 @@
-"useclient"
+"use client"
 
 import { Children, FC, TouchEvent, useRef, useState, useEffect } from "react"
 import { CarouselProps } from "./Carousel.types"
