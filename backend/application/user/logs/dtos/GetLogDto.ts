@@ -12,7 +12,7 @@ export interface LogDto {
   id: number
   userId: string
   calIconType: CalIconType
-  createdAt: Date
+  logDate: Date
   totalDuration: number
   gaugeChanges: Record<BodyPartsGroup, number>
 

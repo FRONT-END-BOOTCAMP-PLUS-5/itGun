@@ -13,7 +13,7 @@ export class WeeklyWorkoutBadgeService {
   async check(
     userId: string,
     badges: Badge[],
-    logCreatedAt: Date,
+    logDate: Date,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
     const weeklyBadge = badges.find((badge) => badge.name.includes("3일"))
@@ -21,12 +21,12 @@ export class WeeklyWorkoutBadgeService {
     if (!weeklyBadge) return null
 
     // 로그 날짜가 속한 주의 시작일 계산 (월요일 기준)
-    const logDate = new Date(logCreatedAt)
-    const dayOfWeek = logDate.getDay()
+    const parsedDate = new Date(logDate)
+    const dayOfWeek = parsedDate.getDay()
     const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
 
-    const startOfWeek = new Date(logDate)
-    startOfWeek.setDate(logDate.getDate() - daysFromMonday)
+    const startOfWeek = new Date(parsedDate)
+    startOfWeek.setDate(parsedDate.getDate() - daysFromMonday)
     startOfWeek.setHours(0, 0, 0, 0)
 
     const endOfWeek = new Date(startOfWeek)
@@ -59,7 +59,7 @@ export class WeeklyWorkoutBadgeService {
 
       if (existingWeeklyBadges.length > 0) return null
 
-      return new UserBadge(0, weeklyBadge.id, userId, logCreatedAt)
+      return new UserBadge(0, weeklyBadge.id, userId, logDate)
     }
 
     return null
