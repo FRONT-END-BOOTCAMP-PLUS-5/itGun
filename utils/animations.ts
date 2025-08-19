@@ -14,13 +14,18 @@ export const blink = (className: string) => {
   })
 }
 
-export const wave = (id: string, angle?: number, z?: number) => {
+export const wave = (
+  id: string,
+  repeat: number = -1,
+  angle?: number,
+  z?: number
+) => {
   gsap.from(`#${id}`, {
     rotation: "+=120",
     duration: 1,
     transformOrigin: "top center",
   })
-  const timeline = gsap.timeline({ repeat: -1 })
+  const timeline = gsap.timeline({ repeat: repeat })
   timeline.to(`#${id}`, {
     rotation: angle ? `+=${angle}` : "+=20",
     transformOrigin: "right top",
@@ -33,6 +38,15 @@ export const wave = (id: string, angle?: number, z?: number) => {
     duration: 0.5,
     zIndex: z ? z : 10,
   })
+
+  if (repeat !== -1) {
+    gsap.to(`#${id}`, {
+      rotation: "-=105",
+      duration: 1,
+      transformOrigin: "top center",
+      delay: 3,
+    })
+  }
 }
 
 export const armsShake = (
@@ -41,8 +55,8 @@ export const armsShake = (
   angle?: number,
   z?: number
 ) => {
-  wave(left, angle ? angle : 40, z)
-  wave(right, angle ? angle : 40, z)
+  wave(left, -1, angle ? angle : 40, z)
+  wave(right, -1, angle ? angle : 40, z)
 }
 
 export const dumbbellShake = (id: string, angle?: number, z?: number) => {
@@ -104,4 +118,17 @@ export const moveByRingPath = <T>(array: T[]) => {
       },
     })
   )
+}
+
+export const bounce = <T>(array: T[]) => {
+  array.forEach((item, index) => {
+    console.log(item)
+    gsap
+      .fromTo(
+        `#${item}`,
+        { y: "+=5" },
+        { duration: 1.2, y: "-=5", ease: "bounce" }
+      )
+      .repeat(-1)
+  })
 }
