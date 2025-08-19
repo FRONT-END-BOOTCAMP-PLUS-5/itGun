@@ -1,8 +1,5 @@
 import { GetUserCharacterQueryDto } from "../dtos/GetUserCharacterQueryDto"
-import {
-  CharacterAssetDto,
-  GetUserCharacterDto,
-} from "../dtos/GetUserCharacterDto"
+import { GetUserCharacterDto } from "../dtos/GetUserCharacterDto"
 import { CharacterAssetRepository } from "@/backend/domain/repositories/CharacterAssetRepository"
 import { UserRepository } from "@/backend/domain/repositories/UserRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
@@ -86,25 +83,6 @@ export class GetUserCharacterUsecase {
       requiredAssets
     )
 
-    const assetsByPart = characterAssets.reduce(
-      (accumulator, asset) => {
-        accumulator[asset.type] = new CharacterAssetDto(
-          asset.id,
-          asset.level,
-          asset.type,
-          asset.svg
-        )
-        return accumulator
-      },
-      {} as { [key: string]: CharacterAssetDto }
-    )
-
-    return new GetUserCharacterDto(
-      characterInfo.color,
-      assetsByPart.face,
-      assetsByPart.torso,
-      assetsByPart.arms,
-      assetsByPart.legs
-    )
+    return new GetUserCharacterDto(characterInfo.color, characterAssets)
   }
 }

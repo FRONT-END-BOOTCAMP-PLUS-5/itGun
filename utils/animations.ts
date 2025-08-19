@@ -2,12 +2,12 @@ import gsap from "gsap"
 
 export const blink = (className: string) => {
   const timeline = gsap.timeline({ repeat: -1 })
-  timeline.to(`.${className}`, {
+  timeline.to(`#${className}`, {
     scaleY: 0,
     transformOrigin: "0% 50%",
     duration: 0.8,
   })
-  timeline.to(`.${className}`, {
+  timeline.to(`#${className}`, {
     scaleY: 1,
     transformOrigin: "0% 50%",
     duration: 0.8,
@@ -68,7 +68,7 @@ export const dumbbellShake = (id: string, angle?: number, z?: number) => {
   })
 }
 
-export const dumbbellCurl = (armlevel: number, angle: number = 40) => {
+export const dumbbellCurl = (armlevel: number = 0, angle: number = 40) => {
   armsShake(
     `left-under-arm-${armlevel}`,
     `right-under-arm-${armlevel}`,
