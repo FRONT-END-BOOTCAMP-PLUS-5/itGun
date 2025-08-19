@@ -1,5 +1,4 @@
-// api 호출 예시
-import { useMutation } from "@tanstack/react-query"
+// API 호출 예시
 import { api } from "../../utils/api/apiClient"
 
 export interface User {
@@ -23,13 +22,5 @@ export interface SigninRequest {
   password: string
 }
 
-// 1. API 호출 함수
-const signin = (data: SigninRequest) =>
+export const signin = (data: SigninRequest) =>
   api.post<SigninResponse>("/signin", data)
-
-// 2. React Query 훅
-export const useSignin = () => {
-  return useMutation({
-    mutationFn: signin,
-  })
-}
