@@ -8,7 +8,6 @@ const Character: React.FC<CharacterProps> = ({
   assets,
   characterColor = "#cba0df",
   animation,
-  width = 50,
 }) => {
   gsap.registerPlugin(useGSAP)
   const container = useRef(null)
@@ -23,7 +22,7 @@ const Character: React.FC<CharacterProps> = ({
   )
 
   return (
-    <div ref={container} className={`bg-white-200 container w-${width}`}>
+    <div ref={container} className={`container w-70`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         id="character"
