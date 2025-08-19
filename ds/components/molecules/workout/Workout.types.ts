@@ -22,8 +22,8 @@ export interface WorkoutProps {
   type: WorkoutType
   data: WorkoutSetData[]
   isEditable?: boolean
-  onAddSet?: () => void
-  onRemoveSet?: (setIndex: number) => void
+  onAddSet?: (seq?: number) => void
+  onRemoveSet?: (setIndex: number, seq?: number) => void
   onDataChange?: (setIndex: number, field: string, value: string | number, seq?: number) => void
   className?: string
 }

@@ -142,7 +142,7 @@ const Workout: React.FC<WorkoutProps> = ({
                 renderField(setData, field as WorkoutSetDataField, index, fieldIndex)
               )}
               {isEditable && onRemoveSet && (
-                <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onRemoveSet(index)}>
+                <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onRemoveSet(index, seq)}>
                   <Icon name="remove" size={30} />
                 </Button>
               )}
@@ -152,7 +152,7 @@ const Workout: React.FC<WorkoutProps> = ({
         
         {isEditable && onAddSet && (
           <div className="flex justify-center items-center">
-            <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={onAddSet}>
+            <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onAddSet(seq)}>
               <Icon name="plus"/>
               <Text size="text-sm" variant="primary" className="text-center self-center justify-self-center">세트 추가</Text>
             </Button>
