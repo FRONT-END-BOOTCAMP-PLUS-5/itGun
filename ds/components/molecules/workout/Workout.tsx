@@ -1,6 +1,7 @@
 import React from "react"
 import { WorkoutProps, WorkoutSetData, WorkoutSetDataField } from "@/ds/components/molecules/workout/Workout.types"
 import { workoutVariants } from "@/ds/styles/tokens/workout/variants"
+import { gridColumns, GridColumn } from "@/ds/styles/tokens/workout/gridColumns"
 import { H2 } from "@/ds/components/atoms/text/TextWrapper"
 import { workoutWidths } from "@/ds/styles/tokens/workout/sizes"
 import { workoutFields } from "@/ds/styles/tokens/workout/fields"
@@ -32,6 +33,10 @@ const Workout: React.FC<WorkoutProps> = ({
       ? `${workoutWidths[width]}`
       : "w-fit"
 
+  const fieldConfig = workoutFields[type]
+  const cols = isEditable ? fieldConfig.columns.length + 1 : fieldConfig.columns.length
+  const gridColumnsClass = gridColumns[cols as GridColumn] || "grid-cols-3"
+
   const baseClasses = [
     "p-4",
     variantConfig.border,
@@ -44,19 +49,6 @@ const Workout: React.FC<WorkoutProps> = ({
   ]
     .join(" ")
     .trim()
-
-  const fieldConfig = workoutFields[type]
-  const getGridClassName = () => {
-    const cols = isEditable ? fieldConfig.columns.length + 1 : fieldConfig.columns.length
-    
-    switch (cols) {
-      case 2: return "grid-cols-2"
-      case 3: return "grid-cols-3"
-      case 4: return "grid-cols-4"
-      case 5: return "grid-cols-5"
-      default: return "grid-cols-3"
-    }
-  }
 
   const renderField = (setData: WorkoutSetData, field: WorkoutSetDataField, index: number, fieldIndex: number) => {
     const value = setData[field]
@@ -132,46 +124,40 @@ const Workout: React.FC<WorkoutProps> = ({
     }
   }
 
-  const renderContent = () => (
-    <>
-      <div className={`grid ${getGridClassName()} gap-4 ${isEditable ? "mb-4" : ""}`}>
-        {fieldConfig.columns.map(column => (
-          <Text key={column} size="text-sm" className="text-center">{column}</Text>
-        ))}
-        {isEditable && <div></div>}
-        
-        {data.map((setData, index) => (
-          <React.Fragment key={setData.setCount}>
-            {fieldConfig.fields.map((field, fieldIndex) => 
-              renderField(setData, field as WorkoutSetDataField, index, fieldIndex)
-            )}
-            {isEditable && onRemoveSet && (
-              <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onRemoveSet(index)}>
-                <Icon name="remove" size={30} />
-              </Button>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-      
-      {isEditable && onAddSet && (
-        <div className="flex justify-center items-center">
-          <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={onAddSet}>
-            <Icon name="plus"/>
-            <Text size="text-sm" variant="primary" className="text-center self-center justify-self-center">세트 추가</Text>
-          </Button>
-        </div>
-      )}
-    </>
-  )
-
   return (
     <div className={baseClasses} {...props}>
       <H2 className={variantConfig.titleColor}>
         {title}
       </H2>
       <div className="p-1 flex flex-col items-evenly justify-center gap-2">
-        {renderContent()}
+        <div className={`grid ${gridColumnsClass} gap-4 ${isEditable ? "mb-4" : ""}`}>
+          {fieldConfig.columns.map(column => (
+            <Text key={column} size="text-sm" className="text-center">{column}</Text>
+          ))}
+          {isEditable && <div></div>}
+          
+          {data.map((setData, index) => (
+            <React.Fragment key={setData.setCount}>
+              {fieldConfig.fields.map((field, fieldIndex) => 
+                renderField(setData, field as WorkoutSetDataField, index, fieldIndex)
+              )}
+              {isEditable && onRemoveSet && (
+                <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onRemoveSet(index)}>
+                  <Icon name="remove" size={30} />
+                </Button>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        
+        {isEditable && onAddSet && (
+          <div className="flex justify-center items-center">
+            <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={onAddSet}>
+              <Icon name="plus"/>
+              <Text size="text-sm" variant="primary" className="text-center self-center justify-self-center">세트 추가</Text>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
