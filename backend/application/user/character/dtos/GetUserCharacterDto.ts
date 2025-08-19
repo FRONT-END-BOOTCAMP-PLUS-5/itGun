@@ -10,9 +10,6 @@ export class CharacterAssetDto {
 export class GetUserCharacterDto {
   constructor(
     public characterColor: string,
-    public face: CharacterAssetDto,
-    public torso: CharacterAssetDto,
-    public arms: CharacterAssetDto,
-    public legs: CharacterAssetDto
+    public assets: CharacterAssetDto[]
   ) {}
 }
