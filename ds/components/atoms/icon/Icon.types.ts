@@ -25,4 +25,5 @@ export interface IconProps {
   color?: Color
   strokeWidth?: number
   fillColor?: Color
+  viewBox?: string
 }
