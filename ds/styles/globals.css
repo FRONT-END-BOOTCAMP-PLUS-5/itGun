@@ -51,7 +51,7 @@ body {
   color: var(--foreground);
 }
 
-.select-none-all {
+@utility select-none-all {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

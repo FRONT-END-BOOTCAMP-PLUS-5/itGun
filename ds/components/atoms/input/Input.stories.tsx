@@ -8,7 +8,7 @@ const meta: Meta<typeof Input> = {
   argTypes: {
     size: {
       control: "select",
-      options: ["xs", "sm", "md", "lg", "lx"],
+      options: ["xs", "sm", "md", "lg", "xl"],
     },
     isFullWidth: {
       control: "boolean",
@@ -39,7 +39,7 @@ export const Sizes: Story = {
       <Input {...args} size="sm" placeholder="SM size" />
       <Input {...args} size="md" placeholder="MD size" />
       <Input {...args} size="lg" placeholder="LG size" />
-      <Input {...args} size="lx" placeholder="LX size" />
+      <Input {...args} size="xl" placeholder="XL size" />
     </div>
   ),
   args: {
