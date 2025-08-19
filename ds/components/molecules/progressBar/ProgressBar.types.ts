@@ -1,12 +1,14 @@
+import {
+  progressBarVariants,
+  ProgressBarVariantKey,
+} from "@/ds/styles/tokens/progressBar/variants"
+
 export type ProgressBarVariant = {
   // 각 칸의 테두리 및 대괄호 색상
   borderColor: string
   // 채워지는 칸 색상
   fillColor: string
 }
-
-export type ProgressBarVariantKey =
-  keyof typeof import("@/ds/styles/tokens/progressBar/variants").progressBarVariants
 
 export type ProgressBarProps = {
   // 전체 최대값 (예: 5)

@@ -12,38 +12,43 @@ export default meta
 
 type Story = StoryObj<typeof ProgressBar>
 
-const defaultArgs: ProgressBarProps = {
-  max: 5,
-  value: 1,
-  steps: 10,
-  variant: {
-    fillColor: "#3D2C4B",
-    borderColor: "#3D2C4B",
-  },
-}
-
 export const Default: Story = {
-  args: defaultArgs,
+  args: {
+    max: 5,
+    value: 1,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+  },
 }
 
 export const HalfFilled: Story = {
   args: {
-    ...defaultArgs,
+    max: 5,
     value: 3,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
   },
 }
 
 export const FullFilled: Story = {
   args: {
-    ...defaultArgs,
+    max: 5,
     value: 5,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
   },
 }
 
 export const CustomColors: Story = {
   args: {
-    ...defaultArgs,
+    max: 5,
     value: 2,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
     variant: {
       fillColor: "#6B617A",
       borderColor: "#6B617A",
@@ -53,8 +58,76 @@ export const CustomColors: Story = {
 
 export const DenseSteps: Story = {
   args: {
-    ...defaultArgs,
+    max: 5,
     steps: 20,
     value: 4,
+    label: "Progress",
+    showCounter: true,
+  },
+}
+
+export const SecondaryPurple: Story = {
+  args: {
+    max: 5,
+    value: 3,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "secondary-purple",
+  },
+}
+
+export const SecondaryPink: Story = {
+  args: {
+    max: 5,
+    value: 4,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "secondary-pink",
+  },
+}
+
+export const SecondaryBlue: Story = {
+  args: {
+    max: 5,
+    value: 2,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "secondary-blue",
+  },
+}
+
+export const Accent: Story = {
+  args: {
+    max: 5,
+    value: 5,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "accent",
+  },
+}
+
+export const Success: Story = {
+  args: {
+    max: 5,
+    value: 4,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "success",
+  },
+}
+
+export const Info: Story = {
+  args: {
+    max: 5,
+    value: 3,
+    steps: 10,
+    label: "Progress",
+    showCounter: true,
+    variant: "info",
   },
 }
