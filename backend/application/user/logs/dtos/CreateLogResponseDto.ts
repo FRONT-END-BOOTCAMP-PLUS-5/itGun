@@ -2,7 +2,7 @@ export interface AwardedBadgeDto {
   badgeId: number;
   badgeName: string;
   badgeDescription?: string;
-  createdAt: Date;
+  earnedAt: Date;
 }
 
 export interface CreateLogResponseDto {

@@ -45,10 +45,14 @@ model User {
   updatedAt       DateTime @updatedAt @map("updated_at")
 
   // Relations
-  userBadges        UserBadge[]
-  bodyPartGauges    BodyPartGauge[]
-  logs              Log[]
-  userRecord        UserRecord?
+  userBadges           UserBadge[]
+  bodyPartGauges       BodyPartGauge[]
+  logs                 Log[]
+  benchPressRecords    BenchPressRecord[]
+  deadliftRecords      DeadliftRecord[]
+  squatRecords         SquatRecord[]
+  bigThreeRecords      BigThreeRecord[]
+  runningRecords       RunningRecord[]
 
   @@map("users")
 }
@@ -79,6 +83,7 @@ model UserBadge {
   id        Int      @id @default(autoincrement())
   badgeId   Int      @map("badge_id")
   userId    String   @map("user_id")
+  earnedAt  DateTime @default(now()) @map("earned_at")
   createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
@@ -98,6 +103,7 @@ model BodyPartGauge {
   chest     Float?   @default(0)
   core      Float?   @default(0)
   stamina   Float?   @default(0)
+  earnedAt  DateTime @default(now()) @map("earned_at")
   createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
@@ -112,6 +118,7 @@ model Log {
   calIconType   CalIconType @map("cal_icon_type")
   totalDuration Int         @map("total_duration") // 분 단위
   gaugeChanges  Json?       @map("gauge_changes") // 게이지 변화 데이터
+  logDate       DateTime    @default(now()) @map("log_date")
   createdAt     DateTime    @default(now()) @map("created_at")
 
   // Relations
@@ -122,9 +129,10 @@ model Log {
 }
 
 model LogWorkout {
-  id        Int @id @default(autoincrement())
-  logId     Int @map("log_id")
-  workoutId Int @map("workout_id")
+  id        Int     @id @default(autoincrement())
+  logId     Int      @map("log_id")
+  workoutId Int      @map("workout_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
   log     Log     @relation(fields: [logId], references: [id], onDelete: Cascade)
@@ -149,20 +157,69 @@ model Workout {
   @@map("workouts")
 }
 
-model UserRecord {
-  id            Int      @id @default(autoincrement())
-  userId        String   @unique @map("user_id")
-  benchPressMax Float?   @map("bench_press_max")
-  squatMax      Float?   @map("squat_max")
-  deadliftMax   Float?   @map("deadlift_max")
-  runningMax    Float?   @map("running_max")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+model BenchPressRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  earnedAt   DateTime @default(now()) @map("earned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
 
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("user_records")
+  @@map("bench_press_records")
+}
+
+model DeadliftRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  earnedAt   DateTime @default(now()) @map("earned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dead_lift_records")
+}
+
+model SquatRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  earnedAt   DateTime @default(now()) @map("earned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sqaut_records")
+}
+
+model BigThreeRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  weight     Float
+  earnedAt   DateTime @default(now()) @map("earned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("big_three_records")
+}
+
+model RunningRecord {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique @map("user_id")
+  distance   Float
+  earnedAt   DateTime @default(now()) @map("earned_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("running_records")
 }
 
 model Exercise {

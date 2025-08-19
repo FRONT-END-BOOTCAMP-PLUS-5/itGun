@@ -36,7 +36,7 @@ export class GetUserBadgeListUsecase {
 
     const badgeCounts = new Map<
       number, // badgeId
-      { count: number; latestCreatedAt: Date }
+      { count: number; latestEarnedAt: Date }
     >()
 
     for (const userBadge of userBadges) {
@@ -44,22 +44,22 @@ export class GetUserBadgeListUsecase {
       if (existing) {
         badgeCounts.set(userBadge.badgeId, {
           count: existing.count + 1,
-          latestCreatedAt:
-            userBadge.createdAt > existing.latestCreatedAt
-              ? userBadge.createdAt
-              : existing.latestCreatedAt,
+          latestEarnedAt:
+            userBadge.earnedAt > existing.latestEarnedAt
+              ? userBadge.earnedAt
+              : existing.latestEarnedAt,
         })
       } else {
         badgeCounts.set(userBadge.badgeId, {
           count: 1,
-          latestCreatedAt: userBadge.createdAt,
+          latestEarnedAt: userBadge.earnedAt,
         })
       }
     }
     let getUserBadgeDtos: GetUserBadgeDto[] | null = null
     getUserBadgeDtos = Array.from(badgeCounts.entries()).map(
       ([badgeId, data]) => {
-        return new GetUserBadgeDto(badgeId, data.count, data.latestCreatedAt)
+        return new GetUserBadgeDto(badgeId, data.count, data.latestEarnedAt)
       }
     )
 
