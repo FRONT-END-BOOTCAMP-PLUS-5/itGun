@@ -1,10 +1,14 @@
+import { dropdownSize } from "../../../styles/tokens/dropdown/size"
+
+export type DropdownSize = keyof typeof dropdownSize
+
 export type DropdownOption = {
   label: string
   value: string | number
 }
 
 export type DropdownProps = {
-  size?: "sm" | "md" | "lg"
+  size?: DropdownSize
   options: DropdownOption[]
   value?: string | number
   onChange?: (value: string | number) => void
