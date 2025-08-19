@@ -1,21 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
+import { useState } from "react"
 import Workout from "@/ds/components/molecules/workout/Workout"
-import { Input } from "@/ds/components/atoms/input/Input"
-import Text from "@/ds/components/atoms/text/Text"
 
 const meta: Meta<typeof Workout> = {
   title: "Components/Molecules/Workout",
   component: Workout,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
   tags: ["autodocs"],
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["primary", "secondary"],
+      options: ["primary", "secondary", "secondary-purple", "secondary-pink", "secondary-blue", "secondary-yellow", "error", "accent", "success", "info", "disable"],
     },
-    isFullWidth: {
+    type: {
+      control: { type: "select" },
+      options: ["weight-reps", "reps", "distance-duration", "duration"],
+    },
+    isEditable: {
       control: { type: "boolean" },
     },
   },
@@ -24,65 +27,118 @@ const meta: Meta<typeof Workout> = {
 export default meta
 type Story = StoryObj<typeof Workout>
 
-export const WithInputs: Story = {
+export const WeightRepsReadOnly: Story = {
   args: {
     variant: "primary",
     title: "벤치프레스",
+    type: "weight-reps",
+    seq: 1,
+    isEditable: false,
+    data: [
+      { setCount: 1, weight: "80", repetitionCount: "10" },
+      { setCount: 2, weight: "85", repetitionCount: "8" },
+    ],
   },
-  render: (args) => (
-    <Workout {...args}>
-      <div className="grid grid-cols-3 gap-4">
-        <Text size="text-sm" className="text-center">세트</Text>
-        <Text size="text-sm" className="text-center">kg</Text>
-        <Text size="text-sm" className="text-center">회</Text>
-        <Input size="xs" placeholder="1" />
-        <Input size="xs" placeholder="80" />
-        <Input size="xs" placeholder="10" />
-        <Input size="xs" placeholder="2" />
-        <Input size="xs" placeholder="85" />
-        <Input size="xs" placeholder="8" />
-      </div>
-    </Workout>
-  ),
 }
 
-export const WithText: Story = {
-  args: {
-    variant: "primary",
-    title: "벤치프레스",
-  },
-  render: (args) => (
-    <Workout {...args}>
-      <div className="grid grid-cols-3 gap-4">
-        <Text size="text-sm" className="text-center">세트</Text>
-        <Text size="text-sm" className="text-center">kg</Text>
-        <Text size="text-sm" className="text-center">회</Text>
-        <Text size="text-sm" className="text-center">1</Text>
-        <Text size="text-sm" className="text-center">80</Text>
-        <Text size="text-sm" className="text-center">10</Text>
-        <Text size="text-sm" className="text-center">2</Text>
-        <Text size="text-sm" className="text-center">85</Text>
-        <Text size="text-sm" className="text-center">8</Text>
-      </div>
-    </Workout>
-  ),
+// Interactive 스토리
+export const InteractiveDistanceDuration = () => {
+  const [data, setData] = useState([
+    { setCount: 1, distance: "5.2", durationSeconds: 1530 }, // 25분 30초
+    { setCount: 2, distance: "", durationSeconds: 0 },
+  ])
+
+  const handleDataChange = (setIndex: number, field: string, value: string | number, seq?: number) => {
+    setData(prev => prev.map((item, index) => 
+      index === setIndex ? { ...item, [field]: value } : item
+    ))
+  }
+
+  const handleAddSet = () => {
+    const newSetCount = data.length + 1
+    setData(prev => [...prev, { setCount: newSetCount, distance: "", durationSeconds: 0 }])
+  }
+
+  const handleRemoveSet = (setIndex: number) => {
+    setData(prev => {
+      const filtered = prev.filter((_, index) => index !== setIndex)
+      return filtered.map((item, index) => ({
+        ...item,
+        setCount: index + 1
+      }))
+    })
+  }
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h3>Interactive Distance-Time Workout</h3>
+      <Workout
+        variant="secondary"
+        title="러닝"
+        type="distance-duration"
+        seq={1}
+        isEditable={true}
+        data={data}
+        onAddSet={handleAddSet}
+        onRemoveSet={handleRemoveSet}
+        onDataChange={handleDataChange}
+      />
+      
+      <details style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc" }}>
+        <summary>현재 데이터 상태</summary>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </details>
+    </div>
+  )
 }
 
-export const RunningWorkout: Story = {
-  args: {
-    variant: "secondary",
-    title: "러닝",
-  },
-  render: (args) => (
-    <Workout {...args}>
-      <div className="grid grid-cols-3 gap-4">
-        <Text size="text-sm" className="text-center">세트</Text>
-        <Text size="text-sm" className="text-center">km</Text>
-        <Text size="text-sm" className="text-center">시간</Text>
-        <Input size="sm" placeholder="1" />
-        <Input size="sm" placeholder="5.2" />
-        <Input size="sm" placeholder="25:30" />
-      </div>
-    </Workout>
-  ),
+export const InteractiveWeightReps = () => {
+  const [data, setData] = useState([
+    { setCount: 1, weight: "80", repetitionCount: "10" },
+    { setCount: 2, weight: "", repetitionCount: "" },
+  ])
+
+  const handleDataChange = (setIndex: number, field: string, value: string | number, seq?: number) => {
+    setData(prev => prev.map((item, index) => 
+      index === setIndex ? { ...item, [field]: value } : item
+    ))
+  }
+
+  const handleAddSet = () => {
+    const newSetCount = data.length + 1
+    setData(prev => [...prev, { setCount: newSetCount, weight: "", repetitionCount: "" }])
+  }
+
+  const handleRemoveSet = (setIndex: number) => {
+    setData(prev => {
+      const filtered = prev.filter((_, index) => index !== setIndex)
+      // setCount를 재정렬
+      return filtered.map((item, index) => ({
+        ...item,
+        setCount: index + 1
+      }))
+    })
+  }
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h3>Interactive Weight-Reps Workout</h3>
+      <Workout
+        variant="primary"
+        title="벤치프레스"
+        type="weight-reps"
+        seq={1}
+        isEditable={true}
+        data={data}
+        onAddSet={handleAddSet}
+        onRemoveSet={handleRemoveSet}
+        onDataChange={handleDataChange}
+      />
+      
+      <details style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc" }}>
+        <summary>현재 데이터 상태</summary>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </details>
+    </div>
+  )
 }
