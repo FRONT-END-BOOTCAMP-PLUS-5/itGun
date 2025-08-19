@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react"
 import { InputProps } from "./Input.types"
 import { inputSizes } from "@/ds/styles/tokens/input/sizes"
