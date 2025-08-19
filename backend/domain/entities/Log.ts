@@ -14,6 +14,7 @@ export class Log {
     public readonly userId: string,
     public readonly calIconType: CalIconType,
     public readonly totalDuration: number,
+    public readonly logDate: Date = new Date(),
     public readonly createdAt: Date = new Date(),
 
     // Relations

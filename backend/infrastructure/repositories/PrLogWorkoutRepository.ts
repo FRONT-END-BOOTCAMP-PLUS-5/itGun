@@ -1,23 +1,27 @@
 import prisma from "../../../utils/prisma";
 import { LogWorkout } from "../../domain/entities/LogWorkout";
 import { LogWorkoutRepository } from "../../domain/repositories/LogWorkoutRepository";
+import { TransactionClient } from "@/backend/domain/common/TransactionClient";
 
 export class PrLogWorkoutRepository implements LogWorkoutRepository {
 
-  async findAll(): Promise<LogWorkout[]> {
-    const logWorkouts = await prisma.logWorkout.findMany();
+  async findAll(tx?: TransactionClient): Promise<LogWorkout[]> {
+    const client = tx || prisma
+    const logWorkouts = await client.logWorkout.findMany();
     return logWorkouts.map(this.toDomain);
   }
 
-  async findById(id: number): Promise<LogWorkout | null> {
-    const logWorkout = await prisma.logWorkout.findUnique({
+  async findById(id: number, tx?: TransactionClient): Promise<LogWorkout | null> {
+    const client = tx || prisma
+    const logWorkout = await client.logWorkout.findUnique({
       where: { id }
     });
     return logWorkout ? this.toDomain(logWorkout) : null;
   }
 
-  async save(logWorkout: LogWorkout): Promise<LogWorkout> {
-    const savedLogWorkout = await prisma.logWorkout.create({
+  async save(logWorkout: LogWorkout, tx?: TransactionClient): Promise<LogWorkout> {
+    const client = tx || prisma
+    const savedLogWorkout = await client.logWorkout.create({
       data: {
         logId: logWorkout.logId,
         workoutId: logWorkout.workoutId,
@@ -26,20 +30,23 @@ export class PrLogWorkoutRepository implements LogWorkoutRepository {
     return this.toDomain(savedLogWorkout)
   }
 
-  async saveMany(logWorkouts: Omit<LogWorkout, "id">[]): Promise<{ count: number }> {
-    const savedLogWorkouts = await prisma.logWorkout.createMany({
+  async saveMany(logWorkouts: Omit<LogWorkout, "id">[], tx?: TransactionClient): Promise<{ count: number }> {
+    const client = tx || prisma
+    const savedLogWorkouts = await client.logWorkout.createMany({
       data: logWorkouts.map((logWorkout) => ({
         logId: logWorkout.logId,
         workoutId: logWorkout.workoutId,
+        createdAt: logWorkout.createdAt || new Date(),
       })),
     })
 
     return { count: savedLogWorkouts.count }
   }
 
-  async update(id: number, logWorkoutData: Partial<LogWorkout>): Promise<LogWorkout | null> {
+  async update(id: number, logWorkoutData: Partial<LogWorkout>, tx?: TransactionClient): Promise<LogWorkout | null> {
     try {
-      const updatedLogWorkout = await prisma.logWorkout.update({
+      const client = tx || prisma
+      const updatedLogWorkout = await client.logWorkout.update({
         where: { id },
         data: {
           ...(logWorkoutData.logId !== undefined && { logId: logWorkoutData.logId }),
@@ -52,9 +59,10 @@ export class PrLogWorkoutRepository implements LogWorkoutRepository {
     }
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: number, tx?: TransactionClient): Promise<boolean> {
     try {
-      await prisma.logWorkout.delete({
+      const client = tx || prisma
+      await client.logWorkout.delete({
         where: { id }
       });
       return true;
