@@ -9,7 +9,8 @@ export const circularIconVariants = {
     "bg-[var(--color-secondary-blue)]",
   "secondary-yellow":
     "bg-[var(--color-secondary-yellow)]",
-  outline: "bg-[var(--color-white-100)]",
+  outline: "bg-[var(--color-white-200)]",
+  ghost: "bg-transparent",
   error: "bg-[var(--color-error)]",
   accent: "bg-[var(--color-accent)]",
   success: "bg-[var(--color-success)]",
