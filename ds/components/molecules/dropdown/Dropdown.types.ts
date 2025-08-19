@@ -1,6 +1,4 @@
-import { dropdownSize } from "../../../styles/tokens/dropdown/size"
-
-export type DropdownSize = keyof typeof dropdownSize
+import { DropdownSize } from "@/ds/styles/tokens/dropdown/size"
 
 export type DropdownOption = {
   label: string
