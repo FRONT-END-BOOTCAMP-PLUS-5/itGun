@@ -85,3 +85,23 @@ export const sweat = (id: string) => {
   timeline.to(`#${id}`, { y: "+=4", duration: 0.6 })
   timeline.to(`#${id}`, { y: "-=4", duration: 0.6 })
 }
+
+export const moveByRingPath = <T>(array: T[]) => {
+  const timeline = gsap.timeline()
+
+  array.forEach((item, index) =>
+    timeline.to(`#badge-${index}`, {
+      duration: 0.6 - index * 0.05,
+      opacity: 1,
+      ease: "power1.inOut",
+      motionPath: {
+        path: "#path",
+        align: "#path",
+        autoRotate: false,
+        alignOrigin: [0.5, 0.5],
+        start: 0,
+        end: 1 - (1 / (array.length + 1)) * (1 + index),
+      },
+    })
+  )
+}
