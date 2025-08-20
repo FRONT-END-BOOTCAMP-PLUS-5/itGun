@@ -1,4 +1,4 @@
-import { WorkoutWidth } from "@/ds/styles/tokens/workout/sizes"
+import { WorkoutWidth } from "@/ds/styles/tokens/workout/width"
 import { WorkoutVariant } from "@/ds/styles/tokens/workout/variants"
 
 export type WorkoutType = "weight-reps" | "reps" | "distance-duration" | "duration"
