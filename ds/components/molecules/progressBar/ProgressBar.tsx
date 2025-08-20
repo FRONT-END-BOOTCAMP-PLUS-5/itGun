@@ -8,7 +8,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   value,
   steps,
   variant,
-  label = {},
+  label = "",
   showCounter = true,
 }) => {
   const safeMax = Math.max(1, max)
@@ -35,9 +35,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     <div className="w-full bg-white">
       {/* 헤더: 좌측 라벨, 우측 카운터 */}
       <div className="mb-2 flex w-full items-center justify-between">
-        <S1 variant="primary">
-          {typeof label === "string" ? label : "Progress"}
-        </S1>
+        <S1 variant="primary">{label}</S1>
         {showCounter && (
           <B2 variant="primary">
             {safeValue} / {safeMax}
