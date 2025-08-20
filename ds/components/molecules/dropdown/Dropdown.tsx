@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
