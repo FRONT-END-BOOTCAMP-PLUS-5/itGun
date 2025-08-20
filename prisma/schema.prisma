@@ -60,8 +60,8 @@ model User {
 model CharacterAsset {
   id       Int      @id @default(autoincrement())
   level    Int      @default(1)
-  bodyPart BodyPart @map("body_part")
-  svg      String  // SVG 데이터 또는 파일 경로
+  type     String   @map("type")
+  svg      String   @db.Text
   characterId Int   @map("character_id")
 
   @@map("character_assets")

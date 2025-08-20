@@ -59,6 +59,7 @@ const meta: Meta<typeof CircularIcon> = {
         "success",
         "info",
         "outline",
+        "ghost",
       ],
     },
     iconColor: {
