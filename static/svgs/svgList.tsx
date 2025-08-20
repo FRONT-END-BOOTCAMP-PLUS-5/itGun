@@ -205,7 +205,7 @@ export const svgList = {
         d="M13.4577 17.25H11.541V16.2917H10.5827V15.3333H9.62435V14.375H8.66602V13.4167H7.70768V12.4583H6.74935V11.5H5.79102V7.66667H6.74935V6.70833H7.70768V5.75H10.5827V6.70833H11.541V7.66667H13.4577V6.70833H14.416V5.75H17.291V6.70833H18.2494V7.66667H19.2077V11.5H18.2494V12.4583H17.291V13.4167H16.3327V14.375H15.3743V15.3333H14.416V16.2917H13.4577V17.25Z"
         fill="#FF5A5A"
       />
-      <g clip-path="url(#clip0_466_5253)">
+      <g clipPath="url(#clip0_466_5253)">
         <path
           d="M13.875 11.375H12.625V10.125C12.625 10.0918 12.6118 10.0601 12.5884 10.0366C12.5649 10.0132 12.5332 10 12.5 10V10C12.4668 10 12.4351 10.0132 12.4116 10.0366C12.3882 10.0601 12.375 10.0918 12.375 10.125V11.375H11.125C11.0918 11.375 11.0601 11.3882 11.0366 11.4116C11.0132 11.4351 11 11.4668 11 11.5V11.5C11 11.5332 11.0132 11.5649 11.0366 11.5884C11.0601 11.6118 11.0918 11.625 11.125 11.625H12.375V12.875C12.375 12.9082 12.3882 12.9399 12.4116 12.9634C12.4351 12.9868 12.4668 13 12.5 13C12.5332 13 12.5649 12.9868 12.5884 12.9634C12.6118 12.9399 12.625 12.9082 12.625 12.875V11.625H13.875C13.9082 11.625 13.9399 11.6118 13.9634 11.5884C13.9868 11.5649 14 11.5332 14 11.5C14 11.4668 13.9868 11.4351 13.9634 11.4116C13.9399 11.3882 13.9082 11.375 13.875 11.375Z"
           stroke="#3D2C4B"
@@ -220,9 +220,9 @@ export const svgList = {
           width="23.334"
           height="21.4165"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -574,6 +574,34 @@ export const svgList = {
   check: (
     <>
       <path d="M7.79994 16.5299C7.40606 16.5306 7.01593 16.4535 6.65194 16.303C6.28795 16.1525 5.95728 15.9315 5.67894 15.6529L0.0859375 10.0609L1.49994 8.64585L7.09294 14.2389C7.28047 14.4263 7.53477 14.5316 7.79994 14.5316C8.0651 14.5316 8.31941 14.4263 8.50694 14.2389L22.4999 0.24585L23.9139 1.65985L9.92094 15.6529C9.64259 15.9315 9.31192 16.1525 8.94794 16.303C8.58395 16.4535 8.19381 16.5306 7.79994 16.5299Z" />
+    </>
+  ),
+  ellipse: (fillColor: string) => (
+    <>
+      <g filter="url(#filter0_f_185_5456)">
+        <ellipse cx="115.5" cy="22.5" rx="108.5" ry="15.5" fill={fillColor} />
+      </g>
+      <filter
+        id="filter0_f_185_5456"
+        x="0"
+        y="0"
+        width="231"
+        height="45"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feGaussianBlur
+          stdDeviation="3.5"
+          result="effect1_foregroundBlur_185_5456"
+        />
+      </filter>
     </>
   ),
 }

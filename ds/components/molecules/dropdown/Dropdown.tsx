@@ -50,7 +50,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        className={`flex w-full items-center justify-between border-b border-[var(--color-primary)] bg-transparent px-3 py-2 text-left ${dropdownSize[size]}`}
+        className={`border- [var( --color-secondary)]: flex w-full items-center justify-between border-b bg-transparent px-3 py-2 text-left ${dropdownSize[size]}`}
         onClick={() => setIsOpen(!isOpen)}
         {...props}
       >
@@ -62,8 +62,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <div className="ml-2 flex items-center justify-center">
           <Icon
             name="downArrow"
-            color="primary"
-            fillColor="primary"
+            color="secondary"
+            fillColor="secondary"
             size={16}
           />
         </div>
@@ -74,7 +74,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           {options.map((option) => (
             <button
               key={option.value}
-              className="block w-full px-3 py-2 text-left text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
+              className="text-lef [var(--color-primary)] block w-full px-3 py-2 hover:bg-gray-100 focus:bg-gray-100"
               onClick={() => handleSelect(option)}
             >
               {option.label}
