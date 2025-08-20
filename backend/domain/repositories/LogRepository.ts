@@ -1,6 +1,6 @@
 import { Log } from "@/backend/domain/entities/Log"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
-import { Workout } from "../entities/Workout"
+import { Workout } from "@/backend/domain/entities/Workout"
 
 export interface LogRepository {
   findAll(tx?: TransactionClient): Promise<Log[]>

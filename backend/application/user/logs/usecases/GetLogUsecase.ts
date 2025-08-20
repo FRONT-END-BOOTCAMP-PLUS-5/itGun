@@ -38,7 +38,7 @@ export class GetLogUsecase {
     } catch (error) {
       return {
         success: false,
-        message: "로그 조회 중 오류가 발생했습니다."
+        message: error instanceof Error ? error.message : "로그 조회 중 오류가 발생했습니다."
       }
     }
   }
