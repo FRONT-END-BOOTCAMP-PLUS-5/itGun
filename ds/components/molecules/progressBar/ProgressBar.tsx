@@ -45,7 +45,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
       {/* 바 본체 */}
       <div className="flex w-full items-center gap-2 select-none">
-        <div className={`-su1 ${combinedClassName}`}>[</div>
+        <S1>[</S1>
         <div className="flex w-full gap-2">
           {Array.from({ length: clampedSteps }).map((_, idx) => {
             const isFilled = idx < filledCount
@@ -61,7 +61,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
             )
           })}
         </div>
-        <div className={`-b1 ${combinedClassName}`}>]</div>
+        <S1>]</S1>
       </div>
     </div>
   )
