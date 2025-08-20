@@ -33,16 +33,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
   return (
     <div className="w-full bg-white">
-      {/* 헤더: 좌측 라벨, 우측 카운터 */}
-      <div className="mb-2 flex w-full items-center justify-between">
-        <S1 variant="primary">{label}</S1>
-        {showCounter && (
-          <B2 variant="primary">
-            {safeValue} / {safeMax}
-          </B2>
-        )}
-      </div>
-
       {/* 바 본체 */}
       <div className="flex w-full items-center gap-2 select-none">
         <S1>[</S1>
