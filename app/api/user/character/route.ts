@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const userId = session?.user?.id
   if (!userId) {
-    return NextResponse.json({ message: "error" }, { status: 500 })
+    return NextResponse.json({ message: "error" }, { status: 401 })
   }
   const { searchParams } = new URL(req.url)
   const date = searchParams.get("date")
