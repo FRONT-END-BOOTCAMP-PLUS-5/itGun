@@ -9,7 +9,7 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const combinedClassName = `
-    block aspect-square
+    block aspect-square relative
     ${className || ""}
   `.trim()
 
@@ -17,6 +17,7 @@ export const Card: React.FC<CardProps> = ({
     <picture className={combinedClassName} {...props}>
       {imageSrc && (
         <Image
+          fill={true}
           src={imageSrc}
           alt={imageAlt ? imageAlt : "캐러셀 카드 이미지"}
           className="size-full object-cover"
