@@ -4,10 +4,12 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { H2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import Link from "next/link"
+import { Button } from "@/ds/components/atoms/button/Button"
+import { useRouter } from "next/navigation"
 
 const MenuHeader = () => {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const userColor = session?.user?.characterColor
 
@@ -17,6 +19,10 @@ const MenuHeader = () => {
   useEffect(() => {
     setRandomColor(Math.floor(Math.random() * 100) % 4)
   }, [])
+
+  const handleSettingClick = () => {
+    router.push("/user")
+  }
 
   return (
     <div className="menu-header mb-8 flex w-full items-center justify-between py-1">
@@ -31,9 +37,9 @@ const MenuHeader = () => {
         </div>
         <H2>{session?.user?.nickName ?? "벌키"}</H2>
       </div>
-      <Link href={{ pathname: "/user" }}>
+      <Button variant="ghost" size="xs" onClick={handleSettingClick}>
         <Icon name="setting" size={30} />
-      </Link>
+      </Button>
     </div>
   )
 }
