@@ -1,5 +1,5 @@
 import React from "react"
-import { WorkoutProps, WorkoutSetData, WorkoutSetDataField } from "@/ds/components/molecules/workout/Workout.types"
+import { WorkoutProps, WorkoutSetData, WorkoutSetDataField, WorkoutType } from "@/ds/components/molecules/workout/Workout.types"
 import { workoutVariants } from "@/ds/styles/tokens/workout/variants"
 import { gridColumns, GridColumn } from "@/ds/styles/tokens/workout/gridColumns"
 import { H2 } from "@/ds/components/atoms/text/TextWrapper"
@@ -22,6 +22,7 @@ const Workout: React.FC<WorkoutProps> = ({
   onAddSet,
   onRemoveSet,
   onDataChange,
+  onTypeChange,
   className,
   ...props
 }) => {
@@ -36,6 +37,14 @@ const Workout: React.FC<WorkoutProps> = ({
   const fieldConfig = workoutFields[type]
   const cols = isEditable ? fieldConfig.columns.length + 1 : fieldConfig.columns.length
   const gridColumnsClass = gridColumns[cols as GridColumn] || "grid-cols-3"
+
+  const typeOrder: WorkoutType[] = ["weight-reps", "reps", "distance-duration", "duration"]
+  const handleTypeChange = () => {
+    const currentIndex = typeOrder.indexOf(type)
+    const nextIndex = (currentIndex + 1) % typeOrder.length
+    const nextType = typeOrder[nextIndex]
+    onTypeChange?.(nextType, seq || 0)
+  }
 
   const baseClasses = [
     "p-4",
@@ -126,9 +135,21 @@ const Workout: React.FC<WorkoutProps> = ({
 
   return (
     <div className={baseClasses} {...props}>
-      <H2 className={variantConfig.titleColor}>
-        {title}
-      </H2>
+      <div className="flex justify-between items-center">
+        <H2 className={variantConfig.titleColor}>
+          {title}
+        </H2>
+        {isEditable && onTypeChange && (
+          <Button 
+            variant="ghost" 
+            size="xs"
+            onClick={handleTypeChange}
+            className="ml-2"
+          >
+            <Icon name="setting" size={25} />
+          </Button>
+        )}
+      </div>
       <div className="p-1 flex flex-col items-evenly justify-center gap-2">
         <div className={`grid ${gridColumnsClass} gap-4 ${isEditable ? "mb-4" : ""}`}>
           {fieldConfig.columns.map(column => (

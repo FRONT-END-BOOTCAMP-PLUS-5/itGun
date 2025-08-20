@@ -43,6 +43,7 @@ export const WeightRepsReadOnly: Story = {
 
 // Interactive 스토리
 export const InteractiveDistanceDuration = () => {
+  const [type, setType] = useState<"weight-reps" | "reps" | "distance-duration" | "duration">("distance-duration")
   const [data, setData] = useState([
     { setCount: 1, distance: "5.2", durationSeconds: 1530 }, // 25분 30초
     { setCount: 2, distance: "", durationSeconds: 0 },
@@ -69,19 +70,34 @@ export const InteractiveDistanceDuration = () => {
     })
   }
 
+  const handleTypeChange = (newType: "weight-reps" | "reps" | "distance-duration" | "duration", seq?: number) => {
+    setType(newType)
+
+    const initialData = {
+      setCount: 1,
+      weight: "",
+      repetitionCount: "",
+      distance: "",
+      durationSeconds: 0
+    }
+    setData([initialData])
+  }
+
   return (
     <div style={{ padding: "20px" }}>
-      <h3>Interactive Distance-Time Workout</h3>
+      <h3>Interactive Workout with Type Change</h3>
+      <p>제목 옆 설정 버튼을 클릭해서 운동 타입을 변경해보세요!</p>
       <Workout
         variant="secondary"
-        title="러닝"
-        type="distance-duration"
+        title="운동"
+        type={type}
         seq={1}
         isEditable={true}
         data={data}
         onAddSet={handleAddSet}
         onRemoveSet={handleRemoveSet}
         onDataChange={handleDataChange}
+        onTypeChange={handleTypeChange}
       />
       
       <details style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc" }}>

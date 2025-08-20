@@ -25,5 +25,6 @@ export interface WorkoutProps {
   onAddSet?: (seq?: number) => void
   onRemoveSet?: (setIndex: number, seq?: number) => void
   onDataChange?: (setIndex: number, field: string, value: string | number, seq?: number) => void
+  onTypeChange?: (newType: WorkoutType, seq?: number) => void
   className?: string
 }
