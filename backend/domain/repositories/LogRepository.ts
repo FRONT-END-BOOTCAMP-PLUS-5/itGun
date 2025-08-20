@@ -12,7 +12,7 @@ export interface LogRepository {
     tx?: TransactionClient
   ): Promise<Log[]>
   findFirstByUserId(userId: string, tx?: TransactionClient): Promise<Log | null>
-  findById(id: number, tx?: TransactionClient): Promise<Log | null>
+  findById(id: number, includeWorkouts?: boolean, tx?: TransactionClient): Promise<Log | null>
   saveWithRelations(log: Log, workoutToCreate: Workout[], workoutToConnect: Pick<Workout, "id">[], tx?: TransactionClient): Promise<Log>
   save(log: Log, tx?: TransactionClient): Promise<Log>
   update(id: number, log: Partial<Log>, tx?: TransactionClient): Promise<Log | null>
