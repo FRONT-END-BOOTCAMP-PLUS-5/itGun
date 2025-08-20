@@ -1,5 +1,4 @@
 import { DropdownSize } from "@/ds/styles/tokens/dropdown/size"
-
 export type DropdownOption = {
   label: string
   value: string | number

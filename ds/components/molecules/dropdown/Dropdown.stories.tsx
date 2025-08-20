@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Dropdown } from "./Dropdown"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
-
 import type { Meta, StoryObj } from "@storybook/nextjs"
 
 const meta: Meta<typeof Dropdown> = {
