@@ -596,4 +596,39 @@ export const svgList = {
       </filter>
     </>
   ),
+  burkyFace: (fillColor: string) => (
+    <>
+      <g
+        xmlns="http://www.w3.org/2000/svg"
+        transform="translate(-64.017521-59.393215)"
+      >
+        <path
+          d="M324.213684,203.006553v-1.666666h-1.666364v-13.333334h1.666364v-1.666666h2.499545v-1.666667h9.998182v1.666667h2.499545v1.666666h1.666364v13.333334h-1.666364v1.666666h-2.499545v1.666667h-9.998182v-1.666667h-2.499545Z"
+          transform="translate(-255.694799-123.280005)"
+          fill={fillColor}
+          stroke="#3d2c4b"
+        />
+        <g transform="translate(-117.347709 10.653614)">
+          <line
+            x1="0"
+            y1="-2.66733"
+            x2="0"
+            y2="-0.66733"
+            transform="translate(190.000001 61.406931)"
+            fill="none"
+            stroke="#3d2c4b"
+          />
+          <line
+            x1="0"
+            y1="-2.66733"
+            x2="0"
+            y2="-0.66733"
+            transform="translate(193.36523 61.406931)"
+            fill="none"
+            stroke="#3d2c4b"
+          />
+        </g>
+      </g>
+    </>
+  ),
 }
