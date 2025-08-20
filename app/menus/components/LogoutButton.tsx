@@ -10,8 +10,8 @@ const LogoutButton = () => {
   }
 
   return (
-    <div className="logout-button flex w-full items-center justify-center">
-      <Button variant="underline" size="xs" onClick={handleLogout}>
+    <div>
+      <Button variant="underline" isFullWidth={true} size="xs" onClick={handleLogout}>
           로그아웃
       </Button>
     </div>

@@ -25,7 +25,7 @@ const MenuHeader = () => {
   }
 
   return (
-    <div className="menu-header mb-8 flex w-full items-center justify-between py-1">
+    <div className="mb-8 flex w-full items-center justify-between py-1">
       <div className="flex items-center gap-2">
         <div className="flex aspect-square w-[95px] items-center justify-center rounded-full bg-[var(--color-disable)]">
           <Icon

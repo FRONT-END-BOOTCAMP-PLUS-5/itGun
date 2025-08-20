@@ -27,7 +27,7 @@ const MenuList = () => {
   }
 
   return (
-    <div className="menu-list flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       {menuMap.map((menu, index) => (
         <React.Fragment key={index}>
           <Button
