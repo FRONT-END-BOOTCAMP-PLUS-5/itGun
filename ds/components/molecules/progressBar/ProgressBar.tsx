@@ -1,7 +1,7 @@
 import React from "react"
 import type { ProgressBarProps, ProgressBarVariant } from "./ProgressBar.types"
 import { progressBarVariants } from "@/ds/styles/tokens/progressBar/variants"
-import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import { B2, S1 } from "@/ds/components/atoms/text/TextWrapper"
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   max,
@@ -35,11 +35,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     <div className="w-full bg-white">
       {/* 헤더: 좌측 라벨, 우측 카운터 */}
       <div className="mb-2 flex w-full items-center justify-between">
-        <S1 variant="primary">어깨</S1>
+        <S1 variant="primary">{label || "Progress"}</S1>
         {showCounter && (
-          <S1 variant="primary">
+          <B2 variant="primary">
             {safeValue} / {safeMax}
-          </S1>
+          </B2>
         )}
       </div>
 
@@ -53,7 +53,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
               <div
                 key={idx}
                 className={[
-                  "h-[24px] flex-1",
+                  "h-[15px] flex-1",
                   isFilled ? combinedClassName : "",
                 ].join(" ")}
               />
