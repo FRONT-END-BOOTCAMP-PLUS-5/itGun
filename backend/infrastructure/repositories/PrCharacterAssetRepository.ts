@@ -1,5 +1,5 @@
 import prisma from "../../../utils/prisma"
-import { CharacterAsset, BodyPart } from "../../domain/entities/CharacterAsset"
+import { CharacterAsset } from "../../domain/entities/CharacterAsset"
 import { CharacterAssetRepository } from "../../domain/repositories/CharacterAssetRepository"
 
 export class PrCharacterAssetRepository implements CharacterAssetRepository {
@@ -17,11 +17,11 @@ export class PrCharacterAssetRepository implements CharacterAssetRepository {
 
   async findAssets(
     characterId: number,
-    conditions: { bodyPart: string; level: number }[]
+    conditions: { type: string; level: number }[]
   ): Promise<CharacterAsset[]> {
     const whereClauses = conditions.map((condition) => ({
       level: condition.level,
-      bodyPart: condition.bodyPart as BodyPart,
+      type: condition.type,
     }))
 
     const assets = await prisma.characterAsset.findMany({
@@ -39,7 +39,7 @@ export class PrCharacterAssetRepository implements CharacterAssetRepository {
       data: {
         id: characterAsset.id,
         level: characterAsset.level,
-        bodyPart: characterAsset.bodyPart,
+        type: characterAsset.type,
         svg: characterAsset.svg,
         characterId: characterAsset.characterId,
       },
@@ -56,7 +56,7 @@ export class PrCharacterAssetRepository implements CharacterAssetRepository {
         where: { id },
         data: {
           ...(assetData.level !== undefined && { level: assetData.level }),
-          ...(assetData.bodyPart && { bodyPart: assetData.bodyPart }),
+          ...(assetData.type && { type: assetData.type }),
           ...(assetData.svg && { svg: assetData.svg }),
           ...(assetData.characterId !== undefined && {
             characterId: assetData.characterId,
@@ -84,7 +84,7 @@ export class PrCharacterAssetRepository implements CharacterAssetRepository {
     return new CharacterAsset(
       asset.id,
       asset.level,
-      asset.bodyPart as BodyPart,
+      asset.type,
       asset.svg,
       asset.characterId
     )

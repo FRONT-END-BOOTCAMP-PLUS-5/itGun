@@ -22,12 +22,16 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${galmuri.className} antialiased`}>
-        <NextAuthSessionProviders session={session}>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-          <ToastContainer />
-          <DialogContainer />
-        </NextAuthSessionProviders>
+      <body className={`${galmuri.className} flex justify-center antialiased`}>
+        <div
+          className={`relative box-border flex min-h-screen w-full max-w-[430px] flex-col items-center !bg-[var(--color-white-200)] px-[30px] pt-[100px] pb-[70px]`}
+        >
+          <NextAuthSessionProviders session={session}>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ToastContainer />
+            <DialogContainer />
+          </NextAuthSessionProviders>
+        </div>
       </body>
     </html>
   )
