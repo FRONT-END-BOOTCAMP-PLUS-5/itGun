@@ -33,8 +33,8 @@ const Toast: React.FC<ToastProps> = ({
   const baseClasses = [
     "cursor-default",
     "fixed",
-    "left-1/2",
-    "-translate-x-1/2",
+    "left-3.5",
+    "right-3.5",
     "px-6",
     "py-4",
     "z-200",
