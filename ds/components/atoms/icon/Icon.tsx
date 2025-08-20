@@ -18,6 +18,7 @@ const Icon: React.FC<IconProps> = ({
   color = "primary",
   fillColor,
   strokeWidth = 1,
+  viewBox = "0 0 24 24",
 }) => {
   const resolvedColor = resolveColor(color)
   const resolvedFillColor = fillColor ? resolveColor(fillColor) : "#ffffff"
@@ -26,7 +27,7 @@ const Icon: React.FC<IconProps> = ({
     <svg
       width={size}
       height={size}
-      viewBox={`0 0 24 24`}
+      viewBox={viewBox}
       fill={resolvedColor}
       strokeWidth={strokeWidth}
       xmlns="http://www.w3.org/2000/svg"
