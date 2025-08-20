@@ -32,10 +32,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const combinedClassName = getCombinedClassName()
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-white">
       {/* 헤더: 좌측 라벨, 우측 카운터 */}
       <div className="mb-2 flex w-full items-center justify-between">
-        <S1 variant="primary">{label ?? ""}</S1>
+        <S1 variant="primary">어깨</S1>
         {showCounter && (
           <S1 variant="primary">
             {safeValue} / {safeMax}
@@ -47,15 +47,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="flex w-full items-center gap-2 select-none">
         <S1>[</S1>
         <div className="flex w-full gap-2">
-          {Array.from({ length: clampedSteps }).map((_, idx) => {
+          {Array.from({ length: 10 }).map((_, idx) => {
             const isFilled = idx < filledCount
             return (
               <div
                 key={idx}
                 className={[
-                  "h-[24px] flex-1 border-2",
-                  combinedClassName,
-                  isFilled ? combinedClassName : "bg-transparent",
+                  "h-[24px] flex-1",
+                  isFilled ? combinedClassName : "",
                 ].join(" ")}
               />
             )
