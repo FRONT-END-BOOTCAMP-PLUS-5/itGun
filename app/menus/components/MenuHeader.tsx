@@ -38,7 +38,7 @@ const MenuHeader = () => {
         <H2>{session?.user?.nickName ?? "벌키"}</H2>
       </div>
       <Button variant="ghost" size="xs" onClick={handleSettingClick}>
-        <Icon name="setting" size={30} />
+        <Icon name="setting" size={35} />
       </Button>
     </div>
   )
