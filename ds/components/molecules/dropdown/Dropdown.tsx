@@ -74,7 +74,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           {options.map((option) => (
             <button
               key={option.value}
-              className="text-lef [var(--color-primary)] block w-full px-3 py-2 hover:bg-gray-100 focus:bg-gray-100"
+              className="[var(--color-primary)] block w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100"
               onClick={() => handleSelect(option)}
             >
               {option.label}
