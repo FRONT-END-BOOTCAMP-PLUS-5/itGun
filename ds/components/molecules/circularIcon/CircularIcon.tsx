@@ -19,7 +19,6 @@ const CircularIcon: React.FC<CircularIconProps> = ({
     "items-center",
     "justify-center",
     "p-1",
-    variant !== "disable" && "cursor-pointer",
   ]
     .join(" ")
     .trim()
