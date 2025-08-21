@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   }
   return (
     <header
-      className={`flex h-15 w-full items-center bg-[var(--color-white-200)] p-2.5 ${className}`}
+      className={`flex h-15 max-w-[inherit] w-full items-center bg-[var(--color-white-200)] p-2.5 ${className}`}
     >
       {/* 왼쪽: 뒤로가기 */}
       <div className="flex items-center">
