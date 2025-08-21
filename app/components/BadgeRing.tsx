@@ -5,8 +5,6 @@ import gsap from "gsap"
 import { MotionPathPlugin } from "gsap/MotionPathPlugin"
 import { svgList } from "@/static/svgs/svgList"
 import { moveByRingPath } from "@/utils/animations"
-import { signIn, useSession } from "next-auth/react"
-import { useEffect } from "react"
 import { useGetUserBadges } from "@/hooks/useGetUserBadges"
 
 interface Badge {
