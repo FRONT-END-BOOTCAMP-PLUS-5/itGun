@@ -1,8 +1,10 @@
 import { useMutation } from "@tanstack/react-query"
 import { deleteUserLog } from "@/services/user/logs/deleteUserLog"
 import { useToastStore } from "./useToastStore"
+import { useRouter } from "next/navigation"
 
 export const useDeleteUserLog = (id: string) => {
+  const router = useRouter()
   const { showToast } = useToastStore()
 
   return useMutation({
@@ -13,6 +15,7 @@ export const useDeleteUserLog = (id: string) => {
         variant: "secondary-blue",
         position: "bottom",
       })
+      router.back()
     },
     onError: () => {
       showToast({
