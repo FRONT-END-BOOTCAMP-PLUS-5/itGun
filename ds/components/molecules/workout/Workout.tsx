@@ -1,8 +1,13 @@
 import React from "react"
-import { WorkoutProps, WorkoutSetData, WorkoutSetDataField, WorkoutType } from "@/ds/components/molecules/workout/Workout.types"
+import {
+  WorkoutProps,
+  WorkoutSetData,
+  WorkoutSetDataField,
+  WorkoutType,
+} from "@/ds/components/molecules/workout/Workout.types"
 import { workoutVariants } from "@/ds/styles/tokens/workout/variants"
 import { gridColumns, GridColumn } from "@/ds/styles/tokens/workout/gridColumns"
-import { H2 } from "@/ds/components/atoms/text/TextWrapper"
+import { B2, C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { workoutWidths } from "@/ds/styles/tokens/workout/width"
 import { workoutFields } from "@/ds/styles/tokens/workout/fields"
 import { Input } from "@/ds/components/atoms/input/Input"
@@ -35,10 +40,17 @@ const Workout: React.FC<WorkoutProps> = ({
       : "w-fit"
 
   const fieldConfig = workoutFields[type]
-  const cols = isEditable ? fieldConfig.columns.length + 1 : fieldConfig.columns.length
+  const cols = isEditable
+    ? fieldConfig.columns.length + 1
+    : fieldConfig.columns.length
   const gridColumnsClass = gridColumns[cols as GridColumn] || "grid-cols-3"
 
-  const typeOrder: WorkoutType[] = ["weight-reps", "reps", "distance-duration", "duration"]
+  const typeOrder: WorkoutType[] = [
+    "weight-reps",
+    "reps",
+    "distance-duration",
+    "duration",
+  ]
   const handleTypeChange = () => {
     const currentIndex = typeOrder.indexOf(type)
     const nextIndex = (currentIndex + 1) % typeOrder.length
@@ -59,14 +71,19 @@ const Workout: React.FC<WorkoutProps> = ({
     .join(" ")
     .trim()
 
-  const renderField = (setData: WorkoutSetData, field: WorkoutSetDataField, index: number, fieldIndex: number) => {
+  const renderField = (
+    setData: WorkoutSetData,
+    field: WorkoutSetDataField,
+    index: number,
+    fieldIndex: number
+  ) => {
     const value = setData[field]
-    
+
     if (field === "setCount") {
       return (
-        <Text key={`${field}-${index}`} size="text-sm" className="text-center self-center">
+        <C2 key={`${field}-${index}`} className="self-center text-center">
           {index + 1}
-        </Text>
+        </C2>
       )
     }
 
@@ -74,22 +91,29 @@ const Workout: React.FC<WorkoutProps> = ({
     if (field === "durationSeconds") {
       if (isEditable) {
         return (
-          <div key={`${field}-${index}`} className="flex justify-center items-center">
-            <Input 
-              size="sm" 
-              placeholder="분" 
+          <div
+            key={`${field}-${index}`}
+            className="flex items-center justify-center"
+          >
+            <Input
+              size="xs"
+              placeholder="분"
               className="text-center"
-              value={Number(value) > 0 ? Math.floor(Number(value) / 60).toString() : ""}
+              value={
+                Number(value) > 0
+                  ? Math.floor(Number(value) / 60).toString()
+                  : ""
+              }
               onChange={(e) => {
                 const minutes = Number(e.target.value) || 0
                 const seconds = (Number(value) || 0) % 60
                 onDataChange?.(index, field, minutes * 60 + seconds, seq)
               }}
             />
-            <Text size="text-sm" className="text-center">:</Text>
-            <Input 
-              size="sm" 
-              placeholder="초" 
+            <C2 className="text-center">:</C2>
+            <Input
+              size="xs"
+              placeholder="초"
               className="text-center"
               value={Number(value) > 0 ? (Number(value) % 60).toString() : ""}
               onChange={(e) => {
@@ -104,19 +128,19 @@ const Workout: React.FC<WorkoutProps> = ({
         const minutes = Math.floor((Number(value) || 0) / 60)
         const seconds = (Number(value) || 0) % 60
         return (
-          <Text key={`${field}-${index}`} size="text-sm" className="text-center self-center">
+          <C2 key={`${field}-${index}`} className="self-center text-center">
             {minutes}:{seconds.toString().padStart(2, "0")}
-          </Text>
+          </C2>
         )
       }
     }
 
     if (isEditable) {
       return (
-        <div className="flex justify-center items-center">
+        <div className="flex items-center justify-center">
           <Input
             key={`${field}-${index}`}
-            size="sm"
+            size="xs"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
             className="text-center"
             value={value || ""}
@@ -126,22 +150,22 @@ const Workout: React.FC<WorkoutProps> = ({
       )
     } else {
       return (
-        <Text key={`${field}-${index}`} size="text-sm" className="text-center self-center">
+        <C2 key={`${field}-${index}`} className="self-center text-center">
           {value || ""}
-        </Text>
+        </C2>
       )
     }
   }
 
   return (
     <div className={baseClasses} {...props}>
-      <div className="flex justify-between items-center">
-        <H2 className={variantConfig.titleColor}>
+      <div className="flex items-center justify-between">
+        <B2 className={variantConfig.titleColor} fontWeight="bold">
           {title}
-        </H2>
+        </B2>
         {isEditable && onTypeChange && (
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="xs"
             onClick={handleTypeChange}
             className="ml-2"
@@ -150,32 +174,57 @@ const Workout: React.FC<WorkoutProps> = ({
           </Button>
         )}
       </div>
-      <div className="p-1 flex flex-col items-evenly justify-center gap-2">
-        <div className={`grid ${gridColumnsClass} gap-4 ${isEditable ? "mb-4" : ""}`}>
-          {fieldConfig.columns.map(column => (
-            <Text key={column} size="text-sm" className="text-center">{column}</Text>
+      <div className="items-evenly flex flex-col justify-center gap-2 p-1">
+        <div
+          className={`grid ${gridColumnsClass} gap-4 ${isEditable ? "mb-4" : ""}`}
+        >
+          {fieldConfig.columns.map((column) => (
+            <C2 key={column} className="text-center">
+              {column}
+            </C2>
           ))}
           {isEditable && <div></div>}
-          
+
           {data.map((setData, index) => (
             <React.Fragment key={setData.setCount}>
-              {fieldConfig.fields.map((field, fieldIndex) => 
-                renderField(setData, field as WorkoutSetDataField, index, fieldIndex)
+              {fieldConfig.fields.map((field, fieldIndex) =>
+                renderField(
+                  setData,
+                  field as WorkoutSetDataField,
+                  index,
+                  fieldIndex
+                )
               )}
               {isEditable && onRemoveSet && (
-                <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onRemoveSet(index, seq)}>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="self-center justify-self-center"
+                  onClick={() => onRemoveSet(index, seq)}
+                >
                   <Icon name="remove" size={30} />
                 </Button>
               )}
             </React.Fragment>
           ))}
         </div>
-        
+
         {isEditable && onAddSet && (
-          <div className="flex justify-center items-center">
-            <Button variant="ghost" size="xs" className="self-center justify-self-center" onClick={() => onAddSet(seq)}>
-              <Icon name="plus"/>
-              <Text size="text-sm" variant="primary" className="text-center self-center justify-self-center">세트 추가</Text>
+          <div className="flex items-center justify-center">
+            <Button
+              variant="ghost"
+              size="xs"
+              className="self-center justify-self-center"
+              onClick={() => onAddSet(seq)}
+            >
+              <Icon name="plus" />
+              <Text
+                size="text-sm"
+                variant="primary"
+                className="self-center justify-self-center text-center"
+              >
+                세트 추가
+              </Text>
             </Button>
           </div>
         )}
