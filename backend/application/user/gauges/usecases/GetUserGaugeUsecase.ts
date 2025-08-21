@@ -13,11 +13,9 @@ export class GetUserGaugeUsecase {
       const latest: BodyPartGauge | null =
         await this.bodyPartGaugeRepository.findLatestOneByUserId(request.userId)
 
-      if (!latest) {
+      if (!latest || !latest?.id) {
         return new GetUserGaugeResponseDto(-1, 0, 0, 0, 0, 0, 0, 0)
       }
-
-      if (!latest?.id) throw new Error("Body Part Gauge의 id가 존재하지 않음")
 
       return new GetUserGaugeResponseDto(
         latest?.id,
