@@ -54,7 +54,9 @@ const Toast: React.FC<ToastProps> = ({
 
   return (
     <div className={`${baseClasses} ${animationClasses}`}>
-      <S1 className={toastVariants[variant].text}>{message}</S1>
+      <S1 className={`${toastVariants[variant].text} whitespace-pre-line`}>
+        {message}
+      </S1>
     </div>
   )
 }
