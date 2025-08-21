@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react"
 import type { DropdownOption, DropdownProps } from "./Dropdown.types"
 import Icon from "../../atoms/icon/Icon"
 import { dropdownSize } from "../../../styles/tokens/dropdown/size"
+import { B1 } from "../../atoms/text/TextWrapper"
 
 export const Dropdown: React.FC<DropdownProps> = ({
   size = "md",
@@ -52,37 +53,38 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        className={`border- [var( --color-secondary)]: flex w-full items-center justify-between border-b bg-transparent px-3 py-2 text-left ${dropdownSize[size]}`}
+        type="button"
+        className={`border-secondary flex w-full items-center justify-between border-b ${dropdownSize[size]}`}
         onClick={() => setIsOpen(!isOpen)}
-        {...props}
       >
-        <span
-          className={`flex-1 ${selectedOption ? "text-[var(--color-primary)]" : "text-gray-500"}`}
-        >
+        <B1 variant="secondary">
           {selectedOption ? selectedOption.label : placeholder}
-        </span>
-        <div className="ml-2 flex items-center justify-center">
+        </B1>
+        <div
+          className={`ml-2 flex h-6 w-6 transform items-center justify-center transition-transform duration-0 ${isOpen ? "rotate-180" : ""}`}
+        >
           <Icon
             name="downArrow"
             color="secondary"
             fillColor="secondary"
-            size={16}
+            size={12}
+            viewBox="0 0 14 8" // 실제 path 크기에 맞게 조정
           />
         </div>
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg">
+        <ul className="bg-white-200 border-secondary absolute z-10 max-h-[97px] w-full overflow-y-auto border border-t-0">
           {options.map((option) => (
-            <button
+            <li
               key={option.value}
-              className="[var(--color-primary)] block w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100"
+              className="bg-white-200 text-secondary px-2 py-1"
               onClick={() => handleSelect(option)}
             >
               {option.label}
-            </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )
