@@ -8,7 +8,8 @@ import { sortAssets } from "@/utils/assets"
 import { useEffect, useState } from "react"
 
 const LoadingCharacter = () => {
-  const assets: CharacterAsset[] = createAssetsFromSvgs(burky)
+  const { panel, tear, ...rest } = burky
+  const assets: CharacterAsset[] = createAssetsFromSvgs(rest)
   const defaultAnimation = () => {
     blink("eyes")
     dumbbellCurl(0)
