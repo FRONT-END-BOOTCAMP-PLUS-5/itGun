@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/user/character?date=
+// GET /api/user/gauges
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const userId = session?.user?.id
