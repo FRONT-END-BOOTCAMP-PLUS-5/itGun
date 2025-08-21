@@ -8,6 +8,7 @@ import { useSignup } from "../../context/SignupContext"
 import { SignupData, Gender } from "../../context/SignupContext.types"
 import ValidationItem from "./ValidationItem"
 import { Button } from "@/ds/components/atoms/button/Button"
+import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 
 const Step3Form = () => {
   const { data } = useSignup()
@@ -164,7 +165,7 @@ const Step3Form = () => {
         disabled={isPending || !validation.infoSuccess}
         variant={isPending || !validation.infoSuccess ? "disable" : "primary"}
       >
-        {isPending ? "처리 중..." : "회원가입"}
+        <S1 variant="white-200">{isPending ? "처리 중..." : "회원가입"}</S1>
       </Button>
     </form>
   )

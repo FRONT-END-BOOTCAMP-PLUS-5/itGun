@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
 import { useSignup } from "../../context/SignupContext"
 import ValidationItem from "./ValidationItem"
+import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 
 interface ValidatePassword {
   password: string
@@ -107,7 +108,7 @@ const Step2Form = () => {
         className="mt-auto mb-6"
         isFullWidth
       >
-        다음
+        <S1 variant="white-200">다음</S1>
       </Button>
     </form>
   )

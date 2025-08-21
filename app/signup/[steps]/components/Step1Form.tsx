@@ -1,6 +1,6 @@
 import { Button } from "@/ds/components/atoms/button/Button"
 import { Input } from "@/ds/components/atoms/input/Input"
-import { C2 } from "@/ds/components/atoms/text/TextWrapper"
+import { C2, S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { checkEmail } from "@/services/user/checkEmail"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
@@ -92,11 +92,13 @@ function Step1Form() {
         type={validation.emailSuccess ? "button" : "submit"}
         onClick={handleNext}
       >
-        {isPending
-          ? "중복확인 중..."
-          : validation.emailSuccess
-            ? "다음"
-            : "중복확인"}
+        <S1 variant="white-200">
+          {isPending
+            ? "중복확인 중..."
+            : validation.emailSuccess
+              ? "다음"
+              : "중복확인"}
+        </S1>
       </Button>
     </form>
   )
