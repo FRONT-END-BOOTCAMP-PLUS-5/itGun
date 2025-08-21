@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
+import { GetLogUsecase } from "@/backend/application/user/logs/usecases/GetLogUsecase"
+import { GetLogRequestDto } from "@/backend/application/user/logs/dtos/GetLogRequestDto"
 import { DeleteLogUsecase } from "@/backend/application/user/logs/usecases/DeleteLogUsecase"
 import { PrLogRepository } from "@/backend/infrastructure/repositories/PrLogRepository"
 import { DeleteLogRequestDto } from "@/backend/application/user/logs/dtos/DeleteLogRequestDto"
@@ -11,6 +13,41 @@ import { PrSquatRecordRepository } from "@/backend/infrastructure/repositories/P
 import { PrRunningRecordRepository } from "@/backend/infrastructure/repositories/PrRunningRecordRepository"
 import { PrBigThreeRecordRepository } from "@/backend/infrastructure/repositories/PrBigThreeRecordRepository"
 import { PrTransactionManager } from "@/backend/infrastructure/repositories/PrTransactionManager"
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const logId = parseInt(id, 10)
+
+    if (isNaN(logId)) {
+      return NextResponse.json({ message: "error" }, { status: 400 })
+    }
+
+    const logRepository = new PrLogRepository()
+    const getLogUsecase = new GetLogUsecase(logRepository)
+
+    const requestDto: GetLogRequestDto = { logId }
+    const result = await getLogUsecase.execute(requestDto)
+
+    if (result.success) {
+      return NextResponse.json(
+        {
+          message: "success",
+          log: result.log,
+        },
+        { status: 200 }
+      )
+    } else {
+      return NextResponse.json({ message: "error" }, { status: 404 })
+    }
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : "log retrieval failed")
+    return NextResponse.json({ message: "error" }, { status: 500 })
+  }
+}
 
 export async function DELETE(
   request: NextRequest,
@@ -33,7 +70,7 @@ export async function DELETE(
     const squatRecordRepository = new PrSquatRecordRepository()
     const runningRecordRepository = new PrRunningRecordRepository()
     const bigThreeRecordRepository = new PrBigThreeRecordRepository()
-    
+
     const badgeDeletionService = new BadgeDeletionService(
       userBadgeRepository,
       logRepository,
@@ -43,7 +80,7 @@ export async function DELETE(
       runningRecordRepository,
       bigThreeRecordRepository
     )
-    
+
     const deleteLogUsecase = new DeleteLogUsecase(
       transactionManager,
       logRepository,

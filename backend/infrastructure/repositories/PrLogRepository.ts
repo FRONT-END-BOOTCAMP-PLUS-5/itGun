@@ -56,17 +56,19 @@ export class PrLogRepository implements LogRepository {
     return log as Log || null
   }
 
-  async findById(id: number, tx?: TransactionClient): Promise<Log | null> {
+  async findById(id: number, includeWorkouts: boolean = false, tx?: TransactionClient): Promise<Log | null> {
     const client = tx || prisma
     const log = await client.log.findUnique({
       where: { id },
-      include: {
-        logWorkouts: {
-          include: {
-            workout: true,
+      ...(includeWorkouts && {
+        include: {
+          logWorkouts: {
+            include: {
+              workout: true,
+            },
           },
         },
-      },
+      }),
     })
 
     return log as Log || null

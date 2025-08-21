@@ -17,7 +17,7 @@ export class DeleteLogUsecase {
   async execute(request: DeleteLogRequestDto): Promise<DeleteLogResponseDto> {
     try {
       return await this.transactionManager.executeInTransaction(async (tx) => {
-        const logToDelete = await this.logRepository.findById(request.logId, tx)
+        const logToDelete = await this.logRepository.findById(request.logId, false, tx)
 
         if (!logToDelete) {
           return {
