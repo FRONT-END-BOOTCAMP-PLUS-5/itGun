@@ -196,4 +196,40 @@ export const burky = {
       strokeWidth="2"
     />
   ),
+  tear: (
+    <path
+      xmlns="http://www.w3.org/2000/svg"
+      d="M197.254142,70.17906v-1.75969h-1.381613v-1.666696h-.999999v-8.000137h.999999v-3.000052h1.381613v-2.240378h1.340639v-3.093047h2.666665v3.093047h1.326026v2.240378h1.285059v3.000052h.999999v8.000137h-.999999v1.666696h-1.285052v1.75969h-5.333337Z"
+      transform="translate(-72.524365 9.05311)"
+      fill="#bfcfef"
+      stroke="#3d2c4b"
+      strokeWidth="2"
+    />
+  ),
+  panel: (
+    <g xmlns="http://www.w3.org/2000/svg" transform="translate(0 0.000001)">
+      <rect
+        width="265.047871"
+        height="134.202203"
+        rx="0"
+        ry="0"
+        transform="matrix(.821291 0 0 0.903057 31.159285 104.403881)"
+        fill="#fff6e3"
+        stroke="#3d2c4b"
+        strokeWidth="2"
+      />
+      <path
+        d="M350.8714,168.913019v-28h2.5v-1.961309h2.5v-1.75h10v1.75h2.5v1.961309h2.5v28h-2.5v1.538691h-2.5v1.75h-10v-1.75h-2.5v-1.538691h-2.5Z"
+        transform="translate(-112.030684-17.339771)"
+        stroke="#3d2c4b"
+        strokeWidth="2"
+      />
+      <path
+        d="M350.8714,168.913019v-28h2.5v-1.961309h2.5v-1.75h10v1.75h2.5v1.961309h2.5v28h-2.5v1.538691h-2.5v1.75h-10v-1.75h-2.5v-1.538691h-2.5Z"
+        transform="translate(-333.865156-17.339771)"
+        stroke="#3d2c4b"
+        strokeWidth="2"
+      />
+    </g>
+  ),
 }
