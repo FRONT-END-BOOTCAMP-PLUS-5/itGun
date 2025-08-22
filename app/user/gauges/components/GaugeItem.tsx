@@ -1,6 +1,6 @@
 import { B2, S1 } from "@/ds/components/atoms/text/TextWrapper"
 import ProgressBar from "@/ds/components/molecules/progressBar/ProgressBar"
-import { BODY_PART_KO, GaugeItemProps } from "./GuageItem.types"
+import { BODY_PART_KO, GaugeItemProps } from "./GaugeItem.types"
 
 const GaugeItem: React.FC<GaugeItemProps> = ({ label, gauge }) => {
   return (
