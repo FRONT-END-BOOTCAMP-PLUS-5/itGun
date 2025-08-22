@@ -11,8 +11,9 @@ import { useCheckUserGauge } from "@/hooks/useCheckUserGauge"
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
+  date,
 }) => {
-  const { data } = useGetUserCharacter()
+  const { data } = useGetUserCharacter(date ? { date } : undefined)
   const { mutate } = useCheckUserGauge()
 
   const [assets, setAssets] = useState<CharacterAsset[]>([])
