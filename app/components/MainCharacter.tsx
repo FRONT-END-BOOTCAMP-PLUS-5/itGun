@@ -10,8 +10,9 @@ import { matchAssetLevels, sortAssets } from "@/utils/assets"
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
+  date,
 }) => {
-  const { data } = useGetUserCharacter()
+  const { data } = useGetUserCharacter(date ? { date } : undefined)
 
   const [assets, setAssets] = useState<CharacterAsset[]>([])
   const [levels, setLevels] = useState<Record<string, number>>()
