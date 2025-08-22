@@ -1,19 +1,20 @@
-import prisma from "../../../utils/prisma";
-import { Badge } from "../../domain/entities/Badge";
-import { BadgeRepository } from "../../domain/repositories/BadgeRepository";
+import prisma from "@/utils/prisma"
+import { Badge } from "@/backend/domain/entities/Badge"
+import { BadgeRepository } from "@/backend/domain/repositories/BadgeRepository"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrBadgeRepository implements BadgeRepository {
-
-  async findAll(): Promise<Badge[]> {
-    const badges = await prisma.badge.findMany();
-    return badges.map(this.toDomain);
+  async findAll(tx?: TransactionClient): Promise<Badge[]> {
+    const client = tx || prisma
+    const badges = await client.badge.findMany()
+    return badges as Badge[]
   }
 
   async findById(id: number): Promise<Badge | null> {
     const badge = await prisma.badge.findUnique({
-      where: { id }
-    });
-    return badge ? this.toDomain(badge) : null;
+      where: { id },
+    })
+    return badge ? this.toDomain(badge) : null
   }
 
   async save(badge: Badge): Promise<Badge> {
@@ -22,10 +23,10 @@ export class PrBadgeRepository implements BadgeRepository {
         id: badge.id,
         name: badge.name,
         expirationDays: badge.expirationDays,
-        description: badge.description
-      }
-    });
-    return this.toDomain(savedBadge);
+        description: badge.description,
+      },
+    })
+    return this.toDomain(savedBadge)
   }
 
   async update(id: number, badgeData: Partial<Badge>): Promise<Badge | null> {
@@ -34,24 +35,26 @@ export class PrBadgeRepository implements BadgeRepository {
         where: { id },
         data: {
           ...(badgeData.name && { name: badgeData.name }),
-          ...(badgeData.expirationDays !== undefined && { expirationDays: badgeData.expirationDays }),
-          ...(badgeData.description && { description: badgeData.description })
-        }
-      });
-      return this.toDomain(updatedBadge);
+          ...(badgeData.expirationDays !== undefined && {
+            expirationDays: badgeData.expirationDays,
+          }),
+          ...(badgeData.description && { description: badgeData.description }),
+        },
+      })
+      return this.toDomain(updatedBadge)
     } catch (error) {
-      return null;
+      return null
     }
   }
 
   async delete(id: number): Promise<boolean> {
     try {
       await prisma.badge.delete({
-        where: { id }
-      });
-      return true;
+        where: { id },
+      })
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -61,6 +64,6 @@ export class PrBadgeRepository implements BadgeRepository {
       badge.name,
       badge.expirationDays,
       badge.description
-    );
+    )
   }
 }

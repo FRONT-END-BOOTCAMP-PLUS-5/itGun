@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "backend/user/character"
+    ".storybook/**/*.tsx",
+    "backend/user/character",
+    "next-auth.d.ts"
   ],
   "exclude": ["node_modules"]
 }
