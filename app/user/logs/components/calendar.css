@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+.fc-col-header {
+  @apply min-h-[40px]
+}
+
+.fc-col-header-cell {
+  @apply text-[var(--color-secondary)] text-[15px];
+}
+
+.fc .fc-daygrid-day {
+  @apply border-0;
+}
+
+.fc .fc-daygrid-day-number {
+  @apply p-0 text-[8px] text-[var(--color-secondary)];
+}
+
+.fc-day-sat, .fc-day-sat .fc-daygrid-day-number {
+  @apply text-[var(--color-info)]!;
+}
+
+.fc-day-sun, .fc-day-sun .fc-daygrid-day-number {
+  @apply text-[var(--color-accent)]!;
+}
+
+.fc .fc-daygrid-day-top {
+  @apply flex-row;
+}
+
+.fc .fc-cell-shaded, .fc .fc-day-disabled {
+  @apply bg-transparent;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-[var(--color-background)];
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  @apply border-0;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  @apply border-0;
+}
+
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+  @apply mb-1;
+}
+
+.fc-daygrid-dot-event {
+  @apply p-0;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  @apply min-h-[40px];
+}
+
+a.fc-event:hover {
+  @apply bg-transparent
+}
