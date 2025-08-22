@@ -24,3 +24,25 @@ export interface Log {
   gaugeChanges: Record<BodyPartsGroup, number>
 }
 
+export interface CalendarHeaderProps {
+  calMonth: string
+  onNext: () => void
+  onPrev: () => void
+  onToday: () => void
+}
+
+export interface CalendarGridProps {
+  events: EventInput[]
+  onIconClick: (logs: Log[]) => void
+}
+
+export interface LogsListProps {
+  logsToDisplay: Log[]
+  selectedDate: string | null
+  onLogClick: (logId: number) => void
+  calTypeMaps: (calType: string) => {
+    calTypeKo: string
+    iconName: string
+    iconColor: string
+  }
+}
