@@ -6,7 +6,7 @@ import SearchInput from "./components/SearchInput"
 
 const ExercisesPage = () => {
   return (
-    <main className="w-full">
+    <main className="h-full w-full">
       <SearchInput />
       <CategoryFilter />
       <ExercisesLists />

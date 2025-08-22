@@ -1,13 +1,13 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import {
-  BODY_PART_MAPPINGS,
-  EQUIPMENT_MAPPINGS,
-} from "../constants/exercisesConstants"
+
 import { useRouter, useSearchParams } from "next/navigation"
+import { useLogsStore } from "@/hooks/useLogsStore"
+import { BODY_PART_MAPPINGS, EQUIPMENT_MAPPINGS } from "./constants"
 
 function CategoryFilter() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { mode } = useLogsStore()
 
   const bodyPart = searchParams.get("bodyPart") || ""
   const equipment = searchParams.get("equipment") || ""
@@ -24,7 +24,7 @@ function CategoryFilter() {
     if (value) currentParams.set(type, value)
     else currentParams.delete(type)
 
-    router.replace(`/exercises?${currentParams.toString()}`)
+    router.replace(`/${mode}?${currentParams.toString()}`)
   }
 
   return (
@@ -37,7 +37,7 @@ function CategoryFilter() {
               onClick={() =>
                 handleFilter({ type: "bodyPart", value: item.value })
               }
-              className={`border-primary text-primary flex h-6 w-full items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
+              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
                 bodyPart === item.value
                   ? "bg-secondary-purple border-solid"
                   : "border-dashed"
@@ -56,7 +56,7 @@ function CategoryFilter() {
               onClick={() =>
                 handleFilter({ type: "equipment", value: item.value })
               }
-              className={`border-primary text-primary flex h-6 w-full items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
+              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
                 equipment === item.value
                   ? "bg-secondary-yellow border-solid"
                   : "border-dashed"

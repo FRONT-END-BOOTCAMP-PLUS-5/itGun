@@ -24,7 +24,7 @@ const SearchInput = () => {
       if (value) currentParams.set("q", value)
       else currentParams.delete("q")
 
-      router.replace(`/exercises?${currentParams.toString()}`)
+      router.replace(`/${mode}?${currentParams.toString()}`)
     }, 500)
   }
 
@@ -32,6 +32,11 @@ const SearchInput = () => {
     const value = e.target.value
     setSearchValue(value)
     debouncedSearch(value)
+  }
+
+  const handleClearSearch = () => {
+    setSearchValue("")
+    router.replace(`/${mode}`)
   }
 
   useEffect(() => {
@@ -49,7 +54,9 @@ const SearchInput = () => {
         className="pr-7"
         isFullWidth
       />
-      <Icon name="remove" size={24} className="absolute top-0 right-0" />
+      <div className="absolute top-0 right-0" onClick={handleClearSearch}>
+        <Icon name="remove" size={24} />
+      </div>
     </form>
   )
 }
