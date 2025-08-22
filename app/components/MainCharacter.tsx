@@ -6,14 +6,13 @@ import { CharacterAsset } from "@/ds/components/atoms/character/Character.types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { useGetUserCharacter } from "@/hooks/useGetUserCharacter"
 import { matchAssetLevels, sortAssets } from "@/utils/assets"
-import { useCheckUserGauge } from "@/hooks/useCheckUserGauge"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
+  date,
 }) => {
-  const { data } = useGetUserCharacter()
-  const { mutate } = useCheckUserGauge()
+  const { data } = useGetUserCharacter(date ? { date } : undefined)
 
   const [assets, setAssets] = useState<CharacterAsset[]>([])
   const [levels, setLevels] = useState<Record<string, number>>()
@@ -30,10 +29,6 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
       }
     }
   }, [data])
-
-  useEffect(() => {
-    mutate()
-  }, [])
 
   const defaultAnimation = () => {
     blink("eyes")

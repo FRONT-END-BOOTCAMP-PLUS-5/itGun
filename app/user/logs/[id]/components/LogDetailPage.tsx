@@ -4,8 +4,9 @@ import { useGetUserLog } from "@/hooks/useGetUserLog"
 import WorkoutList from "./WorkoutList"
 import LogSummaryHeader from "./LogSummaryHeader"
 import { LogDetailProps } from "../types"
-import LogCharacter from "./LogCharacter"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
+import MainCharacter from "@/app/components/MainCharacter"
+import { dateToyymmdd } from "@/utils/dateToyymmdd"
 
 const LogDetailPage = ({ id }: LogDetailProps) => {
   const { data, isLoading } = useGetUserLog(id)
@@ -20,7 +21,11 @@ const LogDetailPage = ({ id }: LogDetailProps) => {
         date={log.logDate}
         duration={log.totalDuration}
       />
-      <LogCharacter date={log.logDate} />
+      <MainCharacter
+        isAnimation={false}
+        isShadow={false}
+        date={dateToyymmdd(log.logDate)}
+      />
       <WorkoutList workouts={log.workouts} />
     </div>
   )
