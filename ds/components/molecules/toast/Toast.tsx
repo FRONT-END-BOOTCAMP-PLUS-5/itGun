@@ -33,11 +33,13 @@ const Toast: React.FC<ToastProps> = ({
   const baseClasses = [
     "cursor-default",
     "fixed",
-    "left-3.5",
-    "right-3.5",
+    "left-1/2",
+    "-translate-x-1/2",
+    "w-98",
     "px-6",
     "py-4",
     "z-200",
+    "text-center",
     "shadow-md",
     "transition-all",
     "duration-300",
@@ -54,7 +56,9 @@ const Toast: React.FC<ToastProps> = ({
 
   return (
     <div className={`${baseClasses} ${animationClasses}`}>
-      <S1 className={toastVariants[variant].text}>{message}</S1>
+      <S1 className={`${toastVariants[variant].text} whitespace-pre-line`}>
+        {message}
+      </S1>
     </div>
   )
 }

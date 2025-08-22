@@ -10,8 +10,7 @@ const Dialog: React.FC<DialogProps> = ({ message, variant, buttons }) => {
     "left-1/2",
     "-translate-x-1/2",
     "bottom-10",
-    "w-xs",
-    "box-border",
+    "w-90",
     "px-6",
     "py-6",
     "z-100",
@@ -28,7 +27,9 @@ const Dialog: React.FC<DialogProps> = ({ message, variant, buttons }) => {
 
   return (
     <div className={baseClasses}>
-      <S1 className={dialogVariants[variant].text}>{message}</S1>
+      <S1 className={`${dialogVariants[variant].text} whitespace-pre-line`}>
+        {message}
+      </S1>
       <div className="mt-4 flex justify-center gap-x-2">
         {buttons &&
           buttons.length > 0 &&
