@@ -8,7 +8,10 @@ import { useGetUserCharacter } from "@/hooks/useGetUserCharacter"
 import { matchAssetLevels, sortAssets } from "@/utils/assets"
 import { useCheckUserGauge } from "@/hooks/useCheckUserGauge"
 
-const MainCharacter = () => {
+const MainCharacter: React.FC<MainCharacterProps> = ({
+  isAnimation = true,
+  isShadow = true,
+}) => {
   const { data } = useGetUserCharacter()
   const { mutate } = useCheckUserGauge()
 
@@ -45,20 +48,26 @@ const MainCharacter = () => {
     ]
     bounce(moveTargets)
     wave(`left-under-arm-0`, 2)
-    // 덤벨컬하는 애니메이션
-    // const arm = assets.find((item) => item["type"] === "ARMS")
-    // dumbbellCurl(arm?.level)
   }
 
   return (
     <div className="relative flex flex-col items-center">
-      <div className="absolute -bottom-25 left-1/2 z-1 -translate-x-1/2">
-        <Icon name="ellipse" viewBox="0 0 231 45" color="#D9D9D9" size={230} />
-      </div>
+      {isShadow && (
+        <div className="absolute -bottom-25 left-1/2 z-1 -translate-x-1/2">
+          <Icon
+            name="ellipse"
+            viewBox="0 0 231 45"
+            color="#D9D9D9"
+            size={230}
+          />
+        </div>
+      )}
       <div className="z-20">
         <Character
           assets={assets}
-          animation={() => defaultAnimation()}
+          animation={() => {
+            isAnimation && defaultAnimation()
+          }}
           characterColor={color}
         />
       </div>
