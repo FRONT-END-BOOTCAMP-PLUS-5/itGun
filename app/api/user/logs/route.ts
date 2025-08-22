@@ -15,9 +15,12 @@ import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/Create
 import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
 import { GetUserLogListUsecase } from "@/backend/application/user/logs/usecases/GetUserLogListUsecase"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../../auth/[...nextauth]/auth"
 
 export async function GET(req: NextRequest) {
-  const { userId }: GetUserLogsRequestDto = await req.json()
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
   const { searchParams } = new URL(req.url)
   const year = Number(searchParams.get("year"))
   const month = Number(searchParams.get("month"))
@@ -88,10 +91,10 @@ export async function POST(request: NextRequest) {
 
     if (result.success) {
       return NextResponse.json(
-        { 
-          message: "success", 
+        {
+          message: "success",
           logId: result.logId,
-          awardedBadges: result.awardedBadges || []
+          awardedBadges: result.awardedBadges || [],
         },
         { status: 200 }
       )

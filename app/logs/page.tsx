@@ -13,6 +13,7 @@ import ExercisesPage from "../exercises/page"
 import dayjs from "dayjs"
 import { Exercise } from "@/services/exercises/getExercises"
 import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
+import { yymmddToDate } from "@/utils/yymmddToDate"
 
 // 운동 세트 데이터 타입
 type WorkoutSetData = {
@@ -64,9 +65,8 @@ const LogsPage = () => {
 
   const [calIconType, setCalIconType] = useState("")
   const [date, setDate] = useState("")
+  const [totalDuration, setTotalDuration] = useState(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
-
-  console.log(formData)
 
   const handleAddSet = (index: number) => {
     const newData = [...formData]
@@ -111,13 +111,11 @@ const LogsPage = () => {
     setMode("logs")
     setOpen(true)
   }
-
   const handleSubmit = () => {
     const payload = {
-      userId: "1",
       calIconType: calIconType,
-      totalDuration: 0,
-      logDate: date,
+      totalDuration: totalDuration,
+      logDate: new Date(date.replace(/\./g, "-")),
       workouts: formData,
     }
     console.log(payload)
@@ -146,7 +144,7 @@ const LogsPage = () => {
           <Icon name="calendar" size={24} />
           <Input
             size="sm"
-            className="!w-24"
+            className="!w-24 text-center"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             onBlur={() => setDate((prev) => dayjs(prev).format("YYYY.MM.DD"))}
@@ -156,7 +154,12 @@ const LogsPage = () => {
 
         <div className="flex items-center gap-2">
           <Icon name="clock" size={24} />
-          <Input size="sm" className="!w-6" />
+          <Input
+            size="sm"
+            type="number"
+            className="!w-6 text-center"
+            onChange={(e) => setTotalDuration(Number(e.target.value))}
+          />
           <C1>분</C1>
         </div>
       </section>
