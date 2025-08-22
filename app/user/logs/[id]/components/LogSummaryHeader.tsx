@@ -4,14 +4,7 @@ import { HeaderProps } from "../types"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useDialogStore } from "@/hooks/useDialogStore"
 import { useDeleteUserLog } from "@/hooks/useDeleteUserLog"
-
-function formatDate(date: string): string {
-  const parsedDate = new Date(date)
-  const year = parsedDate.getFullYear()
-  const month = String(parsedDate.getMonth() + 1).padStart(2, "0")
-  const day = String(parsedDate.getDate()).padStart(2, "0")
-  return `${year}/${month}/${day}`
-}
+import { dateToYmdSlash } from "@/utils/dateToYmdSlash"
 
 const LogSummaryHeader = ({ id, date, duration }: HeaderProps) => {
   const { showDialog } = useDialogStore()
@@ -30,7 +23,7 @@ const LogSummaryHeader = ({ id, date, duration }: HeaderProps) => {
   return (
     <div className="flex w-full justify-between">
       <div className="flex flex-col gap-1">
-        <H2>{date && formatDate(date)}</H2>
+        <H2>{date && dateToYmdSlash(date)}</H2>
         <B2>총 {duration}분 운동하셨군요!</B2>
       </div>
       <Button
