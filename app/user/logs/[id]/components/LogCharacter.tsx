@@ -4,7 +4,7 @@ import Character from "@/ds/components/atoms/character/Character"
 import { useGetUserCharacter } from "@/hooks/useGetUserCharacter"
 import { sortAssets } from "@/utils/assets"
 import { dateToyymmdd } from "@/utils/dateToyymmdd"
-import { LogCharacterProps } from "../../types"
+import { LogCharacterProps } from "../types"
 
 const LogCharacter = ({ date }: LogCharacterProps) => {
   const { data } = useGetUserCharacter(

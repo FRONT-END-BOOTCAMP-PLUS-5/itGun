@@ -1,6 +1,6 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { B2, H2 } from "@/ds/components/atoms/text/TextWrapper"
-import { HeaderProps } from "../../types"
+import { HeaderProps } from "../types"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useDialogStore } from "@/hooks/useDialogStore"
 import { useDeleteUserLog } from "@/hooks/useDeleteUserLog"

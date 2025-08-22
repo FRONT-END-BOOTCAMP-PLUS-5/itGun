@@ -1,4 +1,4 @@
-import { userLogProps } from "../types"
+import { userLogProps } from "./types"
 import LogDetailPage from "./components/LogDetailPage"
 
 const UserlogPage = async ({ params }: userLogProps) => {

@@ -3,7 +3,7 @@
 import { useGetUserLog } from "@/hooks/useGetUserLog"
 import WorkoutList from "./WorkoutList"
 import LogSummaryHeader from "./LogSummaryHeader"
-import { LogDetailProps } from "../../types"
+import { LogDetailProps } from "../types"
 import LogCharacter from "./LogCharacter"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 
