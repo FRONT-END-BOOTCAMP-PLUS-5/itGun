@@ -8,12 +8,10 @@ import { B1, C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
 import { Header } from "@/ds/components/molecules/header/Header"
 import Workout from "@/ds/components/molecules/workout/Workout"
 import { useLogsStore } from "@/hooks/useLogsStore"
+import { Exercise } from "@/services/exercises/getExercises"
+import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import ExercisesPage from "../exercises/page"
-import dayjs from "dayjs"
-import { Exercise } from "@/services/exercises/getExercises"
-import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/CreateLogRequestDto"
-import { yymmddToDate } from "@/utils/yymmddToDate"
 
 // 운동 세트 데이터 타입
 type WorkoutSetData = {
@@ -67,6 +65,28 @@ const LogsPage = () => {
   const [date, setDate] = useState("")
   const [totalDuration, setTotalDuration] = useState(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
+  const [validation, setValidation] = useState({
+    calIconType: false,
+    date: false,
+    totalDuration: false,
+    workouts: false,
+  })
+
+  const validateForm = () => {
+    const newValidation = {
+      calIconType: calIconType !== "",
+      date: date !== "",
+      totalDuration: totalDuration > 0,
+      workouts: formData.every((item) => item.data.length > 0),
+    }
+    setValidation(newValidation)
+    return Object.values(newValidation).every(Boolean)
+  }
+  console.log(formData)
+
+  useEffect(() => {
+    validateForm()
+  }, [calIconType, date, totalDuration, formData])
 
   const handleAddSet = (index: number) => {
     const newData = [...formData]
@@ -214,7 +234,14 @@ const LogsPage = () => {
       </section>
 
       <div className="sticky right-0 bottom-0 left-0">
-        <Button isFullWidth onClick={handleSubmit}>
+        <Button
+          isFullWidth
+          onClick={handleSubmit}
+          disabled={!Object.values(validation).every(Boolean)}
+          variant={
+            !Object.values(validation).every(Boolean) ? "disable" : "primary"
+          }
+        >
           <B1 fontWeight="bold" className="text-white-200 mr-3">
             저장
           </B1>
