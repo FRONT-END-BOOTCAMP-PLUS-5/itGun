@@ -44,3 +44,5 @@ export const CalendarGrid = forwardRef<FullCalendar, CalendarGridProps>(
     )
   }
 )
+
+CalendarGrid.displayName = "CalendarGrid"
