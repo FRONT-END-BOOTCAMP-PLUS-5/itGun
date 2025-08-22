@@ -9,27 +9,16 @@ interface UseGetExercisesParams extends Omit<GetExercisesParams, "page"> {
 }
 
 export const useGetExercises = (params: UseGetExercisesParams = {}) => {
-  const { limit = 20, ...restParams } = params
+  const { limit = 10, ...restParams } = params
 
   return useInfiniteQuery({
     queryKey: ["exercises", restParams],
-    queryFn: ({ pageParam = 1 }) =>
-      getExercises({
-        ...restParams,
-        page: pageParam,
-        limit,
-      }),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.meta?.hasNextPage) {
-        return (lastPage.meta.page || 0) + 1
-      }
-      return undefined
+    queryFn: ({ pageParam }) => {
+      return getExercises({ ...restParams, page: pageParam, limit })
     },
-    getPreviousPageParam: (firstPage) => {
-      if (firstPage.meta?.hasPreviousPage) {
-        return Math.max((firstPage.meta.page || 1) - 1, 1)
-      }
-      return undefined
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.meta?.hasNextPage ? lastPage.meta.page + 1 : undefined
     },
   })
 }
