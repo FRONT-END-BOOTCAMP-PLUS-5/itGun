@@ -1,7 +1,7 @@
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
 import { GetUserGaugeRequestDto } from "../dtos/GetUserGaugeRequestDto"
-import { GetUserGaugeResponseDto } from "../dtos/GetUserGuageResponseDto"
+import { GetUserGaugeResponseDto } from "../dtos/GetUserGaugeResponseDto"
 
 export class GetUserGaugeUsecase {
   constructor(private bodyPartGaugeRepository: BodyPartGaugeRepository) {}
