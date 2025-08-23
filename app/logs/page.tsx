@@ -5,18 +5,19 @@ import { useState } from "react"
 import AddWorkoutForm from "./components/AddWorkoutForm"
 import DateTimeInput from "./components/DateTimeInput"
 import ExerciseListModal from "./components/ExerciseListModal"
-import { WorkoutItem } from "./components/types"
+import { WorkoutData, WorkoutItem } from "./types"
 import WorkoutLogSaveButton from "./components/WorkoutLogSaveButton"
 import WorkoutTypeSelector from "./components/WorkoutTypeSelector"
+import { CalIconType } from "@/services/user/logs/createUserLogs"
 
 const LogsPage = () => {
   const { open, setOpen } = useLogsStore()
 
-  const [calIconType, setCalIconType] = useState("")
+  const [calIconType, setCalIconType] = useState<CalIconType | null>(null)
   const [date, setDate] = useState("")
   const [totalDuration, setTotalDuration] = useState(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
-
+  const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
   return (
     <main className="flex w-full flex-col gap-7">
       <DateTimeInput
@@ -30,13 +31,19 @@ const LogsPage = () => {
         setCalIconType={setCalIconType}
       />
 
-      <AddWorkoutForm formData={formData} setFormData={setFormData} />
+      <AddWorkoutForm
+        formData={formData}
+        setFormData={setFormData}
+        workoutData={workoutData}
+        setWorkoutData={setWorkoutData}
+      />
 
       <WorkoutLogSaveButton
         calIconType={calIconType}
         date={date}
         totalDuration={totalDuration}
         formData={formData}
+        workoutData={workoutData}
       />
 
       {open && <ExerciseListModal setOpen={setOpen} />}

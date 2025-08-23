@@ -3,19 +3,14 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
-import { WorkoutItem } from "./types"
+import { WorkoutLogSaveButtonProps } from "./type"
 
-interface WorkoutLogSaveButtonProps {
-  calIconType: string
-  date: string
-  totalDuration: number
-  formData: WorkoutItem[]
-}
 const WorkoutLogSaveButton = ({
   calIconType,
   date,
   totalDuration,
   formData,
+  workoutData,
 }: WorkoutLogSaveButtonProps) => {
   const [validation, setValidation] = useState({
     calIconType: false,
@@ -25,31 +20,32 @@ const WorkoutLogSaveButton = ({
   })
 
   const { mutate: createLogs, isPending } = useCreateUserLogs()
-
   const validateForm = () => {
     const newValidation = {
-      calIconType: validation.calIconType,
-      date: validation.date,
-      totalDuration: validation.totalDuration,
-      workouts: validation.workouts,
+      calIconType: !!calIconType,
+      date: !!date,
+      totalDuration: totalDuration > 0,
+      workouts:
+        Array.isArray(workoutData) &&
+        workoutData.every(
+          (workout) =>
+            workout.durationSeconds ||
+            workout.distance ||
+            workout.weight ||
+            workout.repetitionCount
+        ),
     }
     setValidation(newValidation)
     return Object.values(newValidation).every(Boolean)
   }
 
   const handleSubmit = () => {
-    if (!validateForm()) return
-
+    if (!calIconType) return
     const payload = {
       calIconType: calIconType,
       totalDuration: totalDuration,
       logDate: new Date(date.replace(/\./g, "-")),
-      workouts: formData.map((item) => ({
-        seq: item.id,
-        exerciseName: item.title,
-        setCount: item.data.length,
-        exerciseInfo: item.data[0].exerciseInfo,
-      })),
+      workouts: workoutData,
     }
 
     createLogs(payload)

@@ -1,21 +1,37 @@
-import { Exercise } from "@/services/exercises/getExercises"
-import { Dispatch, SetStateAction, useEffect } from "react"
-import { WorkoutItem, workoutTypes } from "./types"
-import Workout from "@/ds/components/molecules/workout/Workout"
 import Icon from "@/ds/components/atoms/icon/Icon"
+import Workout from "@/ds/components/molecules/workout/Workout"
 import { useLogsStore } from "@/hooks/useLogsStore"
+import { Exercise } from "@/services/exercises/getExercises"
+import { useEffect } from "react"
+import { WorkoutItem, workoutTypes } from "../types"
+import { AddWorkoutFormProps } from "./type"
 
-interface AddWorkoutFormProps {
-  formData: WorkoutItem[]
-  setFormData: Dispatch<SetStateAction<WorkoutItem[]>>
-}
-const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
+const AddWorkoutForm = ({
+  formData,
+  setFormData,
+  workoutData,
+  setWorkoutData,
+}: AddWorkoutFormProps) => {
   const { exerciseData, setMode, setOpen } = useLogsStore()
 
   const handleAddSet = (index: number) => {
-    const newData = [...formData]
-    newData[index].data.push({ setCount: newData[index].data.length + 1 })
-    setFormData(newData)
+    const newFormData = [...formData]
+    const newWorkoutData = [...workoutData]
+
+    newFormData[index].data.push({
+      setCount: newFormData[index].data.length + 1,
+    })
+
+    const currentSeq = newWorkoutData[index].seq
+    const newSet = {
+      ...newWorkoutData[index],
+      seq: currentSeq,
+      setCount: newWorkoutData[index].setCount + 1,
+    }
+
+    newWorkoutData.push(newSet)
+    setFormData(newFormData)
+    setWorkoutData(newWorkoutData)
   }
 
   const handleDataChange = ({
@@ -37,6 +53,21 @@ const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
       }
       return newData
     })
+    setWorkoutData((prev) => {
+      const newWorkoutData = [...prev]
+      const targetWorkout = newWorkoutData.find(
+        (workout) =>
+          workout.seq === index + 1 && workout.setCount === setIndex + 1
+      )
+
+      if (targetWorkout) {
+        Object.assign(targetWorkout, {
+          [field]: typeof value === "string" ? Number(value) : value,
+        })
+      }
+
+      return newWorkoutData
+    })
   }
 
   const handleRemoveSet = ({
@@ -47,30 +78,67 @@ const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
     setIndex: number
   }) => {
     const newData = [...formData]
+    const newWorkoutData = [...workoutData]
+
     newData[index].data.splice(setIndex, 1)
+
+    const currentSeq = newWorkoutData[index].seq
+    const targetSetCount = setIndex + 1
+
+    const targetIndex = newWorkoutData.findIndex(
+      (workout) =>
+        workout.seq === currentSeq && workout.setCount === targetSetCount
+    )
+
+    if (targetIndex !== -1) {
+      newWorkoutData.splice(targetIndex, 1)
+    }
+
     setFormData(newData)
+    setWorkoutData(newWorkoutData)
   }
-  console.log(formData)
   const handleAddLog = () => {
     setMode("logs")
     setOpen(true)
   }
 
-  useEffect(() => {
-    if (Object.keys(exerciseData).length > 0) {
-      setFormData((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          title: (exerciseData as Exercise).name,
-          type: workoutTypes[
-            (exerciseData as Exercise).exerciseType
-          ] as WorkoutItem["type"],
-          data: [{ setCount: 1 }],
-        },
-      ])
-    }
-  }, [exerciseData])
+  useEffect(
+    function storeExerciseData() {
+      if (Object.keys(exerciseData).length > 0) {
+        setFormData((prev) => [
+          ...prev,
+          {
+            id: prev.length + 1,
+            title: (exerciseData as Exercise).name,
+            type: workoutTypes[
+              (exerciseData as Exercise).exerciseType
+            ] as WorkoutItem["type"],
+            data: [{ setCount: 1 }],
+          },
+        ])
+        setWorkoutData((prev) => [
+          ...prev,
+          {
+            seq: prev.length + 1,
+            exerciseName: (exerciseData as Exercise).name,
+            setCount: 1,
+            exerciseInfo: {
+              exerciseId: (exerciseData as Exercise).exerciseId,
+              name: (exerciseData as Exercise).name,
+              imageUrl: (exerciseData as Exercise).imageUrl,
+              videoUrl: (exerciseData as Exercise).videoUrl,
+              bodyParts: (exerciseData as Exercise).bodyParts,
+              equipments: (exerciseData as Exercise).equipments,
+              exerciseType: (exerciseData as Exercise).exerciseType,
+              instructions: (exerciseData as Exercise).instructions,
+              exerciseTips: (exerciseData as Exercise).exerciseTips,
+            },
+          },
+        ])
+      }
+    },
+    [exerciseData]
+  )
   return (
     <section className="flex flex-col items-center justify-center gap-7">
       {formData?.map((item, index) => (
