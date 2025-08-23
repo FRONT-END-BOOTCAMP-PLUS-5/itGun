@@ -30,7 +30,6 @@ export interface WorkoutData {
 }
 
 export interface CreateLogRequest {
-  userId: string
   calIconType: CalIconType
   totalDuration: number
   logDate?: Date

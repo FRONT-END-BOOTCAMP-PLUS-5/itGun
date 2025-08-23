@@ -4,9 +4,11 @@ import {
   CreateLogRequest,
 } from "@/services/user/logs/createUserLogs"
 import { useToastStore } from "@/hooks/useToastStore"
+import { useRouter } from "next/navigation"
 
 export const useCreateUserLogs = () => {
   const { showToast } = useToastStore()
+  const router = useRouter()
 
   return useMutation({
     mutationFn: (data: CreateLogRequest) => createUserLogs(data),
@@ -23,6 +25,9 @@ export const useCreateUserLogs = () => {
           variant: "success",
           position: "top",
         })
+        setTimeout(() => {
+          router.push("/")
+        }, 1500)
       }
     },
     onError: (error) => {
