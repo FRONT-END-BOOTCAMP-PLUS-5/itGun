@@ -4,9 +4,9 @@ import Loading from "@/app/loading"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useGetExercises } from "@/hooks/useGetExercises"
 import { useLogsStore } from "@/hooks/useLogsStore"
-import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
+import ExerciseItem from "./ExerciseItem"
 
 function ExerciseList() {
   const searchParams = useSearchParams()
@@ -53,32 +53,13 @@ function ExerciseList() {
             {page.data?.map((exercise, exerciseIndex) => {
               const isLastitem = exerciseIndex === page.data.length - 1
               return (
-                <li
+                <ExerciseItem
                   key={exercise.exerciseId}
-                  ref={isLastitem ? lastItemRef : null}
-                  onClick={() => handleClickExercise(exercise)}
-                  className="grid grid-cols-[auto_1fr] grid-rows-[1fr_1fr]"
-                >
-                  <div className="col-start-1 row-span-2 mr-3.5 h-[115px] w-[115px] content-center overflow-hidden">
-                    <Image
-                      src={exercise.imageUrl}
-                      alt={exercise.name}
-                      width={115}
-                      height={115}
-                      className="max-h-[115px] object-contain object-center"
-                    />
-                  </div>
-
-                  <C2
-                    fontWeight="bold"
-                    className="col-start-2 row-start-1 self-end"
-                  >
-                    {exercise.name}
-                  </C2>
-                  <C2 className="col-start-2 row-start-2 self-start">
-                    {exercise.bodyParts}
-                  </C2>
-                </li>
+                  exercise={exercise}
+                  isLastitem={isLastitem}
+                  lastItemRef={lastItemRef}
+                  handleClickExercise={handleClickExercise}
+                />
               )
             })}
           </Fragment>
