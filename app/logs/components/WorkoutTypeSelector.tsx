@@ -6,31 +6,31 @@ import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
 import { WorkoutTypeSelectorProps } from "./type"
 import { CalIconType } from "../types"
 
+const IconTypes = [
+  {
+    type: "cardio",
+    icon: "hearts",
+    label: "유산소",
+    color: "error",
+  },
+  {
+    type: "upper",
+    icon: "arm",
+    label: "상체",
+    color: "success",
+  },
+  {
+    type: "lower",
+    icon: "leg",
+    label: "하체",
+    color: "secondary-blue",
+  },
+]
+
 const WorkoutTypeSelector = ({
   calIconType,
   setCalIconType,
 }: WorkoutTypeSelectorProps) => {
-  const IconTypes = [
-    {
-      type: "cardio",
-      icon: "hearts",
-      label: "유산소",
-      color: "error",
-    },
-    {
-      type: "upper",
-      icon: "arm",
-      label: "상체",
-      color: "success",
-    },
-    {
-      type: "lower",
-      icon: "leg",
-      label: "하체",
-      color: "secondary-blue",
-    },
-  ]
-
   return (
     <section className="flex flex-col items-center justify-center gap-7">
       <H1>오늘은 무슨 데이?</H1>
