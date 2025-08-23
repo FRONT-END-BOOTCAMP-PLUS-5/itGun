@@ -10,11 +10,6 @@ import { colors } from "@/static/colors"
 import { useRouter } from "next/navigation"
 import { Button } from "@/ds/components/atoms/button/Button"
 
-interface Badge {
-  color: string
-  iconName: keyof typeof svgList
-}
-
 const BadgeRing = ({}) => {
   const { data } = useGetUserBadges({ limit: 6 })
   const router = useRouter()
