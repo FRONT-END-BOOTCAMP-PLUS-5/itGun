@@ -1,7 +1,7 @@
 import { BODY_PART_MAPPINGS, EQUIPMENT_MAPPINGS } from "./constants"
 import FilterButton from "./FilterButton"
 
-function CategoryFilter() {
+const CategoryFilter = () => {
   return (
     <section>
       <div className="scrollbar-none my-3 overflow-x-auto">

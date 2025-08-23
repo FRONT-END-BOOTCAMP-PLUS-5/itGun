@@ -1,11 +1,7 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
-
-interface FilterButtonProps {
-  item: { label: string; value: string }
-  filterType: "bodyPart" | "equipment"
-}
+import { FilterButtonProps } from "./types"
 
 const FilterButton = ({ item, filterType }: FilterButtonProps) => {
   const searchParams = useSearchParams()

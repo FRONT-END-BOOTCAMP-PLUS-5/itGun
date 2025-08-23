@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 import ExerciseItem from "./ExerciseItem"
 
-function ExerciseList() {
+const ExerciseList = () => {
   const searchParams = useSearchParams()
   const { mode, setOpen, setData } = useLogsStore()
   const q = searchParams.get("q") || ""

@@ -6,3 +6,8 @@ export interface ExerciseItemProps {
   lastItemRef: (node: HTMLLIElement | null) => void
   handleClickExercise: (exercise: Exercise) => void
 }
+
+export interface FilterButtonProps {
+  item: { label: string; value: string }
+  filterType: "bodyPart" | "equipment"
+}
