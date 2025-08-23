@@ -8,7 +8,7 @@ import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 
-function ExercisesLists() {
+function ExerciseList() {
   const searchParams = useSearchParams()
   const { mode, setOpen, setData } = useLogsStore()
   const q = searchParams.get("q") || ""
@@ -90,4 +90,4 @@ function ExercisesLists() {
   )
 }
 
-export default ExercisesLists
+export default ExerciseList
