@@ -19,7 +19,7 @@ const LogsPage = () => {
   const [formData, setFormData] = useState<WorkoutItem[]>([])
   const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
   return (
-    <main className="flex w-full flex-col gap-7">
+    <main className="flex h-full w-full flex-col gap-7 pb-[10px]">
       <DateTimeInput
         date={date}
         setDate={setDate}

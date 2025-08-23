@@ -56,23 +56,22 @@ const WorkoutLogSaveButton = ({
   }, [calIconType, date, totalDuration, formData])
 
   return (
-    <div className="sticky right-0 bottom-0 left-0">
-      <Button
-        isFullWidth
-        onClick={handleSubmit}
-        disabled={!Object.values(validation).every(Boolean) || isPending}
-        variant={
-          !Object.values(validation).every(Boolean) || isPending
-            ? "disable"
-            : "primary"
-        }
-      >
-        <B1 fontWeight="bold" className="text-white-200 mr-3">
-          {isPending ? "저장 중..." : "저장"}
-        </B1>
-        <Icon name="save" color="white-200" size={24} />
-      </Button>
-    </div>
+    <Button
+      isFullWidth
+      onClick={handleSubmit}
+      disabled={!Object.values(validation).every(Boolean) || isPending}
+      variant={
+        !Object.values(validation).every(Boolean) || isPending
+          ? "disable"
+          : "primary"
+      }
+      className="mt-auto"
+    >
+      <B1 fontWeight="bold" className="text-white-200 mr-3">
+        {isPending ? "저장 중..." : "저장"}
+      </B1>
+      <Icon name="save" color="white-200" size={24} />
+    </Button>
   )
 }
 
