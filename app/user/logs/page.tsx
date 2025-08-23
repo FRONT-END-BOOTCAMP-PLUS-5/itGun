@@ -84,35 +84,9 @@ const UserLogsPage = () => {
     }
   }
 
-  const groups: Record<string, Log[]> = {}
-  logsOnMonth.forEach((log) => {
-    const dateKey =
-      log.logDate instanceof Date
-        ? log.logDate.toDateString().split("T")[0]
-        : new Date(log.logDate).toDateString().split("T")[0]
-
-    if (!groups[dateKey]) {
-      groups[dateKey] = []
-    }
-    groups[dateKey].push(log)
-  })
-
-  const events = (Object.entries(groups) as [string, Log[]][]).map(
-    ([date, logsOnDate]) => ({
-      title: date,
-      start:
-        logsOnDate[0].logDate instanceof Date
-          ? logsOnDate[0].logDate
-          : new Date(logsOnDate[0].logDate),
-      iconName: calTypeMaps(logsOnDate[0].calIconType).iconName,
-      iconColor: calTypeMaps(logsOnDate[0].calIconType).iconColor,
-      logs: logsOnDate,
-    })
-  )
-
   return (
     <div className="size-full">
-      <div className="calendar-container mb-[20px] flex-grow-1">
+      <div className="mb-[20px] flex-grow-1">
         <CalendarHeader
           calMonth={calMonth}
           onNext={handleNext}
@@ -121,7 +95,8 @@ const UserLogsPage = () => {
         />
         <CalendarGrid
           calendarRef={calendarRef}
-          events={events}
+          logsOnMonth={logsOnMonth}
+          calTypeMaps={calTypeMaps}
           onIconClick={handleIconClick}
         />
       </div>

@@ -1,4 +1,3 @@
-import { EventInput } from "@fullcalendar/core"
 import FullCalendar from "@fullcalendar/react"
 import React from "react"
 
@@ -17,6 +16,11 @@ type BodyPartsGroup =
   | "core"
   | "stamina"
 
+export type CalTypeMaps = (calType: string) => {
+  calTypeKo: string
+  iconName: string
+  iconColor: string
+}
 export interface Log {
   id: number
   userId: string
@@ -34,19 +38,16 @@ export interface CalendarHeaderProps {
 }
 
 export interface CalendarGridProps {
-  events: EventInput[]
+  calendarRef: React.RefObject<FullCalendar | null>
+  logsOnMonth: Log[]
+  calTypeMaps: CalTypeMaps
   onIconClick: (logs: Log[]) => void
-  calendarRef: React.RefObject<FullCalendar |null>
 }
 
 export interface LogListProps {
   logsToDisplay: Log[]
   selectedDate: string | null
-  calTypeMaps: (calType: string) => {
-    calTypeKo: string
-    iconName: string
-    iconColor: string
-  }
+  calTypeMaps: CalTypeMaps
 }
 
 export interface LogItemProps {
