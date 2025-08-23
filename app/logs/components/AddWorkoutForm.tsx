@@ -77,6 +77,10 @@ const AddWorkoutForm = ({
     index: number
     setIndex: number
   }) => {
+    if (formData[index].data.length <= 1) {
+      return
+    }
+
     const newData = [...formData]
     const newWorkoutData = [...workoutData]
 
@@ -97,6 +101,15 @@ const AddWorkoutForm = ({
     setFormData(newData)
     setWorkoutData(newWorkoutData)
   }
+
+  const handleTypeChange = (index: number, newType: string) => {
+    setFormData((prev) => {
+      const newData = [...prev]
+      newData[index].type = newType as WorkoutItem["type"]
+      return newData
+    })
+  }
+
   const handleAddLog = () => {
     setMode("logs")
     setOpen(true)
@@ -154,6 +167,7 @@ const AddWorkoutForm = ({
           onRemoveSet={(setIndex) => handleRemoveSet({ index, setIndex })}
           isEditable={true}
           isFullWidth
+          onTypeChange={(newType) => handleTypeChange(index, newType)}
         />
       ))}
       <button onClick={handleAddLog}>
