@@ -3,36 +3,29 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { MotionPathPlugin } from "gsap/MotionPathPlugin"
-import { svgList } from "@/static/svgs/svgList"
 import { moveByRingPath } from "@/utils/animations"
 import { useGetUserBadges } from "@/hooks/useGetUserBadges"
-
-interface Badge {
-  color: string
-  iconName: keyof typeof svgList
-}
+import { colors } from "@/static/colors"
+import { useRouter } from "next/navigation"
+import { Button } from "@/ds/components/atoms/button/Button"
 
 const BadgeRing = ({}) => {
   const { data } = useGetUserBadges({ limit: 6 })
-  // console.log(data?.badges)
-
-  const badges: Badge[] = [
-    { color: "secondary-blue", iconName: "medal" },
-    { color: "secondary-pink", iconName: "medal" },
-    { color: "secondary-yellow", iconName: "medal" },
-    { color: "white-200", iconName: "medal" },
-    { color: "accent", iconName: "medal" },
-    { color: "accent", iconName: "medal" },
-  ]
+  const router = useRouter()
   gsap.registerPlugin(MotionPathPlugin)
   gsap.registerPlugin(useGSAP)
 
   useGSAP(() => {
-    moveByRingPath(badges)
-  })
+    if (data?.userBadges && data?.userBadges?.length > 0)
+      moveByRingPath(data.userBadges)
+  }, [data])
+
+  const onClickBadge = () => {
+    router.push("/user/badges")
+  }
 
   return (
-    <div className="absolute top-0 left-1/2 -translate-x-1/2">
+    <div className="absolute top-0 left-1/2 z-25 -translate-x-1/2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="300"
@@ -54,15 +47,18 @@ const BadgeRing = ({}) => {
           </clipPath>
         </defs>
       </svg>
-      {badges.map((badge, index) => {
+      {data?.userBadges?.map((badge, index) => {
         return (
-          <div
+          <Button
             key={index}
             id={`badge-${index}`}
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-0"
+            variant="ghost"
+            size="xs"
+            className="absolute bottom-0 left-1/2 z-30 -translate-x-1/2 opacity-0"
+            onClick={onClickBadge}
           >
-            <Icon name={badge.iconName} fillColor={badge.color} size={70} />
-          </div>
+            <Icon name="medal" fillColor={colors[index]} size={70} />
+          </Button>
         )
       })}
     </div>
