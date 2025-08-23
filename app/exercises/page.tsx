@@ -1,7 +1,7 @@
 "use client"
 
 import CategoryFilter from "./components/CategoryFilter"
-import ExercisesLists from "./components/ExercisesLists"
+import ExercisesLists from "./components/ExerciseList"
 import SearchInput from "./components/SearchInput"
 
 const ExercisesPage = () => {
