@@ -3,14 +3,13 @@
 import FullCalendar from "@fullcalendar/react"
 import { EventContentArg } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
-import { forwardRef } from "react"
 import { Button } from "@/ds/components/atoms/button/Button"
 import CircularIcon from "@/ds/components/molecules/circularIcon/CircularIcon"
 import { CalendarGridProps } from "@/app/user/logs/types"
 import "@/app/user/logs/components/calendar.css"
 
-export const CalendarGrid = forwardRef<FullCalendar, CalendarGridProps>(
-  ({ events, onIconClick }, ref) => {
+export const CalendarGrid = (
+  ({ events, onIconClick,  calendarRef}: CalendarGridProps) => {
     function renderEventContent(eventInfo: EventContentArg) {
       return (
         <Button
@@ -29,7 +28,7 @@ export const CalendarGrid = forwardRef<FullCalendar, CalendarGridProps>(
 
     return (
       <FullCalendar
-        ref={ref}
+        ref={calendarRef}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         height="auto"
@@ -44,5 +43,3 @@ export const CalendarGrid = forwardRef<FullCalendar, CalendarGridProps>(
     )
   }
 )
-
-CalendarGrid.displayName = "CalendarGrid"

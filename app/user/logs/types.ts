@@ -1,4 +1,6 @@
 import { EventInput } from "@fullcalendar/core"
+import FullCalendar from "@fullcalendar/react"
+import React from "react"
 
 enum CalIconType {
   CARDIO = "cardio",
@@ -34,6 +36,7 @@ export interface CalendarHeaderProps {
 export interface CalendarGridProps {
   events: EventInput[]
   onIconClick: (logs: Log[]) => void
+  calendarRef: React.RefObject<FullCalendar |null>
 }
 
 export interface LogsListProps {

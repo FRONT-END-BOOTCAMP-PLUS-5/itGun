@@ -124,7 +124,7 @@ const UserLogsPage = () => {
           onToday={handleToday}
         />
         <CalendarGrid
-          ref={calendarRef}
+          calendarRef={calendarRef}
           events={events}
           onIconClick={handleIconClick}
         />
