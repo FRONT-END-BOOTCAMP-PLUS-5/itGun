@@ -1,69 +1,20 @@
-import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-
-import { useRouter, useSearchParams } from "next/navigation"
-import { useLogsStore } from "@/hooks/useLogsStore"
 import { BODY_PART_MAPPINGS, EQUIPMENT_MAPPINGS } from "./constants"
+import FilterButton from "./FilterButton"
 
 function CategoryFilter() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const { mode } = useLogsStore()
-
-  const bodyPart = searchParams.get("bodyPart") || ""
-  const equipment = searchParams.get("equipment") || ""
-
-  const handleFilter = ({
-    type,
-    value,
-  }: {
-    type: "bodyPart" | "equipment"
-    value: string
-  }) => {
-    const currentParams = new URLSearchParams(searchParams)
-
-    if (value) currentParams.set(type, value)
-    else currentParams.delete(type)
-
-    router.replace(`/${mode}?${currentParams.toString()}`)
-  }
-
   return (
     <section>
-      <div className="overflow-x-auto">
-        <nav className="my-3 flex min-w-max gap-2">
+      <div className="my-3 overflow-x-auto">
+        <nav className="flex min-w-max gap-2">
           {BODY_PART_MAPPINGS.map((item) => (
-            <button
-              key={item.label}
-              onClick={() =>
-                handleFilter({ type: "bodyPart", value: item.value })
-              }
-              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed p-2 whitespace-nowrap ${
-                bodyPart === item.value
-                  ? "bg-secondary-purple border-solid"
-                  : "border-dashed"
-              }`}
-            >
-              <C2>{item.label}</C2>
-            </button>
+            <FilterButton key={item.label} item={item} filterType="bodyPart" />
           ))}
         </nav>
       </div>
-      <div className="overflow-x-auto">
-        <nav className="mb-5 flex min-w-max gap-2">
+      <div className="mb-5 overflow-x-auto">
+        <nav className="flex min-w-max gap-2">
           {EQUIPMENT_MAPPINGS.map((item) => (
-            <button
-              key={item.label}
-              onClick={() =>
-                handleFilter({ type: "equipment", value: item.value })
-              }
-              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
-                equipment === item.value
-                  ? "bg-secondary-yellow border-solid"
-                  : "border-dashed"
-              }`}
-            >
-              <C2>{item.label}</C2>
-            </button>
+            <FilterButton key={item.label} item={item} filterType="equipment" />
           ))}
         </nav>
       </div>
