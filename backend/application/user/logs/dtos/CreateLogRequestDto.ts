@@ -28,6 +28,7 @@ export interface WorkoutData {
 }
 
 export interface CreateLogRequestDto {
+  userId: string
   calIconType: CalIconType
   totalDuration: number
   logDate?: Date
