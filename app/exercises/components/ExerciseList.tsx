@@ -33,7 +33,7 @@ function ExerciseList() {
     if (node) observerRef.current.observe(node)
   }
 
-  const handleExercise = (exercise: object) => {
+  const handleClickExercise = (exercise: object) => {
     if (mode === "exercises") return
     setOpen(false)
     setData(exercise)
@@ -56,7 +56,7 @@ function ExerciseList() {
                 <li
                   key={exercise.exerciseId}
                   ref={isLastitem ? lastItemRef : null}
-                  onClick={() => handleExercise(exercise)}
+                  onClick={() => handleClickExercise(exercise)}
                   className="grid grid-cols-[auto_1fr] grid-rows-[1fr_1fr]"
                 >
                   <div className="col-start-1 row-span-2 mr-3.5 h-[115px] w-[115px] content-center overflow-hidden">
