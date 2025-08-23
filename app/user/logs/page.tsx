@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import FullCalendar from "@fullcalendar/react"
-import { useRouter } from "next/navigation"
 import { CalendarHeader } from "@/app/user/logs/components/CalendarHeader"
 import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
 import LogList from "@/app/user/logs/components/LogList"
@@ -11,7 +10,6 @@ import { Log } from "@/app/user/logs/types"
 
 const UserLogsPage = () => {
   const calendarRef = useRef<FullCalendar | null>(null)
-  const router = useRouter()
 
   const [logsOnMonth, setLogsOnMonth] = useState<Log[]>([])
   const [logsToDisplay, setLogsToDisplay] = useState<Log[]>([])
@@ -32,7 +30,7 @@ const UserLogsPage = () => {
 
   useEffect(() => {
     setInitData()
-  }, [calMonth])
+  }, [calMonth, data])
 
   const setNewMonthTitle = () => {
     if (calendarRef.current) {
