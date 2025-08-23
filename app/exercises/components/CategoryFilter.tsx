@@ -37,7 +37,7 @@ function CategoryFilter() {
               onClick={() =>
                 handleFilter({ type: "bodyPart", value: item.value })
               }
-              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed px-2 whitespace-nowrap ${
+              className={`border-primary text-primary flex h-6 w-fit items-center rounded-md border border-dashed p-2 whitespace-nowrap ${
                 bodyPart === item.value
                   ? "bg-secondary-purple border-solid"
                   : "border-dashed"
@@ -49,7 +49,7 @@ function CategoryFilter() {
         </nav>
       </div>
       <div className="overflow-x-auto">
-        <nav className="my-3 flex min-w-max gap-2">
+        <nav className="mb-5 flex min-w-max gap-2">
           {EQUIPMENT_MAPPINGS.map((item) => (
             <button
               key={item.label}
