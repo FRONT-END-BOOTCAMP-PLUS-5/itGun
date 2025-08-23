@@ -1,3 +1,5 @@
+"use client"
+
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
