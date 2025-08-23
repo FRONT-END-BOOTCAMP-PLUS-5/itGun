@@ -9,12 +9,13 @@ import { WorkoutData, WorkoutItem } from "./types"
 import WorkoutLogSaveButton from "./components/WorkoutLogSaveButton"
 import WorkoutTypeSelector from "./components/WorkoutTypeSelector"
 import { CalIconType } from "@/services/user/logs/createUserLogs"
+import dayjs from "dayjs"
 
 const LogsPage = () => {
   const { open, setOpen } = useLogsStore()
 
   const [calIconType, setCalIconType] = useState<CalIconType | null>(null)
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState(dayjs().format("YYYY.MM.DD"))
   const [totalDuration, setTotalDuration] = useState(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
   const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
