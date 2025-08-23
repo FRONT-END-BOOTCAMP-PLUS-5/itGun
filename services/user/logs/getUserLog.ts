@@ -36,7 +36,7 @@ export interface Log {
   workouts: Workout[]
 }
 
-interface Response {
+export interface Response {
   success: boolean
   message: string
   log: Log
