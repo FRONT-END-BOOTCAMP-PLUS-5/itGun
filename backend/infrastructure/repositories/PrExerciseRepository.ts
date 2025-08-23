@@ -21,7 +21,7 @@ export class PrExerciseRepository implements ExerciseRepository {
           params.push(`%${keywords[paramIndex - 1]}%`)
           return `EXISTS (SELECT 1 FROM unnest(keywords_ko) AS keyword WHERE keyword LIKE $${paramIndex})`
         })
-        .join(" AND ")
+        .join(" OR ")
       whereClause += ` AND (${keywordConditions})`
       paramIndex += keywords.length
     }
@@ -32,7 +32,7 @@ export class PrExerciseRepository implements ExerciseRepository {
           params.push(`%${bodyParts[paramIndex - 1]}%`)
           return `EXISTS (SELECT 1 FROM unnest(body_parts) AS body_part WHERE body_part LIKE $${paramIndex})`
         })
-        .join(" AND ")
+        .join(" OR ")
       whereClause += ` AND (${bodyPartConditions})`
       paramIndex += bodyParts.length
 
@@ -45,7 +45,7 @@ export class PrExerciseRepository implements ExerciseRepository {
           params.push(`%${equipments[paramIndex - 1]}%`)
           return `EXISTS (SELECT 1 FROM unnest(equipments) AS equipment WHERE equipment LIKE $${paramIndex})`
         })
-        .join(" AND ")
+        .join(" OR ")
       whereClause += ` AND (${equipmentConditions})`
       paramIndex += equipments.length
     }
@@ -63,13 +63,16 @@ export class PrExerciseRepository implements ExerciseRepository {
     params.push(limit, offset)
     const exercisesData = await prisma.$queryRawUnsafe(dataQuery, ...params)
 
-    if (!exercisesData) {
+    if (
+      !exercisesData ||
+      !Array.isArray(exercisesData) ||
+      exercisesData.length === 0
+    ) {
       return { exercises: [], total: 0 }
     }
 
-    const total = Number(exercisesData[0].total_count || 0)
+    const total = Number(exercisesData[0]?.total_count || 0)
     const exercises = exercisesData.map((exercise) => this.toDomain(exercise))
-
     return { exercises, total }
   }
 
