@@ -60,7 +60,18 @@ export async function GET(req: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+    }
+
     const body: CreateLogRequestDto = await request.json()
+    const requestBody = {
+      ...body,
+      userId: userId,
+    }
 
     const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
@@ -87,7 +98,7 @@ export async function POST(request: NextRequest) {
       bigThreeRecordRepository
     )
 
-    const result = await createLogUsecase.execute(body)
+    const result = await createLogUsecase.execute(requestBody)
 
     if (result.success) {
       return NextResponse.json(
