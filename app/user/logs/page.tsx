@@ -5,7 +5,7 @@ import FullCalendar from "@fullcalendar/react"
 import { useRouter } from "next/navigation"
 import { CalendarHeader } from "@/app/user/logs/components/CalendarHeader"
 import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
-import { LogsList } from "@/app/user/logs/components/LogsList"
+import LogList from "@/app/user/logs/components/LogList"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { Log } from "@/app/user/logs/types"
 
@@ -110,10 +110,6 @@ const UserLogsPage = () => {
     })
   )
 
-  const handleLogClick = (logId: number) => {
-    router.push(`/user/logs/${logId}`)
-  }
-
   return (
     <div className="size-full">
       <div className="calendar-container mb-[20px] flex-grow-1">
@@ -129,10 +125,9 @@ const UserLogsPage = () => {
           onIconClick={handleIconClick}
         />
       </div>
-      <LogsList
+      <LogList
         logsToDisplay={logsToDisplay}
         selectedDate={selectedDate}
-        onLogClick={handleLogClick}
         calTypeMaps={calTypeMaps}
       />
     </div>

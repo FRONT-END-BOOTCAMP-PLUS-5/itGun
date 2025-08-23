@@ -39,10 +39,18 @@ export interface CalendarGridProps {
   calendarRef: React.RefObject<FullCalendar |null>
 }
 
-export interface LogsListProps {
+export interface LogListProps {
   logsToDisplay: Log[]
   selectedDate: string | null
-  onLogClick: (logId: number) => void
+  calTypeMaps: (calType: string) => {
+    calTypeKo: string
+    iconName: string
+    iconColor: string
+  }
+}
+
+export interface LogItemProps {
+  log: Log
   calTypeMaps: (calType: string) => {
     calTypeKo: string
     iconName: string
