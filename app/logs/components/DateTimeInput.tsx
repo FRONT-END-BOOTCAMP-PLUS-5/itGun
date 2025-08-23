@@ -4,13 +4,8 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { C1 } from "@/ds/components/atoms/text/TextWrapper"
 import dayjs from "dayjs"
-import { Dispatch, SetStateAction } from "react"
+import { DateTypeProps } from "./type"
 
-interface DateTypeProps {
-  date: string
-  setDate: Dispatch<SetStateAction<string>>
-  setTotalDuration: Dispatch<SetStateAction<number>>
-}
 const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
   return (
     <section className="flex items-center justify-between">

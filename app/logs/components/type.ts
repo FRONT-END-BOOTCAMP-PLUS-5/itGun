@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction } from "react"
 import { CalIconType, WorkoutData, WorkoutItem } from "../types"
 
+export interface DateTypeProps {
+  date: string
+  setDate: Dispatch<SetStateAction<string>>
+  setTotalDuration: Dispatch<SetStateAction<number>>
+}
 export interface WorkoutTypeSelectorProps {
   calIconType: CalIconType | null
   setCalIconType: Dispatch<SetStateAction<CalIconType | null>>
@@ -19,4 +24,8 @@ export interface WorkoutLogSaveButtonProps {
   totalDuration: number
   formData: WorkoutItem[]
   workoutData: WorkoutData[]
+}
+
+export interface ExerciseListModalProps {
+  setOpen: (open: boolean) => void
 }
