@@ -14,20 +14,21 @@ export const useCreateUserLogs = () => {
     mutationFn: (data: CreateLogRequest) => createUserLogs(data),
     onSuccess: (response) => {
       if (response.awardedBadges && response.awardedBadges.length > 0) {
+        router.push("/")
         showToast({
           message: `운동 기록이 저장되었습니다! 🎉 ${response.awardedBadges.length}개의 배지를 획득했습니다!`,
           variant: "success",
           position: "top",
         })
+        setTimeout(() => {}, 1500)
       } else {
+        router.push("/")
         showToast({
           message: "운동 기록이 저장되었습니다! 💪",
           variant: "success",
           position: "top",
         })
-        setTimeout(() => {
-          router.push("/")
-        }, 1500)
+        setTimeout(() => {}, 1500)
       }
     },
     onError: (error) => {
