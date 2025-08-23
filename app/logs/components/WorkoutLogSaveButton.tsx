@@ -27,6 +27,7 @@ const WorkoutLogSaveButton = ({
       totalDuration: totalDuration > 0,
       workouts:
         Array.isArray(workoutData) &&
+        workoutData.length > 0 &&
         workoutData.every(
           (workout) =>
             workout.durationSeconds ||
