@@ -15,18 +15,22 @@ import { CreateLogRequestDto } from "@/backend/application/user/logs/dtos/Create
 import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUserLogsQueryDto"
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
 import { GetUserLogListUsecase } from "@/backend/application/user/logs/usecases/GetUserLogListUsecase"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 
 export async function GET(req: NextRequest) {
-  const { userId }: GetUserLogsRequestDto = await req.json()
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+
+  if (!userId) {
+    return NextResponse.json({ message: "error" }, { status: 401 })
+  }
+
   const { searchParams } = new URL(req.url)
   const year = Number(searchParams.get("year"))
   const month = Number(searchParams.get("month"))
 
   if (!year || !month) {
-    return NextResponse.json({ message: "error" }, { status: 400 })
-  }
-
-  if (!userId) {
     return NextResponse.json({ message: "error" }, { status: 400 })
   }
 
