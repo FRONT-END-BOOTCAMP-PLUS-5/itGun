@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 .fc-col-header {
-  @apply min-h-[40px]
+  @apply min-h-[40px];
 }
 
 .fc-col-header-cell {
-  @apply text-[var(--color-secondary)] text-[15px];
+  @apply text-[var(--color-secondary)] text-[15px] bg-[var(--color-white-200)];
 }
 
 .fc .fc-daygrid-day {
@@ -33,7 +33,7 @@
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  @apply bg-[var(--color-background)];
+  @apply bg-[var(--color-white-200)];
 }
 
 .fc-theme-standard td, .fc-theme-standard th {
@@ -57,5 +57,5 @@
 }
 
 a.fc-event:hover {
-  @apply bg-transparent
+  @apply bg-[var(--color-white-200)];
 }
