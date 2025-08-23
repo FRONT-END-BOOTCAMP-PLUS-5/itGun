@@ -6,6 +6,7 @@ import { CharacterAsset } from "@/ds/components/atoms/character/Character.types"
 import { createAssetsFromSvgs } from "@/utils/character"
 import { sortAssets } from "@/utils/assets"
 import { useEffect, useState } from "react"
+import { colors } from "@/static/colors"
 
 const LoadingCharacter = () => {
   const { panel, tear, ...rest } = burky
@@ -14,8 +15,6 @@ const LoadingCharacter = () => {
     blink("eyes")
     dumbbellCurl(0)
   }
-  const color = ["#FFF6E3", "#BFECFF", "#FFCCEA", "#CDC1FF"]
-
   const [randomColor, setRandomColor] = useState<number>(0)
   useEffect(() => {
     setRandomColor(Math.floor(Math.random() * 100) % 4)
@@ -27,7 +26,7 @@ const LoadingCharacter = () => {
         <Character
           assets={sortAssets(assets)}
           animation={() => defaultAnimation()}
-          characterColor={color[randomColor]}
+          characterColor={colors[randomColor]}
         />
       </div>
     </div>
