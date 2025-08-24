@@ -16,6 +16,7 @@ import { GetUserLogsQueryDto } from "@/backend/application/user/logs/dtos/GetUse
 import { GetUserLogsRequestDto } from "@/backend/application/user/logs/dtos/GetUserLogsRequestDto"
 import { GetUserLogListUsecase } from "@/backend/application/user/logs/usecases/GetUserLogListUsecase"
 import { getServerSession } from "next-auth"
+
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 
 export async function GET(req: NextRequest) {
@@ -61,7 +62,18 @@ export async function GET(req: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
+
+    if (!userId) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+    }
+
     const body: CreateLogRequestDto = await request.json()
+    const requestBody = {
+      ...body,
+      userId: userId,
+    }
 
     const transactionManager = new PrTransactionManager()
     const logRepository = new PrLogRepository()
@@ -88,14 +100,14 @@ export async function POST(request: NextRequest) {
       bigThreeRecordRepository
     )
 
-    const result = await createLogUsecase.execute(body)
+    const result = await createLogUsecase.execute(requestBody)
 
     if (result.success) {
       return NextResponse.json(
-        { 
-          message: "success", 
+        {
+          message: "success",
           logId: result.logId,
-          awardedBadges: result.awardedBadges || []
+          awardedBadges: result.awardedBadges || [],
         },
         { status: 200 }
       )

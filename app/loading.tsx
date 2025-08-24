@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className="flex h-full w-full flex-col items-center">
       <LoadingCharacter />
-      <LoadingText />
+      <LoadingText text="Loading" />
     </div>
   )
 }
