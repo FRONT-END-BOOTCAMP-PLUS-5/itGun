@@ -34,7 +34,7 @@ const UserLogsPage = () => {
 
   const handleIconClick = (logs: Log[]) => {
     setLogsToDisplay(logs)
-    setSelectedDate(logs[0].logDate.toISOString())
+    setSelectedDate(new Date(logs[0].logDate).toISOString())
   }
 
   const calTypeMaps = ( calType: string ): { 
