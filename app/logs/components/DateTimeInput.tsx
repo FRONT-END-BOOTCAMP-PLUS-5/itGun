@@ -7,6 +7,18 @@ import dayjs from "dayjs"
 import { DateTypeProps } from "./type"
 
 const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    const numberRegex = /^[0-9]{1,3}$/
+
+    if (numberRegex.test(value) || value === "") {
+      const numValue = parseInt(value) || 0
+      if (numValue >= 0 && numValue <= 999) {
+        setTotalDuration(numValue)
+      }
+    }
+  }
+
   return (
     <section className="flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -25,9 +37,10 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Icon name="clock" size={24} />
         <Input
           size="sm"
-          type="number"
+          type="text"
           className="!w-6 text-center"
-          onChange={(e) => setTotalDuration(Number(e.target.value))}
+          onChange={handleChange}
+          placeholder="0"
         />
         <C1>분</C1>
       </div>
