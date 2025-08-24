@@ -5,6 +5,7 @@ export interface ExerciseItemProps {
   isLastitem: boolean
   lastItemRef: (node: HTMLLIElement | null) => void
   handleClickExercise: (exercise: Exercise) => void
+}
 
 export interface FilterButtonProps {
   item: { label: string; value: string }
