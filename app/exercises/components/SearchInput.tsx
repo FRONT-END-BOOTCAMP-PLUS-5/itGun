@@ -40,7 +40,9 @@ const SearchInput = () => {
 
   const handleClearSearch = () => {
     setSearchValue("")
-    router.replace(`/${mode}`)
+    const currentParams = new URLSearchParams(searchParams)
+    currentParams.delete("q")
+    router.replace(`/${mode}?${currentParams.toString()}`)
   }
 
   const handleFormSubmit = (e: FormEvent) => {
