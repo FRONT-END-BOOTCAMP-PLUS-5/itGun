@@ -1,3 +1,6 @@
+
+"use client"
+
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { useLogsStore } from "@/hooks/useLogsStore"

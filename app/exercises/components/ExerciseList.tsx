@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 import ExerciseItem from "./ExerciseItem"
 
-function ExerciseList() {
+const ExerciseList = () => {
   const searchParams = useSearchParams()
   const { mode, setOpen, setData } = useLogsStore()
   const q = searchParams.get("q") || ""
@@ -18,7 +18,7 @@ function ExerciseList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGetExercises({ limit: 10, q, bodyPart, equipment })
 
-  const observerRef = useRef<IntersectionObserver>(null)
+  const observerRef = useRef<IntersectionObserver | null>(null)
   const lastItemRef = (node: HTMLLIElement | null) => {
     if (isLoading || isFetchingNextPage) return
 

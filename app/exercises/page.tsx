@@ -1,4 +1,3 @@
-"use client"
 
 import CategoryFilter from "./components/CategoryFilter"
 import ExercisesLists from "./components/ExerciseList"
