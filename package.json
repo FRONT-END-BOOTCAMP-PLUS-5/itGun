@@ -15,19 +15,23 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.19",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
     "@gsap/react": "^2.1.2",
     "@prisma/client": "^6.13.0",
-    "@tanstack/react-query": "^4.40.1",
+    "@tanstack/react-query": "^5.85.5",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.2",
+    "dayjs": "^1.11.13",
     "gsap": "^3.13.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.4.5",
     "next-auth": "^4.24.11",
-    "zustand": "^5.0.7",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zustand": "^5.0.7"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.0",
@@ -38,6 +42,7 @@
     "@storybook/addon-vitest": "^9.1.1",
     "@storybook/nextjs": "^9.1.1",
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.85.5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

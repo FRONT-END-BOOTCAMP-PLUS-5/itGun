@@ -1,4 +1,6 @@
-enum CalIconType {
+import { api } from "@/utils/api/apiClient"
+
+export enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
   LOWER = "lower",
@@ -27,10 +29,25 @@ export interface WorkoutData {
   exerciseInfo: ExerciseInfo
 }
 
-export interface CreateLogRequestDto {
-  userId: string
+export interface CreateLogRequest {
   calIconType: CalIconType
   totalDuration: number
   logDate?: Date
   workouts: WorkoutData[]
 }
+
+export interface AwardedBadge {
+  badgeId: number
+  badgeName: string
+  badgeDescription?: string
+  earnedAt: Date
+}
+
+export interface CreateLogResponse {
+  message: string
+  logId?: number
+  awardedBadges?: AwardedBadge[]
+}
+
+export const createUserLogs = (data: CreateLogRequest) =>
+  api.post<CreateLogResponse>("/user/logs", data)

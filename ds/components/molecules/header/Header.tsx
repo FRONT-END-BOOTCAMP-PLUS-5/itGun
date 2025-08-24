@@ -13,13 +13,13 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const router = useRouter()
   const onClickBack = () => {
-    if (onBack) onBack()
+    if (onBack) return onBack()
 
     router.back()
   }
   return (
     <header
-      className={`flex h-15 max-w-[inherit] w-full items-center bg-[var(--color-white-200)] z-100 p-2.5 ${className}`}
+      className={`z-100 flex h-15 w-full max-w-[inherit] items-center bg-[var(--color-white-200)] p-2.5 ${className}`}
     >
       {/* 왼쪽: 뒤로가기 */}
       <div className="flex items-center">
