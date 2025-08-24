@@ -20,7 +20,7 @@ const UserLogsPage = () => {
     return `${now.getFullYear()}.${(now.getMonth() + 1).toString().padStart(2, "0")}`
   })
 
-  const { data } = useGetUserLogs({ calMonth })
+  const { data, isFetching } = useGetUserLogs({ calMonth })
 
   const setInitData = () => {
     const logs = data?.logs?.length ? data.logs : []
@@ -31,36 +31,6 @@ const UserLogsPage = () => {
   useEffect(() => {
     setInitData()
   }, [calMonth, data])
-
-  const setNewMonthTitle = () => {
-    if (calendarRef.current) {
-      const date = calendarRef.current.getApi().getDate()
-      const newMonth = `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, "0")}`
-      setCalMonth(newMonth)
-      setSelectedDate(null)
-    }
-  }
-
-  const handleNext = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().next()
-      setNewMonthTitle()
-    }
-  }
-
-  const handlePrev = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().prev()
-      setNewMonthTitle()
-    }
-  }
-
-  const handleToday = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().today()
-      setNewMonthTitle()
-    }
-  }
 
   const handleIconClick = (logs: Log[]) => {
     setLogsToDisplay(logs)
@@ -86,10 +56,10 @@ const UserLogsPage = () => {
     <div className="size-full">
       <div className="mb-[20px] flex-grow-1">
         <CalendarHeader
+          calendarRef={calendarRef}
           calMonth={calMonth}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          onToday={handleToday}
+          setCalMonth={setCalMonth}
+          setSelectedDate={setSelectedDate}
         />
         <CalendarGrid
           calendarRef={calendarRef}
@@ -99,6 +69,7 @@ const UserLogsPage = () => {
         />
       </div>
       <LogList
+        isFetching={isFetching}
         logsToDisplay={logsToDisplay}
         selectedDate={selectedDate}
         calTypeMaps={calTypeMaps}

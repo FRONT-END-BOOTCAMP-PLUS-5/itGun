@@ -1,5 +1,5 @@
 import FullCalendar from "@fullcalendar/react"
-import React from "react"
+import React, { Dispatch, SetStateAction } from "react"
 
 enum CalIconType {
   CARDIO = "cardio",
@@ -31,10 +31,10 @@ export interface Log {
 }
 
 export interface CalendarHeaderProps {
+  calendarRef: React.RefObject<FullCalendar | null>
   calMonth: string
-  onNext: () => void
-  onPrev: () => void
-  onToday: () => void
+  setCalMonth: Dispatch<SetStateAction<string>>
+  setSelectedDate: Dispatch<SetStateAction<string | null>>
 }
 
 export interface CalendarGridProps {
@@ -45,6 +45,7 @@ export interface CalendarGridProps {
 }
 
 export interface LogListProps {
+  isFetching: boolean
   logsToDisplay: Log[]
   selectedDate: string | null
   calTypeMaps: CalTypeMaps
