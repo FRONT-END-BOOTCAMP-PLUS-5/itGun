@@ -1,28 +1,51 @@
 import React from "react"
-import Icon from "@/ds/components/atoms/icon/Icon"
+import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
 
 interface ProfileDisplayProps {
-  onEditClick?: () => void
+  userInfo?: GetUserInfoResponse
 }
 
-const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ onEditClick }) => {
+const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ userInfo }) => {
   return (
     <div className="mx-auto max-w-md space-y-10 p-6">
       <div className="space-y-10">
-        <div className="flex h-10 w-full items-center border-b border-gray-300">
-          <span className="text-[var(--color-secondary)]">근욱 멋사</span>
+        {/* 닉네임 필드 */}
+        <div className="flex h-[30px] w-[333px] items-center border-b border-gray-300">
+          <span className="text-[var(--color-secondary)]">
+            {userInfo?.nickname || "닉네임 없음"}
+          </span>
         </div>
-        <div className="flex h-10 w-full items-center border-b border-gray-300">
-          <span className="text-[var(--color-secondary)]">186 cm</span>
+
+        {/* 키 필드 */}
+        <div className="flex h-[30px] w-[333px] items-center border-b border-gray-300">
+          <span className="text-[var(--color-secondary)]">
+            {userInfo?.height ? `${userInfo.height} cm` : "키 정보 없음"}
+          </span>
         </div>
-        <div className="flex h-10 w-full items-center border-b border-gray-300">
-          <span className="text-[var(--color-secondary)]">87 kg</span>
+
+        {/* 몸무게 필드 */}
+        <div className="flex h-[30px] w-[333px] items-center border-b border-gray-300">
+          <span className="text-[var(--color-secondary)]">
+            {userInfo?.weight ? `${userInfo.weight} kg` : "몸무게 정보 없음"}
+          </span>
         </div>
-        <div className="flex h-10 w-full items-center border-b border-gray-300">
-          <span className="text-[var(--color-secondary)]">30</span>
+
+        {/* 나이 필드 */}
+        <div className="flex h-[30px] w-[333px] items-center border-b border-gray-300">
+          <span className="text-[var(--color-secondary)]">
+            {userInfo?.age || "나이 정보 없음"}
+          </span>
         </div>
-        <div className="flex h-10 w-full items-center border-b border-gray-300">
-          <span className="text-[var(--color-secondary)]">남</span>
+
+        {/* 성별 필드 */}
+        <div className="flex h-[30px] w-[333px] items-center border-b border-gray-300">
+          <span className="text-[var(--color-secondary)]">
+            {userInfo?.gender === "male"
+              ? "남"
+              : userInfo?.gender === "female"
+                ? "여"
+                : "성별 정보 없음"}
+          </span>
         </div>
       </div>
     </div>
