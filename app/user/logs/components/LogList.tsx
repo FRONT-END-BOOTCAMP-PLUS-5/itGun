@@ -17,7 +17,7 @@ const LogList = ({
     <div className="relative flex flex-col gap-[9px] overflow-hidden h-full">
       <div className="sticky top-0 px-2">
         <S1>
-          {selectedDate ? dateToYmdSlash(selectedDate) : "이달의 운동 기록"}
+          {selectedDate ? `${dateToYmdSlash(selectedDate)}의 운동기록` : "이달의 운동 기록"}
         </S1>
       </div>
       <div className="flex-1 overflow-auto scrollbar-none">
