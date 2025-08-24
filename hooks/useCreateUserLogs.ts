@@ -20,7 +20,6 @@ export const useCreateUserLogs = () => {
           variant: "success",
           position: "top",
         })
-        setTimeout(() => {}, 1500)
       } else {
         router.push("/")
         showToast({
@@ -28,7 +27,6 @@ export const useCreateUserLogs = () => {
           variant: "success",
           position: "top",
         })
-        setTimeout(() => {}, 1500)
       }
     },
     onError: (error) => {

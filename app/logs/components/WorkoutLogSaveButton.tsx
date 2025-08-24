@@ -1,3 +1,5 @@
+import LoadingCharacter from "@/app/components/loading/LoadingCharacter"
+import LoadingText from "@/app/components/loading/LoadingText"
 import { Button } from "@/ds/components/atoms/button/Button"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
@@ -56,6 +58,13 @@ const WorkoutLogSaveButton = ({
     validateForm()
   }, [calIconType, date, totalDuration, formData])
 
+  if (isPending)
+    return (
+      <div className="bg-white-200 fixed top-0 left-0 flex h-full w-full flex-col items-center justify-center">
+        <LoadingCharacter />
+        <LoadingText text="저장 중..." />
+      </div>
+    )
   return (
     <div className="-mx-3 mt-auto">
       <Button
@@ -68,7 +77,7 @@ const WorkoutLogSaveButton = ({
             : "primary"
         }
       >
-        <B1 fontWeight="bold" className="text-white-200 mr-3">
+        <B1 fontWeight="bold" className="!text-white-200 mr-3">
           {isPending ? "저장 중..." : "저장"}
         </B1>
         <Icon name="save" color="white-200" size={24} />
