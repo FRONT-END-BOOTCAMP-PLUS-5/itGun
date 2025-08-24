@@ -1,3 +1,4 @@
+
 import CategoryFilter from "./components/CategoryFilter"
 import ExercisesLists from "./components/ExerciseList"
 import SearchInput from "./components/SearchInput"

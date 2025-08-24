@@ -3,7 +3,7 @@ import { H1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 
-const LoadingText = () => {
+const LoadingText = ({ text }: { text: string }) => {
   gsap.registerPlugin(useGSAP)
   useGSAP(() => {
     const timeline = gsap.timeline({ repeat: -1 })
@@ -23,7 +23,7 @@ const LoadingText = () => {
 
   return (
     <div className="flex">
-      <H1>Loading</H1>
+      <H1>{text}</H1>
       <H1 id="dot-0" className="opacity-0">
         .
       </H1>

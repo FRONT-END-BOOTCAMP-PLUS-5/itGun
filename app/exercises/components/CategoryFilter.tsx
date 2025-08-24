@@ -1,3 +1,4 @@
+
 import { BODY_PART_MAPPINGS, EQUIPMENT_MAPPINGS } from "./constants"
 import FilterButton from "./FilterButton"
 
