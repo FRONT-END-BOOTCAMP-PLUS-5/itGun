@@ -1,11 +1,10 @@
-
 "use client"
 
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
 const SearchInput = () => {
   const searchParams = useSearchParams()
@@ -16,18 +15,20 @@ const SearchInput = () => {
   const [searchValue, setSearchValue] = useState(q)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
+  const updateSearchParams = (value: string) => {
+    const currentParams = new URLSearchParams(searchParams)
+    if (value) currentParams.set("q", value)
+    else currentParams.delete("q")
+    router.replace(`/${mode}?${currentParams.toString()}`)
+  }
+
   const debouncedSearch = (value: string) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
 
     timeoutRef.current = setTimeout(() => {
-      const currentParams = new URLSearchParams(searchParams)
-
-      if (value) currentParams.set("q", value)
-      else currentParams.delete("q")
-
-      router.replace(`/${mode}?${currentParams.toString()}`)
+      updateSearchParams(value)
     }, 500)
   }
 
@@ -42,6 +43,11 @@ const SearchInput = () => {
     router.replace(`/${mode}`)
   }
 
+  const handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    updateSearchParams(searchValue)
+  }
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -49,7 +55,7 @@ const SearchInput = () => {
   }, [])
 
   return (
-    <form className="relative">
+    <form onSubmit={handleFormSubmit} className="relative">
       <Input
         value={searchValue}
         onChange={handleSearchChange}
