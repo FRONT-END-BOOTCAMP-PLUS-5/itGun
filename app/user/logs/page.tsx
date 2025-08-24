@@ -53,7 +53,7 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="w-full flex flex-col gap-[20px] pb-[30px] h-[calc(100dvh-100px)]">
+    <div className="w-full flex flex-col pb-[30px] h-[calc(100dvh-100px)]">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
