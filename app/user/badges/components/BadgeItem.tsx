@@ -1,18 +1,9 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { BadgeItemProps } from "./BadgeItem.type"
+import { colors } from "@/static/colors"
 
 const BadgeItem: React.FC<BadgeItemProps> = ({ index, badge, userBadge }) => {
-  const colors = [
-    "#FFF6E3",
-    "#BFECFF",
-    "#FFCCEA",
-    "#CDC1FF",
-    "#E8F5E8",
-    "#FFE4CC",
-    "#F0E6FF",
-    "#FFF2E6",
-  ]
   return (
     <div className="flex flex-col items-center justify-start gap-1">
       <Icon

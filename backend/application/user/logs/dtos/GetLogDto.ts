@@ -17,5 +17,5 @@ export interface LogDto {
   gaugeChanges: Record<BodyPartsGroup, number>
 
   // Relations
-  workouts: WorkoutDto[]
+  workouts?: WorkoutDto[]
 }
