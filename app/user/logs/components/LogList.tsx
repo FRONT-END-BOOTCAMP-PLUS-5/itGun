@@ -4,9 +4,11 @@ import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { dateToYmdSlash } from "@/utils/dateToYmdSlash"
 import { LogListProps } from "@/app/user/logs/types"
 import React from "react"
-import LogItem from "./LogItem"
+import LogItem from "@/app/user/logs/components/LogItem"
+import Loading from "@/app/loading"
 
 const LogList = ({
+  isFetching,
   logsToDisplay,
   selectedDate,
   calTypeMaps,
@@ -19,7 +21,9 @@ const LogList = ({
         </S1>
       </div>
       <div className="overflow-auto scrollbar-none">
-        {logsToDisplay.map((log) => (
+        {isFetching 
+        ? <Loading /> 
+        : logsToDisplay.map((log) => (
           <LogItem
             key={log.id}
             log={log}
