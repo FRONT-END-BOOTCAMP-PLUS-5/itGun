@@ -53,8 +53,8 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="size-full">
-      <div className="mb-[20px] flex-grow-1">
+    <div className="w-full flex flex-col gap-[20px] pb-[30px] h-[calc(100dvh-100px)]">
+      <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
           calMonth={calMonth}
@@ -68,12 +68,14 @@ const UserLogsPage = () => {
           onIconClick={handleIconClick}
         />
       </div>
-      <LogList
-        isFetching={isFetching}
-        logsToDisplay={logsToDisplay}
-        selectedDate={selectedDate}
-        calTypeMaps={calTypeMaps}
-      />
+      <div className="flex-1 min-h-0">
+        <LogList
+          isFetching={isFetching}
+          logsToDisplay={logsToDisplay}
+          selectedDate={selectedDate}
+          calTypeMaps={calTypeMaps}
+        />
+      </div>
     </div>
   )
 }
