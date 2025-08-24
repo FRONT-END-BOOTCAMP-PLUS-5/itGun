@@ -10,11 +10,12 @@ import { usePostUserInfo } from "@/hooks/usePostUserInfo"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useToastStore } from "@/hooks/useToastStore"
 import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
-import { getTestSession, getTestUserInfo, isTestMode } from "@/utils/testAuth"
 
-interface ProfileEditProps {
-  onBack: () => void
-}
+import type {
+  ProfileEditProps,
+  GenderOption,
+  AgeOption,
+} from "./types/ProfileEdit.types"
 
 const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const [showWithdrawDialog, setShowWithdrawDialog] = useState(false)
@@ -29,14 +30,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const postUserInfoMutation = usePostUserInfo()
   const { showToast } = useToastStore()
 
-  // 테스트 모드 상태 확인
-  const testMode = isTestMode()
-  const testSession = testMode ? getTestSession() : null
-  const testUserInfo = testMode ? getTestUserInfo() : null
-
-  const userId =
-    (testMode ? testSession?.user?.id : session?.user?.id) ||
-    (testMode ? testSession?.user?.email : session?.user?.email)
+  const userId = session?.user?.id || session?.user?.email
 
   const { data: userInfo, error } = useGetUserInfo(userId || "")
 
@@ -51,21 +45,13 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     }
   }, [userInfo])
 
-  // 세션 상태 디버깅
-  console.log("ProfileEdit - 테스트 모드:", testMode)
-  console.log("ProfileEdit - 세션 상태:", status)
-  console.log("ProfileEdit - 세션 데이터:", session)
-  console.log("ProfileEdit - 테스트 세션:", testSession)
-  console.log("ProfileEdit - 사용자 정보:", userInfo)
-  console.log("ProfileEdit - 테스트 사용자 정보:", testUserInfo)
-
   // 드롭다운 옵션 정의
-  const genderOptions = [
+  const genderOptions: GenderOption[] = [
     { label: "남", value: "male" },
     { label: "여", value: "female" },
   ]
 
-  const ageOptions = [
+  const ageOptions: AgeOption[] = [
     { label: "10대", value: "10s" },
     { label: "20대", value: "20s" },
     { label: "30대", value: "30s" },
@@ -131,10 +117,8 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
       // 세션에서 사용자 ID 가져오기
       const currentUserId = userId
-      console.log("저장할 사용자 ID:", currentUserId)
 
       if (!currentUserId) {
-        console.log("사용자 ID를 찾을 수 없음")
         showToast({
           message: "사용자 정보를 찾을 수 없습니다",
           variant: "error",
@@ -153,8 +137,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         age: age,
         gender: gender,
       }
-
-      console.log("저장할 데이터:", userData)
 
       // React Query mutation을 사용하여 API 호출
       await postUserInfoMutation.mutateAsync(userData)
@@ -183,20 +165,15 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   }
 
   const handleWithdrawClick = () => {
-    console.log("탈퇴하기 버튼 클릭됨")
     setShowWithdrawDialog(true)
-    console.log("showWithdrawDialog 상태:", true)
   }
 
   const handleWithdrawConfirm = async () => {
     try {
-      console.log("탈퇴 확인 - API 호출 시작")
-
       // 세션에서 사용자 ID 가져오기
       const currentUserId = userId
 
       if (!currentUserId) {
-        console.log("사용자 ID를 찾을 수 없습니다")
         setShowWithdrawDialog(false)
         showToast({
           message: "사용자 정보를 찾을 수 없습니다",
@@ -205,8 +182,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         })
         return
       }
-
-      console.log("탈퇴 API 호출 - 사용자 ID:", currentUserId)
 
       const response = await fetch("/api/user/info", {
         method: "DELETE",
@@ -218,7 +193,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
       if (response.ok) {
         // 탈퇴 성공
-        console.log("탈퇴 성공")
         setShowWithdrawDialog(false)
         showToast({
           message: "탈퇴가 완료되었습니다",
@@ -233,7 +207,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         }, 2000)
       } else {
         // 탈퇴 실패
-        console.log("탈퇴 처리 실패:", response.status)
         setShowWithdrawDialog(false)
         showToast({
           message: "탈퇴 처리 중 오류가 발생했습니다",
@@ -242,7 +215,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         })
       }
     } catch (error) {
-      console.log("탈퇴 API 호출 중 오류:", error)
       setShowWithdrawDialog(false)
       showToast({
         message: "네트워크 오류가 발생했습니다",
@@ -286,59 +258,64 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
       {/* 사용자 정보 입력 필드 */}
       <div className="mx-auto max-w-md p-6">
         <div className="space-y-8">
-          {/* 닉네임 필드 */}
-          <div className="space-y-2">
-            <Input
-              onChange={(e) => setNickname(e.target.value)}
-              size="lg"
-              isFullWidth={true}
-            />
-            {nickname && nickname.length >= 2 && (
-              <div className="flex items-center space-x-2 text-sm text-green-600">
-                <span>✓</span>
-                <span>2글자 이상</span>
+          {/* 입력 필드 및 드롭다운 */}
+          <div className="space-y-10">
+            <div>
+              {/* 닉네임 필드 */}
+              <div className="space-y-2">
+                <Input
+                  onChange={(e) => setNickname(e.target.value)}
+                  size="lg"
+                  isFullWidth={true}
+                />
+                {nickname && nickname.length >= 2 && (
+                  <div className="flex items-center space-x-2 text-sm text-green-600">
+                    <span>✓</span>
+                    <span>2글자 이상</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
 
-          {/* 키 필드 */}
-          <div className="space-y-2">
-            <Input
-              onChange={(e) => setHeight(e.target.value)}
-              type="number"
-              size="lg"
-              isFullWidth={true}
-            />
-          </div>
+            {/* 키 필드 */}
+            <div className="space-y-2">
+              <Input
+                onChange={(e) => setHeight(e.target.value)}
+                type="number"
+                size="lg"
+                isFullWidth={true}
+              />
+            </div>
 
-          {/* 몸무게 필드 */}
-          <div className="space-y-2">
-            <Input
-              onChange={(e) => setWeight(e.target.value)}
-              type="number"
-              size="lg"
-              isFullWidth={true}
-            />
-          </div>
+            {/* 몸무게 필드 */}
+            <div className="space-y-2">
+              <Input
+                onChange={(e) => setWeight(e.target.value)}
+                type="number"
+                size="lg"
+                isFullWidth={true}
+              />
+            </div>
 
-          {/* 나이 필드 */}
-          <div className="space-y-2">
-            <Dropdown
-              options={ageOptions}
-              value={age}
-              onChange={(value) => setAge(value.toString())}
-              size="lg"
-            />
-          </div>
+            {/* 나이 필드 */}
+            <div className="space-y-2">
+              <Dropdown
+                options={ageOptions}
+                value={age}
+                onChange={(value) => setAge(String(value))}
+                placeholder="연령대 선택"
+                size="lg"
+              />
+            </div>
 
-          {/* 성별 필드 */}
-          <div className="space-y-2">
-            <Dropdown
-              options={genderOptions}
-              value={gender}
-              onChange={(value) => setGender(value.toString())}
-              size="lg"
-            />
+            {/* 성별 필드 */}
+            <div className="space-y-2">
+              <Dropdown
+                options={genderOptions}
+                value={gender}
+                onChange={(value) => setGender(value.toString())}
+              />
+            </div>
           </div>
         </div>
 

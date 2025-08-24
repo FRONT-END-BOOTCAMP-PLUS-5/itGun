@@ -2,14 +2,8 @@
 
 import React from "react"
 import Icon from "@/ds/components/atoms/icon/Icon"
-import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
-
-interface UserInfoHeaderProps {
-  onEditClick: () => void
-  showSettingIcon?: boolean
-  userInfo?: GetUserInfoResponse
-  isLoading: boolean
-}
+import { Button } from "@/ds/components/atoms/button/Button"
+import type { UserInfoHeaderProps } from "./types/UserInfoHeader.types"
 
 const UserInfoHeader: React.FC<UserInfoHeaderProps> = ({
   onEditClick,
@@ -25,18 +19,15 @@ const UserInfoHeader: React.FC<UserInfoHeaderProps> = ({
         <div className="flex items-center space-x-4">
           <div className="h-16 w-16 rounded-full bg-gray-300"></div>
           <span className="text-xl font-bold text-[var(--color-primary)]">
-            {isLoading ? "로딩 중..." : userInfo?.nickname || "사용자"}
+            {isLoading ? "로딩 중..." : userInfo?.nickname || "벌키"}
           </span>
         </div>
 
         {/* 톱니바퀴 아이콘 - 조건부 표시 */}
         {showSettingIcon && (
-          <button
-            className="flex items-center justify-center"
-            onClick={onEditClick}
-          >
+          <Button variant="ghost" size="xs" onClick={onEditClick}>
             <Icon name="setting" />
-          </button>
+          </Button>
         )}
       </div>
     </div>

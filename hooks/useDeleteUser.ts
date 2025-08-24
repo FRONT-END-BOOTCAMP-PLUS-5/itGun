@@ -6,7 +6,6 @@ export const useDeleteUser = () => {
     mutationFn: (data: DeleteUserRequest) => deleteUser(data),
     onSuccess: () => {
       // 성공 시 로그아웃 처리나 다른 정리 작업 수행
-      console.log("회원탈퇴가 완료되었습니다.")
     },
   })
 }

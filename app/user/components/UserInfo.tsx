@@ -1,6 +1,7 @@
+import React from "react"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
-import UserInfoButton from "./UserInfoButton"
+import { Button } from "@/ds/components/atoms/button/Button"
 import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
 
 interface UserInfoProps {
@@ -9,16 +10,15 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
   // 예시 데이터 - 실제로는 props로 받거나 상태로 관리
-  const ageOptions = [
-    { label: "10-25세", value: "10-25" },
-    { label: "26-40세", value: "26-40" },
-    { label: "41-55세", value: "41-55" },
-    { label: "56세 이상", value: "56+" },
-  ]
+  const ageOptions = Array.from({ length: 93 }, (_, i) => ({
+    label: `${i + 8}세`,
+    value: String(i + 8),
+  }))
 
-  const genderOptions = [
-    { label: "남", value: "male" },
-    { label: "여", value: "female" },
+  const options = [
+    { label: "남자", value: "male" },
+    { label: "여자", value: "female" },
+    { label: "선택안함", value: "none" },
   ]
 
   return (
@@ -53,7 +53,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
       />
 
       <Dropdown
-        options={genderOptions}
+        options={options}
         placeholder="성별을 선택해주세요"
         size="lg"
         value={userInfo?.gender || ""}
@@ -61,7 +61,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
 
       {/* 저장하기 버튼과의 간격 208px */}
       <div className="flex justify-center pt-[208px]">
-        <UserInfoButton />
+        <Button variant="primary" size="lg" isFullWidth={false}>
+          저장하기
+        </Button>
       </div>
     </div>
   )
