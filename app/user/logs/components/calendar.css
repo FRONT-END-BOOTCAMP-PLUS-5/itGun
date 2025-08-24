@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-.fc-col-header {
-  @apply min-h-[40px];
-}
-
 .fc-col-header-cell {
   @apply text-[var(--color-secondary)] text-[15px] bg-[var(--color-white-200)];
 }
@@ -50,10 +46,6 @@
 
 .fc-daygrid-dot-event {
   @apply p-0;
-}
-
-.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-  @apply min-h-[40px];
 }
 
 a.fc-event:hover {
