@@ -34,27 +34,41 @@ const UserLogsPage = () => {
 
   const handleIconClick = (logs: Log[]) => {
     setLogsToDisplay(logs)
-    setSelectedDate(logs[0].logDate.toISOString())
+    setSelectedDate(new Date(logs[0].logDate).toISOString())
   }
 
-  const calTypeMaps = ( calType: string ): { 
-    calTypeKo: string 
-    iconName: string 
-    iconColor: string 
+  const calTypeMaps = (
+    calType: string
+  ): {
+    calTypeKo: string
+    iconName: string
+    iconColor: string
   } => {
     switch (calType) {
       case "upper":
-        return { calTypeKo: "상체", iconName: "arm", iconColor: "secondary-yellow" }
+        return {
+          calTypeKo: "상체",
+          iconName: "arm",
+          iconColor: "secondary-purple",
+        }
       case "lower":
-        return { calTypeKo: "하체", iconName: "leg", iconColor: "secondary-blue" }
+        return {
+          calTypeKo: "하체",
+          iconName: "leg",
+          iconColor: "secondary-blue",
+        }
       default:
-        return { calTypeKo: "유산소", iconName: "hearts", iconColor: "secondary-pink" }
+        return {
+          calTypeKo: "유산소",
+          iconName: "hearts",
+          iconColor: "secondary-pink",
+        }
     }
   }
 
   return (
-    <div className="size-full">
-      <div className="mb-[20px] flex-grow-1">
+    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
+      <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
           calMonth={calMonth}
@@ -68,12 +82,14 @@ const UserLogsPage = () => {
           onIconClick={handleIconClick}
         />
       </div>
-      <LogList
-        isFetching={isFetching}
-        logsToDisplay={logsToDisplay}
-        selectedDate={selectedDate}
-        calTypeMaps={calTypeMaps}
-      />
+      <div className="min-h-0 flex-1">
+        <LogList
+          isFetching={isFetching}
+          logsToDisplay={logsToDisplay}
+          selectedDate={selectedDate}
+          calTypeMaps={calTypeMaps}
+        />
+      </div>
     </div>
   )
 }

@@ -11,13 +11,13 @@ const IconTypes = [
     type: "cardio",
     icon: "hearts",
     label: "유산소",
-    color: "error",
+    color: "secondary-pink",
   },
   {
     type: "upper",
     icon: "arm",
     label: "상체",
-    color: "success",
+    color: "secondary-purple",
   },
   {
     type: "lower",

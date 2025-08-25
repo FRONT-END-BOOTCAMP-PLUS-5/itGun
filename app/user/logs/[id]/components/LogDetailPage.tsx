@@ -15,7 +15,7 @@ const LogDetailPage = ({ id }: LogDetailProps) => {
   if (isLoading || !log) return <C2>💪 이 로그에는 아무 기록도 없어요.</C2>
 
   return (
-    <div className="flex flex-col items-center gap-5">
+    <div className="flex flex-col items-center gap-5 pb-7.5">
       <LogSummaryHeader
         id={id}
         date={log.logDate}
