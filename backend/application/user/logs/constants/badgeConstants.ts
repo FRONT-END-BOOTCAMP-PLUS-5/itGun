@@ -1,15 +1,15 @@
 export const BADGE_IDS = {
-  FIRST_WORKOUT: 1,       // 첫 운동 뱃지
-  CONSECUTIVE_7_DAYS: 2,  // 연속 7일 운동 뱃지
-  WEEKLY_3_DAYS: 3,       // 일주일 3일 운동 뱃지
-  BENCH_PRESS_RECORD: 4,  // 벤치프레스 신기록 뱃지
-  SQUAT_RECORD: 5,        // 스쿼트 신기록 뱃지
-  DEADLIFT_RECORD: 6,     // 데드리프트 신기록 뱃지
-  RUNNING_RECORD: 7,      // 달리기 신기록 뱃지
-  BIG_THREE_RECORD: 8,    // 3대 운동 합계 달성 뱃지
+  FIRST_WORKOUT: 1, // 첫 운동 뱃지
+  CONSECUTIVE_7_DAYS: 2, // 연속 7일 운동 뱃지
+  WEEKLY_3_DAYS: 3, // 일주일 3일 운동 뱃지
+  BENCH_PRESS_RECORD: 4, // 벤치프레스 신기록 뱃지
+  DEADLIFT_RECORD: 5, // 데드리프트 신기록 뱃지
+  SQUAT_RECORD: 6, // 스쿼트 신기록 뱃지
+  BIG_THREE_RECORD: 7, // 3대 운동 합계 달성 뱃지
+  RUNNING_RECORD: 8, // 달리기 신기록 뱃지
 } as const
 
-export type BadgeId = typeof BADGE_IDS[keyof typeof BADGE_IDS]
+export type BadgeId = (typeof BADGE_IDS)[keyof typeof BADGE_IDS]
 
 // 신기록 뱃지 그룹
 export const RECORD_BADGE_IDS = [

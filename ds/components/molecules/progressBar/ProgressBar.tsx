@@ -32,7 +32,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const combinedClassName = getCombinedClassName()
 
   return (
-    <div className="w-full bg-white">
+    <div className="bg-white-200 w-full">
       {/* 바 본체 */}
       <div className="flex w-full items-center gap-2 select-none">
         <S1>[</S1>
