@@ -7,6 +7,16 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
 
+// 제네릭을 사용한 Gender 처리 함수
+function processGender<T extends string>(
+  gender: T
+): T extends "male" | "female" | "none" ? T : "none" {
+  if (gender === "male" || gender === "female" || gender === "none") {
+    return gender as any
+  }
+  return "none" as any
+}
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
@@ -58,12 +68,7 @@ export async function PUT(request: NextRequest) {
     const ageNumber = user.age != null ? Number(user.age) : undefined
     const genderLower =
       typeof user.gender === "string" ? user.gender.toLowerCase() : undefined
-    const genderEnum =
-      genderLower === "male"
-        ? ("male" as any)
-        : genderLower === "female"
-          ? ("female" as any)
-          : ("none" as any)
+    const genderEnum = processGender(genderLower || "none")
 
     const dto = new UpdateUserInfoDto(
       sessionUserId,
