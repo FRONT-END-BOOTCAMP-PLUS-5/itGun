@@ -29,7 +29,7 @@ const ExerciseItem = ({
         {exercise.name}
       </C2>
       <C2 className="col-start-2 row-start-2 self-start">
-        {exercise.bodyParts.map((part) => part).join(" ")}
+        {exercise.bodyPartsKo.map((part) => part).join(" ")}
       </C2>
     </li>
   )
