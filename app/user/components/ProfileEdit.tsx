@@ -12,11 +12,7 @@ import { useDialogStore } from "@/hooks/useDialogStore"
 import DialogContainer from "@/app/components/DialogContainer"
 import { useDeleteUser } from "@/hooks/useDeleteUser"
 
-import type {
-  ProfileEditProps,
-  GenderOption,
-  AgeOption,
-} from "./types/ProfileEdit.types"
+import type { ProfileEditProps, AgeOption } from "./types/ProfileEdit.types"
 
 const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const [isSaving, setIsSaving] = useState(false)
@@ -167,7 +163,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   ])
 
   // 드롭다운 옵션 정의
-  const genderOptions: GenderOption[] = [
+  const genderOptions = [
     { label: "남", value: "male" },
     { label: "여", value: "female" },
     { label: "선택안함", value: "none" },
