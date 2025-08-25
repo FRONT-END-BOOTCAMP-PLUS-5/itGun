@@ -77,25 +77,43 @@ const AddWorkoutForm = ({
     index: number
     setIndex: number
   }) => {
-    if (formData[index].data.length <= 1) {
-      return
-    }
-
     const newData = [...formData]
     const newWorkoutData = [...workoutData]
 
-    newData[index].data.splice(setIndex, 1)
+    if (formData[index].data.length <= 1) {
+      newData.splice(index, 1)
 
-    const currentSeq = newWorkoutData[index].seq
-    const targetSetCount = setIndex + 1
+      const currentSeq = index + 1
+      const workoutsToRemove = newWorkoutData.filter(
+        (workout) => workout.seq === currentSeq
+      )
 
-    const targetIndex = newWorkoutData.findIndex(
-      (workout) =>
-        workout.seq === currentSeq && workout.setCount === targetSetCount
-    )
+      workoutsToRemove.forEach((workout) => {
+        const index = newWorkoutData.findIndex((w) => w === workout)
+        if (index !== -1) newWorkoutData.splice(index, 1)
+      })
 
-    if (targetIndex !== -1) {
-      newWorkoutData.splice(targetIndex, 1)
+      newData.forEach((item, idx) => {
+        item.id = idx + 1
+      })
+
+      newWorkoutData.forEach((workout, idx) => {
+        workout.seq = idx + 1
+      })
+    } else {
+      newData[index].data.splice(setIndex, 1)
+
+      const currentSeq = newWorkoutData[index].seq
+      const targetSetCount = setIndex + 1
+
+      const targetIndex = newWorkoutData.findIndex(
+        (workout) =>
+          workout.seq === currentSeq && workout.setCount === targetSetCount
+      )
+
+      if (targetIndex !== -1) {
+        newWorkoutData.splice(targetIndex, 1)
+      }
     }
 
     setFormData(newData)
@@ -152,6 +170,7 @@ const AddWorkoutForm = ({
     },
     [exerciseData]
   )
+
   return (
     <section className="flex flex-col items-center justify-center gap-7">
       {formData?.map((item, index) => (

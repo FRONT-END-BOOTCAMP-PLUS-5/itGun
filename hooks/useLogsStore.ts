@@ -11,6 +11,7 @@ interface LogsStore extends LogsState {
   setOpen: (open: boolean) => void
   setMode: (mode: "logs" | "exercises") => void
   setData: (data: object) => void
+  setInit: () => void
 }
 
 const initialState: LogsState = {
@@ -24,4 +25,5 @@ export const useLogsStore = create<LogsStore>((set) => ({
   setOpen: (open) => set({ open }),
   setMode: (mode) => set({ mode }),
   setData: (data) => set({ exerciseData: data }),
+  setInit: () => set(initialState),
 }))
