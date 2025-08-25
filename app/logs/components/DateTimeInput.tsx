@@ -25,7 +25,8 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Icon name="calendar" size={24} />
         <Input
           size="sm"
-          className="!w-24 text-center"
+          inputMode="numeric"
+          className="!w-24 text-center [&_input]:!scale-75 [&_input]:!text-base"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           onBlur={() => setDate((prev) => dayjs(prev).format("YYYY.MM.DD"))}
@@ -38,7 +39,8 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Input
           size="sm"
           type="number"
-          className="!w-6 text-center"
+          inputMode="numeric"
+          className="!w-6 text-center [&_input]:!scale-75 [&_input]:!text-base"
           onChange={handleChange}
           placeholder="0"
         />
