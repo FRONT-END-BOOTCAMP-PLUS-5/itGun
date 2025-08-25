@@ -1,7 +1,7 @@
 "use client"
 import { H1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSession } from "next-auth/react"
-import CharacterDownloadButton from "./CharacterDownloadButton"
+import CharacterDownloadButton from "@/app/components/CharacterDownloadButton"
 
 const MainUserTitle = () => {
   const { data: session } = useSession()
