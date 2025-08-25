@@ -137,9 +137,11 @@ const Workout: React.FC<WorkoutProps> = ({
 
     if (isEditable) {
       return (
-        <div className="flex items-center justify-center">
+        <div
+          className="flex items-center justify-center"
+          key={`${field}-${index}`}
+        >
           <Input
-            key={`${field}-${index}`}
             size="xs"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
             className="text-center"

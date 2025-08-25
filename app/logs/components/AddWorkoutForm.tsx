@@ -124,6 +124,7 @@ const AddWorkoutForm = ({
     setFormData((prev) => {
       const newData = [...prev]
       newData[index].type = newType as WorkoutItem["type"]
+      newData[index].data = [{ setCount: 1 }]
       return newData
     })
   }
@@ -150,7 +151,7 @@ const AddWorkoutForm = ({
         setWorkoutData((prev) => [
           ...prev,
           {
-            seq: prev.length + 1,
+            seq: prev.length > 0 ? Math.max(...prev.map((w) => w.seq)) + 1 : 1,
             exerciseName: (exerciseData as Exercise).name,
             setCount: 1,
             exerciseInfo: {
