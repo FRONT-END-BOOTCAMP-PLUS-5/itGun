@@ -1,7 +1,7 @@
 import { api } from "@/utils/api/apiClient"
 
 export interface DeleteUserRequest {
-  userId: string
+  // userId는 서버에서 getServerSession으로 가져옴
 }
 
 export interface DeleteUserResponse {
@@ -12,9 +12,7 @@ export interface DeleteUserResponse {
 export const deleteUser = async (
   data: DeleteUserRequest
 ): Promise<DeleteUserResponse> => {
-  // DELETE 요청에 데이터를 전송하기 위해 URL 파라미터로 전달
-  const response = await api.delete<DeleteUserResponse>(
-    `/api/user/info?userId=${data.userId}`
-  )
+  // userId는 서버에서 getServerSession으로 가져옴
+  const response = await api.delete<DeleteUserResponse>("/user/info")
   return response
 }

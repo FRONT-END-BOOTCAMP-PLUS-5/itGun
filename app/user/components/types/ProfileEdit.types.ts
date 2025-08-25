@@ -8,9 +8,9 @@ export interface DropdownOption {
 }
 
 export interface GenderOption extends DropdownOption {
-  value: "male" | "female"
+  value: "male" | "female" | "none"
 }
 
 export interface AgeOption extends DropdownOption {
-  value: "10s" | "20s" | "30s" | "40s"
+  value: string
 }

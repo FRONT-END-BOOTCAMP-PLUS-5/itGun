@@ -1,19 +1,20 @@
 import { api } from "@/utils/api/apiClient"
 
 export interface GetUserInfoResponse {
-  id: string
-  nickname: string
+  userId: string
+  email: string
+  nickName: string
+  age?: number
+  gender: string
   height: number
   weight: number
-  age: string
-  gender: string
+  characterId: number
+  characterColor: string
 }
 
 export const getUserInfo = async (
-  userId: string
+  userId?: string
 ): Promise<GetUserInfoResponse> => {
-  const response = await api.post<GetUserInfoResponse>(`/api/user/info`, {
-    userId,
-  })
+  const response = await api.get<GetUserInfoResponse>(`/user/info`)
   return response
 }

@@ -80,7 +80,7 @@ const WorkoutLogSaveButton = ({
         <B1 fontWeight="bold" className="!text-white-200 mr-3">
           {isPending ? "저장 중..." : "저장"}
         </B1>
-        <Icon name="plus" color="white-200" size={24} />
+        <Icon name="save" color="white-200" size={24} />
       </Button>
     </div>
   )

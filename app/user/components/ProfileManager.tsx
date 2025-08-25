@@ -16,6 +16,14 @@ const ProfileManager = () => {
 
   const { data: userInfo, isLoading, error } = useGetUserInfo(userId || "")
 
+  console.log("🔍 ProfileManager 상태:", {
+    userId,
+    userInfo,
+    isLoading,
+    error,
+    session: !!session?.user,
+  })
+
   const handleEditClick = () => {
     setIsEditMode(true)
   }
@@ -26,6 +34,8 @@ const ProfileManager = () => {
 
   // userInfo가 GetUserInfoResponse 타입인지 확인하고 안전하게 처리
   const currentUserInfo: GetUserInfoResponse = userInfo as GetUserInfoResponse
+
+  console.log("🔍 currentUserInfo:", currentUserInfo)
 
   // 그 외의 경우는 항상 메인 화면 표시
   return (
