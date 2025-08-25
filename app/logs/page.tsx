@@ -1,7 +1,7 @@
 "use client"
 
 import { useLogsStore } from "@/hooks/useLogsStore"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AddWorkoutForm from "./components/AddWorkoutForm"
 import DateTimeInput from "./components/DateTimeInput"
 import ExerciseListModal from "./components/ExerciseListModal"
@@ -12,13 +12,20 @@ import { CalIconType } from "@/services/user/logs/createUserLogs"
 import dayjs from "dayjs"
 
 const LogsPage = () => {
-  const { open, setOpen } = useLogsStore()
+  const { open, setOpen, setInit } = useLogsStore()
 
   const [calIconType, setCalIconType] = useState<CalIconType | null>(null)
   const [date, setDate] = useState(dayjs().format("YYYY.MM.DD"))
   const [totalDuration, setTotalDuration] = useState(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
   const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
+
+  useEffect(() => {
+    return () => {
+      setInit()
+    }
+  }, [])
+
   return (
     <main className="flex h-full w-full flex-col gap-7 pb-[10px]">
       <DateTimeInput
