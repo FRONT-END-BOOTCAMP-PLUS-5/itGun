@@ -6,15 +6,16 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
+import { Gender } from "@/backend/domain/entities/User"
 
 // 제네릭을 사용한 Gender 처리 함수
-function processGender<T extends string>(
-  gender: T
-): "male" | "female" | "none" {
+function processGender<T extends string>(gender: T): Gender {
   if (gender === "male" || gender === "female" || gender === "none") {
-    return gender as "male" | "female" | "none"
+    if (gender === "male") return Gender.MALE
+    if (gender === "female") return Gender.FEMALE
+    return Gender.NONE
   }
-  return "none"
+  return Gender.NONE
 }
 
 export async function GET() {
