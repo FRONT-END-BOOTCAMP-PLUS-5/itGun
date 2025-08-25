@@ -37,23 +37,37 @@ const UserLogsPage = () => {
     setSelectedDate(new Date(logs[0].logDate).toISOString())
   }
 
-  const calTypeMaps = ( calType: string ): { 
-    calTypeKo: string 
-    iconName: string 
-    iconColor: string 
+  const calTypeMaps = (
+    calType: string
+  ): {
+    calTypeKo: string
+    iconName: string
+    iconColor: string
   } => {
     switch (calType) {
       case "upper":
-        return { calTypeKo: "상체", iconName: "arm", iconColor: "secondary-yellow" }
+        return {
+          calTypeKo: "상체",
+          iconName: "arm",
+          iconColor: "secondary-purple",
+        }
       case "lower":
-        return { calTypeKo: "하체", iconName: "leg", iconColor: "secondary-blue" }
+        return {
+          calTypeKo: "하체",
+          iconName: "leg",
+          iconColor: "secondary-blue",
+        }
       default:
-        return { calTypeKo: "유산소", iconName: "hearts", iconColor: "secondary-pink" }
+        return {
+          calTypeKo: "유산소",
+          iconName: "hearts",
+          iconColor: "secondary-pink",
+        }
     }
   }
 
   return (
-    <div className="w-full flex flex-col pb-[30px] h-[calc(100dvh-100px)]">
+    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
@@ -68,7 +82,7 @@ const UserLogsPage = () => {
           onIconClick={handleIconClick}
         />
       </div>
-      <div className="flex-1 min-h-0">
+      <div className="min-h-0 flex-1">
         <LogList
           isFetching={isFetching}
           logsToDisplay={logsToDisplay}
