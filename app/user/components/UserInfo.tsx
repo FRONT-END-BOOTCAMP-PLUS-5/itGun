@@ -28,7 +28,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
         placeholder="이름을 입력해주세요"
         isFullWidth={true}
         size="lg"
-        defaultValue={userInfo?.nickname || ""}
+        defaultValue={userInfo?.nickName || ""}
       />
       {/* 신체 정보 */}
       <Input

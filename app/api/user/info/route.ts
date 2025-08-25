@@ -74,7 +74,7 @@ export async function PUT(request: NextRequest) {
     const dto = new UpdateUserInfoDto(
       sessionUserId,
       undefined, // password 미변경
-      user.nickname,
+      user.nickName,
       user.height,
       user.weight,
       ageNumber,

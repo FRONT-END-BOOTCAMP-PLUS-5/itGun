@@ -19,7 +19,7 @@ const UserInfoHeader: React.FC<UserInfoHeaderProps> = ({
         <div className="flex items-center space-x-4">
           <div className="h-16 w-16 rounded-full bg-gray-300"></div>
           <span className="text-xl font-bold text-[var(--color-primary)]">
-            {isLoading ? "로딩 중..." : userInfo?.nickname || "벌키"}
+            {isLoading ? "로딩 중..." : userInfo?.nickName || "벌키"}
           </span>
         </div>
 
