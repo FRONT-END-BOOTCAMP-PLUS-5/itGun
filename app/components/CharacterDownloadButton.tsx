@@ -23,7 +23,7 @@ const CharacterDownloadButton: React.FC<CharacterDownloadButtonProps> = ({
       downloadCurrentCharacter(fileName)
 
       showToast({
-        message: "캐릭터 이미지가 \n다운로드되었습니다!",
+        message: "캐릭터 이미지가 \n다운로드되었습니다!😎",
         variant: "success",
         position: "top",
         duration: 3000,
@@ -33,7 +33,7 @@ const CharacterDownloadButton: React.FC<CharacterDownloadButtonProps> = ({
         message:
           error instanceof Error
             ? error.message
-            : "다운로드 중 오류가 발생했습니다.",
+            : "다운로드 중 오류가 발생했습니다😥",
         variant: "error",
         position: "top",
       })
