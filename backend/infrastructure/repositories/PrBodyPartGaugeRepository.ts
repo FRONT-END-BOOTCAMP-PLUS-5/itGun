@@ -52,7 +52,7 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     const client = tx || prisma
     const gauge = await client.bodyPartGauge.findFirst({
       where: { userId },
-      orderBy: { earnedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     })
     return (gauge as BodyPartGauge) || null
   }
