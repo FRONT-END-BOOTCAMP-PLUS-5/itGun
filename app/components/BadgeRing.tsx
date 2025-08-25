@@ -25,7 +25,7 @@ const BadgeRing = ({}) => {
   }
 
   return (
-    <div className="absolute top-0 left-1/2 z-25 -translate-x-1/2">
+    <div className="absolute -top-3 left-1/2 z-25 -translate-x-1/2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="300"
