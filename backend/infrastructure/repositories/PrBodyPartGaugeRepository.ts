@@ -10,7 +10,10 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     return gauges.map(this.toDomain)
   }
 
-  async findById(id: number, tx?: TransactionClient): Promise<BodyPartGauge | null> {
+  async findById(
+    id: number,
+    tx?: TransactionClient
+  ): Promise<BodyPartGauge | null> {
     const client = tx || prisma
     const gauge = await client.bodyPartGauge.findUnique({
       where: { id },
@@ -18,7 +21,11 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     return gauge ? this.toDomain(gauge) : null
   }
 
-  async findByUserId(id: string, date?: Date, tx?: TransactionClient): Promise<BodyPartGauge | null> {
+  async findByUserId(
+    id: string,
+    date?: Date,
+    tx?: TransactionClient
+  ): Promise<BodyPartGauge | null> {
     const whereCondition: any = { userId: id }
 
     if (date) {
@@ -26,23 +33,34 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     }
 
     const client = tx || prisma
-    const userBodyPartGauge = await client.bodyPartGauge.findUnique({
+    const userBodyPartGauge = await client.bodyPartGauge.findFirst({
       where: whereCondition,
+      orderBy: {
+        earnedAt: "desc",
+      },
     })
 
-    return userBodyPartGauge as BodyPartGauge || null
+    console.log("userBodyPartGauge", userBodyPartGauge)
+
+    return (userBodyPartGauge as BodyPartGauge) || null
   }
 
-  async findLatestOneByUserId(userId: string, tx?: TransactionClient): Promise<BodyPartGauge | null> {
+  async findLatestOneByUserId(
+    userId: string,
+    tx?: TransactionClient
+  ): Promise<BodyPartGauge | null> {
     const client = tx || prisma
     const gauge = await client.bodyPartGauge.findFirst({
       where: { userId },
       orderBy: { earnedAt: "desc" },
     })
-    return gauge as BodyPartGauge || null
+    return (gauge as BodyPartGauge) || null
   }
 
-  async save(bodyPartGauge: BodyPartGauge, tx?: TransactionClient): Promise<BodyPartGauge> {
+  async save(
+    bodyPartGauge: BodyPartGauge,
+    tx?: TransactionClient
+  ): Promise<BodyPartGauge> {
     const client = tx || prisma
     const savedGauge = await client.bodyPartGauge.create({
       data: {
