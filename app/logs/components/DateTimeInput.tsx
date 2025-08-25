@@ -37,7 +37,7 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Icon name="clock" size={24} />
         <Input
           size="sm"
-          type="text"
+          type="number"
           className="!w-6 text-center"
           onChange={handleChange}
           placeholder="0"
