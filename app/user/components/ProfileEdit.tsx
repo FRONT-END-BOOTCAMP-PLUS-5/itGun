@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useSession } from "next-auth/react"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { Button } from "@/ds/components/atoms/button/Button"
@@ -24,6 +24,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
   const { data: session, status } = useSession()
   const postUserInfoMutation = usePostUserInfo()
+  const postUserInfoMutationRef = useRef(postUserInfoMutation)
   const { showToast } = useToastStore()
   const { showDialog } = useDialogStore()
   const deleteUserMutation = useDeleteUser({
@@ -41,7 +42,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         window.location.href = "/"
       }, 2000)
     },
-    onError: (error) => {
+    onError: () => {
       showToast({
         message: "탈퇴 처리 중 오류가 발생했습니다",
         variant: "error",
@@ -65,65 +66,42 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     }
   }, [session])
 
-  // 사용자 데이터 변경 여부를 확인하는 함수
-  const hasUserDataChanged = () => {
-    // 초기 로딩 시에는 저장하지 않음
-    if (!session?.user) {
-      return false
-    }
-
-    // 실제로 값이 변경되었는지 확인
-    const currentValues = {
-      nickname: nickname.trim(),
-      height: parseInt(height) || 0,
-      weight: parseInt(weight) || 0,
-      age: age,
-      gender: gender,
-    }
-
-    const originalValues = {
-      nickname: session.user.nickName || "",
-      height: session.user.height || 0,
-      weight: session.user.weight || 0,
-      age: session.user.age?.toString() || "",
-      gender: session.user.gender || "",
-    }
-
-    const hasChanged =
-      currentValues.nickname !== originalValues.nickname ||
-      currentValues.height !== originalValues.height ||
-      currentValues.weight !== originalValues.weight ||
-      currentValues.age !== originalValues.age ||
-      currentValues.gender !== originalValues.gender
-
-    console.log("🔍 데이터 변경 확인:", {
-      current: currentValues,
-      original: originalValues,
-      hasChanged,
-      nickname: {
-        current: currentValues.nickname,
-        original: originalValues.nickname,
-      },
-      height: {
-        current: currentValues.height,
-        original: originalValues.height,
-      },
-      weight: {
-        current: currentValues.weight,
-        original: originalValues.weight,
-      },
-      age: { current: currentValues.age, original: originalValues.age },
-      gender: {
-        current: currentValues.gender,
-        original: originalValues.gender,
-      },
-    })
-
-    return hasChanged
-  }
-
   // 사용자 데이터가 변경될 때 자동 저장
   useEffect(() => {
+    // 사용자 데이터 변경 여부를 확인하는 함수 (useEffect 내부로 이동)
+    const hasUserDataChanged = () => {
+      // 초기 로딩 시에는 저장하지 않음
+      if (!session?.user) {
+        return false
+      }
+
+      // 실제로 값이 변경되었는지 확인
+      const currentValues = {
+        nickname: nickname.trim(),
+        height: parseInt(height) || 0,
+        weight: parseInt(weight) || 0,
+        age: age,
+        gender: gender,
+      }
+
+      const originalValues = {
+        nickname: session.user.nickName || "",
+        height: session.user.height || 0,
+        weight: session.user.weight || 0,
+        age: session.user.age?.toString() || "",
+        gender: session.user.gender || "",
+      }
+
+      const hasChanged =
+        currentValues.nickname !== originalValues.nickname ||
+        currentValues.height !== originalValues.height ||
+        currentValues.weight !== originalValues.weight ||
+        currentValues.age !== originalValues.age ||
+        currentValues.gender !== originalValues.gender
+
+      return hasChanged
+    }
+
     console.log("🔄 useEffect 실행:", {
       session: !!session?.user,
       userId: !!userId,
@@ -149,18 +127,9 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
       console.log("🔄 자동 저장 실행:", userData)
 
       // 자동 저장 (에러 처리 없이)
-      postUserInfoMutation.mutate(userData)
+      postUserInfoMutationRef.current.mutate(userData)
     }
-  }, [
-    height,
-    weight,
-    age,
-    gender,
-    session?.user,
-    userId,
-    nickname,
-    // postUserInfoMutation 제거 - 무한 루프 방지
-  ])
+  }, [height, weight, age, gender, session?.user, userId, nickname])
 
   // 드롭다운 옵션 정의
   const genderOptions = [
