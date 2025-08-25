@@ -25,6 +25,7 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Icon name="calendar" size={24} />
         <Input
           size="sm"
+          inputMode="numeric"
           className="!w-24 text-center [&_input]:!scale-75 [&_input]:!text-base"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -38,6 +39,7 @@ const DateTimeInput = ({ date, setDate, setTotalDuration }: DateTypeProps) => {
         <Input
           size="sm"
           type="number"
+          inputMode="numeric"
           className="!w-6 text-center [&_input]:!scale-75 [&_input]:!text-base"
           onChange={handleChange}
           placeholder="0"
