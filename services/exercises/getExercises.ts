@@ -6,7 +6,9 @@ export interface Exercise {
   imageUrl: string
   videoUrl: string
   equipments: string[]
+  equipmentsKo: string[]
   bodyParts: string[]
+  bodyPartsKo: string[]
   exerciseType: string
   keywords: string[]
   overview: string

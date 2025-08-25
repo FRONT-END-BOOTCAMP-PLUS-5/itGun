@@ -62,7 +62,7 @@ const SearchInput = () => {
         value={searchValue}
         onChange={handleSearchChange}
         placeholder="운동 이름을 검색해주세요."
-        className="pr-7"
+        className="pr-7 [&_input]:!scale-75 [&_input]:!text-base"
         isFullWidth
       />
       <div className="absolute top-0 right-0" onClick={handleClearSearch}>
