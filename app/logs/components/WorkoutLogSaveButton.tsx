@@ -61,14 +61,13 @@ const WorkoutLogSaveButton = ({
     validateForm()
   }, [calIconType, date, totalDuration, formData])
 
-  if (isPending) {
+  if (isPending)
     return (
-      <div className="bg-white-200 fixed top-0 left-0 flex h-full w-full flex-col items-center justify-center">
+      <div className="fixed top-0 left-0 flex h-full w-full flex-col items-center justify-center">
         <LoadingCharacter />
         <LoadingText text="저장 중..." />
       </div>
     )
-  }
 
   return (
     <div className="-mx-3 mt-auto">
