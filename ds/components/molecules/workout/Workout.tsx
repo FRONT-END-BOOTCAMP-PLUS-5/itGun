@@ -144,7 +144,7 @@ const Workout: React.FC<WorkoutProps> = ({
           key={`${field}-${index}`}
         >
           <Input
-            size="md"
+            size="sm"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
             className="scale-[62.5%] text-center text-[16px]"
             inputMode="numeric"
