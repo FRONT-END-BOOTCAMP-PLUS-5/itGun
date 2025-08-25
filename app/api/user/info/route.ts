@@ -10,11 +10,11 @@ import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUs
 // 제네릭을 사용한 Gender 처리 함수
 function processGender<T extends string>(
   gender: T
-): T extends "male" | "female" | "none" ? T : "none" {
+): "male" | "female" | "none" {
   if (gender === "male" || gender === "female" || gender === "none") {
-    return gender as any
+    return gender as "male" | "female" | "none"
   }
-  return "none" as any
+  return "none"
 }
 
 export async function GET() {
