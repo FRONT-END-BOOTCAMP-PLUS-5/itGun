@@ -24,7 +24,7 @@ const mapExerciseBodyPartsToProject = (
   const mappedParts: BodyPartsGroup[] = []
 
   for (const part of exerciseBodyParts) {
-    const normalizedPart = part.toLowerCase().trim()
+    const normalizedPart = part.toUpperCase().trim()
     const projectParts = BODY_PART_MAPPING[normalizedPart]
 
     if (projectParts && projectParts.length > 0) {
