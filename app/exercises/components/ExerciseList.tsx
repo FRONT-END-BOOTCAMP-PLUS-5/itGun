@@ -66,7 +66,9 @@ const ExerciseList = () => {
         ))}
       </ul>
 
-      {isFetchingNextPage && <C2 className="py-4 text-center">Loading...</C2>}
+      {isFetchingNextPage && (
+        <C2 className="py-4 pb-[30px] text-center">Loading...</C2>
+      )}
     </section>
   )
 }
