@@ -280,12 +280,10 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
             {/* 나이 필드 */}
             <div className="space-y-2">
               <Dropdown
+                placeholder="나이"
                 options={ageOptions}
-                value={age}
-                onChange={(value) => {
-                  console.log("🎯 나이 선택됨:", value)
-                  setAge(Number(value))
-                }}
+                value={age.toString()}
+                onChange={(value) => setAge(Number(value))}
               />
             </div>
 
