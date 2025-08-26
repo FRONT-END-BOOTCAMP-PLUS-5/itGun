@@ -29,7 +29,7 @@ const LogItem = ({ log, calTypeMaps }: LogItemProps) => {
             </C2>
             <C1 className="justify-self-center">{logDate.getDate()}</C1>
           </div>
-          <div className="flex col-span-2 justify-between gap-4">
+          <div className="flex col-span-2 justify-between">
             <div className="justify-center flex items-center">
               <Icon
                 name={
