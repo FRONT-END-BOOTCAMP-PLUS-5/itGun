@@ -17,14 +17,6 @@ const ProfileManager = () => {
 
   const { data: userInfo, isLoading, error } = useGetUserInfo(userId || "")
 
-  console.log("🔍 ProfileManager 상태:", {
-    userId,
-    userInfo,
-    isLoading,
-    error,
-    session: !!session?.user,
-  })
-
   const handleEditClick = () => {
     setIsEditMode(true)
   }
@@ -57,8 +49,6 @@ const ProfileManager = () => {
     )
   }
 
-  console.log("🔍 currentUserInfo:", userInfo)
-
   // 그 외의 경우는 항상 메인 화면 표시
   return (
     <>
@@ -73,7 +63,7 @@ const ProfileManager = () => {
       {/* 메인 콘텐츠 */}
       {isEditMode ? (
         // 설정 아이콘 클릭 시: ProfileEdit 컴포넌트 표시
-        <ProfileEdit onBack={handleBackClick} />
+        <ProfileEdit />
       ) : (
         // 기본 모드: ProfileDisplay만 표시 (첫 화면)
         <ProfileDisplay userInfo={userInfo} />

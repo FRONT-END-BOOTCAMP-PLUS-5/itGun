@@ -1,6 +1,4 @@
-export interface ProfileEditProps {
-  onBack: () => void
-}
+export interface ProfileEditProps {}
 
 export interface DropdownOption {
   label: string

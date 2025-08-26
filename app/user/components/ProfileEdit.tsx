@@ -17,7 +17,7 @@ import { useDeleteUser } from "@/hooks/useDeleteUser"
 
 import type { ProfileEditProps } from "./types/ProfileEdit.types"
 
-const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
+const ProfileEdit: React.FC<ProfileEditProps> = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [nickname, setNickname] = useState("")
   const [height, setHeight] = useState("")
@@ -49,8 +49,8 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const postUserInfoMutation = usePostUserInfo()
   const postUserInfoMutationRef = useRef(postUserInfoMutation)
   const { showToast } = useToastStore()
-  const { showDialog } = useDialogStore()
 
+  const { showDialog } = useDialogStore()
   const userId = session?.user?.id || session?.user?.email
 
   // 사용자 정보를 직접 가져오기
@@ -59,7 +59,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   )
   const deleteUserMutation = useDeleteUser({
     onSuccess: () => {
-      // 탈퇴 성공
+      // 탈퇴 성공 시 토스트 메시지 표시
       showToast({
         message: "탈퇴가 완료되었습니다",
         variant: "success",
@@ -72,7 +72,9 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         router.push("/")
       }, 2000)
     },
-    onError: () => {
+    onError: (error: Error) => {
+      // 탈퇴 실패 시 에러 토스트 메시지 표시
+      console.error("탈퇴 처리 중 오류:", error)
       showToast({
         message: "탈퇴 처리 중 오류가 발생했습니다",
         variant: "error",
@@ -81,11 +83,23 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     },
   })
 
+  // 드롭다운 옵션 정의
+  const genderOptions = [
+    { label: "남자", value: "male" },
+    { label: "여자", value: "female" },
+    { label: "선택안함", value: "none" },
+  ]
+
+  // 나이 옵션 정의
+  const ageOptions = Array.from({ length: 93 }, (_, i) => ({
+    label: `${i + 8}세`,
+    value: String(i + 8),
+  }))
+
   // 사용자 정보를 직접 가져와서 기본값 설정
   useEffect(() => {
     if (userInfo) {
       // API에서 가져온 사용자 정보를 사용
-      console.log("🔍 API에서 가져온 사용자 정보:", userInfo)
       setNickname(userInfo.nickName || "")
       setHeight(userInfo.height?.toString() || "")
       setWeight(userInfo.weight?.toString() || "")
@@ -94,21 +108,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
       setGender(userInfo.gender || "")
     }
   }, [userInfo, postUserInfoMutation.isSuccess])
-
-  // 드롭다운 옵션 정의
-  const genderOptions = [
-    { label: "남", value: "male" },
-    { label: "여", value: "female" },
-    { label: "선택안함", value: "none" },
-  ]
-
-  // 나이 옵션 추가
-  const ageOptions = [
-    { label: "10대", value: 10 },
-    { label: "20대", value: 20 },
-    { label: "30대", value: 30 },
-    { label: "40대", value: 40 },
-  ]
 
   const handleSaveClick = async () => {
     try {
@@ -162,14 +161,6 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
         gender: gender,
       }
 
-      console.log("💾 저장할 사용자 데이터:", userData)
-      console.log("🔍 나이 값 상세:", {
-        age: age,
-        ageType: typeof age,
-        ageOptions: ageOptions,
-        selectedAge: ageOptions.find((option) => option.value === age),
-      })
-
       // React Query mutation을 사용하여 API 호출
       await postUserInfoMutation.mutateAsync(userData)
 
@@ -177,7 +168,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
       await update()
 
       // 저장 완료 후 바로 페이지 이동
-      onBack() // 저장 후 표시 모드로 돌아가기
+      router.back() // 저장 후 뒤로 가기
     } catch (error) {
       console.error("저장 API 호출 중 오류:", error)
       showToast({
@@ -302,13 +293,9 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
             <div className="space-y-2">
               <Dropdown
                 placeholder="나이"
-                options={Array.from({ length: 100 }, (_, i) => ({
-                  label: `${i + 1}세`,
-                  value: String(i + 1),
-                }))}
+                options={ageOptions}
                 value={age.toString()}
                 onChange={(value) => {
-                  console.log("🎯 나이 선택됨:", value)
                   setAge(Number(value))
                 }}
               />

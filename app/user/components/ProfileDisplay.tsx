@@ -6,13 +6,6 @@ interface ProfileDisplayProps {
 }
 
 const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ userInfo }) => {
-  console.log("🔍 ProfileDisplay userInfo:", userInfo)
-  console.log("🔍 ProfileDisplay userInfo 타입:", typeof userInfo)
-  console.log(
-    "🔍 ProfileDisplay userInfo 키:",
-    userInfo ? Object.keys(userInfo) : "null"
-  )
-
   return (
     <div className="mx-auto max-w-md space-y-10 p-6">
       <div className="space-y-10">
