@@ -8,6 +8,7 @@ import DialogContainer from "./components/DialogContainer"
 import NextAuthSessionProviders from "./providers/NextAuthSessionProviders"
 import ReactQueryProvider from "./providers/ReactQueryProvider"
 import ConditionHeader from "./components/ConditionHeader"
+import ModalContainer from "./components/ModalContainer"
 
 export const metadata: Metadata = {
   title: "ItGun | 잇근 - 운동기록 서비스",
@@ -40,6 +41,7 @@ export default async function RootLayout({
             <ReactQueryProvider>{children}</ReactQueryProvider>
             <ToastContainer />
             <DialogContainer />
+            <ModalContainer />
           </NextAuthSessionProviders>
         </div>
       </body>
