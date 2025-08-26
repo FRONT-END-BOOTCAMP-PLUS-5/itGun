@@ -122,7 +122,6 @@ export const moveByRingPath = <T>(array: T[]) => {
 
 export const bounce = <T>(array: T[]) => {
   array.forEach((item, index) => {
-    console.log(item)
     gsap
       .fromTo(
         `#${item}`,
