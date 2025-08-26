@@ -33,10 +33,31 @@ const ProfileManager = () => {
     setIsEditMode(false)
   }
 
-  // userInfo가 GetUserInfoResponse 타입인지 확인하고 안전하게 처리
-  const currentUserInfo: GetUserInfoResponse = userInfo as GetUserInfoResponse
+  // userInfo가 undefined일 수 있으므로 안전하게 처리
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-16 w-16 animate-pulse rounded-full bg-gray-300"></div>
+          <div className="text-lg text-gray-600">
+            사용자 정보를 불러오는 중...
+          </div>
+        </div>
+      </div>
+    )
+  }
 
-  console.log("🔍 currentUserInfo:", currentUserInfo)
+  if (error || !userInfo) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center text-red-600">
+          사용자 정보를 불러오는데 실패했습니다.
+        </div>
+      </div>
+    )
+  }
+
+  console.log("🔍 currentUserInfo:", userInfo)
 
   // 그 외의 경우는 항상 메인 화면 표시
   return (
@@ -45,7 +66,7 @@ const ProfileManager = () => {
       <UserInfoHeader
         onEditClick={handleEditClick}
         showSettingIcon={!isEditMode}
-        userInfo={currentUserInfo}
+        userInfo={userInfo}
         isLoading={false}
       />
 
@@ -55,7 +76,7 @@ const ProfileManager = () => {
         <ProfileEdit onBack={handleBackClick} />
       ) : (
         // 기본 모드: ProfileDisplay만 표시 (첫 화면)
-        <ProfileDisplay userInfo={currentUserInfo} />
+        <ProfileDisplay userInfo={userInfo} />
       )}
     </>
   )
