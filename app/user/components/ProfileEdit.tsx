@@ -304,9 +304,13 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
             {/* 성별 필드 */}
             <div className="space-y-2">
               <Dropdown
-                options={genderOptions}
-                value={gender}
-                onChange={(value) => setGender(value.toString())}
+                placeholder="나이"
+                options={Array.from({ length: 93 }, (_, i) => ({
+                  label: `${i + 8}세`,
+                  value: String(i + 8),
+                }))}
+                value={formData.age}
+                onChange={handleDropdownChange("age")}
               />
             </div>
           </div>
