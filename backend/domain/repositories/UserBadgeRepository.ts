@@ -10,7 +10,7 @@ export interface UserBadgeRepository {
     tx?: TransactionClient
   ): Promise<UserBadge[] | null>
   findByUserIdAndOptions(
-    userId: string, 
+    userId: string,
     badgeIds?: number[],
     startDate?: Date,
     endDate?: Date,
@@ -18,9 +18,25 @@ export interface UserBadgeRepository {
     limit?: number,
     tx?: TransactionClient
   ): Promise<UserBadge[]>
+  findByUserIdAndDates(
+    userId: string,
+    badgeIds: number[],
+    deletedLogDate: Date,
+    deletedLogCreatedAt: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+    tx?: TransactionClient
+  ): Promise<UserBadge[]>
   save(userBadge: UserBadge, tx?: TransactionClient): Promise<UserBadge>
-  saveMany(userBadges: UserBadge[], tx?: TransactionClient): Promise<UserBadge[]>
-  update(id: number, userBadge: Partial<UserBadge>, tx?: TransactionClient): Promise<UserBadge | null>
+  saveMany(
+    userBadges: UserBadge[],
+    tx?: TransactionClient
+  ): Promise<UserBadge[]>
+  update(
+    id: number,
+    userBadge: Partial<UserBadge>,
+    tx?: TransactionClient
+  ): Promise<UserBadge | null>
   delete(id: number, tx?: TransactionClient): Promise<boolean>
   deleteMany(userBadgeIds: number[], tx?: TransactionClient): Promise<boolean>
 }
