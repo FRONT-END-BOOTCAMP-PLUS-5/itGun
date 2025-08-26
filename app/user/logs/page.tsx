@@ -14,6 +14,7 @@ const UserLogsPage = () => {
   const [logsOnMonth, setLogsOnMonth] = useState<Log[]>([])
   const [logsToDisplay, setLogsToDisplay] = useState<Log[]>([])
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [isSlideUp, setIsSlideUp] = useState<boolean>(false)
 
   const [calMonth, setCalMonth] = useState<string>(() => {
     const now = new Date()
@@ -67,7 +68,7 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
+    <div className="relative flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
@@ -82,12 +83,22 @@ const UserLogsPage = () => {
           onIconClick={handleIconClick}
         />
       </div>
-      <div className="min-h-0 flex-1">
+      <div
+        className={`min-h-0 flex-1 touch-pan-y transition-all duration-300 ease-out z-10 
+            rounded-t-lg border-t-1 border-x-1 border-[var(--color-secondary)]
+          ${ isSlideUp
+            ? "bg-white-100 animate-log-list-slide-up absolute inset-x-0 top-[50px] bottom-0 "
+            : "animate-log-list-slide-down"
+        }`}
+        
+      >
         <LogList
           isFetching={isFetching}
           logsToDisplay={logsToDisplay}
           selectedDate={selectedDate}
           calTypeMaps={calTypeMaps}
+          isSlideUp={isSlideUp}
+          setIsSlideUp={setIsSlideUp}
         />
       </div>
     </div>
