@@ -10,23 +10,23 @@ const IntroCarousel = () => {
   const imageSet: { src: string; alt?: string }[] = [
     {
       src: itgun1.src,
-      alt: "메인 페이지 설명 이미지",
+      alt: "메인 페이지 이미지",
     },
     {
       src: itgun2.src,
-      alt: "메인 페이지 설명 이미지",
+      alt: "캐릭터 성장 이미지",
     },
     {
       src: itgun3.src,
-      alt: "메인 페이지 설명 이미지",
+      alt: "뱃지 목록 이미지",
     },
     {
       src: itgun4.src,
-      alt: "메인 페이지 설명 이미지",
+      alt: "근육 성장률 이미지",
     },
     {
       src: itgun5.src,
-      alt: "메인 페이지 설명 이미지",
+      alt: "근로그 이미지",
     },
   ]
   return (
