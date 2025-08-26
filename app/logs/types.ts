@@ -6,7 +6,7 @@ export enum CalIconType {
 
 //workout 컴포넌트에서 타입 선택 시 사용되는 타입
 export const workoutTypes: Record<string, string> = {
-  STRENGTH: "reps",
+  STRENGTH: "weight-reps",
   PLYOMETRICS: "duration",
   CARDIO: "distance-duration",
   WEIGHTLIFTING: "weight-reps",
