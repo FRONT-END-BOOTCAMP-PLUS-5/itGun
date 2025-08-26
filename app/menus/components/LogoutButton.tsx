@@ -10,7 +10,7 @@ const LogoutButton = () => {
   }
 
   return (
-    <div>
+    <div className="p-[14px]">
       <Button variant="underline" isFullWidth={true} size="xs" onClick={handleLogout}>
           로그아웃
       </Button>

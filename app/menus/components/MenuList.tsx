@@ -36,7 +36,7 @@ const MenuList = () => {
             size="xs"
             onClick={() => handleMenuClick(menu.pathName)}
           >
-            <div className="flex w-full items-center justify-between rounded-sm border-2 border-[var(--color-primary)] p-6">
+            <div className="flex w-full items-center justify-between rounded-sm border-2 border-[var(--color-primary)] p-5">
               <S1>{menu.name}</S1>
               <Icon name={menu.iconName} fillColor={menu.iconColor} size={30} />
             </div>
