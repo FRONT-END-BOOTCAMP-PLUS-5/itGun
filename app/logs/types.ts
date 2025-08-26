@@ -13,7 +13,7 @@ export const workoutTypes: Record<string, string> = {
 }
 
 //workout 컴포넌트에 사용되는 타입
-type WorkoutSetData = {
+type FormSetData = {
   setCount: number
   durationSeconds?: number | string
   distance?: string
@@ -21,11 +21,11 @@ type WorkoutSetData = {
   repetitionCount?: number
 }
 
-export type WorkoutItem = {
+export type FormData = {
   id: number
   title: string
   type: "duration" | "distance-duration" | "weight-reps" | "reps"
-  data: WorkoutSetData[]
+  data: FormSetData[]
 }
 
 //api 요청 시 사용되는 타입
