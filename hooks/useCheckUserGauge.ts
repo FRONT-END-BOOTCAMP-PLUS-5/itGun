@@ -2,7 +2,9 @@ import { checkUserGauges } from "@/services/user/gauges/checkUserGauges"
 import { useMutation } from "@tanstack/react-query"
 import { useToastStore } from "./useToastStore"
 
-export const useCheckUserGauge = () => {
+export const useCheckUserGauge = (options?: {
+  onNoRecentWorkout?: () => void
+}) => {
   const { showToast } = useToastStore()
 
   return useMutation({
@@ -13,8 +15,10 @@ export const useCheckUserGauge = () => {
           message: "앗! 근육이 줄었어요 😢 \n운동으로 다시 키워볼까요?",
           variant: "info",
           position: "top",
-          duration: 10000,
+          duration: 5000,
         })
+
+        options?.onNoRecentWorkout?.()
       }
     },
   })
