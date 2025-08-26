@@ -96,9 +96,10 @@ const Workout: React.FC<WorkoutProps> = ({
             className="flex items-center justify-center"
           >
             <Input
-              size="xs"
+              size="sm"
               placeholder="분"
-              className="text-center"
+              inputMode="numeric"
+              className="scale-[62.5%] text-center text-[16px]"
               value={
                 Number(value) > 0
                   ? Math.floor(Number(value) / 60).toString()
@@ -112,9 +113,10 @@ const Workout: React.FC<WorkoutProps> = ({
             />
             <C2 className="text-center">:</C2>
             <Input
-              size="xs"
+              size="sm"
               placeholder="초"
-              className="text-center"
+              inputMode="numeric"
+              className="scale-[62.5%] text-center text-[16px]"
               value={Number(value) > 0 ? (Number(value) % 60).toString() : ""}
               onChange={(e) => {
                 const seconds = Number(e.target.value) || 0
@@ -128,7 +130,7 @@ const Workout: React.FC<WorkoutProps> = ({
         const minutes = Math.floor((Number(value) || 0) / 60)
         const seconds = (Number(value) || 0) % 60
         return (
-          <C2 key={`${field}-${index}`} className="self-center text-center">
+          <C2 key={`${field}-${index}`} className="self-center">
             {minutes}:{seconds.toString().padStart(2, "0")}
           </C2>
         )
@@ -142,9 +144,10 @@ const Workout: React.FC<WorkoutProps> = ({
           key={`${field}-${index}`}
         >
           <Input
-            size="xs"
+            size="sm"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
-            className="text-center"
+            className="scale-[62.5%] text-center text-[16px]"
+            inputMode="numeric"
             value={value || ""}
             onChange={(e) => onDataChange?.(index, field, e.target.value, seq)}
           />

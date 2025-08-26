@@ -11,6 +11,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
   date,
+  decorations = [],
 }) => {
   const { data } = useGetUserCharacter(date ? { date } : undefined)
 
@@ -21,7 +22,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   useEffect(() => {
     if (data) {
       if (data.assets) {
-        setAssets(sortAssets(data.assets))
+        setAssets(sortAssets([...data.assets, ...decorations]))
         setLevels(matchAssetLevels(data.assets))
       }
       if (data.characterColor) {
