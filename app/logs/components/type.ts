@@ -4,6 +4,7 @@ import { CalIconType, WorkoutData, WorkoutItem } from "../types"
 export interface DateTypeProps {
   date: string
   setDate: Dispatch<SetStateAction<string>>
+  totalDuration: number
   setTotalDuration: Dispatch<SetStateAction<number>>
 }
 export interface WorkoutTypeSelectorProps {
