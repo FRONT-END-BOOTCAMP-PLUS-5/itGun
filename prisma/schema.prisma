@@ -198,7 +198,7 @@ model SquatRecord {
 
 model BigThreeRecord {
   id         Int      @id @default(autoincrement())
-  userId     String   @unique @map("user_id")
+  userId     String   @map("user_id")
   weight     Float
   earnedAt   DateTime @default(now()) @map("earned_at")
   createdAt  DateTime @default(now()) @map("created_at")

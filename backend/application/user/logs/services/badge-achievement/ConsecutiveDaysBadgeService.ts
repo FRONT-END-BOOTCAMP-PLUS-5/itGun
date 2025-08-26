@@ -3,6 +3,7 @@ import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { UserBadgeRepository } from "@/backend/domain/repositories/UserBadgeRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 import { BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
+import { Log } from "@/backend/domain/entities/Log"
 
 export class ConsecutiveDaysBadgeService {
   constructor(
@@ -12,11 +13,11 @@ export class ConsecutiveDaysBadgeService {
 
   async check(
     userId: string,
-    logDate: Date,
+    log: Log,
     tx?: TransactionClient
   ): Promise<UserBadge | null> {
 
-    const parsedDate = new Date(logDate)
+    const parsedDate = new Date(log.logDate)
     parsedDate.setHours(23, 59, 59, 999)
 
     // 로그 날짜 포함 7일
@@ -34,7 +35,7 @@ export class ConsecutiveDaysBadgeService {
 
     // 최근 7일간 운동한 날짜들
     const workoutDates = new Set(
-      recentLogs.map((log) => log.createdAt.toDateString())
+      recentLogs.map((log) => log.logDate.toLocaleDateString())
     )
 
     // 7일 연속 운동했는지 확인
@@ -43,7 +44,7 @@ export class ConsecutiveDaysBadgeService {
       const checkDate = new Date(parsedDate)
       checkDate.setDate(parsedDate.getDate() - i)
 
-      if (workoutDates.has(checkDate.toDateString())) {
+      if (workoutDates.has(checkDate.toLocaleDateString())) {
         consecutiveDays++
       } else {
         break
@@ -68,6 +69,6 @@ export class ConsecutiveDaysBadgeService {
       return null
     }
 
-    return new UserBadge(0, BADGE_IDS.CONSECUTIVE_7_DAYS, userId, logDate)
+    return new UserBadge(0, BADGE_IDS.CONSECUTIVE_7_DAYS, userId, log.logDate, log.createdAt)
   }
 }
