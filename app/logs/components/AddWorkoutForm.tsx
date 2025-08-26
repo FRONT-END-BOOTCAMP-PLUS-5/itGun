@@ -12,7 +12,7 @@ const AddWorkoutForm = ({
   workoutData,
   setWorkoutData,
 }: AddWorkoutFormProps) => {
-  const { exerciseData, setMode, setOpen } = useLogsStore()
+  const { exerciseData, setMode, setOpen, setInit } = useLogsStore()
 
   const handleAddSet = (index: number) => {
     const newFormData = [...formData]
@@ -167,6 +167,7 @@ const AddWorkoutForm = ({
             },
           },
         ])
+        setInit()
       }
     },
     [exerciseData]
