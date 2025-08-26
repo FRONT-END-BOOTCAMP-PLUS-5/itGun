@@ -49,6 +49,8 @@ export interface LogListProps {
   logsToDisplay: Log[]
   selectedDate: string | null
   calTypeMaps: CalTypeMaps
+  isSlideUp: boolean
+  setIsSlideUp: Dispatch<SetStateAction<boolean>>
 }
 
 export interface LogItemProps {

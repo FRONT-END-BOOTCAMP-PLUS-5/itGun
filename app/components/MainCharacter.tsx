@@ -40,7 +40,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
       `right-under-arm-${levels?.ARMS ? levels.ARMS : 0}`,
       `right-upper-arm-${levels?.ARMS ? levels.ARMS : 0}`,
       `face`,
-      `torso-${levels?.TORSO ? levels.ARMS : 0}`,
+      `torso-${levels?.TORSO ? levels.TORSO : 0}`,
     ]
     bounce(moveTargets)
     wave(`left-under-arm-0`, 2)
