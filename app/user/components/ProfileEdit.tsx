@@ -2,27 +2,37 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { Input } from "@/ds/components/atoms/input/Input"
 import Icon from "@/ds/components/atoms/icon/Icon"
+import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { usePostUserInfo } from "@/hooks/usePostUserInfo"
 import { useToastStore } from "@/hooks/useToastStore"
 import { useDialogStore } from "@/hooks/useDialogStore"
-import DialogContainer from "@/app/components/DialogContainer"
+
 import { useDeleteUser } from "@/hooks/useDeleteUser"
 
-import type { ProfileEditProps, AgeOption } from "./types/ProfileEdit.types"
+import type { ProfileEditProps } from "./types/ProfileEdit.types"
 
 const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const [isSaving, setIsSaving] = useState(false)
   const [nickname, setNickname] = useState("")
   const [height, setHeight] = useState("")
   const [weight, setWeight] = useState("")
-  const [age, setAge] = useState("")
+  const [age, setAge] = useState<number>(20)
   const [gender, setGender] = useState("")
+  const [validation, setValidation] = useState({
+    nickname: true,
+    height: true,
+    weight: true,
+    age: true,
+    gender: true,
+  })
 
   const { data: session, status } = useSession()
+  const router = useRouter()
   const postUserInfoMutation = usePostUserInfo()
   const postUserInfoMutationRef = useRef(postUserInfoMutation)
   const { showToast } = useToastStore()
@@ -39,7 +49,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
       // 잠시 후 홈페이지로 리다이렉트
       setTimeout(() => {
-        window.location.href = "/"
+        router.push("/")
       }, 2000)
     },
     onError: () => {
@@ -61,75 +71,11 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
       setNickname(user.nickName || "")
       setHeight(user.height?.toString() || "")
       setWeight(user.weight?.toString() || "")
-      setAge(user.age?.toString() || "")
+      // 나이 값이 있으면 사용, 없으면 기본값으로 "20대" 설정
+      setAge(user.age || 20)
       setGender(user.gender || "")
     }
   }, [session])
-
-  // 사용자 데이터가 변경될 때 자동 저장
-  useEffect(() => {
-    // 사용자 데이터 변경 여부를 확인하는 함수 (useEffect 내부로 이동)
-    const hasUserDataChanged = () => {
-      // 초기 로딩 시에는 저장하지 않음
-      if (!session?.user) {
-        return false
-      }
-
-      // 실제로 값이 변경되었는지 확인
-      const currentValues = {
-        nickname: nickname.trim(),
-        height: parseInt(height) || 0,
-        weight: parseInt(weight) || 0,
-        age: age,
-        gender: gender,
-      }
-
-      const originalValues = {
-        nickname: session.user.nickName || "",
-        height: session.user.height || 0,
-        weight: session.user.weight || 0,
-        age: session.user.age?.toString() || "",
-        gender: session.user.gender || "",
-      }
-
-      const hasChanged =
-        currentValues.nickname !== originalValues.nickname ||
-        currentValues.height !== originalValues.height ||
-        currentValues.weight !== originalValues.weight ||
-        currentValues.age !== originalValues.age ||
-        currentValues.gender !== originalValues.gender
-
-      return hasChanged
-    }
-
-    console.log("🔄 useEffect 실행:", {
-      session: !!session?.user,
-      userId: !!userId,
-      hasChanged: hasUserDataChanged(),
-      currentValues: {
-        nickname: nickname.trim(),
-        height: parseInt(height) || 0,
-        weight: parseInt(weight) || 0,
-        age: age,
-        gender: gender,
-      },
-    })
-
-    if (session?.user && userId && hasUserDataChanged()) {
-      const userData = {
-        nickname: nickname.trim() || session.user.nickName || "",
-        height: parseInt(height) || 0,
-        weight: parseInt(weight) || 0,
-        age: age, // string으로 유지
-        gender: gender,
-      }
-
-      console.log("🔄 자동 저장 실행:", userData)
-
-      // 자동 저장 (에러 처리 없이)
-      postUserInfoMutationRef.current.mutate(userData)
-    }
-  }, [height, weight, age, gender, session?.user, userId, nickname])
 
   // 드롭다운 옵션 정의
   const genderOptions = [
@@ -138,19 +84,29 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     { label: "선택안함", value: "none" },
   ]
 
-  const ageOptions: AgeOption[] = [
-    { label: "10대", value: "15" },
-    { label: "20대", value: "25" },
-    { label: "30대", value: "35" },
-    { label: "40대", value: "45" },
+  // 나이 옵션 추가
+  const ageOptions = [
+    { label: "10대", value: 10 },
+    { label: "20대", value: 20 },
+    { label: "30대", value: 30 },
+    { label: "40대", value: 40 },
   ]
 
   const handleSaveClick = async () => {
     try {
-      // 입력값 검증
+      // 입력값 검증 - 닉네임과 나이 필수값
       if (!nickname.trim()) {
         showToast({
           message: "닉네임을 입력해주세요",
+          variant: "error",
+          position: "bottom",
+        })
+        return
+      }
+
+      if (!age || age === 0) {
+        showToast({
+          message: "나이를 선택해주세요",
           variant: "error",
           position: "bottom",
         })
@@ -181,12 +137,20 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
       // 저장할 데이터 구성
       const userData = {
-        nickname: nickname.trim(),
+        nickName: nickname.trim(),
         height: parseInt(height) || 0,
         weight: parseInt(weight) || 0,
-        age: age, // string으로 유지
+        age: age.toString(), // number를 string으로 변환하여 저장
         gender: gender,
       }
+
+      console.log("💾 저장할 사용자 데이터:", userData)
+      console.log("🔍 나이 값 상세:", {
+        age: age,
+        ageType: typeof age,
+        ageOptions: ageOptions,
+        selectedAge: ageOptions.find((option) => option.value === age),
+      })
 
       // React Query mutation을 사용하여 API 호출
       await postUserInfoMutation.mutateAsync(userData)
@@ -238,7 +202,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     }
 
     // useDeleteUser 훅 사용 (성공/실패는 훅의 콜백에서 처리)
-    deleteUserMutation.mutate({})
+    deleteUserMutation.mutate()
   }
 
   // 로딩 중일 때 표시 (세션이 로딩 중이거나 사용자 정보가 로딩 중일 때)
@@ -318,9 +282,10 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
               <Dropdown
                 options={ageOptions}
                 value={age}
-                onChange={(value) => setAge(String(value))}
-                placeholder="연령대 선택"
-                size="lg"
+                onChange={(value) => {
+                  console.log("🎯 나이 선택됨:", value)
+                  setAge(Number(value))
+                }}
               />
             </div>
 
@@ -337,35 +302,38 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
         {/* 하단 버튼들 */}
         <div className="mt-[100px]">
-          {/* 탈퇴 버튼 */}
+          {/* 탈퇴하기 링크 */}
           <div className="mb-[51px] flex justify-end pr-4">
             <button
               onClick={handleWithdrawClick}
-              className="text-sm text-gray-500 underline"
+              className="text-sm text-gray-500 underline transition-colors hover:text-gray-700"
             >
               탈퇴하기
             </button>
           </div>
-          {/* 저장 버튼 */}{" "}
-          <div className="mb -[10px]justify-center flex">
+
+          {/* 저장 버튼 */}
+          <div className="-mx-3 mt-auto">
             <Button
-              variant="primary"
+              isFullWidth
               onClick={handleSaveClick}
-              size="lg"
-              isFullWidth={true}
-              disabled={isSaving}
+              disabled={!Object.values(validation).every(Boolean) || isSaving}
+              variant={
+                !Object.values(validation).every(Boolean) || isSaving
+                  ? "disable"
+                  : "primary"
+              }
             >
-              {isSaving ? "저장 중..." : "저장"}
-              <span className="ml-2">
-                <Icon name="save" size={20} color="white-100" />
-              </span>
+              <B1 fontWeight="bold" className="!text-white-200 mr-3">
+                {isSaving ? "저장 중..." : "저장"}
+              </B1>
+              <Icon name="save" color="white-200" size={24} />
             </Button>
           </div>
         </div>
       </div>
 
       {/* 탈퇴 확인 다이얼로그는 useDialogStore를 통해 표시됨 */}
-      <DialogContainer />
     </div>
   )
 }

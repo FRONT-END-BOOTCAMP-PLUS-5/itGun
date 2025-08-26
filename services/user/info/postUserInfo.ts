@@ -1,11 +1,13 @@
 import { api } from "@/utils/api/apiClient"
 
 export interface PostUserInfoRequest {
-  nickname: string
+  nickName: string
   height: number
   weight: number
   age: string
   gender: string
+  characterColor?: string
+  characterId?: number
 }
 
 export interface PostUserInfoResponse {
@@ -16,9 +18,7 @@ export interface PostUserInfoResponse {
 export const postUserInfo = async (
   data: PostUserInfoRequest
 ): Promise<PostUserInfoResponse> => {
-  const response = await api.put<PostUserInfoResponse>("/user/info", {
-    user: data,
-  })
+  const response = await api.put<PostUserInfoResponse>("/user/info", data)
 
   return response
 }

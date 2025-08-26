@@ -12,9 +12,7 @@ export interface GetUserInfoResponse {
   characterColor: string
 }
 
-export const getUserInfo = async (
-  userId?: string
-): Promise<GetUserInfoResponse> => {
+export const getUserInfo = async (): Promise<GetUserInfoResponse> => {
   const response = await api.get<GetUserInfoResponse>(`/user/info`)
   return response
 }

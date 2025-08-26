@@ -4,9 +4,10 @@ import React from "react"
 import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
-import UserInfoHeader from "@/app/user/components/UserInfoHeader"
+
 import ProfileDisplay from "@/app/user/components/ProfileDisplay"
 import ProfileEdit from "@/app/user/components/ProfileEdit"
+import UserInfoHeader from "@/app/user/components/UserInfoHeader"
 import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
 
 const ProfileManager = () => {

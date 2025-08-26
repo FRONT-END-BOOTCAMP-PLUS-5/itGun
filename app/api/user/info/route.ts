@@ -18,110 +18,74 @@ function processGender<T extends string>(gender: T): Gender {
   return Gender.NONE
 }
 
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions)
-    const userId = session?.user?.id
-
-    if (!userId) {
-      return NextResponse.json({ error: "userId is required" }, { status: 400 })
-    }
-
-    const usecase = new GetUserInfoUsecase(new PrUserRepository())
-    const result = await usecase.execute({ userId })
-
-    if (!result) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
-    }
-
-    return NextResponse.json(result)
-  } catch (error) {
-    console.error("GET /api/user/info error:", error)
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
-    )
+export async function PUT(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    return NextResponse.json({ message: "error" }, { status: 401 })
   }
-}
 
-export async function PUT(request: NextRequest) {
+  const body = await req.json()
+  const { nickName, height, weight, age, gender, characterColor, characterId } =
+    body
+
+  const usecase = new UpdateUserInfoUsecase(new PrUserRepository())
+
+  // 클라이언트 필드 매핑: age(string)→number, gender(string)→Gender(enum)
+  const ageNumber = age != null ? Number(age) : undefined
+  const genderLower =
+    typeof gender === "string" ? gender.toLowerCase() : undefined
+  const genderEnum = processGender(genderLower || "none")
+
+  const dto = new UpdateUserInfoDto(
+    userId,
+    undefined, // password 미변경
+    nickName,
+    height,
+    weight,
+    ageNumber,
+    genderEnum,
+    characterColor,
+    characterId
+  )
+
   try {
-    const body = await request.json()
-    const { user } = body
-
-    // 세션에서 userId 확보
-    const session = await getServerSession(authOptions)
-    const sessionUserId = session?.user?.id
-
-    if (!user || !sessionUserId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
-    }
-
-    const usecase = new UpdateUserInfoUsecase(new PrUserRepository())
-
-    // 클라이언트 필드 매핑: nickname→nickName, age(string)→number, gender(string)→Gender(enum)
-    const ageNumber = user.age != null ? Number(user.age) : undefined
-    const genderLower =
-      typeof user.gender === "string" ? user.gender.toLowerCase() : undefined
-    const genderEnum = processGender(genderLower || "none")
-
-    const dto = new UpdateUserInfoDto(
-      sessionUserId,
-      undefined, // password 미변경
-      user.nickName,
-      user.height,
-      user.weight,
-      ageNumber,
-      genderEnum,
-      user.characterColor,
-      user.characterId
-    )
-
     await usecase.execute(dto)
-
     return NextResponse.json({ message: "success" })
-  } catch (error) {
-    console.error("PUT /api/user/info error:", error)
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
-    )
+  } catch {
+    return NextResponse.json({ message: "error" }, { status: 500 })
   }
 }
 
 export async function DELETE() {
-  try {
-    const session = await getServerSession(authOptions)
-    const userId = session?.user?.id
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
-    }
-
-    const usecase = new DeleteUserUsecase(new PrUserRepository())
-    await usecase.execute({ userId })
-
-    return NextResponse.json({ message: "success" })
-  } catch (error) {
-    console.error("DELETE /api/user/info error:", error)
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 }
-    )
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    return NextResponse.json({ message: "error" }, { status: 401 })
   }
+
+  const usecase = new DeleteUserUsecase(new PrUserRepository())
+
+  try {
+    await usecase.execute({ userId })
+    return NextResponse.json({ message: "success" })
+  } catch {
+    return NextResponse.json({ message: "error" }, { status: 500 })
+  }
+}
+export async function GET() {
+  const session = await getServerSession(authOptions)
+  const userId = session?.user?.id
+  if (!userId) {
+    return NextResponse.json({ message: "error" }, { status: 401 })
+  }
+
+  const usecase = new GetUserInfoUsecase(new PrUserRepository())
+  const result = await usecase.execute({ userId })
+
+  if (!result) {
+    return NextResponse.json({ message: "error" }, { status: 404 })
+  }
+
+  return NextResponse.json(result)
 }
