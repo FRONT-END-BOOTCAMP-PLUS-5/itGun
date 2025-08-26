@@ -16,10 +16,14 @@ const DateTimeInput = ({
     const value = e.target.value
     const numberRegex = /^[0-9]{1,3}$/
 
-    if (numberRegex.test(value) || value === "") {
-      const numValue = parseInt(value) || 0
-      if (numValue >= 0 && numValue <= 999) {
-        setTotalDuration(numValue)
+    if (value === "") {
+      setTotalDuration(0)
+    } else {
+      if (numberRegex.test(value)) {
+        const numValue = parseInt(value)
+        if (numValue >= 0 && numValue <= 999) {
+          setTotalDuration(numValue)
+        }
       }
     }
   }
@@ -42,7 +46,7 @@ const DateTimeInput = ({
       <div className="flex items-center gap-2">
         <Icon name="clock" size={24} />
         <Input
-          value={totalDuration ?? 0}
+          value={totalDuration === 0 ? "" : totalDuration}
           onChange={handleChange}
           size="sm"
           type="number"

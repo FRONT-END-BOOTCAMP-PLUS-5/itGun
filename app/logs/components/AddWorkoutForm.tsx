@@ -3,7 +3,7 @@ import Workout from "@/ds/components/molecules/workout/Workout"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { Exercise } from "@/services/exercises/getExercises"
 import { useEffect } from "react"
-import { WorkoutItem, workoutTypes } from "../types"
+import { FormData, workoutTypes } from "../types"
 import { AddWorkoutFormProps } from "./type"
 
 const AddWorkoutForm = ({
@@ -12,7 +12,7 @@ const AddWorkoutForm = ({
   workoutData,
   setWorkoutData,
 }: AddWorkoutFormProps) => {
-  const { exerciseData, setMode, setOpen } = useLogsStore()
+  const { exerciseData, setMode, setOpen, setInit } = useLogsStore()
 
   const handleAddSet = (index: number) => {
     const newFormData = [...formData]
@@ -123,7 +123,7 @@ const AddWorkoutForm = ({
   const handleTypeChange = (index: number, newType: string) => {
     setFormData((prev) => {
       const newData = [...prev]
-      newData[index].type = newType as WorkoutItem["type"]
+      newData[index].type = newType as FormData["type"]
       newData[index].data = [{ setCount: 1 }]
       return newData
     })
@@ -144,7 +144,7 @@ const AddWorkoutForm = ({
             title: (exerciseData as Exercise).name,
             type: workoutTypes[
               (exerciseData as Exercise).exerciseType
-            ] as WorkoutItem["type"],
+            ] as FormData["type"],
             data: [{ setCount: 1 }],
           },
         ])
@@ -167,6 +167,7 @@ const AddWorkoutForm = ({
             },
           },
         ])
+        setInit()
       }
     },
     [exerciseData]
