@@ -33,7 +33,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${galmuri.className} flex justify-center antialiased`}>
         <div
-          className={`relative box-border flex min-h-screen w-full max-w-[430px] flex-col items-center !bg-[var(--color-white-200)] px-[30px] pt-[100px]`}
+          className={`relative box-border flex min-h-svh w-full max-w-[430px] flex-col items-center !bg-[var(--color-white-200)] px-[30px] pt-[100px] sm:min-h-dvh lg:min-h-screen`}
         >
           <ConditionHeader />
           <NextAuthSessionProviders session={session}>
