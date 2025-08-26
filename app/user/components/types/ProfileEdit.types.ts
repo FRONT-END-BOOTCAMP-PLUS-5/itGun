@@ -1,6 +1,5 @@
-export interface ProfileEditProps {
-  // 현재는 props가 필요하지 않음
-}
+// 현재는 props가 필요하지 않으므로 Record<never, never> 사용
+export type ProfileEditProps = Record<never, never>
 
 export interface DropdownOption {
   label: string
