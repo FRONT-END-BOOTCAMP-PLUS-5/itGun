@@ -640,4 +640,22 @@ export const svgList = {
       </g>
     </>
   ),
+  info: () => (
+    <>
+      <path d="M10 1V0H4V1H10Z" fill="#3D2C4B" />
+      <path d="M12 2V1H10V2H12Z" fill="#3D2C4B" />
+      <path d="M12 4H13V2H12V4Z" fill="#3D2C4B" />
+      <path d="M14 4H13V10H14V4Z" fill="#3D2C4B" />
+      <path d="M13 10H12V12H13L13 10Z" fill="#3D2C4B" />
+      <path d="M12 13V12H10V13H12Z" fill="#3D2C4B" />
+      <path d="M10 14V13H4V14H10Z" fill="#3D2C4B" />
+      <path d="M2 12V13H4V12H2Z" fill="#3D2C4B" />
+      <path d="M2 10H1V12H2V10Z" fill="#3D2C4B" />
+      <path d="M1 4H0V10H1V4Z" fill="#3D2C4B" />
+      <path d="M1 4H2V2H1V4Z" fill="#3D2C4B" />
+      <path d="M2 1V2H4V1H2Z" fill="#3D2C4B" />
+      <path d="M7.5 10H6.5V6H7.5V10Z" fill="#3D2C4B" />
+      <path d="M7.5 5H6.5V4H7.5V5Z" fill="#3D2C4B" />
+    </>
+  ),
 }

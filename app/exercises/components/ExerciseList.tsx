@@ -39,6 +39,16 @@ const ExerciseList = () => {
     setData(exercise)
   }
 
+  console.log(data?.pages[0].data.length)
+  if (data?.pages[0].data.length === 0) {
+    return (
+      <C2 className="text-center">
+        아직 등록되지 않은 운동이에요 😅 <br />
+        다른 키워드로 검색해보세요!
+      </C2>
+    )
+  }
+
   return (
     <section className="relative">
       {isLoading && (

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
-import { CalIconType, WorkoutData, WorkoutItem } from "../types"
+import { CalIconType, WorkoutData, FormData } from "../types"
 
 export interface DateTypeProps {
   date: string
@@ -13,9 +13,9 @@ export interface WorkoutTypeSelectorProps {
 }
 
 export interface AddWorkoutFormProps {
-  formData: WorkoutItem[]
+  formData: FormData[]
   workoutData: WorkoutData[]
-  setFormData: Dispatch<SetStateAction<WorkoutItem[]>>
+  setFormData: Dispatch<SetStateAction<FormData[]>>
   setWorkoutData: Dispatch<SetStateAction<WorkoutData[]>>
 }
 
@@ -23,7 +23,7 @@ export interface WorkoutLogSaveButtonProps {
   calIconType: CalIconType | null
   date: string
   totalDuration: number
-  formData: WorkoutItem[]
+  formData: FormData[]
   workoutData: WorkoutData[]
 }
 

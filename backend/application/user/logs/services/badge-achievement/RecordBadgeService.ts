@@ -17,6 +17,7 @@ import {
 } from "@/backend/application/user/logs/constants/userRecordConstants"
 import { BADGE_IDS } from "@/backend/application/user/logs/constants/badgeConstants"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { Log } from "@/backend/domain/entities/Log"
 
 export class RecordBadgeService {
   constructor(
@@ -55,7 +56,7 @@ export class RecordBadgeService {
       running: RunningRecord | null
       bigThree: BigThreeRecord | null
     },
-    logDate: Date,
+    log: Log,
     tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const awardedBadges: UserBadge[] = []
@@ -73,8 +74,8 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId === RECORD_EXERCISE_IDS.BENCH_PRESS &&
-              workout.weight
+              workout.exerciseInfo.exerciseId ===
+                RECORD_EXERCISE_IDS.BENCH_PRESS && workout.weight
           )
           .map((workout) => workout.weight || 0),
         0
@@ -93,8 +94,8 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId === RECORD_EXERCISE_IDS.DEADLIFT &&
-              workout.weight
+              workout.exerciseInfo.exerciseId ===
+                RECORD_EXERCISE_IDS.DEADLIFT && workout.weight
           )
           .map((workout) => workout.weight || 0),
         0
@@ -116,39 +117,70 @@ export class RecordBadgeService {
       const newRecord = new BenchPressRecord(
         userId,
         logMaxRecords.benchPress,
-        logDate
+        log.logDate,
+        log.createdAt
       )
       await this.benchPressRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.benchPress >= RECORD_MINIMUMS.BENCH_PRESS) {
-        const userBadge = new UserBadge(0, BADGE_IDS.BENCH_PRESS_RECORD, userId, logDate)
+        const userBadge = new UserBadge(
+          0,
+          BADGE_IDS.BENCH_PRESS_RECORD,
+          userId,
+          log.logDate,
+          log.createdAt
+        )
         awardedBadges.push(userBadge)
       }
     }
 
     // 스쿼트
     if (logMaxRecords.squat > (existingRecords.squat?.weight || 0)) {
-      const newRecord = new SquatRecord(userId, logMaxRecords.squat, logDate)
+      const newRecord = new SquatRecord(
+        userId,
+        logMaxRecords.squat,
+        log.logDate,
+        log.createdAt
+      )
       await this.squatRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.squat >= RECORD_MINIMUMS.SQUAT) {
-        const userBadge = new UserBadge(0, BADGE_IDS.SQUAT_RECORD, userId, logDate)
+        const userBadge = new UserBadge(
+          0,
+          BADGE_IDS.SQUAT_RECORD,
+          userId,
+          log.logDate,
+          log.createdAt
+        )
         awardedBadges.push(userBadge)
       }
     }
 
     // 데드리프트
     if (logMaxRecords.deadlift > (existingRecords.deadlift?.weight || 0)) {
-      const newRecord = new DeadliftRecord(
-        userId,
-        logMaxRecords.deadlift,
-        logDate
-      )
-      await this.deadliftRecordRepository.save(newRecord, tx)
+      try {
+        const newRecord = new DeadliftRecord(
+          userId,
+          logMaxRecords.deadlift,
+          log.logDate,
+          log.createdAt
+        )
 
-      if (logMaxRecords.deadlift >= RECORD_MINIMUMS.DEADLIFT) {
-        const userBadge = new UserBadge(0, BADGE_IDS.DEADLIFT_RECORD, userId, logDate)
-        awardedBadges.push(userBadge)
+        await this.deadliftRecordRepository.save(newRecord, tx)
+
+        if (logMaxRecords.deadlift >= RECORD_MINIMUMS.DEADLIFT) {
+          const userBadge = new UserBadge(
+            0,
+            BADGE_IDS.DEADLIFT_RECORD,
+            userId,
+            log.logDate,
+            log.createdAt
+          )
+          awardedBadges.push(userBadge)
+        }
+      } catch (error) {
+        console.error("Error saving deadlift record:", error)
+        throw error
       }
     }
 
@@ -157,19 +189,30 @@ export class RecordBadgeService {
       const newRecord = new RunningRecord(
         userId,
         logMaxRecords.running,
-        logDate
+        log.logDate,
+        log.createdAt
       )
       await this.runningRecordRepository.save(newRecord, tx)
 
       if (logMaxRecords.running >= RECORD_MINIMUMS.RUNNING) {
-        const userBadge = new UserBadge(0, BADGE_IDS.RUNNING_RECORD, userId, logDate)
+        const userBadge = new UserBadge(
+          0,
+          BADGE_IDS.RUNNING_RECORD,
+          userId,
+          log.logDate,
+          log.createdAt
+        )
         awardedBadges.push(userBadge)
       }
     }
 
-    const currentBigThree = Math.max(logMaxRecords.benchPress, existingRecords.benchPress?.weight || 0)
-        + Math.max(logMaxRecords.squat, existingRecords.squat?.weight || 0)
-        + Math.max(logMaxRecords.deadlift, existingRecords.deadlift?.weight || 0)
+    const currentBigThree =
+      Math.max(
+        logMaxRecords.benchPress,
+        existingRecords.benchPress?.weight || 0
+      ) +
+      Math.max(logMaxRecords.squat, existingRecords.squat?.weight || 0) +
+      Math.max(logMaxRecords.deadlift, existingRecords.deadlift?.weight || 0)
     const previousBigThree = existingRecords.bigThree?.weight || 0
 
     // 새로운 100kg 구간을 달성했는지 확인
@@ -177,12 +220,32 @@ export class RecordBadgeService {
     const previousLevel = Math.floor(previousBigThree / BIG_THREE_BADGE_UNIT)
 
     if (currentBigThree > previousBigThree) {
-      const newRecord = new BigThreeRecord(userId, currentBigThree, logDate)
-      await this.bigThreeRecordRepository.save(newRecord, tx)
+      try {
+        const newRecord = new BigThreeRecord(
+          userId,
+          currentBigThree,
+          log.logDate,
+          log.createdAt
+        )
 
-      if (currentLevel > previousLevel && currentBigThree >= BIG_THREE_BADGE_UNIT) {
-        const userBadge = new UserBadge(0, BADGE_IDS.BIG_THREE_RECORD, userId, logDate)
-        awardedBadges.push(userBadge)
+        await this.bigThreeRecordRepository.save(newRecord, tx)
+
+        if (
+          currentLevel > previousLevel &&
+          currentBigThree >= BIG_THREE_BADGE_UNIT
+        ) {
+          const userBadge = new UserBadge(
+            0,
+            BADGE_IDS.BIG_THREE_RECORD,
+            userId,
+            log.logDate,
+            log.createdAt
+          )
+          awardedBadges.push(userBadge)
+        }
+      } catch (error) {
+        console.error("Error saving BigThree record:", error)
+        throw error
       }
     }
 

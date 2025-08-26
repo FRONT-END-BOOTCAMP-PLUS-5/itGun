@@ -84,7 +84,7 @@ export class CreateLogUsecase {
           request.userId,
           request.calIconType,
           request.totalDuration,
-          request.logDate || new Date(),
+          request.logDate ? new Date(request.logDate) : new Date(),
           new Date(),
           undefined, // logWorkouts
           gaugeUpdate
@@ -173,7 +173,7 @@ export class CreateLogUsecase {
           currentGauge.core + gaugeUpdate.core,
           currentGauge.stamina + gaugeUpdate.stamina,
           savedLog.logDate,
-          new Date(),
+          savedLog.createdAt,
           0
         )
 
@@ -183,7 +183,7 @@ export class CreateLogUsecase {
         const { badges: awardedBadges } = await this.badgeAchievementService.checkAndAwardBadges(
           request.userId,
           request.workouts,
-          savedLog.logDate,
+          savedLog,
           tx
         )
 
