@@ -3,6 +3,7 @@ import { Log, CalIconType } from "@/backend/domain/entities/Log"
 import { LogRepository } from "@/backend/domain/repositories/LogRepository"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 import { Workout } from "@/backend/domain/entities/Workout"
+import { create } from "domain"
 
 export class PrLogRepository implements LogRepository {
   async findAll(tx?: TransactionClient): Promise<Log[]> {
@@ -83,6 +84,7 @@ export class PrLogRepository implements LogRepository {
         totalDuration: log.totalDuration,
         gaugeChanges: log.gaugeChanges,
         logDate: log.logDate,
+        createdAt: log.createdAt,
 
         logWorkouts: {
           create: [
@@ -97,7 +99,8 @@ export class PrLogRepository implements LogRepository {
                   distance: workout.distance,
                   durationSeconds: workout.durationSeconds
                 }
-              }
+              },
+              createdAt: log.createdAt
             })),
             ...workoutToConnect.map(workout => ({
               workout: {

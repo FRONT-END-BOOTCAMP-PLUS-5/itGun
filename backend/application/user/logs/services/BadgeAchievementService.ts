@@ -8,6 +8,7 @@ import { ConsecutiveDaysBadgeService } from "@/backend/application/user/logs/ser
 import { WeeklyWorkoutBadgeService } from "@/backend/application/user/logs/services/badge-achievement/WeeklyWorkoutBadgeService"
 import { RecordBadgeService } from "@/backend/application/user/logs/services/badge-achievement/RecordBadgeService"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
+import { Log } from "@/backend/domain/entities/Log"
 
 export class BadgeAchievementService {
   private firstWorkoutBadgeService: FirstWorkoutBadgeService
@@ -32,7 +33,7 @@ export class BadgeAchievementService {
   async checkAndAwardBadges(
     userId: string,
     workouts: WorkoutData[],
-    logDate: Date,
+    log: Log,
     tx?: TransactionClient
   ): Promise<{ badges: AwardedBadgeDto[] }> {
     const [badges, existingRecords] = await Promise.all([
@@ -45,7 +46,7 @@ export class BadgeAchievementService {
     // 1. 첫 운동 뱃지 체크
     const firstWorkoutBadge = await this.firstWorkoutBadgeService.check(
       userId,
-      logDate,
+      log,
       tx
     )
     if (firstWorkoutBadge) badgesToAward.push(firstWorkoutBadge)
@@ -53,13 +54,13 @@ export class BadgeAchievementService {
     // 2. 연속 7일 뱃지 체크
     const consecutiveBadge = await this.consecutiveDaysBadgeService.check(
       userId,
-      logDate,
+      log,
       tx
     )
     if (consecutiveBadge) badgesToAward.push(consecutiveBadge)
 
     // 3. 일주일에 3일 이상 뱃지 체크
-    const weeklyBadge = await this.weeklyWorkoutBadgeService.check(userId, logDate, tx)
+    const weeklyBadge = await this.weeklyWorkoutBadgeService.check(userId, log, tx)
     if (weeklyBadge) badgesToAward.push(weeklyBadge)
 
     // 4. 신기록 뱃지들 체크 및 개별 Record 저장
@@ -67,7 +68,7 @@ export class BadgeAchievementService {
       userId,
       workouts,
       existingRecords,
-      logDate,
+      log,
       tx
     )
     badgesToAward.push(...recordBadges)
@@ -86,6 +87,7 @@ export class BadgeAchievementService {
           badgeName: badge.name,
           badgeDescription: badge.description,
           earnedAt: userBadge.earnedAt,
+          createdAt: userBadge.createdAt,
         }
       })
     }

@@ -11,3 +11,12 @@ export interface FilterButtonProps {
   item: { label: string; value: string }
   filterType: "bodyPart" | "equipment"
 }
+
+export interface DetailModalProps {
+  exercise: Exercise
+}
+
+export interface LabelProps {
+  text: string
+  filterType: "bodyPart" | "equipment"
+}
