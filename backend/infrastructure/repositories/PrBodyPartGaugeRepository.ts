@@ -29,7 +29,16 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
     const whereCondition: any = { userId: id }
 
     if (date) {
-      whereCondition.earnedAt = date
+      const startDate = new Date(date)
+      startDate.setUTCHours(0, 0, 0, 0)
+
+      const endDate = new Date(startDate)
+      endDate.setUTCDate(startDate.getUTCDate() + 1)
+
+      whereCondition.earnedAt = {
+        gte: startDate,
+        lt: endDate,
+      }
     }
 
     const client = tx || prisma
@@ -39,8 +48,6 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
         earnedAt: "desc",
       },
     })
-
-    console.log("userBodyPartGauge", userBodyPartGauge)
 
     return (userBodyPartGauge as BodyPartGauge) || null
   }
