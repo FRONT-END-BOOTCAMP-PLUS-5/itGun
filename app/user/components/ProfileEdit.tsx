@@ -9,6 +9,7 @@ import { Input } from "@/ds/components/atoms/input/Input"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { usePostUserInfo } from "@/hooks/usePostUserInfo"
+import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useToastStore } from "@/hooks/useToastStore"
 import { useDialogStore } from "@/hooks/useDialogStore"
 
@@ -21,7 +22,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
   const [nickname, setNickname] = useState("")
   const [height, setHeight] = useState("")
   const [weight, setWeight] = useState("")
-  const [age, setAge] = useState<number>(20)
+  const [age, setAge] = useState<number>(1)
   const [gender, setGender] = useState("")
   const [validation, setValidation] = useState({
     nickname: true,
@@ -43,12 +44,19 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     }
   }
 
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const router = useRouter()
   const postUserInfoMutation = usePostUserInfo()
   const postUserInfoMutationRef = useRef(postUserInfoMutation)
   const { showToast } = useToastStore()
   const { showDialog } = useDialogStore()
+
+  const userId = session?.user?.id || session?.user?.email
+
+  // 사용자 정보를 직접 가져오기
+  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo(
+    userId || ""
+  )
   const deleteUserMutation = useDeleteUser({
     onSuccess: () => {
       // 탈퇴 성공
@@ -73,21 +81,19 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     },
   })
 
-  const userId = session?.user?.id || session?.user?.email
-
-  // 세션에서 사용자 정보를 직접 가져와서 기본값 설정
+  // 사용자 정보를 직접 가져와서 기본값 설정
   useEffect(() => {
-    if (session?.user) {
-      // 세션에 저장된 사용자 정보가 있다면 사용
-      const user = session.user
-      setNickname(user.nickName || "")
-      setHeight(user.height?.toString() || "")
-      setWeight(user.weight?.toString() || "")
-      // 나이 값이 있으면 사용, 없으면 기본값으로 "20대" 설정
-      setAge(user.age || 20)
-      setGender(user.gender || "")
+    if (userInfo) {
+      // API에서 가져온 사용자 정보를 사용
+      console.log("🔍 API에서 가져온 사용자 정보:", userInfo)
+      setNickname(userInfo.nickName || "")
+      setHeight(userInfo.height?.toString() || "")
+      setWeight(userInfo.weight?.toString() || "")
+      // 나이 값이 있으면 사용, 없으면 기본값으로 "1세" 설정
+      setAge(userInfo.age || 1)
+      setGender(userInfo.gender || "")
     }
-  }, [session])
+  }, [userInfo, postUserInfoMutation.isSuccess])
 
   // 드롭다운 옵션 정의
   const genderOptions = [
@@ -166,6 +172,9 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
 
       // React Query mutation을 사용하여 API 호출
       await postUserInfoMutation.mutateAsync(userData)
+
+      // 저장 완료 후 세션 업데이트하여 최신 정보 반영
+      await update()
 
       // 저장 완료 후 바로 페이지 이동
       onBack() // 저장 후 표시 모드로 돌아가기
