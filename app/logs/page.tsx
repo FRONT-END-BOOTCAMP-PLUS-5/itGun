@@ -16,7 +16,7 @@ const LogsPage = () => {
 
   const [calIconType, setCalIconType] = useState<CalIconType | null>(null)
   const [date, setDate] = useState(dayjs().format("YYYY.MM.DD"))
-  const [totalDuration, setTotalDuration] = useState(0)
+  const [totalDuration, setTotalDuration] = useState<number>(0)
   const [formData, setFormData] = useState<WorkoutItem[]>([])
   const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
 
@@ -31,6 +31,7 @@ const LogsPage = () => {
       <DateTimeInput
         date={date}
         setDate={setDate}
+        totalDuration={totalDuration}
         setTotalDuration={setTotalDuration}
       />
 

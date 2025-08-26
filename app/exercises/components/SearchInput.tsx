@@ -58,13 +58,15 @@ const SearchInput = () => {
 
   return (
     <form onSubmit={handleFormSubmit} className="relative">
-      <Input
-        value={searchValue}
-        onChange={handleSearchChange}
-        placeholder="운동 이름을 검색해주세요."
-        className="pr-7 [&_input]:!scale-75 [&_input]:!text-base"
-        isFullWidth
-      />
+      <div className="border-primary border-b">
+        <Input
+          value={searchValue}
+          onChange={handleSearchChange}
+          placeholder="운동 이름을 검색해주세요."
+          className="ml-[-40px] scale-75 border-none pr-7 text-[16px]"
+          isFullWidth
+        />
+      </div>
       <div className="absolute top-0 right-0" onClick={handleClearSearch}>
         <Icon name="remove" size={24} />
       </div>
