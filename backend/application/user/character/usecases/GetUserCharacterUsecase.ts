@@ -42,7 +42,8 @@ export class GetUserCharacterUsecase {
             )
 
         if (userGauges) {
-          levels.torso =
+          levels.torso = Math.min(
+            4,
             Math.floor(
               (userGauges.shoulders +
                 userGauges.chest +
@@ -50,8 +51,9 @@ export class GetUserCharacterUsecase {
                 userGauges.core) /
                 4
             ) + 1
-          levels.arms = Math.floor(userGauges.arms) + 1
-          levels.legs = Math.floor(userGauges.legs) + 1
+          )
+          levels.arms = Math.min(4, Math.floor(userGauges.arms) + 1)
+          levels.legs = Math.min(4, Math.floor(userGauges.legs) + 1)
         }
       }
     }
