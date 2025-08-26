@@ -52,7 +52,7 @@ const CharacterDownloadButton: React.FC<CharacterDownloadButtonProps> = ({
         onClick={handleDownload}
         disabled={isDownloading}
       >
-        <Icon name="save" />
+        <Icon name="save" size={30} />
       </Button>
     </div>
   )

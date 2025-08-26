@@ -6,11 +6,11 @@ import CharacterDownloadButton from "@/app/components/CharacterDownloadButton"
 const MainUserTitle = () => {
   const { data: session } = useSession()
   return (
-    <div className="mt-[40px] flex items-center justify-center gap-3">
+    <div className="mt-[40px] flex items-center justify-center gap-3 relative">
       <H1>{session?.user?.nickName ?? "벌키"}님</H1>
       <CharacterDownloadButton
         userNickName={session?.user?.nickName}
-        className="z-30"
+        className="z-30 absolute -top-10 right-0"
       />
     </div>
   )
