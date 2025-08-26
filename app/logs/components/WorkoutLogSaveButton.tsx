@@ -22,20 +22,23 @@ const WorkoutLogSaveButton = ({
   })
 
   const { mutate: createLogs, isPending } = useCreateUserLogs()
+
   const validateForm = () => {
     const newValidation = {
       calIconType: !!calIconType,
       date: !!date,
       totalDuration: totalDuration > 0,
       workouts:
-        Array.isArray(workoutData) &&
-        workoutData.length > 0 &&
-        workoutData.every(
-          (workout) =>
-            workout.durationSeconds ||
-            workout.distance ||
-            workout.weight ||
-            workout.repetitionCount
+        Array.isArray(formData) &&
+        formData.length > 0 &&
+        formData.every((form) =>
+          form.data.every(
+            (data) =>
+              data.durationSeconds ||
+              data.weight ||
+              data.repetitionCount ||
+              data.distance
+          )
         ),
     }
     setValidation(newValidation)
@@ -60,11 +63,12 @@ const WorkoutLogSaveButton = ({
 
   if (isPending)
     return (
-      <div className="bg-white-200 fixed top-0 left-0 flex h-full w-full flex-col items-center justify-center">
+      <div className="fixed top-0 left-0 flex h-full w-full flex-col items-center justify-center">
         <LoadingCharacter />
         <LoadingText text="저장 중..." />
       </div>
     )
+
   return (
     <div className="-mx-3 mt-auto">
       <Button

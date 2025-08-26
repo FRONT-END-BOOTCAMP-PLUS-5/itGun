@@ -49,5 +49,6 @@ export interface CreateLogResponse {
   awardedBadges?: AwardedBadge[]
 }
 
-export const createUserLogs = (data: CreateLogRequest) =>
-  api.post<CreateLogResponse>("/user/logs", data)
+export const createUserLogs = (data: CreateLogRequest) => {
+  return api.post<CreateLogResponse>("/user/logs", data)
+}
