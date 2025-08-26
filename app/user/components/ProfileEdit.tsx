@@ -31,6 +31,18 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
     gender: true,
   })
 
+  // formData 객체 생성
+  const formData = {
+    age: age.toString(),
+  }
+
+  // handleDropdownChange 함수 정의
+  const handleDropdownChange = (field: string) => (value: string | number) => {
+    if (field === "age") {
+      setAge(Number(value))
+    }
+  }
+
   const { data: session, status } = useSession()
   const router = useRouter()
   const postUserInfoMutation = usePostUserInfo()
@@ -281,9 +293,12 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({ onBack }) => {
             <div className="space-y-2">
               <Dropdown
                 placeholder="나이"
-                options={ageOptions}
-                value={age.toString()}
-                onChange={(value) => setAge(Number(value))}
+                options={Array.from({ length: 93 }, (_, i) => ({
+                  label: `${i + 8}세`,
+                  value: String(i + 8),
+                }))}
+                value={formData.age}
+                onChange={handleDropdownChange("age")}
               />
             </div>
 
