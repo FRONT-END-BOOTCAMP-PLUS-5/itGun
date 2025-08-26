@@ -5,33 +5,19 @@ import { Exercise } from "@/services/exercises/getExercises"
 import { useEffect } from "react"
 import { FormData, workoutTypes } from "../types"
 import { AddWorkoutFormProps } from "./type"
-
-const AddWorkoutForm = ({
-  formData,
-  setFormData,
-  workoutData,
-  setWorkoutData,
-}: AddWorkoutFormProps) => {
+import { useDialogStore } from "@/hooks/useDialogStore"
+const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
   const { exerciseData, setMode, setOpen, setInit } = useLogsStore()
+  const { showDialog } = useDialogStore()
 
   const handleAddSet = (index: number) => {
     const newFormData = [...formData]
-    const newWorkoutData = [...workoutData]
 
     newFormData[index].data.push({
       setCount: newFormData[index].data.length + 1,
     })
 
-    const currentSeq = newWorkoutData[index].seq
-    const newSet = {
-      ...newWorkoutData[index],
-      seq: currentSeq,
-      setCount: newWorkoutData[index].setCount + 1,
-    }
-
-    newWorkoutData.push(newSet)
     setFormData(newFormData)
-    setWorkoutData(newWorkoutData)
   }
 
   const handleDataChange = ({
@@ -47,26 +33,31 @@ const AddWorkoutForm = ({
   }) => {
     setFormData((prev) => {
       const newData = [...prev]
+
       newData[index].data[setIndex] = {
         ...newData[index].data[setIndex],
         [field]: value,
       }
       return newData
     })
-    setWorkoutData((prev) => {
-      const newWorkoutData = [...prev]
-      const targetWorkout = newWorkoutData.find(
-        (workout) =>
-          workout.seq === index + 1 && workout.setCount === setIndex + 1
-      )
+  }
 
-      if (targetWorkout) {
-        Object.assign(targetWorkout, {
-          [field]: typeof value === "string" ? Number(value) : value,
-        })
-      }
-
-      return newWorkoutData
+  const handleRemoveExercise = (index: number) => {
+    const exerciseName = formData[index].title
+    showDialog({
+      message: `${exerciseName}\n  운동 기록을\n 정말 삭제 하실건가요?`,
+      variant: "error",
+      buttons: [
+        {
+          text: "네",
+          onClick: () => {
+            const newData = [...formData]
+            newData.splice(index, 1)
+            setFormData(newData)
+          },
+        },
+        { text: "아니요", onClick: () => {} },
+      ],
     })
   }
 
@@ -78,46 +69,15 @@ const AddWorkoutForm = ({
     setIndex: number
   }) => {
     const newData = [...formData]
-    const newWorkoutData = [...workoutData]
 
     if (formData[index].data.length <= 1) {
       newData.splice(index, 1)
 
-      const currentSeq = index + 1
-      const workoutsToRemove = newWorkoutData.filter(
-        (workout) => workout.seq === currentSeq
-      )
-
-      workoutsToRemove.forEach((workout) => {
-        const index = newWorkoutData.findIndex((w) => w === workout)
-        if (index !== -1) newWorkoutData.splice(index, 1)
-      })
-
-      newData.forEach((item, idx) => {
-        item.id = idx + 1
-      })
-
-      newWorkoutData.forEach((workout, idx) => {
-        workout.seq = idx + 1
-      })
+      setFormData(newData)
     } else {
       newData[index].data.splice(setIndex, 1)
-
-      const currentSeq = newWorkoutData[index].seq
-      const targetSetCount = setIndex + 1
-
-      const targetIndex = newWorkoutData.findIndex(
-        (workout) =>
-          workout.seq === currentSeq && workout.setCount === targetSetCount
-      )
-
-      if (targetIndex !== -1) {
-        newWorkoutData.splice(targetIndex, 1)
-      }
+      setFormData(newData)
     }
-
-    setFormData(newData)
-    setWorkoutData(newWorkoutData)
   }
 
   const handleTypeChange = (index: number, newType: string) => {
@@ -140,20 +100,10 @@ const AddWorkoutForm = ({
         setFormData((prev) => [
           ...prev,
           {
-            id: prev.length + 1,
             title: (exerciseData as Exercise).name,
             type: workoutTypes[
               (exerciseData as Exercise).exerciseType
             ] as FormData["type"],
-            data: [{ setCount: 1 }],
-          },
-        ])
-        setWorkoutData((prev) => [
-          ...prev,
-          {
-            seq: prev.length > 0 ? Math.max(...prev.map((w) => w.seq)) + 1 : 1,
-            exerciseName: (exerciseData as Exercise).name,
-            setCount: 1,
             exerciseInfo: {
               exerciseId: (exerciseData as Exercise).exerciseId,
               name: (exerciseData as Exercise).name,
@@ -165,8 +115,10 @@ const AddWorkoutForm = ({
               instructions: (exerciseData as Exercise).instructions,
               exerciseTips: (exerciseData as Exercise).exerciseTips,
             },
+            data: [{ setCount: 1 }],
           },
         ])
+
         setInit()
       }
     },
@@ -185,12 +137,14 @@ const AddWorkoutForm = ({
           onDataChange={(setIndex, field, value) =>
             handleDataChange({ index, setIndex, field, value })
           }
+          onRemoveExercise={() => handleRemoveExercise(index)}
           onRemoveSet={(setIndex) => handleRemoveSet({ index, setIndex })}
           isEditable={true}
           isFullWidth
           onTypeChange={(newType) => handleTypeChange(index, newType)}
         />
       ))}
+
       <button onClick={handleAddLog}>
         <Icon name="plus" size={40} />
       </button>
