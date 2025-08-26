@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
@@ -24,39 +24,17 @@ const ProfileEdit: React.FC<ProfileEditProps> = () => {
   const [weight, setWeight] = useState("")
   const [age, setAge] = useState<number>(1)
   const [gender, setGender] = useState("")
-  const [validation, setValidation] = useState({
-    nickname: true,
-    height: true,
-    weight: true,
-    age: true,
-    gender: true,
-  })
-
-  // formData 객체 생성
-  const formData = {
-    age: age.toString(),
-  }
-
-  // handleDropdownChange 함수 정의
-  const handleDropdownChange = (field: string) => (value: string | number) => {
-    if (field === "age") {
-      setAge(Number(value))
-    }
-  }
 
   const { data: session, status, update } = useSession()
   const router = useRouter()
   const postUserInfoMutation = usePostUserInfo()
-  const postUserInfoMutationRef = useRef(postUserInfoMutation)
   const { showToast } = useToastStore()
 
   const { showDialog } = useDialogStore()
   const userId = session?.user?.id || session?.user?.email
 
   // 사용자 정보를 직접 가져오기
-  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo(
-    userId || ""
-  )
+  const { data: userInfo } = useGetUserInfo(userId || "")
   const deleteUserMutation = useDeleteUser({
     onSuccess: () => {
       // 탈퇴 성공 시 토스트 메시지 표시
@@ -329,12 +307,8 @@ const ProfileEdit: React.FC<ProfileEditProps> = () => {
             <Button
               isFullWidth
               onClick={handleSaveClick}
-              disabled={!Object.values(validation).every(Boolean) || isSaving}
-              variant={
-                !Object.values(validation).every(Boolean) || isSaving
-                  ? "disable"
-                  : "primary"
-              }
+              disabled={isSaving}
+              variant={isSaving ? "disable" : "primary"}
             >
               <B1 fontWeight="bold" className="!text-white-200 mr-3">
                 {isSaving ? "저장 중..." : "저장"}

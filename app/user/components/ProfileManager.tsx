@@ -8,21 +8,15 @@ import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import ProfileDisplay from "@/app/user/components/ProfileDisplay"
 import ProfileEdit from "@/app/user/components/ProfileEdit"
 import UserInfoHeader from "@/app/user/components/UserInfoHeader"
-import type { GetUserInfoResponse } from "@/services/user/info/getUserInfo"
-
 const ProfileManager = () => {
   const [isEditMode, setIsEditMode] = useState(false)
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const userId = session?.user?.id || session?.user?.email
 
   const { data: userInfo, isLoading, error } = useGetUserInfo(userId || "")
 
   const handleEditClick = () => {
     setIsEditMode(true)
-  }
-
-  const handleBackClick = () => {
-    setIsEditMode(false)
   }
 
   // userInfo가 undefined일 수 있으므로 안전하게 처리
