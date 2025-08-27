@@ -10,6 +10,25 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     return userBadges.map(this.toDomain)
   }
 
+  async findLatestByBadgeIds(
+    userId: string,
+    tx?: TransactionClient
+  ): Promise<UserBadge[]> {
+    const whereCondition: any = { userId }
+
+    const client = tx || prisma
+    const userBadges = await client.userBadge.findMany({
+      where: whereCondition,
+      distinct: ["badgeId"],
+      orderBy: {
+        earnedAt: "desc",
+      },
+      take: 6,
+    })
+
+    return userBadges as UserBadge[]
+  }
+
   async findByUserId(
     userId: string,
     limit?: number,
