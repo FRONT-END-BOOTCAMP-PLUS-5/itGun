@@ -55,7 +55,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
 
     if (badgeIds && badgeIds.length > 0) {
       whereCondition.badgeId = {
-        in: badgeIds
+        in: badgeIds,
       }
     }
 
@@ -64,6 +64,38 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       if (startDate) whereCondition.earnedAt.gte = startDate
       if (endDate) whereCondition.earnedAt.lte = endDate
     }
+
+    const client = tx || prisma
+    const userBadges = await client.userBadge.findMany({
+      where: whereCondition,
+      take: limit,
+      orderBy: {
+        earnedAt: sortOrder || "desc",
+      },
+    })
+
+    return userBadges as UserBadge[]
+  }
+
+  async findByUserIdAndDates(
+    userId: string,
+    badgeIds: number[],
+    deletedLogDate: Date,
+    deletedLogCreatedAt: Date,
+    sortOrder?: "asc" | "desc",
+    limit?: number,
+    tx?: TransactionClient
+  ): Promise<UserBadge[]> {
+    const whereCondition: any = { userId }
+
+    if (badgeIds && badgeIds.length > 0) {
+      whereCondition.badgeId = {
+        in: badgeIds,
+      }
+    }
+    
+    whereCondition.earnedAt = deletedLogDate
+    whereCondition.createdAt = deletedLogCreatedAt
 
     const client = tx || prisma
     const userBadges = await client.userBadge.findMany({
@@ -91,9 +123,12 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
     return this.toDomain(savedUserBadge)
   }
 
-  async saveMany(userBadges: UserBadge[], tx?: TransactionClient): Promise<UserBadge[]> {
+  async saveMany(
+    userBadges: UserBadge[],
+    tx?: TransactionClient
+  ): Promise<UserBadge[]> {
     const client = tx || prisma
-    
+
     const savedUserBadges = await client.userBadge.createManyAndReturn({
       data: userBadges.map((userBadge) => ({
         badgeId: userBadge.badgeId,
@@ -148,12 +183,12 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       const deletedRecords = await prisma.userBadge.deleteMany({
         where: {
           id: {
-            in: userBadgeIds
-          }
-        }
+            in: userBadgeIds,
+          },
+        },
       })
 
-      return (deletedRecords.count === userBadgeIds.length)
+      return deletedRecords.count === userBadgeIds.length
     } catch (error) {
       return false
     }
@@ -165,7 +200,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       userBadge.badgeId,
       userBadge.userId,
       userBadge.earnedAt,
-      userBadge.createAt,
+      userBadge.createAt
     )
   }
 }
