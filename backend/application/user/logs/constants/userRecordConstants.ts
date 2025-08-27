@@ -11,7 +11,7 @@ export const RECORD_MINIMUMS = {
   BENCH_PRESS: 15, // kg
   SQUAT: 20, // kg
   DEADLIFT: 20, // kg
-  RUNNING: 1000, // m (1km)
+  RUNNING: 1, // (1km)
 } as const
 
 // 3대 합계 뱃지 기준
