@@ -45,19 +45,21 @@ export class PrBigThreeRecordRepository implements BigThreeRecordRepository {
       data: {
         userId: record.userId,
         weight: record.weight,
-        earnedAt: record.earnedAt
+        earnedAt: record.earnedAt,
+        createdAt: record.createdAt
       }
     })
     return savedRecord as BigThreeRecord
   }
 
-  async deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean> {
+  async deleteByUserIdAndDates(userId: string, earnedAt: Date, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
       const client = tx || prisma
       await client.bigThreeRecord.deleteMany({
         where: {
           userId,
-          earnedAt
+          earnedAt,
+          createdAt
         }
       })
       return true

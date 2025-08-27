@@ -159,7 +159,7 @@ model Workout {
 
 model BenchPressRecord {
   id         Int      @id @default(autoincrement())
-  userId     String   @unique @map("user_id")
+  userId     String   @map("user_id")
   weight     Float
   earnedAt   DateTime @default(now()) @map("earned_at")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -172,7 +172,7 @@ model BenchPressRecord {
 
 model DeadliftRecord {
   id         Int      @id @default(autoincrement())
-  userId     String   @unique @map("user_id")
+  userId     String   @map("user_id")
   weight     Float
   earnedAt   DateTime @default(now()) @map("earned_at")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -185,7 +185,7 @@ model DeadliftRecord {
 
 model SquatRecord {
   id         Int      @id @default(autoincrement())
-  userId     String   @unique @map("user_id")
+  userId     String   @map("user_id")
   weight     Float
   earnedAt   DateTime @default(now()) @map("earned_at")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -211,7 +211,7 @@ model BigThreeRecord {
 
 model RunningRecord {
   id         Int      @id @default(autoincrement())
-  userId     String   @unique @map("user_id")
+  userId     String   @map("user_id")
   distance   Float
   earnedAt   DateTime @default(now()) @map("earned_at")
   createdAt  DateTime @default(now()) @map("created_at")

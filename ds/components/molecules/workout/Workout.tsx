@@ -26,6 +26,7 @@ const Workout: React.FC<WorkoutProps> = ({
   isEditable = false,
   onAddSet,
   onRemoveSet,
+  onRemoveExercise,
   onDataChange,
   onTypeChange,
   className,
@@ -168,16 +169,23 @@ const Workout: React.FC<WorkoutProps> = ({
         <B2 className={variantConfig.titleColor} fontWeight="bold">
           {title}
         </B2>
-        {isEditable && onTypeChange && (
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={handleTypeChange}
-            className="ml-2"
-          >
-            <Icon name="setting" size={25} />
-          </Button>
-        )}
+        <div className="mr-[-9px] flex items-center justify-center">
+          {isEditable && onTypeChange && (
+            <Button variant="ghost" size="xs" onClick={handleTypeChange}>
+              <Icon name="setting" size={25} />
+            </Button>
+          )}
+
+          {isEditable && onRemoveExercise && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => onRemoveExercise()}
+            >
+              <Icon name="remove" size={30} />
+            </Button>
+          )}
+        </div>
       </div>
       <div className="items-evenly flex flex-col justify-center gap-2 p-1">
         <div
@@ -200,6 +208,7 @@ const Workout: React.FC<WorkoutProps> = ({
                   fieldIndex
                 )
               )}
+
               {isEditable && onRemoveSet && (
                 <Button
                   variant="ghost"

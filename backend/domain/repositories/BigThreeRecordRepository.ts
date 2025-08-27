@@ -12,5 +12,5 @@ export interface BigThreeRecordRepository {
     tx?: TransactionClient
   ): Promise<BigThreeRecord[]>
   save(record: BigThreeRecord, tx?: TransactionClient): Promise<BigThreeRecord>
-  deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean>
+  deleteByUserIdAndDates(userId: string, earnedAt: Date, createdAt: Date, tx?: TransactionClient): Promise<boolean>
 }
