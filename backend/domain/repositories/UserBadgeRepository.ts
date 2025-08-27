@@ -3,6 +3,11 @@ import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export interface UserBadgeRepository {
   findAll(tx?: TransactionClient): Promise<UserBadge[]>
+  findLatestByBadgeIds(
+    userId: string,
+    limit: number,
+    tx?: TransactionClient
+  ): Promise<UserBadge[]>
   findByUserId(
     userId: string,
     limit?: number,

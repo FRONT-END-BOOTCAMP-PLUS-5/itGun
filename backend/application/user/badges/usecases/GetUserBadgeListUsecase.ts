@@ -24,12 +24,13 @@ export class GetUserBadgeListUsecase {
       )
     })
 
-    let userBadges: UserBadge[] | null =
-      await this.userBadgeRepository.findByUserId(
-        query.userId,
-        query?.limit ? query.limit : 10,
-        query?.period
-      )
+    let userBadges: UserBadge[] | null = query?.limit
+      ? await this.userBadgeRepository.findLatestByBadgeIds(query.userId, query.limit)
+      : await this.userBadgeRepository.findByUserId(
+          query.userId,
+          undefined,
+          query?.period
+        )
     if (!userBadges) {
       return new GetUserBadgeListDto(getBadgesDtos, null)
     }
