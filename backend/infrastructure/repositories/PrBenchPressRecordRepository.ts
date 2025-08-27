@@ -45,19 +45,21 @@ export class PrBenchPressRecordRepository implements BenchPressRecordRepository 
       data: {
         userId: record.userId,
         weight: record.weight,
-        earnedAt: record.earnedAt
+        earnedAt: record.earnedAt,
+        createdAt: record.createdAt
       }
     })
     return savedRecord as BenchPressRecord
   }
 
-  async deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean> {
+  async deleteByUserIdAndDates(userId: string, earnedAt: Date, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
       const client = tx || prisma
       await client.benchPressRecord.deleteMany({
         where: {
           userId,
-          earnedAt
+          earnedAt,
+          createdAt
         }
       })
       return true

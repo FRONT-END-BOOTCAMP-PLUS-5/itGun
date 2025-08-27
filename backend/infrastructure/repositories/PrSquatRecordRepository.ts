@@ -45,19 +45,21 @@ export class PrSquatRecordRepository implements SquatRecordRepository {
       data: {
         userId: record.userId,
         weight: record.weight,
-        earnedAt: record.earnedAt
+        earnedAt: record.earnedAt,
+        createdAt: record.createdAt
       }
     })
     return savedRecord as SquatRecord
   }
 
-  async deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean> {
+  async deleteByUserIdAndDates(userId: string, earnedAt: Date, createdAt: Date, tx?: TransactionClient): Promise<boolean> {
     try {
       const client = tx || prisma
       await client.squatRecord.deleteMany({
         where: {
           userId,
-          earnedAt
+          earnedAt,
+          createdAt
         }
       })
       return true

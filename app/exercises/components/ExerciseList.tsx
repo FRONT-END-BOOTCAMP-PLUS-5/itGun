@@ -39,7 +39,6 @@ const ExerciseList = () => {
     setData(exercise)
   }
 
-  console.log(data?.pages[0].data.length)
   if (data?.pages[0].data.length === 0) {
     return (
       <C2 className="text-center">

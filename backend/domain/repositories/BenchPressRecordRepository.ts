@@ -12,5 +12,5 @@ export interface BenchPressRecordRepository {
     tx?: TransactionClient
   ): Promise<BenchPressRecord[]>
   save(record: BenchPressRecord, tx?: TransactionClient): Promise<BenchPressRecord>
-  deleteByUserIdAndEarnedAt(userId: string, earnedAt: Date, tx?: TransactionClient): Promise<boolean>
+  deleteByUserIdAndDates(userId: string, earnedAt: Date, createdAt: Date, tx?: TransactionClient): Promise<boolean>
 }
