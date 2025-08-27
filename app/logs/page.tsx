@@ -1,15 +1,15 @@
 "use client"
 
 import { useLogsStore } from "@/hooks/useLogsStore"
+import { CalIconType } from "@/services/user/logs/createUserLogs"
+import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import AddWorkoutForm from "./components/AddWorkoutForm"
 import DateTimeInput from "./components/DateTimeInput"
 import ExerciseListModal from "./components/ExerciseListModal"
-import { WorkoutData, FormData } from "./types"
 import WorkoutLogSaveButton from "./components/WorkoutLogSaveButton"
 import WorkoutTypeSelector from "./components/WorkoutTypeSelector"
-import { CalIconType } from "@/services/user/logs/createUserLogs"
-import dayjs from "dayjs"
+import { FormData } from "./types"
 
 const LogsPage = () => {
   const { open, setOpen, setInit } = useLogsStore()
@@ -18,7 +18,7 @@ const LogsPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY.MM.DD"))
   const [totalDuration, setTotalDuration] = useState<number>(0)
   const [formData, setFormData] = useState<FormData[]>([])
-  const [workoutData, setWorkoutData] = useState<WorkoutData[]>([])
+
   useEffect(() => {
     return () => {
       setInit()
@@ -39,19 +39,13 @@ const LogsPage = () => {
         setCalIconType={setCalIconType}
       />
 
-      <AddWorkoutForm
-        formData={formData}
-        setFormData={setFormData}
-        workoutData={workoutData}
-        setWorkoutData={setWorkoutData}
-      />
+      <AddWorkoutForm formData={formData} setFormData={setFormData} />
 
       <WorkoutLogSaveButton
         calIconType={calIconType}
         date={date}
         totalDuration={totalDuration}
         formData={formData}
-        workoutData={workoutData}
       />
 
       {open && <ExerciseListModal setOpen={setOpen} />}

@@ -143,7 +143,7 @@ export class BadgeDeletionService {
       (log) => log.id !== logToDelete.id
     )
     const workoutDatesThisWeek = new Set(
-      remainingWeekLogs.map((log) => log.logDate.toDateString())
+      remainingWeekLogs.map((log) => log.logDate.toLocaleDateString())
     )
 
     if (workoutDatesThisWeek.size < 3) {
@@ -207,14 +207,15 @@ export class BadgeDeletionService {
     tx?: TransactionClient
   ): Promise<void> {
     const deletedLogDate = new Date(logToDelete.logDate)
+    const deletedLogCreatedAt = new Date(logToDelete.createdAt)
 
     // 해당 로그와 같은 날짜 및 시간에 생성된 신기록 뱃지들 조회
     const recordBadgesOnDate =
-      await this.userBadgeRepository.findByUserIdAndOptions(
+      await this.userBadgeRepository.findByUserIdAndDates(
         userId,
         [...RECORD_BADGE_IDS],
         deletedLogDate,
-        deletedLogDate,
+        deletedLogCreatedAt,
         undefined,
         undefined,
         tx
@@ -229,41 +230,46 @@ export class BadgeDeletionService {
 
       if (userBadge.badgeId === BADGE_IDS.BENCH_PRESS_RECORD) {
         deletePromises.push(
-          this.benchPressRecordRepository.deleteByUserIdAndEarnedAt(
+          this.benchPressRecordRepository.deleteByUserIdAndDates(
             userId,
             userBadge.earnedAt,
+            userBadge.createdAt,
             tx
           )
         )
       } else if (userBadge.badgeId === BADGE_IDS.SQUAT_RECORD) {
         deletePromises.push(
-          this.squatRecordRepository.deleteByUserIdAndEarnedAt(
+          this.squatRecordRepository.deleteByUserIdAndDates(
             userId,
             userBadge.earnedAt,
+            userBadge.createdAt,
             tx
           )
         )
       } else if (userBadge.badgeId === BADGE_IDS.DEADLIFT_RECORD) {
         deletePromises.push(
-          this.deadliftRecordRepository.deleteByUserIdAndEarnedAt(
+          this.deadliftRecordRepository.deleteByUserIdAndDates(
             userId,
             userBadge.earnedAt,
+            userBadge.createdAt,
             tx
           )
         )
       } else if (userBadge.badgeId === BADGE_IDS.RUNNING_RECORD) {
         deletePromises.push(
-          this.runningRecordRepository.deleteByUserIdAndEarnedAt(
+          this.runningRecordRepository.deleteByUserIdAndDates(
             userId,
             userBadge.earnedAt,
+            userBadge.createdAt,
             tx
           )
         )
       } else if (userBadge.badgeId === BADGE_IDS.BIG_THREE_RECORD) {
         deletePromises.push(
-          this.bigThreeRecordRepository.deleteByUserIdAndEarnedAt(
+          this.bigThreeRecordRepository.deleteByUserIdAndDates(
             userId,
             userBadge.earnedAt,
+            userBadge.createdAt,
             tx
           )
         )
