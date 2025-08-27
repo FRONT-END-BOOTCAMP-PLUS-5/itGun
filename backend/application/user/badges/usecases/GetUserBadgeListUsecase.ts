@@ -25,7 +25,7 @@ export class GetUserBadgeListUsecase {
     })
 
     let userBadges: UserBadge[] | null = query?.limit
-      ? await this.userBadgeRepository.findLatestByBadgeIds(query.userId)
+      ? await this.userBadgeRepository.findLatestByBadgeIds(query.userId, query.limit)
       : await this.userBadgeRepository.findByUserId(
           query.userId,
           undefined,
