@@ -15,14 +15,14 @@ const ModalContainer = () => {
       onClick={closeModal}
     >
       <div
-        className="scrollbar-none bg-white-200 absolute h-screen max-w-[430px] overflow-y-scroll p-6"
+        className="scrollbar-none bg-white-200 absolute h-screen max-w-[430px] overflow-y-scroll px-6 py-15"
         onClick={(e) => e.stopPropagation()}
       >
         {currentModal}
         <Button
           variant="ghost"
           size="xs"
-          className="absolute top-3 right-3"
+          className="absolute top-15 right-3"
           onClick={closeModal}
         >
           <Icon name="remove" size={24} fillColor="primary" />
