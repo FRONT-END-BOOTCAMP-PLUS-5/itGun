@@ -12,6 +12,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
 
   async findLatestByBadgeIds(
     userId: string,
+    limit: number,
     tx?: TransactionClient
   ): Promise<UserBadge[]> {
     const whereCondition: any = { userId }
@@ -23,7 +24,7 @@ export class PrUserBadgeRepository implements UserBadgeRepository {
       orderBy: {
         earnedAt: "desc",
       },
-      take: 6,
+      take: limit,
     })
 
     return userBadges as UserBadge[]

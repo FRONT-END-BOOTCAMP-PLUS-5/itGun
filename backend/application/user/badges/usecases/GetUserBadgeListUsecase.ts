@@ -28,7 +28,7 @@ export class GetUserBadgeListUsecase {
       ? await this.userBadgeRepository.findLatestByBadgeIds(query.userId)
       : await this.userBadgeRepository.findByUserId(
           query.userId,
-          query?.limit ? query.limit : undefined,
+          undefined,
           query?.period
         )
     if (!userBadges) {
