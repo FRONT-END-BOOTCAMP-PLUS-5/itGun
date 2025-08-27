@@ -6,13 +6,13 @@ import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
 import { WorkoutLogSaveButtonProps } from "./type"
+import { WorkoutData } from "../types"
 
 const WorkoutLogSaveButton = ({
   calIconType,
   date,
   totalDuration,
   formData,
-  workoutData,
 }: WorkoutLogSaveButtonProps) => {
   const [validation, setValidation] = useState({
     calIconType: false,
@@ -47,11 +47,30 @@ const WorkoutLogSaveButton = ({
 
   const handleSubmit = () => {
     if (!calIconType) return
+
+    const workoutData = formData.flatMap((form, index: number) =>
+      form.data.map((data, idx) => ({
+        ...data,
+        ...(data.weight && { weight: Number(data.weight) }),
+        ...(data.repetitionCount && {
+          repetitionCount: Number(data.repetitionCount),
+        }),
+        ...(data.distance && { distance: Number(data.distance) }),
+        ...(data.durationSeconds && {
+          durationSeconds: Number(data.durationSeconds),
+        }),
+        exerciseInfo: form.exerciseInfo,
+        seq: index + 1,
+        setCount: idx + 1,
+        exerciseName: form.title,
+      }))
+    )
+
     const payload = {
       calIconType: calIconType,
       totalDuration: totalDuration,
       logDate: new Date(date.replace(/\./g, "-")),
-      workouts: workoutData,
+      workouts: workoutData as unknown as WorkoutData[],
     }
 
     createLogs(payload)

@@ -1,7 +1,11 @@
 import { WorkoutWidth } from "@/ds/styles/tokens/workout/width"
 import { WorkoutVariant } from "@/ds/styles/tokens/workout/variants"
 
-export type WorkoutType = "weight-reps" | "reps" | "distance-duration" | "duration"
+export type WorkoutType =
+  | "weight-reps"
+  | "reps"
+  | "distance-duration"
+  | "duration"
 
 export interface WorkoutSetData {
   setCount: number
@@ -24,7 +28,13 @@ export interface WorkoutProps {
   isEditable?: boolean
   onAddSet?: (seq?: number) => void
   onRemoveSet?: (setIndex: number, seq?: number) => void
-  onDataChange?: (setIndex: number, field: string, value: string | number, seq?: number) => void
+  onRemoveExercise?: () => void
+  onDataChange?: (
+    setIndex: number,
+    field: string,
+    value: string | number,
+    seq?: number
+  ) => void
   onTypeChange?: (newType: WorkoutType, seq?: number) => void
   className?: string
 }
