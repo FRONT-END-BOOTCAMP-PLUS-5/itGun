@@ -12,6 +12,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   value,
   onChange,
   placeholder = "선택해주세요",
+  readOnly = false,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -55,22 +56,26 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <button
         type="button"
         className={`border-secondary flex w-full items-center justify-between border-b ${dropdownSize[size]}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!readOnly) setIsOpen(!isOpen)
+        }}
       >
         <B1 variant="secondary">
           {selectedOption ? selectedOption.label : placeholder}
         </B1>
-        <div
-          className={`ml-2 flex h-6 w-6 transform items-center justify-center transition-transform duration-0 ${isOpen ? "rotate-180" : ""}`}
-        >
-          <Icon
-            name="downArrow"
-            color="secondary"
-            fillColor="secondary"
-            size={12}
-            viewBox="0 0 14 8" // 실제 path 크기에 맞게 조정
-          />
-        </div>
+        {!readOnly && (
+          <div
+            className={`ml-2 flex h-6 w-6 transform items-center justify-center transition-transform duration-0 ${isOpen ? "rotate-180" : ""}`}
+          >
+            <Icon
+              name="downArrow"
+              color="secondary"
+              fillColor="secondary"
+              size={12}
+              viewBox="0 0 14 8" // 실제 path 크기에 맞게 조정
+            />
+          </div>
+        )}
       </button>
 
       {isOpen && (
