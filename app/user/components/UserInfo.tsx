@@ -3,9 +3,10 @@ import { Input } from "@/ds/components/atoms/input/Input"
 import { S2 } from "@/ds/components/atoms/text/TextWrapper"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UserInfoProps } from "../types"
 import { genderOptions, numberOptions } from "./constants"
+import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 
 const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
   const { data: session } = useSession()
@@ -16,6 +17,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
   const [gender, setGender] = useState<number | string>(
     session?.user?.gender ?? "선택하지 않음"
   )
+
+  const { data } = useGetUserInfo()
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      if (data?.nickName) setNickname(data.nickName)
+      if (data?.height) setHeight(data.height)
+      if (data?.weight) setWeight(data.weight)
+      if (data?.age) setAge(data.age)
+      if (data?.gender) setGender(data.gender)
+    }
+  }, [data])
 
   const handleClickSave = () => {
     setIsEdit(false)

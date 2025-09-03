@@ -2,7 +2,9 @@ import { DeleteUserUsecase } from "@/backend/application/user/info/usecases/Dele
 import { GetUserInfoUsecase } from "@/backend/application/user/info/usecases/GetUserInfoUsecase"
 import { UpdateUserInfoUsecase } from "@/backend/application/user/info/usecases/UpdateUserInfoUsecase"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
+import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
+import { authOptions } from "../../auth/[...nextauth]/auth"
 
 export async function PUT(request: NextRequest) {
   try {
@@ -47,13 +49,15 @@ export async function DELETE(request: NextRequest) {
 }
 export async function GET(req: NextRequest) {
   try {
-    const body = await req.json()
-    const userId = body.userId
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
     if (!userId) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
+
     const usecase = new GetUserInfoUsecase(new PrUserRepository())
     const result = await usecase.execute({ userId })
+
     if (!result) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
