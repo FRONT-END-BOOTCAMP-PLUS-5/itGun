@@ -5,21 +5,42 @@ import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRe
 import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 import { authOptions } from "../../auth/[...nextauth]/auth"
+import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
 
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { user } = body
-
-    if (!user || !user.userId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
+    if (!userId) {
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
+    const body = await request.json()
+    const {
+      password,
+      nickName,
+      height,
+      weight,
+      age,
+      gender,
+      characterColor,
+      characterId,
+    } = body
+
     const usecase = new UpdateUserInfoUsecase(new PrUserRepository())
-    await usecase.execute(user)
+    await usecase.execute(
+      new UpdateUserInfoDto(
+        userId,
+        password ?? undefined,
+        nickName,
+        height ?? undefined,
+        weight ?? undefined,
+        age ?? undefined,
+        gender ?? undefined,
+        characterColor ?? undefined,
+        characterId ?? undefined
+      )
+    )
 
     return NextResponse.json({ message: "success" })
   } catch {
