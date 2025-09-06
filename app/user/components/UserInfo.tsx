@@ -7,23 +7,31 @@ import { useEffect, useState } from "react"
 import { UserInfoProps } from "../types"
 import { genderOptions, numberOptions } from "./constants"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
+import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
+import { Request } from "@/services/user/info/updateUserInfo"
 
 const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
   const { data: session } = useSession()
-  const [nickname, setNickname] = useState(session?.user?.nickName)
-  const [height, setHeight] = useState(session?.user?.height ?? "-")
-  const [weight, setWeight] = useState(session?.user?.weight ?? "-")
+  const [nickName, setNickName] = useState<string>(
+    session?.user?.nickName ?? ""
+  )
+  const [height, setHeight] = useState<number | string>(
+    session?.user?.height ?? "-"
+  )
+  const [weight, setWeight] = useState<number | string>(
+    session?.user?.weight ?? "-"
+  )
   const [age, setAge] = useState<number | string>(10)
   const [gender, setGender] = useState<number | string>(
     session?.user?.gender ?? "선택하지 않음"
   )
 
   const { data } = useGetUserInfo()
+  const { mutate: updateUserInfo } = useUpdateUserInfo()
 
   useEffect(() => {
     if (data) {
-      console.log(data)
-      if (data?.nickName) setNickname(data.nickName)
+      if (data?.nickName) setNickName(data.nickName)
       if (data?.height) setHeight(data.height)
       if (data?.weight) setWeight(data.weight)
       if (data?.age) setAge(data.age)
@@ -32,18 +40,26 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
   }, [data])
 
   const handleClickSave = () => {
+    const payload = {
+      nickName,
+      height: Number(height),
+      weight: Number(weight),
+      age,
+      gender,
+    } as Request
+    updateUserInfo(payload)
     setIsEdit(false)
   }
 
   return (
     <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px]">
       <Input
-        value={nickname}
+        value={nickName}
         size={"lg"}
         isFullWidth={true}
         readOnly={isEdit ? false : true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setNickname(e.target.value)
+          setNickName(e.target.value)
         }
       />
       <Input

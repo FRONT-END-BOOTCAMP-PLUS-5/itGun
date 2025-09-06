@@ -9,7 +9,7 @@ export const numberOptions: DropdownOption[] = Array.from(
 )
 
 export const genderOptions: DropdownOption[] = [
-  { label: "남", value: "남" },
-  { label: "여", value: "여" },
-  { label: "선택하지 않음", value: "선택하지 않음" },
+  { label: "남", value: "male" },
+  { label: "여", value: "female" },
+  { label: "선택하지 않음", value: "none" },
 ]
