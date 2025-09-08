@@ -10,7 +10,7 @@ import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
 import { Request } from "@/services/user/info/updateUserInfo"
 
-const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   const { data: session } = useSession()
   const [nickName, setNickName] = useState<string>(
     session?.user?.nickName ?? ""
@@ -46,6 +46,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit }) => {
       weight: Number(weight),
       age,
       gender,
+      characterColor: color,
     } as Request
     updateUserInfo(payload)
     setIsEdit(false)
