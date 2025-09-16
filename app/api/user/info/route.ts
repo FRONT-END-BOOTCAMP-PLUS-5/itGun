@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 import { authOptions } from "../../auth/[...nextauth]/auth"
 import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
+import { DeleteUserDto } from "@/backend/application/user/info/dtos/DeleteUserDto"
 
 export async function PUT(request: NextRequest) {
   try {
@@ -50,18 +51,14 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { userId } = body
-
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
     if (!userId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
     const usecase = new DeleteUserUsecase(new PrUserRepository())
-    await usecase.execute(userId)
+    await usecase.execute(new DeleteUserDto(userId))
 
     return NextResponse.json({ message: "success" })
   } catch {
