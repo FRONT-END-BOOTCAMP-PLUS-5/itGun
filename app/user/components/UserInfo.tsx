@@ -1,6 +1,6 @@
 import { Button } from "@/ds/components/atoms/button/Button"
 import { Input } from "@/ds/components/atoms/input/Input"
-import { S2 } from "@/ds/components/atoms/text/TextWrapper"
+import { B1, S2 } from "@/ds/components/atoms/text/TextWrapper"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
@@ -9,6 +9,8 @@ import { genderOptions, numberOptions } from "./constants"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
 import { Request } from "@/services/user/info/updateUserInfo"
+import { useDeleteUserInfo } from "@/hooks/useDeleteUserInfo"
+import { useDialogStore } from "@/hooks/useDialogStore"
 
 const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   const { data: session } = useSession()
@@ -26,8 +28,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     session?.user?.gender ?? "선택하지 않음"
   )
 
+  const { showDialog } = useDialogStore()
   const { data } = useGetUserInfo()
   const { mutate: updateUserInfo } = useUpdateUserInfo()
+  const { mutate: deleteUserInfo } = useDeleteUserInfo()
 
   useEffect(() => {
     if (data) {
@@ -50,6 +54,27 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     } as Request
     updateUserInfo(payload)
     setIsEdit(false)
+  }
+
+  const handleClickWithdrawal = () => {
+    showDialog({
+      message: `캐릭터와 운동기록이 
+      모두 사라집니다. 💔
+      정말 탈퇴하시겠습니까?`,
+      variant: "error",
+      buttons: [
+        {
+          text: "네",
+          onClick: () => {
+            deleteUserInfo()
+          },
+        },
+        {
+          text: "아니오",
+          onClick: () => {},
+        },
+      ],
+    })
   }
 
   return (
@@ -93,6 +118,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
         readOnly={isEdit ? false : true}
         onChange={setGender}
       />
+
+      {isEdit && (
+        <div className="mt-[20px] flex w-full justify-end">
+          <Button variant="ghost" size="xs" onClick={handleClickWithdrawal}>
+            <B1 variant="disable" className="border-b">
+              탈퇴하기
+            </B1>
+          </Button>
+        </div>
+      )}
 
       {isEdit && (
         <div className="absolute bottom-10 w-full">
