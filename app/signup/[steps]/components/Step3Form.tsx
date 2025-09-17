@@ -4,14 +4,14 @@ import { useToastStore } from "@/hooks/useToastStore"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
-import { useSignup } from "../../context/SignupContext"
 import { SignupData, Gender } from "../../context/SignupContext.types"
 import ValidationItem from "./ValidationItem"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import { useSignupStore } from "@/hooks/useSignupStore"
 
 const Step3Form = () => {
-  const { data } = useSignup()
+  const { data } = useSignupStore()
   const { showToast } = useToastStore()
   const router = useRouter()
 
