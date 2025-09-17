@@ -11,4 +11,5 @@ export type DropdownProps = {
   value?: string | number
   onChange?: (value: string | number) => void
   placeholder?: string
+  readOnly?: boolean
 }
