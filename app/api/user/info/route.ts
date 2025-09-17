@@ -2,22 +2,46 @@ import { DeleteUserUsecase } from "@/backend/application/user/info/usecases/Dele
 import { GetUserInfoUsecase } from "@/backend/application/user/info/usecases/GetUserInfoUsecase"
 import { UpdateUserInfoUsecase } from "@/backend/application/user/info/usecases/UpdateUserInfoUsecase"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
+import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
+import { authOptions } from "../../auth/[...nextauth]/auth"
+import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
+import { DeleteUserDto } from "@/backend/application/user/info/dtos/DeleteUserDto"
 
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { user } = body
-
-    if (!user || !user.userId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
+    if (!userId) {
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
+    const body = await request.json()
+    const {
+      password,
+      nickName,
+      height,
+      weight,
+      age,
+      gender,
+      characterColor,
+      characterId,
+    } = body
+
     const usecase = new UpdateUserInfoUsecase(new PrUserRepository())
-    await usecase.execute(user)
+    await usecase.execute(
+      new UpdateUserInfoDto(
+        userId,
+        password ?? undefined,
+        nickName,
+        height ?? undefined,
+        weight ?? undefined,
+        age ?? undefined,
+        gender ?? undefined,
+        characterColor ?? undefined,
+        characterId ?? undefined
+      )
+    )
 
     return NextResponse.json({ message: "success" })
   } catch {
@@ -27,18 +51,14 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { userId } = body
-
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
     if (!userId) {
-      return NextResponse.json(
-        { error: "Invalid request body" },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
     const usecase = new DeleteUserUsecase(new PrUserRepository())
-    await usecase.execute(userId)
+    await usecase.execute(new DeleteUserDto(userId))
 
     return NextResponse.json({ message: "success" })
   } catch {
@@ -47,13 +67,15 @@ export async function DELETE(request: NextRequest) {
 }
 export async function GET(req: NextRequest) {
   try {
-    const body = await req.json()
-    const userId = body.userId
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
     if (!userId) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
+
     const usecase = new GetUserInfoUsecase(new PrUserRepository())
     const result = await usecase.execute({ userId })
+
     if (!result) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
