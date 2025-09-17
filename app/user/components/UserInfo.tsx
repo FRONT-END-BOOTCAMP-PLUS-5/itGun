@@ -53,6 +53,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       characterColor: color,
     } as Request
     updateUserInfo(payload)
+    if (session?.user) {
+      session.user.nickName = nickName
+      session.user.height = Number(height)
+      session.user.weight = Number(weight)
+      session.user.age = Number(age)
+      session.user.gender = String(gender)
+      session.user.characterColor = color
+    }
     setIsEdit(false)
   }
 
@@ -82,6 +90,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       <Input
         value={nickName}
         size={"lg"}
+        className={isEdit ? "text-primary" : "text-secondary"}
         isFullWidth={true}
         readOnly={isEdit ? false : true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -91,6 +100,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       <Input
         value={height}
         size={"lg"}
+        className={isEdit ? "text-primary" : "text-secondary"}
         isFullWidth={true}
         readOnly={isEdit ? false : true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -100,6 +110,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       <Input
         value={weight}
         size={"lg"}
+        className={isEdit ? "text-primary" : "text-secondary"}
         isFullWidth={true}
         readOnly={isEdit ? false : true}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -130,16 +141,18 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       )}
 
       {isEdit && (
-        <div className="absolute bottom-10 w-full">
-          <Button
-            variant="primary"
-            isFullWidth={true}
-            onClick={handleClickSave}
-          >
-            <S2 variant="white-200" fontWeight="bold">
-              저장
-            </S2>
-          </Button>
+        <div className="absolute bottom-[10px] w-full">
+          <div className="-mx-3">
+            <Button
+              variant="primary"
+              isFullWidth={true}
+              onClick={handleClickSave}
+            >
+              <S2 variant="white-200" fontWeight="bold">
+                저장
+              </S2>
+            </Button>
+          </div>
         </div>
       )}
     </div>
