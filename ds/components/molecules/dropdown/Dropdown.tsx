@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
-import type { DropdownOption, DropdownProps } from "./Dropdown.types"
+import React from "react"
 import Icon from "../../atoms/icon/Icon"
 import { dropdownSize } from "../../../styles/tokens/dropdown/size"
-import { B1 } from "../../atoms/text/TextWrapper"
+import { DropdownProps } from "./Dropdown.types"
 
 export const Dropdown: React.FC<DropdownProps> = ({
   size = "md",
@@ -13,83 +12,56 @@ export const Dropdown: React.FC<DropdownProps> = ({
   onChange,
   placeholder = "선택해주세요",
   readOnly = false,
+  className,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedValue, setSelectedValue] = useState<string | number | null>(
-    value || null
-  )
-  const dropdownRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setSelectedValue(value)
-    }
-  }, [value])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent): void => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
-
-  const handleSelect = (option: DropdownOption) => {
-    setSelectedValue(option.value)
-    onChange?.(option.value)
-    setIsOpen(false)
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange?.(e.target.value)
   }
 
-  const selectedOption = options.find(
-    (option) => option.value === selectedValue
-  )
+  const selectClassName = `
+    w-full border-b border-secondary 
+    bg-transparent 
+    text-secondary
+    appearance-none
+    focus:outline-none
+    ${dropdownSize[size]}
+    ${readOnly ? "cursor-default" : "cursor-pointer"}
+    ${className || ""}
+  `.trim()
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        type="button"
-        className={`border-secondary flex w-full items-center justify-between border-b ${dropdownSize[size]}`}
-        onClick={() => {
-          if (!readOnly) setIsOpen(!isOpen)
-        }}
+    <div className="relative flex w-full">
+      <select
+        name={props?.name ? props.name : "dropdown"}
+        value={value || ""}
+        onChange={handleChange}
+        disabled={readOnly}
+        className={selectClassName}
+        {...props}
       >
-        <B1 variant="secondary">
-          {selectedOption ? selectedOption.label : placeholder}
-        </B1>
-        {!readOnly && (
-          <div
-            className={`ml-2 flex h-6 w-6 transform items-center justify-center transition-transform duration-0 ${isOpen ? "rotate-180" : ""}`}
-          >
-            <Icon
-              name="downArrow"
-              color="secondary"
-              fillColor="secondary"
-              size={12}
-              viewBox="0 0 14 8" // 실제 path 크기에 맞게 조정
-            />
-          </div>
+        {placeholder && (
+          <option value="" disabled>
+            {placeholder}
+          </option>
         )}
-      </button>
 
-      {isOpen && (
-        <ul className="bg-white-200 border-secondary absolute z-10 max-h-[97px] w-full overflow-y-auto border border-t-0">
-          {options.map((option) => (
-            <li
-              key={option.value}
-              className="bg-white-200 text-secondary px-2 py-1"
-              onClick={() => handleSelect(option)}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {!readOnly && (
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <Icon
+            name="downArrow"
+            color="secondary"
+            fillColor="secondary"
+            size={12}
+            viewBox="0 0 14 8"
+          />
+        </div>
       )}
     </div>
   )
