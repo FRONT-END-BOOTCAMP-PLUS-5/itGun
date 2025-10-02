@@ -1,0 +1,28 @@
+name: "Build and Deploy to Ubuntu Server Run"
+
+on:
+  push:
+    branches:
+      - main # main 브랜치에 push 가 발생하면
+
+jobs:
+  build:
+    runs-on: [self-hosted, itgun]
+
+    steps:
+      - name: Build Next.js Project
+        run: echo "Build Next.js Project"
+
+  test:
+    runs-on: [self-hosted, itgun]
+
+    steps:
+      - name: Test Next.js Project
+        run: echo "Test Next.js Project"
+
+  deploy:
+    runs-on: [self-hosted, itgun]
+
+    steps:
+      - name: Deploy Next.js Project
+        run: echo "Deploy Next.js Project"

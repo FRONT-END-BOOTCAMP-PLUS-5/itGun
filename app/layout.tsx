@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "잇근으로 득근! 운동기록을 통해 나만의 캐릭터를 성장시켜 보세요.",
   openGraph: {
     title: "ItGun | 잇근 - 운동기록 서비스",
-    url: "http://localhost:3000/",
+    url: "https://itgun.me",
     images: "/opengraph-image.png",
     description:
       "잇근으로 득근! 운동기록을 통해 나만의 캐릭터를 성장시켜 보세요.",
