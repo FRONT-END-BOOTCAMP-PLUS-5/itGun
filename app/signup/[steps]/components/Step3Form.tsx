@@ -4,18 +4,19 @@ import { useToastStore } from "@/hooks/useToastStore"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
-import { useSignup } from "../../context/SignupContext"
 import { SignupData, Gender } from "../../context/SignupContext.types"
 import ValidationItem from "./ValidationItem"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import { useSignupStore } from "@/hooks/useSignupStore"
 
 const Step3Form = () => {
-  const { data } = useSignup()
+  const { data } = useSignupStore()
   const { showToast } = useToastStore()
   const router = useRouter()
 
   const [isPending, startTransition] = useTransition()
+  const [isReadOlny, setIsReadOnly] = useState(false)
   const [formData, setFormData] = useState({
     nickname: "",
     height: "",
@@ -59,6 +60,7 @@ const Step3Form = () => {
   }
 
   const formAction = (formData: SignupData["step3"]) => {
+    setIsReadOnly(true)
     startTransition(async () => {
       const { nickname, height, weight, gender, age } = formData
       const email = data.step1.email
@@ -107,6 +109,7 @@ const Step3Form = () => {
             placeholder="닉네임"
             isFullWidth
             size="lg"
+            readOnly={isReadOlny}
           />
           <div className="flex gap-5">
             <ValidationItem label="20자 이하" isValid={validation.length} />
@@ -125,6 +128,7 @@ const Step3Form = () => {
           placeholder="키"
           isFullWidth
           size="lg"
+          readOnly={isReadOlny}
         />
         <Input
           name="weight"
@@ -135,6 +139,7 @@ const Step3Form = () => {
           placeholder="몸무게"
           isFullWidth
           size="lg"
+          readOnly={isReadOlny}
         />
         <Dropdown
           placeholder="나이"
@@ -144,6 +149,7 @@ const Step3Form = () => {
           }))}
           value={formData.age}
           onChange={handleDropdownChange("age")}
+          readOnly={isReadOlny}
         />
         <Dropdown
           placeholder="성별"
@@ -154,6 +160,7 @@ const Step3Form = () => {
           ]}
           value={formData.gender}
           onChange={handleDropdownChange("gender")}
+          readOnly={isReadOlny}
         />
       </div>
 

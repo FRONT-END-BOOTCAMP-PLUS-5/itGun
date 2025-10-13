@@ -2,9 +2,9 @@ import { Button } from "@/ds/components/atoms/button/Button"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState } from "react"
-import { useSignup } from "../../context/SignupContext"
 import ValidationItem from "./ValidationItem"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import { useSignupStore } from "@/hooks/useSignupStore"
 
 interface ValidatePassword {
   password: string
@@ -13,7 +13,7 @@ interface ValidatePassword {
 
 const Step2Form = () => {
   const router = useRouter()
-  const { updateStep2 } = useSignup()
+  const { set2Data } = useSignupStore()
 
   const [formData, setFormData] = useState({
     password: "",
@@ -52,7 +52,7 @@ const Step2Form = () => {
   const handleNext = () => {
     if (!validation.passwordSuccess) return
 
-    updateStep2({ password: formData.password })
+    set2Data({ password: formData.password })
     router.push("/signup/step3")
   }
 

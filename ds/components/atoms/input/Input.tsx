@@ -13,6 +13,7 @@ export const Input: React.FC<InputProps> = ({
   placeholder,
   validations = [],
   errorRules = [],
+  readOnly = false,
   className,
   onChange,
   ...props
@@ -36,6 +37,7 @@ export const Input: React.FC<InputProps> = ({
     border-b-1 border-[var(--color-secondary)] outline-none font-[var(--color-secondary)]
     ${inputSizes[size]}
     ${isFullWidth ? "w-full" : ""}
+    ${readOnly ? "cursor-default" : ""}
     ${className || ""}
   `.trim()
 
@@ -46,6 +48,7 @@ export const Input: React.FC<InputProps> = ({
         placeholder={placeholder}
         className={combinedClassName}
         onChange={handleChange}
+        readOnly={readOnly}
         {...props}
       />
 
