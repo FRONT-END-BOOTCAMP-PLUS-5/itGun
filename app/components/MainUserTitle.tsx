@@ -2,15 +2,28 @@
 import { H1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSession } from "next-auth/react"
 import CharacterDownloadButton from "@/app/components/CharacterDownloadButton"
+import { useRouter } from "next/navigation"
+import { Button } from "@/ds/components/atoms/button/Button"
 
 const MainUserTitle = () => {
   const { data: session } = useSession()
+  const router = useRouter()
+
   return (
-    <div className="mt-[40px] flex items-center justify-center gap-3 relative">
-      <H1>{session?.user?.nickName ?? "벌키"}님</H1>
+    <div className="relative mt-[40px] flex items-center justify-center gap-3">
+      <Button
+        variant="ghost"
+        size="xs"
+        className="z-2"
+        onClick={() => {
+          router.push("/user")
+        }}
+      >
+        <H1>{session?.user?.nickName ?? "벌키"}님</H1>
+      </Button>
       <CharacterDownloadButton
         userNickName={session?.user?.nickName}
-        className="z-30 absolute -top-10 right-0"
+        className="absolute -top-10 right-0 z-30"
       />
     </div>
   )

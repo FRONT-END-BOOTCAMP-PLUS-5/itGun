@@ -1,6 +1,7 @@
 import { ExerciseRepository } from "@/backend/domain/repositories/ExerciseRepository"
 import prisma from "../../../utils/prisma"
 import { Exercise } from "@/backend/domain/entities/Exercise"
+import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
 export class PrExerciseRepository implements ExerciseRepository {
   async find(options: {
@@ -71,6 +72,21 @@ export class PrExerciseRepository implements ExerciseRepository {
       const total = Number(exercisesData[0]?.total_count || 0)
       const exercises = exercisesData.map((exercise) => this.toDomain(exercise))
       return { exercises, total }
+    } catch (error) {
+      console.error("Database query error:", error)
+      throw error
+    }
+  }
+
+  async findById(id: string, tx?: TransactionClient): Promise<Exercise | null> {
+    try {
+      const client = tx || prisma
+      const detail = await client.exercise.findUnique({
+        where: { id },
+      })
+
+      if (!detail) return null
+      return this.toDomain(detail)
     } catch (error) {
       console.error("Database query error:", error)
       throw error

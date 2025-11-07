@@ -90,7 +90,6 @@ export class PrUserRepository implements UserRepository {
           ...(userData.characterId !== undefined && {
             characterId: userData.characterId,
           }),
-          updatedAt: new Date(),
         },
       })
     } catch (error) {

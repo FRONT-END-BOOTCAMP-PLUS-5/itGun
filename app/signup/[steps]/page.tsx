@@ -5,11 +5,11 @@ import { redirect, useParams } from "next/navigation"
 import Step1Form from "./components/Step1Form"
 import Step2Form from "./components/Step2Form"
 import Step3Form from "./components/Step3Form"
-import { useSignup } from "../context/SignupContext"
 import { useEffect } from "react"
+import { useSignupStore } from "@/hooks/useSignupStore"
 
 const SignupStepPage = () => {
-  const { data } = useSignup()
+  const { data } = useSignupStore()
   const params = useParams()
   const step = params.steps as string
 
