@@ -18,10 +18,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     session?.user?.nickName ?? ""
   )
   const [height, setHeight] = useState<number | string>(
-    session?.user?.height ?? "-"
+    session?.user?.height ?? ""
   )
   const [weight, setWeight] = useState<number | string>(
-    session?.user?.weight ?? "-"
+    session?.user?.weight ?? ""
   )
   const [age, setAge] = useState<number | string>(10)
   const [gender, setGender] = useState<number | string>(
@@ -49,7 +49,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       height: Number(height),
       weight: Number(weight),
       age,
-      gender,
+      gender: gender === "선택하지 않음" ? "none" : gender,
       characterColor: color,
     } as Request
     updateUserInfo(payload)
@@ -97,26 +97,38 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
           setNickName(e.target.value)
         }
       />
-      <Input
-        value={height}
-        size={"lg"}
-        className={isEdit ? "text-primary" : "text-secondary"}
-        isFullWidth={true}
-        readOnly={isEdit ? false : true}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setHeight(e.target.value)
-        }
-      />
-      <Input
-        value={weight}
-        size={"lg"}
-        className={isEdit ? "text-primary" : "text-secondary"}
-        isFullWidth={true}
-        readOnly={isEdit ? false : true}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setWeight(e.target.value)
-        }
-      />
+      <div
+        className={`border-secondary flex items-center justify-between border-b-1`}
+      >
+        <Input
+          value={height}
+          inputMode="numeric"
+          size={"lg"}
+          className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
+          isFullWidth={true}
+          readOnly={isEdit ? false : true}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setHeight(e.target.value)
+          }
+        />
+        <B1 variant={isEdit ? "primary" : "secondary"}>cm</B1>
+      </div>
+      <div
+        className={`border-secondary flex items-center justify-between border-b-1`}
+      >
+        <Input
+          value={weight}
+          inputMode="numeric"
+          size={"lg"}
+          className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
+          isFullWidth={true}
+          readOnly={isEdit ? false : true}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setWeight(e.target.value)
+          }
+        />
+        <B1 variant={isEdit ? "primary" : "secondary"}>kg</B1>
+      </div>
       <Dropdown
         value={age}
         options={numberOptions}
