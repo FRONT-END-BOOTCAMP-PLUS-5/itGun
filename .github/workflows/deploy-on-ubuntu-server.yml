@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, itgun]
+    runs-on: [self-hosted, itgun-runner]
 
     steps:
       - name: Build Next.js Project
@@ -25,4 +25,4 @@ jobs:
 
     steps:
       - name: Deploy Next.js Project
-        run: echo "Deploy Next.js Project"
+        run: /home/itgun/www/itGun/next-app-update.sh
