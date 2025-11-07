@@ -134,12 +134,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
         options={numberOptions}
         readOnly={isEdit ? false : true}
         onChange={setAge}
+        className={isEdit ? "!text-primary" : ""}
       />
       <Dropdown
         value={gender}
         options={genderOptions}
         readOnly={isEdit ? false : true}
         onChange={setGender}
+        className={isEdit ? "!text-primary" : ""}
       />
 
       {isEdit && (

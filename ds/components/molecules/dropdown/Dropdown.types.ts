@@ -5,11 +5,16 @@ export type DropdownOption = {
   value: string | number
 }
 
-export type DropdownProps = {
+export interface DropdownProps
+  extends Omit<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    "size" | "onChange"
+  > {
   size?: DropdownSize
+  onChange?: (value: string | number) => void
   options: DropdownOption[]
   value?: string | number
-  onChange?: (value: string | number) => void
   placeholder?: string
   readOnly?: boolean
+  className?: string
 }
