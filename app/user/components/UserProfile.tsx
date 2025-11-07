@@ -53,7 +53,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
             <HexColorPicker color={color} onChange={setColor} />
           </div>
         )}
-        <Button variant="ghost" size="xs" onClick={handleProfileClick}>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={handleProfileClick}
+          className={`${isEdit ? "cursor-pointer" : "!cursor-default"}`}
+        >
           <div className="flex aspect-square w-[95px] items-center justify-center rounded-full bg-[var(--color-disable)]">
             <Icon
               name="burkyFace"
@@ -63,7 +68,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
             />
           </div>
         </Button>
-        <H2>{session?.user?.nickName || `벌키`}</H2>
+        <H2 className="cursor-default">{session?.user?.nickName || `벌키`}</H2>
       </div>
       {!isEdit && (
         <Button variant="ghost" size="xs" onClick={handleSettingClick}>
