@@ -7,9 +7,11 @@ import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
 import LogList from "@/app/user/logs/components/LogList"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { Log } from "@/app/user/logs/types"
+import { useSearchParams } from "next/navigation"
 
 const UserLogsPage = () => {
   const calendarRef = useRef<FullCalendar | null>(null)
+  const searchParams = useSearchParams()
 
   const [logsOnMonth, setLogsOnMonth] = useState<Log[]>([])
   const [logsToDisplay, setLogsToDisplay] = useState<Log[]>([])
@@ -17,6 +19,13 @@ const UserLogsPage = () => {
   const [isSlideUp, setIsSlideUp] = useState<boolean>(false)
 
   const [calMonth, setCalMonth] = useState<string>(() => {
+    const year = searchParams.get("year")
+    const month = searchParams.get("month")
+    
+    if (year && month) {
+      return `${year}.${month.padStart(2, "0")}`
+    }
+
     const now = new Date()
     return `${now.getFullYear()}.${(now.getMonth() + 1).toString().padStart(2, "0")}`
   })
