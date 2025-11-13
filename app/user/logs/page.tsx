@@ -32,6 +32,17 @@ const UserLogsPage = () => {
 
   const { data, isFetching } = useGetUserLogs({ calMonth })
 
+  // calMonth 변경 시 FullCalendar 동기화
+  // - 상세 페이지에서 뒤로가기 통해 복귀한 경우!!
+  // - URL 통해 직접 접근한 경우
+  useEffect(() => {
+    if (calendarRef.current && calMonth) {
+      const [year, month] = calMonth.split(".")
+      const targetDate = new Date(parseInt(year), parseInt(month) - 1, 1)
+      calendarRef.current.getApi().gotoDate(targetDate)
+    }
+  }, [calMonth])
+
   const setInitData = () => {
     const logs = data?.logs?.length ? data.logs : []
     setLogsOnMonth(logs)
