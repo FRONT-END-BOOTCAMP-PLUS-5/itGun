@@ -19,6 +19,10 @@ export const CalendarHeader = ({
       setSelectedDate(null)
     }
   }
+  const isCurrentMonth = () => {
+    const now = new Date()
+    return calMonth === `${now.getFullYear()}.${(now.getMonth() + 1).toString().padStart(2, "0")}`
+  }
 
   const handleNext = () => {
     if (calendarRef.current) {
@@ -52,7 +56,7 @@ export const CalendarHeader = ({
         <div className="title">
           <H1>{calMonth}</H1>
         </div>
-        <div className="next-button">
+        <div className={`next-button ${isCurrentMonth() ? "invisible" : "visible"}`}>
           <Button variant="ghost" size="xs" onClick={handleNext}>
             <Icon name="rightArrow" size={24} />
           </Button>
