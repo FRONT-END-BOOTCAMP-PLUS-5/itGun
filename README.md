@@ -1,4 +1,4 @@
-# IT-Geun (잇근) 💪
+# IT-Gun (잇근) 💪
 
 - 배포: **[itgun](https://itgun.me)**
 - 테스트 계정: `id: lion@lion.com` / `pwd: lion1234`
