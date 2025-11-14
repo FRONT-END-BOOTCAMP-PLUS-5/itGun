@@ -3,7 +3,7 @@
 import React from "react"
 import MenuHeader from "./components/MenuHeader"
 import MenuList from "./components/MenuList"
-import LogoutButton from "./components/LogoutButton"
+import LogInAndOutButton from "./components/LogInAndOutButton"
 import { useSession } from "next-auth/react"
 
 const MenuPage = () => {
@@ -14,7 +14,7 @@ const MenuPage = () => {
         <MenuHeader />
         <MenuList />
       </div>
-      {session?.user && <LogoutButton />}
+      <LogInAndOutButton type={session?.user ? 0 : 1} />
     </div>
   )
 }
