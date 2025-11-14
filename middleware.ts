@@ -2,8 +2,15 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
 
-const protectedRoutes = ["/", "/api", "/logs", "/menus", "/user", "/exercises"]
-const guestOnlyRoutes = ["/landing", "/signup", "/signin"]
+const protectedRoutes = ["/api", "/logs", "/user"]
+const guestOnlyRoutes = [
+  "/",
+  "/landing",
+  "/menus",
+  "/exercises",
+  "/signup",
+  "/signin",
+]
 const publicApiRoutes = ["/api/user/email", "/api/auth"]
 
 function matchesRoutes(pathname: string, routes: string[]): boolean {
