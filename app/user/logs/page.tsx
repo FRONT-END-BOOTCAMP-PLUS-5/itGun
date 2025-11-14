@@ -68,7 +68,7 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="relative flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
+    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px] overflow-hidden">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
@@ -76,30 +76,30 @@ const UserLogsPage = () => {
           setCalMonth={setCalMonth}
           setSelectedDate={setSelectedDate}
         />
-        <CalendarGrid
-          calendarRef={calendarRef}
-          logsOnMonth={logsOnMonth}
-          calTypeMaps={calTypeMaps}
-          onIconClick={handleIconClick}
-        />
       </div>
-      <div
-        className={`min-h-0 flex-1 touch-pan-y transition-all duration-300 ease-out z-10 
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <div className={`${isSlideUp ? "h-0" : "flex-shrink-0"}`}>
+          <CalendarGrid
+            calendarRef={calendarRef}
+            logsOnMonth={logsOnMonth}
+            calTypeMaps={calTypeMaps}
+            onIconClick={handleIconClick}
+          />
+        </div>
+        <div
+          className={`bg-white-100 min-h-0 flex-1 z-10 
             rounded-t-lg border-t-1 border-x-1 border-[var(--color-secondary)]
-          ${ isSlideUp
-            ? "bg-white-100 animate-log-list-slide-up absolute inset-x-0 top-[50px] bottom-0 "
-            : "animate-log-list-slide-down"
-        }`}
-        
-      >
-        <LogList
-          isFetching={isFetching}
-          logsToDisplay={logsToDisplay}
-          selectedDate={selectedDate}
-          calTypeMaps={calTypeMaps}
-          isSlideUp={isSlideUp}
-          setIsSlideUp={setIsSlideUp}
-        />
+            ${isSlideUp ? "animate-log-list-expand" : "mt-2 animate-log-list-collapse"}`}
+        >
+          <LogList
+            isFetching={isFetching}
+            logsToDisplay={logsToDisplay}
+            selectedDate={selectedDate}
+            calTypeMaps={calTypeMaps}
+            isSlideUp={isSlideUp}
+            setIsSlideUp={setIsSlideUp}
+          />
+        </div>
       </div>
     </div>
   )
