@@ -5,7 +5,12 @@ import { blink, bounce, dumbbellCurl, wave } from "@/utils/animations"
 import { CharacterAsset } from "@/ds/components/atoms/character/Character.types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { useGetUserCharacter } from "@/hooks/useGetUserCharacter"
-import { matchAssetLevels, sortAssets } from "@/utils/assets"
+import {
+  matchAssetLevels,
+  sortAssets,
+  svgToCharacterAsset,
+} from "@/utils/assets"
+import { burky } from "@/static/svgs/burky"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
@@ -14,10 +19,15 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   decorations = [],
 }) => {
   const { data } = useGetUserCharacter(date ? { date } : undefined)
-
-  const [assets, setAssets] = useState<CharacterAsset[]>([])
+  const { face, torso, arms, legs } = burky
+  const [assets, setAssets] = useState<CharacterAsset[]>([
+    svgToCharacterAsset("legs", legs),
+    svgToCharacterAsset("face", face),
+    svgToCharacterAsset("torso", torso),
+    svgToCharacterAsset("arms", arms),
+  ])
   const [levels, setLevels] = useState<Record<string, number>>()
-  const [color, setColor] = useState("")
+  const [color, setColor] = useState("#cdc1ff")
 
   useEffect(() => {
     if (data) {
