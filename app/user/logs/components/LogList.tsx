@@ -16,10 +16,6 @@ const LogList = ({
   isSlideUp,
   setIsSlideUp,
 }: LogListProps) => {
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsSlideUp(!isSlideUp)
-  }
-
   const handleClick = (e: React.MouseEvent) => {
     setIsSlideUp(!isSlideUp)
   }
@@ -27,7 +23,6 @@ const LogList = ({
     <div className="relative flex h-full flex-col gap-[9px] overflow-hidden px-2 pt-4">
       <div
         className="sticky top-0 cursor-pointer px-2"
-        onTouchStart={handleTouchStart}
         onClick={handleClick}
       >
         <S1 className="flex items-center gap-2">
