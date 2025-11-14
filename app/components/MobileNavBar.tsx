@@ -1,18 +1,24 @@
 "use client"
 import { Button } from "@/ds/components/atoms/button/Button"
 import Icon from "@/ds/components/atoms/icon/Icon"
+import { useLoginGuard } from "@/hooks/useLoginGuard"
 import { useRouter } from "next/navigation"
 
 const MobileNavBar = () => {
   const router = useRouter()
+  const loginGuard = useLoginGuard()
   const handleClickCalendar = () => {
-    router.push("/user/logs")
+    loginGuard(() => {
+      router.push("/user/logs")
+    })
   }
   const handleClickMenu = () => {
     router.push("/menus")
   }
   const handleClickHearts = () => {
-    router.push("/logs")
+    loginGuard(() => {
+      router.push("/logs")
+    })
   }
 
   return (
