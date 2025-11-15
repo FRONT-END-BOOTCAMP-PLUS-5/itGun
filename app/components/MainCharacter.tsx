@@ -11,6 +11,7 @@ import {
   svgToCharacterAsset,
 } from "@/utils/assets"
 import { burky } from "@/static/svgs/burky"
+import { useSession } from "next-auth/react"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
@@ -18,7 +19,10 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   date,
   decorations = [],
 }) => {
-  const { data } = useGetUserCharacter(date ? { date } : undefined)
+  const { data: session } = useSession()
+  const { data } = useGetUserCharacter(date ? { date } : undefined, {
+    enabled: session?.user ? true : false,
+  })
   const { face, torso, arms, legs } = burky
   const [assets, setAssets] = useState<CharacterAsset[]>([
     svgToCharacterAsset("legs", legs),

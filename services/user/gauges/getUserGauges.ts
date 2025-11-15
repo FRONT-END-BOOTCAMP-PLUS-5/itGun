@@ -1,6 +1,6 @@
 import { api } from "@/utils/api/apiClient"
 
-interface Response {
+export interface Response {
   id: number
   arms: number
   legs: number
