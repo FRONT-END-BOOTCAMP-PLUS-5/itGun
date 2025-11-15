@@ -46,7 +46,13 @@ const Tooltip: React.FC<TooltipProps> = ({
     .join(" ")
     .trim()
 
-  const textClasses = ["whitespace-nowrap", tooltipSize, variantClasses.text]
+  const textClasses = [
+    "whitespace-pre-line",
+    "text-center",
+    "md:text-center",
+    tooltipSize,
+    variantClasses.text,
+  ]
     .join(" ")
     .trim()
 
