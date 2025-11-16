@@ -7,8 +7,11 @@ import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
 import LogList from "@/app/user/logs/components/LogList"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { Log } from "@/app/user/logs/types"
+import { useSession } from "next-auth/react"
+import Tooltip from "@/ds/components/atoms/tooltip/Tooltip"
 
 const UserLogsPage = () => {
+  const { data: session } = useSession()
   const calendarRef = useRef<FullCalendar | null>(null)
 
   const [logsOnMonth, setLogsOnMonth] = useState<Log[]>([])
@@ -21,7 +24,10 @@ const UserLogsPage = () => {
     return `${now.getFullYear()}.${(now.getMonth() + 1).toString().padStart(2, "0")}`
   })
 
-  const { data, isFetching } = useGetUserLogs({ calMonth })
+  const { data, isFetching } = useGetUserLogs(
+    { calMonth },
+    { enabled: session?.user ? true : false }
+  )
 
   const setInitData = () => {
     const logs = data?.logs?.length ? data.logs : []
@@ -84,14 +90,20 @@ const UserLogsPage = () => {
         />
       </div>
       <div
-        className={`min-h-0 flex-1 touch-pan-y transition-all duration-300 ease-out z-10 
-            rounded-t-lg border-t-1 border-x-1 border-[var(--color-secondary)]
-          ${ isSlideUp
-            ? "bg-white-100 animate-log-list-slide-up absolute inset-x-0 top-[50px] bottom-0 "
+        className={`relative z-10 min-h-0 flex-1 touch-pan-y rounded-t-lg border-x-1 border-t-1 border-[var(--color-secondary)] transition-all duration-300 ease-out ${
+          isSlideUp
+            ? "bg-white-100 animate-log-list-slide-up absolute inset-x-0 top-[50px] bottom-0"
             : "animate-log-list-slide-down"
         }`}
-        
       >
+        {!session?.user && (
+          <Tooltip
+            label={`로그인하면 운동 기록을 
+              달력에서 한 눈에 볼 수 있어요!`}
+            position="top"
+            variant="success"
+          />
+        )}
         <LogList
           isFetching={isFetching}
           logsToDisplay={logsToDisplay}
