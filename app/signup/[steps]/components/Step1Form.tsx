@@ -48,7 +48,7 @@ function Step1Form() {
         setValidation({ emailError: "", emailSuccess: true })
       } else {
         setValidation({
-          emailError: "이미 사용중인 이메일입니다",
+          emailError: result.message,
           emailSuccess: false,
         })
       }
