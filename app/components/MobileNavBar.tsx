@@ -8,9 +8,7 @@ const MobileNavBar = () => {
   const router = useRouter()
   const loginGuard = useLoginGuard()
   const handleClickCalendar = () => {
-    loginGuard(() => {
-      router.push("/user/logs")
-    })
+    router.push("/user/logs")
   }
   const handleClickMenu = () => {
     router.push("/menus")
