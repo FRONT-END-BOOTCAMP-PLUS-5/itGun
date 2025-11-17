@@ -6,6 +6,7 @@ import { CharacterAsset } from "@/ds/components/atoms/character/Character.types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { useGetUserCharacter } from "@/hooks/useGetUserCharacter"
 import { matchAssetLevels, sortAssets } from "@/utils/assets"
+import { useCharacterStore } from "@/hooks/useCharacterStore"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
@@ -14,6 +15,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   decorations = [],
 }) => {
   const { data } = useGetUserCharacter(date ? { date } : undefined)
+  const { setOriginalCharacter } = useCharacterStore()
 
   const [assets, setAssets] = useState<CharacterAsset[]>([])
   const [levels, setLevels] = useState<Record<string, number>>()
@@ -22,14 +24,20 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   useEffect(() => {
     if (data) {
       if (data.assets) {
-        setAssets(sortAssets([...data.assets, ...decorations]))
+        const originalAssets = sortAssets([...data.assets, ...decorations])
+        setAssets(originalAssets)
         setLevels(matchAssetLevels(data.assets))
-      }
-      if (data.characterColor) {
-        setColor(data.characterColor)
+
+        let originColor = "#fff"
+        if (data.characterColor) {
+          originColor = data.characterColor
+        }
+
+        setColor(originColor)
+        setOriginalCharacter(originalAssets, originColor)
       }
     }
-  }, [data])
+  }, [data, decorations, setOriginalCharacter])
 
   const defaultAnimation = () => {
     blink("eyes")
