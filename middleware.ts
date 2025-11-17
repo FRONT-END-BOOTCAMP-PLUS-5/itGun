@@ -2,8 +2,9 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
 
-const protectedRoutes = ["/", "/api", "/logs", "/menus", "/user", "/exercises"]
-const guestOnlyRoutes = ["/landing", "/signup", "/signin"]
+const protectedPrefixes = ["/api"]
+const protectedExact = ["/user"]
+const guestOnlyRoutes = ["/signup", "/signin"]
 const publicApiRoutes = ["/api/user/email", "/api/auth"]
 
 function matchesRoutes(pathname: string, routes: string[]): boolean {
@@ -21,9 +22,12 @@ export async function middleware(request: NextRequest) {
   })
 
   if (!token) {
+    const isProtected =
+      matchesRoutes(pathname, protectedPrefixes) ||
+      protectedExact.includes(pathname)
     if (
       !matchesRoutes(pathname, publicApiRoutes) &&
-      matchesRoutes(pathname, protectedRoutes)
+      isProtected
     ) {
       return NextResponse.redirect(new URL("/landing", request.url))
     }

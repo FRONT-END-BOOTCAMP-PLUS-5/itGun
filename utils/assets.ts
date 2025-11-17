@@ -1,3 +1,4 @@
+import { renderToString } from "react-dom/server"
 export const sortAssets = <T extends { type: string }>(assets: T[]): T[] => {
   const getOrder = (type: string) => {
     switch (type) {
@@ -26,4 +27,16 @@ export const matchAssetLevels = <T extends { type: string; level: number }>(
     },
     {} as Record<string, number>
   )
+}
+
+export const svgToCharacterAsset = (
+  type: string,
+  svg: React.JSX.Element,
+  level: number = 1
+) => {
+  return {
+    type: type,
+    level: level,
+    svg: renderToString(svg),
+  } as CharacterAsset
 }

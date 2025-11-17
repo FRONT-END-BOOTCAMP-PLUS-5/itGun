@@ -1,4 +1,4 @@
-# IT-Geun (잇근) 💪
+# IT-Gun (잇근) 💪
 
 - 배포: **[itgun](https://itgun.me)**
 - 테스트 계정: `id: lion@lion.com` / `pwd: lion1234`
@@ -105,7 +105,7 @@
 ### 4. **CI/CD 파이프라인 자동화 (`/.github/workflows`)**
 
 - `main` 브랜치에 Push 또는 Pull Request가 발생할 때마다 **GitHub Actions**가 자동으로 `ESLint`와 `Prettier`를 실행하여 코드 품질을 검사(CI)합니다.
-- 테스트를 통과한 코드는 서버에 자동으로 배포(CD)되도록 파이프라인을 구축하여 안정적이고 신속한 배포 프로세스를 구현했습니다.(doing...)
+- `main` 브랜치에 머지된 코드는 서버에 자동으로 배포(CD)되도록 파이프라인을 구축하여 안정적이고 신속한 배포 프로세스를 구현했습니다.
 
 <br/>
 

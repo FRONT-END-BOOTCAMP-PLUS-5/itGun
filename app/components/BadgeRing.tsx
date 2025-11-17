@@ -8,9 +8,14 @@ import { useGetUserBadges } from "@/hooks/useGetUserBadges"
 import { colors } from "@/static/colors"
 import { useRouter } from "next/navigation"
 import { Button } from "@/ds/components/atoms/button/Button"
+import { useSession } from "next-auth/react"
 
 const BadgeRing = ({}) => {
-  const { data } = useGetUserBadges({ limit: 6 })
+  const { data: session } = useSession()
+  const { data } = useGetUserBadges(
+    { limit: 6 },
+    { enabled: session?.user ? true : false }
+  )
   const router = useRouter()
   gsap.registerPlugin(MotionPathPlugin)
   gsap.registerPlugin(useGSAP)

@@ -4,6 +4,7 @@ import { Button } from "@/ds/components/atoms/button/Button"
 import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { CalendarHeaderProps } from "@/app/user/logs/types"
+import { useRouter } from "next/navigation"
 
 export const CalendarHeader = ({
   calendarRef,
@@ -11,12 +12,19 @@ export const CalendarHeader = ({
   setCalMonth,
   setSelectedDate,
 }: CalendarHeaderProps) => {
+  const router = useRouter()
+
   const setNewMonthTitle = () => {
     if (calendarRef.current) {
       const date = calendarRef.current.getApi().getDate()
-      const newMonth = `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, "0")}`
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      const newMonth = `${year}.${month.toString().padStart(2, "0")}`
+      
       setCalMonth(newMonth)
       setSelectedDate(null)
+
+      router.replace(`/user/logs?year=${year}&month=${month}`)    
     }
   }
   const isCurrentMonth = () => {

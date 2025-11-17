@@ -13,7 +13,7 @@ export interface UserBadge {
   latestEarnedAt: Date
 }
 
-interface Response {
+export interface Response {
   badges: Badge[]
   userBadges: UserBadge[]
 }
