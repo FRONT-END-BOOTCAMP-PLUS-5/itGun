@@ -86,7 +86,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   }
 
   return (
-    <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px]">
+    <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px] px-[4px]">
       <Input
         value={nickName}
         size={"lg"}

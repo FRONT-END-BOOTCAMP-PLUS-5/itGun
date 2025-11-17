@@ -12,6 +12,7 @@ import {
 } from "@/utils/assets"
 import { burky } from "@/static/svgs/burky"
 import { useSession } from "next-auth/react"
+import { useCharacterStore } from "@/hooks/useCharacterStore"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
@@ -19,6 +20,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   date,
   decorations = [],
 }) => {
+  const { setOriginalCharacter } = useCharacterStore()
   const { data: session } = useSession()
   const { data } = useGetUserCharacter(date ? { date } : undefined, {
     enabled: session?.user ? true : false,
@@ -36,14 +38,20 @@ const MainCharacter: React.FC<MainCharacterProps> = ({
   useEffect(() => {
     if (data) {
       if (data.assets) {
-        setAssets(sortAssets([...data.assets, ...decorations]))
+        const originalAssets = sortAssets([...data.assets, ...decorations])
+        setAssets(originalAssets)
         setLevels(matchAssetLevels(data.assets))
-      }
-      if (data.characterColor) {
-        setColor(data.characterColor)
+
+        let originColor = "#fff"
+        if (data.characterColor) {
+          originColor = data.characterColor
+        }
+
+        setColor(originColor)
+        setOriginalCharacter(originalAssets, originColor)
       }
     }
-  }, [data])
+  }, [data, decorations, setOriginalCharacter])
 
   const defaultAnimation = () => {
     blink("eyes")
