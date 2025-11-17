@@ -94,7 +94,7 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="relative flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px]">
+    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px] overflow-hidden">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
@@ -102,36 +102,38 @@ const UserLogsPage = () => {
           setCalMonth={setCalMonth}
           setSelectedDate={setSelectedDate}
         />
-        <CalendarGrid
-          calendarRef={calendarRef}
-          logsOnMonth={logsOnMonth}
-          calTypeMaps={calTypeMaps}
-          onIconClick={handleIconClick}
-        />
       </div>
-      <div
-        className={`relative z-10 min-h-0 flex-1 touch-pan-y rounded-t-lg border-x-1 border-t-1 border-[var(--color-secondary)] transition-all duration-300 ease-out ${
-          isSlideUp
-            ? "bg-white-100 animate-log-list-slide-up absolute inset-x-0 top-[50px] bottom-0"
-            : "animate-log-list-slide-down"
-        }`}
-      >
-        {!session?.user && (
-          <Tooltip
-            label={`로그인하면 운동 기록을 
-              달력에서 한 눈에 볼 수 있어요!`}
-            position="top"
-            variant="success"
+      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <div className={`${isSlideUp ? "h-0" : "flex-shrink-0"}`}>
+          <CalendarGrid
+            calendarRef={calendarRef}
+            logsOnMonth={logsOnMonth}
+            calTypeMaps={calTypeMaps}
+            onIconClick={handleIconClick}
           />
-        )}
-        <LogList
-          isFetching={isFetching}
-          logsToDisplay={logsToDisplay}
-          selectedDate={selectedDate}
-          calTypeMaps={calTypeMaps}
-          isSlideUp={isSlideUp}
-          setIsSlideUp={setIsSlideUp}
-        />
+        </div>
+        <div
+          className={`bg-white-100 min-h-0 flex-1 z-10 
+            rounded-t-lg border-t-1 border-x-1 border-[var(--color-secondary)]
+            ${isSlideUp ? "animate-log-list-expand" : "mt-2 animate-log-list-collapse"}`}
+        >
+          {!session?.user && (
+            <Tooltip
+              label={`로그인하면 운동 기록을 
+                달력에서 한 눈에 볼 수 있어요!`}
+              position="top"
+              variant="success"
+            />
+          )}
+          <LogList
+            isFetching={isFetching}
+            logsToDisplay={logsToDisplay}
+            selectedDate={selectedDate}
+            calTypeMaps={calTypeMaps}
+            isSlideUp={isSlideUp}
+            setIsSlideUp={setIsSlideUp}
+          />
+        </div>
       </div>
     </div>
   )
