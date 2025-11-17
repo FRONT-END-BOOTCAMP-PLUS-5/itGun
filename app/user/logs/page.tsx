@@ -7,9 +7,11 @@ import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
 import LogList from "@/app/user/logs/components/LogList"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { Log } from "@/app/user/logs/types"
+import { useSearchParams } from "next/navigation"
 
 const UserLogsPage = () => {
   const calendarRef = useRef<FullCalendar | null>(null)
+  const searchParams = useSearchParams()
 
   const [logsOnMonth, setLogsOnMonth] = useState<Log[]>([])
   const [logsToDisplay, setLogsToDisplay] = useState<Log[]>([])
@@ -17,11 +19,29 @@ const UserLogsPage = () => {
   const [isSlideUp, setIsSlideUp] = useState<boolean>(false)
 
   const [calMonth, setCalMonth] = useState<string>(() => {
+    const year = searchParams.get("year")
+    const month = searchParams.get("month")
+    
+    if (year && month) {
+      return `${year}.${month.padStart(2, "0")}`
+    }
+
     const now = new Date()
     return `${now.getFullYear()}.${(now.getMonth() + 1).toString().padStart(2, "0")}`
   })
 
   const { data, isFetching } = useGetUserLogs({ calMonth })
+
+  // calMonth 변경 시 FullCalendar 동기화
+  // - 상세 페이지에서 뒤로가기 통해 복귀한 경우!!
+  // - URL 통해 직접 접근한 경우
+  useEffect(() => {
+    if (calendarRef.current && calMonth) {
+      const [year, month] = calMonth.split(".")
+      const targetDate = new Date(parseInt(year), parseInt(month) - 1, 1)
+      calendarRef.current.getApi().gotoDate(targetDate)
+    }
+  }, [calMonth])
 
   const setInitData = () => {
     const logs = data?.logs?.length ? data.logs : []
