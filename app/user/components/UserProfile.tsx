@@ -46,7 +46,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   }, [isOpenColorPicker])
 
   return (
-    <div className="flex w-full justify-between">
+    <div className="flex w-full justify-between py-1">
       <div className="relative flex items-center gap-2">
         {isOpenColorPicker && (
           <div ref={colorPickerRef} className="absolute top-20 left-10 z-10">
@@ -57,7 +57,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           variant="ghost"
           size="xs"
           onClick={handleProfileClick}
-          className={`${isEdit ? "cursor-pointer" : "!cursor-default"}`}
+          className={`${isEdit ? "cursor-pointer" : "!cursor-default"} !px-0 !py-0`}
         >
           <div className="flex aspect-square w-[95px] items-center justify-center rounded-full bg-[var(--color-disable)]">
             <Icon
