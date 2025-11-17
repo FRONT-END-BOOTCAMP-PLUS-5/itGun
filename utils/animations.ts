@@ -1,17 +1,27 @@
 import gsap from "gsap"
 
-export const blink = (className: string) => {
-  const timeline = gsap.timeline({ repeat: -1 })
-  timeline.to(`#${className}`, {
-    scaleY: 0,
-    transformOrigin: "0% 50%",
-    duration: 0.8,
-  })
-  timeline.to(`#${className}`, {
-    scaleY: 1,
-    transformOrigin: "0% 50%",
-    duration: 0.8,
-  })
+const isExistTarget = (id: string | string[]) => {
+  let targets = gsap.utils.toArray(
+    typeof id === "string" ? `#${id}` : id.map((item) => `#${item}`)
+  )
+
+  return targets.length > 0
+}
+
+export const blink = (id: string) => {
+  if (isExistTarget(id)) {
+    const timeline = gsap.timeline({ repeat: -1 })
+    timeline.to(`#${id}`, {
+      scaleY: 0,
+      transformOrigin: "0% 50%",
+      duration: 0.8,
+    })
+    timeline.to(`#${id}`, {
+      scaleY: 1,
+      transformOrigin: "0% 50%",
+      duration: 0.8,
+    })
+  }
 }
 
 export const wave = (
@@ -20,32 +30,34 @@ export const wave = (
   angle?: number,
   z?: number
 ) => {
-  gsap.from(`#${id}`, {
-    rotation: "+=120",
-    duration: 1,
-    transformOrigin: "top center",
-  })
-  const timeline = gsap.timeline({ repeat: repeat })
-  timeline.to(`#${id}`, {
-    rotation: angle ? `+=${angle}` : "+=20",
-    transformOrigin: "right top",
-    duration: 0.5,
-    zIndex: z ? z : 10,
-  })
-  timeline.to(`#${id}`, {
-    rotation: angle ? `-=${angle}` : "-=20",
-    transformOrigin: "right top",
-    duration: 0.5,
-    zIndex: z ? z : 10,
-  })
-
-  if (repeat !== -1) {
-    gsap.to(`#${id}`, {
-      rotation: "-=105",
+  if (isExistTarget(id)) {
+    gsap.from(`#${id}`, {
+      rotation: "+=120",
       duration: 1,
       transformOrigin: "top center",
-      delay: 3,
     })
+    const timeline = gsap.timeline({ repeat: repeat })
+    timeline.to(`#${id}`, {
+      rotation: angle ? `+=${angle}` : "+=20",
+      transformOrigin: "right top",
+      duration: 0.5,
+      zIndex: z ? z : 10,
+    })
+    timeline.to(`#${id}`, {
+      rotation: angle ? `-=${angle}` : "-=20",
+      transformOrigin: "right top",
+      duration: 0.5,
+      zIndex: z ? z : 10,
+    })
+
+    if (repeat !== -1) {
+      gsap.to(`#${id}`, {
+        rotation: "-=105",
+        duration: 1,
+        transformOrigin: "top center",
+        delay: 3,
+      })
+    }
   }
 }
 
@@ -60,26 +72,28 @@ export const armsShake = (
 }
 
 export const dumbbellShake = (id: string, angle?: number, z?: number) => {
-  const origin = 23
-  gsap.from(`#${id}`, {
-    rotation: "+=120",
-    duration: 1,
-    transformOrigin: `center -${origin}px`,
-    zIndex: z ? z : 10,
-  })
-  const timeline = gsap.timeline({ repeat: -1 })
-  timeline.to(`#${id}`, {
-    rotation: angle ? `+=${angle}` : "+=20",
-    transformOrigin: `center -${origin}px`,
-    duration: 0.5,
-    zIndex: z ? z : 10,
-  })
-  timeline.to(`#${id}`, {
-    rotation: angle ? `-=${angle}` : "-=20",
-    transformOrigin: `center -${origin}px`,
-    duration: 0.5,
-    zIndex: z ? z : 10,
-  })
+  if (isExistTarget(id)) {
+    const origin = 23
+    gsap.from(`#${id}`, {
+      rotation: "+=120",
+      duration: 1,
+      transformOrigin: `center -${origin}px`,
+      zIndex: z ? z : 10,
+    })
+    const timeline = gsap.timeline({ repeat: -1 })
+    timeline.to(`#${id}`, {
+      rotation: angle ? `+=${angle}` : "+=20",
+      transformOrigin: `center -${origin}px`,
+      duration: 0.5,
+      zIndex: z ? z : 10,
+    })
+    timeline.to(`#${id}`, {
+      rotation: angle ? `-=${angle}` : "-=20",
+      transformOrigin: `center -${origin}px`,
+      duration: 0.5,
+      zIndex: z ? z : 10,
+    })
+  }
 }
 
 export const dumbbellCurl = (armlevel: number = 0, angle: number = 40) => {
@@ -95,39 +109,63 @@ export const dumbbellCurl = (armlevel: number = 0, angle: number = 40) => {
 }
 
 export const sweat = (id: string) => {
-  let timeline = gsap.timeline({ repeat: -1 })
-  timeline.to(`#${id}`, { y: "+=4", duration: 0.6 })
-  timeline.to(`#${id}`, { y: "-=4", duration: 0.6 })
+  if (isExistTarget(id)) {
+    let timeline = gsap.timeline({ repeat: -1 })
+    timeline.to(`#${id}`, { y: "+=4", duration: 0.6 })
+    timeline.to(`#${id}`, { y: "-=4", duration: 0.6 })
+  }
 }
 
 export const moveByRingPath = <T>(array: T[]) => {
   const timeline = gsap.timeline()
 
-  array.forEach((item, index) =>
-    timeline.to(`#badge-${index}`, {
-      duration: 0.6 - index * 0.05,
-      opacity: 1,
-      ease: "power1.inOut",
-      motionPath: {
-        path: "#path",
-        align: "#path",
-        autoRotate: false,
-        alignOrigin: [0.5, 0.5],
-        start: 0,
-        end: 1 - (1 / (array.length + 1)) * (1 + index),
-      },
-    })
-  )
+  array.forEach((item, index) => {
+    if (isExistTarget(`badge-${index}`)) {
+      timeline.to(`#badge-${index}`, {
+        duration: 0.6 - index * 0.05,
+        opacity: 1,
+        ease: "power1.inOut",
+        motionPath: {
+          path: "#path",
+          align: "#path",
+          autoRotate: false,
+          alignOrigin: [0.5, 0.5],
+          start: 0,
+          end: 1 - (1 / (array.length + 1)) * (1 + index),
+        },
+      })
+    }
+  })
 }
 
 export const bounce = <T>(array: T[]) => {
   array.forEach((item, index) => {
-    gsap
-      .fromTo(
-        `#${item}`,
-        { y: "+=5" },
-        { duration: 1.2, y: "-=5", ease: "bounce" }
-      )
-      .repeat(-1)
+    if (isExistTarget(item as string)) {
+      gsap
+        .fromTo(
+          `#${item}`,
+          { y: "+=5" },
+          { duration: 1.2, y: "-=5", ease: "bounce" }
+        )
+        .repeat(-1)
+    }
   })
+}
+
+export const loadingDots = (ids: string[]) => {
+  if (isExistTarget(ids)) {
+    const timeline = gsap.timeline({ repeat: -1 })
+    timeline.to(`#${ids[0]}`, {
+      opacity: 1,
+      duration: 0.3,
+    })
+    timeline.to(`#${ids[1]}`, {
+      opacity: 1,
+      duration: 0.3,
+    })
+    timeline.to(`#${ids[2]}`, {
+      opacity: 1,
+      duration: 0.3,
+    })
+  }
 }
