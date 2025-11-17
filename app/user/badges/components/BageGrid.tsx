@@ -2,9 +2,15 @@
 import { useGetUserBadges } from "@/hooks/useGetUserBadges"
 import BadgeItem from "./BadgeItem"
 import { Badge, UserBadge } from "@/services/user/badges/getUserBadges"
+import GuestBadgeView from "./GuestBadgeView"
+import { useSession } from "next-auth/react"
 
 const BadgeGride = () => {
-  const { data } = useGetUserBadges()
+  const { data: session } = useSession()
+  const { data } = useGetUserBadges(
+    {},
+    { enabled: session?.user ? true : false }
+  )
 
   const matchBadge = (badge: Badge): UserBadge | null => {
     let match: UserBadge | null = null
@@ -16,6 +22,10 @@ const BadgeGride = () => {
     }
 
     return match
+  }
+
+  if (!session?.user) {
+    return <GuestBadgeView />
   }
 
   return (
