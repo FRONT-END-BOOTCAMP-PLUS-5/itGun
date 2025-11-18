@@ -17,7 +17,7 @@ const DateTimeInput = ({
     const numberRegex = /^[0-9]{0,3}$/
 
     if (numberRegex.test(value)) {
-      setTotalDuration(value === "" ? 0 : parseInt(value, 10))
+      setTotalDuration(Number(value))
     }
   }
 
