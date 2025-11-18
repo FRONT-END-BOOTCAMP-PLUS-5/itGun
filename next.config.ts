@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: ["next-auth", "openid-client"],
+  },
 }
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
