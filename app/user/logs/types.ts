@@ -1,4 +1,4 @@
-import FullCalendar from "@fullcalendar/react"
+import type FullCalendar from "@fullcalendar/react"
 import React, { Dispatch, SetStateAction } from "react"
 
 enum CalIconType {
