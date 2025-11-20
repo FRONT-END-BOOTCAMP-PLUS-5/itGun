@@ -7,32 +7,45 @@ on:
     branches: [main, develop]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Run lint
+        run: pnpm lint
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
       - name: create .env
         run: |
           touch .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
       - name: Debug prisma
         run: |
           echo "Checking Prisma CLI version:"
@@ -41,9 +54,5 @@ jobs:
           ls -la .env || echo ".env not found"
           echo "Checking generated client:"
           ls -la node_modules/.prisma/client/ || echo "Client not generated"
-
-      - name: Run lint
-        run: pnpm lint
-
       - name: Run build
         run: pnpm build
