@@ -23,7 +23,9 @@ const nextConfig: NextConfig = {
   webpack: (config, { dev }) => {
     if (dev) {
       config.devtool = "eval-cheap-module-source-map"
+      config.optimization.runtimeChunk = true
     }
+
     return config
   },
 }
