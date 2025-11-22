@@ -7,13 +7,30 @@ import { Button } from "@/ds/components/atoms/button/Button"
 import CircularIcon from "@/ds/components/molecules/circularIcon/CircularIcon"
 import { CalendarGridProps, Log } from "@/app/user/logs/types"
 import "@/app/user/logs/components/calendar.css"
+import { useEffect, useRef } from "react"
 
 const CalendarGrid = ({
-  calendarRef,
+  year,
+  month,
   logsOnMonth,
   calTypeMaps,
   onIconClick,
 }: CalendarGridProps) => {
+  const calendarRef = useRef<FullCalendar | null>(null)
+
+  // year, month 변경 시 FullCalendar 동기화
+  // - 상세 페이지에서 뒤로가기 통해 복귀한 경우!!
+  // - URL 통해 직접 접근한 경우
+  useEffect(() => {
+    if (calendarRef.current && year && month) {
+      const targetDate = new Date(parseInt(year), parseInt(month) - 1, 1)
+
+      setTimeout(() => {
+        calendarRef.current?.getApi().gotoDate(targetDate)
+      }, 0)
+    }
+  }, [year, month])
+
   const groups: Record<string, Log[]> = {}
   logsOnMonth.forEach((log) => {
     const dateKey =

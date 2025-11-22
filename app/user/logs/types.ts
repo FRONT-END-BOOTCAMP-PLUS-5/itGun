@@ -1,5 +1,4 @@
-import type FullCalendar from "@fullcalendar/react"
-import React, { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 enum CalIconType {
   CARDIO = "cardio",
@@ -30,15 +29,9 @@ export interface Log {
   gaugeChanges: Record<BodyPartsGroup, number>
 }
 
-export interface CalendarHeaderProps {
-  calendarRef: React.RefObject<FullCalendar | null>
-  calMonth: string
-  setCalMonth: Dispatch<SetStateAction<string>>
-  setSelectedDate: Dispatch<SetStateAction<string | null>>
-}
-
 export interface CalendarGridProps {
-  calendarRef: React.RefObject<FullCalendar | null>
+  year: string
+  month: string
   logsOnMonth: Log[]
   calTypeMaps: CalTypeMaps
   onIconClick: (logs: Log[]) => void

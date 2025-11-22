@@ -16,7 +16,7 @@ const LogList = ({
   isSlideUp,
   setIsSlideUp,
 }: LogListProps) => {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     setIsSlideUp(!isSlideUp)
   }
   return (
@@ -45,7 +45,8 @@ const LogList = ({
       <div className="scrollbar-none flex-1 overflow-auto">
         {isFetching ? (
           <Loading />
-        ) : (
+        ) :
+         (
           logsToDisplay.map((log) => (
             <LogItem key={log.id} log={log} calTypeMaps={calTypeMaps} />
           ))
