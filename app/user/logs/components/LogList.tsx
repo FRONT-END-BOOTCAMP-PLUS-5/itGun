@@ -16,10 +16,6 @@ const LogList = ({
   isSlideUp,
   setIsSlideUp,
 }: LogListProps) => {
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsSlideUp(!isSlideUp)
-  }
-
   const handleClick = (e: React.MouseEvent) => {
     setIsSlideUp(!isSlideUp)
   }
@@ -27,14 +23,13 @@ const LogList = ({
     <div className="relative flex h-full flex-col gap-[9px] overflow-hidden px-2 pt-4">
       <div
         className="sticky top-0 cursor-pointer px-2"
-        onTouchStart={handleTouchStart}
         onClick={handleClick}
       >
         <S1 className="flex items-center gap-2">
           {selectedDate
             ? `${dateToYmdSlash(selectedDate)}의 운동기록`
             : "이달의 운동 기록"}
-          <div
+          <span
             className={`flex h-6 w-6 transform items-center justify-center transition-transform duration-0 ${isSlideUp ? "" : "rotate-180"}`}
           >
             <Icon
@@ -44,7 +39,7 @@ const LogList = ({
               size={15}
               viewBox="0 0 14 8"
             />
-          </div>
+          </span>
         </S1>
       </div>
       <div className="scrollbar-none flex-1 overflow-auto">

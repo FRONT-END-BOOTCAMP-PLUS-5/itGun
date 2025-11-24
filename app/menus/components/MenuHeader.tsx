@@ -6,9 +6,11 @@ import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useRouter } from "next/navigation"
+import { useLoginGuard } from "@/hooks/useLoginGuard"
 
 const MenuHeader = () => {
   const { data: session } = useSession()
+  const loginGuard = useLoginGuard()
   const router = useRouter()
 
   const userColor = session?.user?.characterColor
@@ -21,7 +23,9 @@ const MenuHeader = () => {
   }, [])
 
   const handleSettingClick = () => {
-    router.push("/user")
+    loginGuard(() => {
+      router.push("/user")
+    })
   }
 
   return (

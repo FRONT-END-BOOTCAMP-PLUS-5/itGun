@@ -7,7 +7,7 @@ interface CharacterAsset {
   svg: string
 }
 
-interface Response {
+export interface Response {
   characterColor: string
   assets: CharacterAsset[]
 }

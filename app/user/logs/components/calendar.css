@@ -29,7 +29,7 @@
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  @apply bg-[var(--color-white-200)];
+  @apply bg-[var(--color-white-200)] font-extrabold;
 }
 
 .fc-theme-standard td, .fc-theme-standard th {

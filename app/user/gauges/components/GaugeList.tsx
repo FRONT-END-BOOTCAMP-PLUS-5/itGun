@@ -3,9 +3,12 @@
 import { useGetUserGauges } from "@/hooks/useGetUserGauges"
 import GaugeItem from "./GaugeItem"
 import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import GuestGaugeView from "./GuestGaugeView"
 
 const GaugeList = () => {
-  const { data } = useGetUserGauges()
+  const { data: session } = useSession()
+  const { data } = useGetUserGauges({ enabled: session?.user ? true : false })
   const [bodyPart, setBodyPart] = useState<[string, number][] | null>(null)
   useEffect(() => {
     if (data) {
@@ -13,6 +16,10 @@ const GaugeList = () => {
       setBodyPart(Object.entries(rest))
     }
   }, [data])
+
+  if (!session?.user) {
+    return <GuestGaugeView />
+  }
 
   return (
     <div className="flex flex-col gap-[30px]">
