@@ -3,8 +3,8 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { C1 } from "@/ds/components/atoms/text/TextWrapper"
-import dayjs from "dayjs"
 import { DateTypeProps } from "./type"
+import CustomDatePicker from "./DatePicker"
 
 const DateTimeInput = ({
   date,
@@ -32,15 +32,7 @@ const DateTimeInput = ({
     <section className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Icon name="calendar" size={24} />
-        <Input
-          size="sm"
-          inputMode="numeric"
-          className="ml-[-10px] !w-30 scale-75 text-center text-[16px]"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          onBlur={() => setDate((prev) => dayjs(prev).format("YYYY.MM.DD"))}
-          onFocus={() => setDate((prev) => prev.split(".").join(""))}
-        />
+        <CustomDatePicker date={date} setDate={setDate} />
       </div>
 
       <div className="flex items-center gap-2">
