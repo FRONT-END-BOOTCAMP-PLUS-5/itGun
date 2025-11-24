@@ -4,7 +4,7 @@ import { ExerciseItemProps } from "./types"
 import { useModalStore } from "@/hooks/useModalStore"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
-import ExerciseDetailInfo from "./ExerciseDetailInfo"
+import { useRouter } from "next/navigation"
 
 const ExerciseItem = ({
   exercise,
@@ -12,6 +12,7 @@ const ExerciseItem = ({
   lastItemRef,
   handleClickExercise,
 }: ExerciseItemProps) => {
+  const router = useRouter()
   const { openModal } = useModalStore()
 
   return (
@@ -45,7 +46,7 @@ const ExerciseItem = ({
       <Button
         variant="ghost"
         size="xs"
-        onClick={() => openModal(<ExerciseDetailInfo exercise={exercise} />)}
+        onClick={() => router.push(`/exercises/${exercise.exerciseId}`)}
       >
         <Icon name="info" size={24} fillColor="primary" />
       </Button>
