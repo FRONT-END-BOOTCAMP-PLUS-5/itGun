@@ -1,15 +1,24 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
-import FullCalendar from "@fullcalendar/react"
+import type FullCalendar from "@fullcalendar/react"
 import { CalendarHeader } from "@/app/user/logs/components/CalendarHeader"
-import { CalendarGrid } from "@/app/user/logs/components/CalendarGrid"
 import LogList from "@/app/user/logs/components/LogList"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { Log } from "@/app/user/logs/types"
 import { useSession } from "next-auth/react"
 import Tooltip from "@/ds/components/atoms/tooltip/Tooltip"
 import { useSearchParams } from "next/navigation"
+import dynamic from "next/dynamic"
+
+const CalendarComponent = dynamic(() => import("./components/CalendarGrid"), {
+  loading: () => (
+    <div className="flex h-[400px] w-full items-center justify-center">
+      캘린더 로딩중...
+    </div>
+  ),
+  ssr: false,
+})
 
 const UserLogsPage = () => {
   const { data: session } = useSession()
@@ -24,7 +33,7 @@ const UserLogsPage = () => {
   const [calMonth, setCalMonth] = useState<string>(() => {
     const year = searchParams.get("year")
     const month = searchParams.get("month")
-    
+
     if (year && month) {
       return `${year}.${month.padStart(2, "0")}`
     }
@@ -94,7 +103,7 @@ const UserLogsPage = () => {
   }
 
   return (
-    <div className="flex h-[calc(100dvh-100px)] w-full flex-col pb-[30px] overflow-hidden">
+    <div className="flex h-[calc(100dvh-100px)] w-full flex-col overflow-hidden pb-[30px]">
       <div className="flex-shrink-0">
         <CalendarHeader
           calendarRef={calendarRef}
@@ -103,9 +112,9 @@ const UserLogsPage = () => {
           setSelectedDate={setSelectedDate}
         />
       </div>
-      <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className={`${isSlideUp ? "h-0" : "flex-shrink-0"}`}>
-          <CalendarGrid
+          <CalendarComponent
             calendarRef={calendarRef}
             logsOnMonth={logsOnMonth}
             calTypeMaps={calTypeMaps}
@@ -113,9 +122,7 @@ const UserLogsPage = () => {
           />
         </div>
         <div
-          className={`bg-white-100 min-h-0 flex-1 z-10 
-            rounded-t-lg border-t-1 border-x-1 border-[var(--color-secondary)]
-            ${isSlideUp ? "animate-log-list-expand" : "mt-2 animate-log-list-collapse"}`}
+          className={`bg-white-100 z-10 min-h-0 flex-1 rounded-t-lg border-x-1 border-t-1 border-[var(--color-secondary)] ${isSlideUp ? "animate-log-list-expand" : "animate-log-list-collapse mt-2"}`}
         >
           {!session?.user && (
             <Tooltip

@@ -8,7 +8,7 @@ import CircularIcon from "@/ds/components/molecules/circularIcon/CircularIcon"
 import { CalendarGridProps, Log } from "@/app/user/logs/types"
 import "@/app/user/logs/components/calendar.css"
 
-export const CalendarGrid = ({
+const CalendarGrid = ({
   calendarRef,
   logsOnMonth,
   calTypeMaps,
@@ -72,3 +72,5 @@ export const CalendarGrid = ({
     />
   )
 }
+
+export default CalendarGrid
