@@ -14,17 +14,10 @@ const DateTimeInput = ({
 }: DateTypeProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    const numberRegex = /^[0-9]{1,3}$/
+    const numberRegex = /^[0-9]{0,3}$/
 
-    if (value === "") {
-      setTotalDuration(0)
-    } else {
-      if (numberRegex.test(value)) {
-        const numValue = parseInt(value)
-        if (numValue >= 0 && numValue <= 999) {
-          setTotalDuration(numValue)
-        }
-      }
+    if (numberRegex.test(value)) {
+      setTotalDuration(Number(value))
     }
   }
 
@@ -41,9 +34,6 @@ const DateTimeInput = ({
           value={totalDuration === 0 ? "" : totalDuration}
           onChange={handleChange}
           size="sm"
-          type="number"
-          min={0}
-          max={999}
           inputMode="numeric"
           className="!w-10 scale-75 text-center text-[16px]"
           placeholder="0"
