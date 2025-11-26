@@ -150,7 +150,13 @@ const Workout: React.FC<WorkoutProps> = ({
             className="scale-[62.5%] text-center text-[16px]"
             inputMode="numeric"
             value={value || ""}
-            onChange={(e) => onDataChange?.(index, field, e.target.value, seq)}
+            onChange={(e) => {
+              const inputValue = e.target.value
+              const numberRegex = /^[0-9]{0,3}$/
+              if (numberRegex.test(inputValue)) {
+                onDataChange?.(index, field, inputValue, seq)
+              }
+            }}
           />
         </div>
       )

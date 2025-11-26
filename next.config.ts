@@ -19,6 +19,15 @@ const nextConfig: NextConfig = {
   },
 
   serverExternalPackages: ["openid-client"],
+
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = "eval-cheap-module-source-map"
+      config.optimization.runtimeChunk = true
+    }
+
+    return config
+  },
 }
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({

@@ -86,7 +86,29 @@ export class PrExerciseRepository implements ExerciseRepository {
       })
 
       if (!detail) return null
-      return this.toDomain(detail)
+
+      return new Exercise(
+        detail.id,
+        detail.name,
+        detail.nameKo,
+        detail.imageUrl,
+        detail.videoUrl,
+        detail.equipments,
+        detail.equipmentsKo,
+        detail.bodyParts,
+        detail.bodyPartsKo,
+        detail.exerciseType,
+        detail.keywords,
+        detail.keywordsKo,
+        detail.overview,
+        detail.overviewKo,
+        detail.instructions,
+        detail.instructionsKo,
+        detail.exerciseTips,
+        detail.exerciseTipsKo,
+        detail.variations,
+        detail.relatedExerciseIds
+      )
     } catch (error) {
       console.error("Database query error:", error)
       throw error
