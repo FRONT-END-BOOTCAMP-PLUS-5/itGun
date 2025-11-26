@@ -8,15 +8,16 @@ import CircularIcon from "@/ds/components/molecules/circularIcon/CircularIcon"
 import { CalendarGridProps, Log } from "@/app/user/logs/types"
 import "@/app/user/logs/components/calendar.css"
 import { useEffect, useRef } from "react"
+import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
 const CalendarGrid = ({
   year,
   month,
-  logsOnMonth,
   calTypeMaps,
-  onIconClick,
 }: CalendarGridProps) => {
   const calendarRef = useRef<FullCalendar | null>(null)
+  const logsOnMonth = useUserLogsStore((state) => state.logsOnMonth)
+  const handleIconClick = useUserLogsStore((state) => state.handleIconClick)
 
   // year, month 변경 시 FullCalendar 동기화
   // - 상세 페이지에서 뒤로가기 통해 복귀한 경우!!
@@ -62,7 +63,7 @@ const CalendarGrid = ({
       <Button
         variant="ghost"
         size="xs"
-        onClick={() => onIconClick(eventInfo.event.extendedProps.logs)}
+        onClick={() => handleIconClick(eventInfo.event.extendedProps.logs)}
       >
         <CircularIcon
           iconName={eventInfo.event.extendedProps.iconName}

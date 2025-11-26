@@ -1,22 +1,13 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import React, { useEffect, useState } from "react"
-import { Log } from "@/app/user/logs/types"
+import React, { useEffect } from "react"
 import Tooltip from "@/ds/components/atoms/tooltip/Tooltip"
 import LogList from "@/app/user/logs/components/LogList"
 import { useSession } from "next-auth/react"
 import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { useSearchParams } from "next/navigation"
-
-const CalendarComponent = dynamic(() => import("@/app/user/logs/components/CalendarGrid"), {
-  loading: () => (
-    <div className="flex h-[400px] w-full items-center justify-center">
-      캘린더 로딩중...
-    </div>
-  ),
-  ssr: false,
-})
+import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
 const calTypeMaps = (
     calType: string
@@ -47,6 +38,15 @@ const calTypeMaps = (
     }
   }
 
+const CalendarComponent = dynamic(() => import("@/app/user/logs/components/CalendarGrid"), {
+  loading: () => (
+    <div className="flex h-[400px] w-full items-center justify-center">
+      캘린더 로딩중...
+    </div>
+  ),
+  ssr: false,
+})
+
 const CalendarWithLogs = () => {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
@@ -59,21 +59,13 @@ const CalendarWithLogs = () => {
     { enabled: !!session?.user }
   )
 
-  const logsOnMonth = data?.logs?.length ? data.logs : []
-
-  const [logsToDisplay, setLogsToDisplay] = useState<Log[]>([])
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
-  const [isSlideUp, setIsSlideUp] = useState<boolean>(false)
+  const setLogsOnMonth = useUserLogsStore((state) => state.setLogsOnMonth)
+  const isSlideUp = useUserLogsStore((state) => state.isSlideUp)
 
   useEffect(() => {
-    setLogsToDisplay(logsOnMonth)
-    setSelectedDate(null)
-  }, [data])
-
-  const handleIconClick = (logs: Log[]) => {
-    setLogsToDisplay(logs)
-    setSelectedDate(new Date(logs[0].logDate).toISOString())
-  }
+    const logs = data?.logs?.length ? data.logs : []
+    setLogsOnMonth(logs)
+  }, [data, setLogsOnMonth])
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -81,9 +73,7 @@ const CalendarWithLogs = () => {
         <CalendarComponent
           year={year}
           month={month}
-          logsOnMonth={logsOnMonth}
           calTypeMaps={calTypeMaps}
-          onIconClick={handleIconClick}
         />
       </div>
       <div
@@ -99,11 +89,7 @@ const CalendarWithLogs = () => {
         )}
         <LogList
           isFetching={isFetching}
-          logsToDisplay={logsToDisplay}
-          selectedDate={selectedDate}
           calTypeMaps={calTypeMaps}
-          isSlideUp={isSlideUp}
-          setIsSlideUp={setIsSlideUp}
         />
       </div>
     </div>

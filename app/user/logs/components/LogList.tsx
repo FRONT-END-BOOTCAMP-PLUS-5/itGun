@@ -7,23 +7,22 @@ import React from "react"
 import LogItem from "@/app/user/logs/components/LogItem"
 import Loading from "@/app/loading"
 import Icon from "@/ds/components/atoms/icon/Icon"
+import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
 const LogList = ({
   isFetching,
-  logsToDisplay,
-  selectedDate,
   calTypeMaps,
-  isSlideUp,
-  setIsSlideUp,
 }: LogListProps) => {
-  const handleClick = () => {
-    setIsSlideUp(!isSlideUp)
-  }
+  const logsToDisplay = useUserLogsStore((state) => state.logsToDisplay)
+  const selectedDate = useUserLogsStore((state) => state.selectedDate)
+  const isSlideUp = useUserLogsStore((state) => state.isSlideUp)
+  const toggleSlideUp = useUserLogsStore((state) => state.toggleSlideUp)
+  
   return (
     <div className="relative flex h-full flex-col gap-[9px] overflow-hidden px-2 pt-4">
       <div
         className="sticky top-0 cursor-pointer px-2"
-        onClick={handleClick}
+        onClick={toggleSlideUp}
       >
         <S1 className="flex items-center gap-2">
           {selectedDate

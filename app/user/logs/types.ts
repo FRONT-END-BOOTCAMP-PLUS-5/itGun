@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react"
-
 enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
@@ -32,18 +30,12 @@ export interface Log {
 export interface CalendarGridProps {
   year: string
   month: string
-  logsOnMonth: Log[]
   calTypeMaps: CalTypeMaps
-  onIconClick: (logs: Log[]) => void
 }
 
 export interface LogListProps {
   isFetching: boolean
-  logsToDisplay: Log[]
-  selectedDate: string | null
   calTypeMaps: CalTypeMaps
-  isSlideUp: boolean
-  setIsSlideUp: Dispatch<SetStateAction<boolean>>
 }
 
 export interface LogItemProps {
