@@ -11,7 +11,6 @@ import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
 const LogList = ({
   isFetching,
-  calTypeMaps,
 }: LogListProps) => {
   const logsToDisplay = useUserLogsStore((state) => state.logsToDisplay)
   const selectedDate = useUserLogsStore((state) => state.selectedDate)
@@ -47,7 +46,7 @@ const LogList = ({
         ) :
          (
           logsToDisplay.map((log) => (
-            <LogItem key={log.id} log={log} calTypeMaps={calTypeMaps} />
+            <LogItem key={log.id} log={log} />
           ))
         )}
       </div>

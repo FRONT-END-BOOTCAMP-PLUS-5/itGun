@@ -9,35 +9,6 @@ import { useGetUserLogs } from "@/hooks/useGetUserLogs"
 import { useSearchParams } from "next/navigation"
 import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
-const calTypeMaps = (
-    calType: string
-): {
-  calTypeKo: string
-  iconName: string
-  iconColor: string
-} => {
-  switch (calType) {
-    case "upper":
-      return {
-        calTypeKo: "상체",
-        iconName: "arm",
-        iconColor: "secondary-purple",
-      }
-    case "lower":
-      return {
-        calTypeKo: "하체",
-        iconName: "leg",
-        iconColor: "secondary-blue",
-      }
-    default:
-      return {
-        calTypeKo: "유산소",
-        iconName: "hearts",
-        iconColor: "secondary-pink",
-      }
-    }
-  }
-
 const CalendarComponent = dynamic(() => import("@/app/user/logs/components/CalendarGrid"), {
   loading: () => (
     <div className="flex h-[400px] w-full items-center justify-center">
@@ -73,7 +44,6 @@ const CalendarWithLogs = () => {
         <CalendarComponent
           year={year}
           month={month}
-          calTypeMaps={calTypeMaps}
         />
       </div>
       <div
@@ -89,7 +59,6 @@ const CalendarWithLogs = () => {
         )}
         <LogList
           isFetching={isFetching}
-          calTypeMaps={calTypeMaps}
         />
       </div>
     </div>

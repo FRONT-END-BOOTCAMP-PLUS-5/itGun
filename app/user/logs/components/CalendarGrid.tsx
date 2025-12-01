@@ -9,11 +9,11 @@ import { CalendarGridProps, Log } from "@/app/user/logs/types"
 import "@/app/user/logs/components/calendar.css"
 import { useEffect, useRef } from "react"
 import { useUserLogsStore } from "@/hooks/useUserLogsStore"
+import { CAL_TYPE_MAPPINGS } from "@/app/user/logs/constants"
 
 const CalendarGrid = ({
   year,
-  month,
-  calTypeMaps,
+  month
 }: CalendarGridProps) => {
   const calendarRef = useRef<FullCalendar | null>(null)
   const logsOnMonth = useUserLogsStore((state) => state.logsOnMonth)
@@ -52,8 +52,8 @@ const CalendarGrid = ({
         logsOnDate[0].logDate instanceof Date
           ? logsOnDate[0].logDate
           : new Date(logsOnDate[0].logDate),
-      iconName: calTypeMaps(logsOnDate[0].calIconType).iconName,
-      iconColor: calTypeMaps(logsOnDate[0].calIconType).iconColor,
+      iconName: CAL_TYPE_MAPPINGS(logsOnDate[0].calIconType).iconName,
+      iconColor: CAL_TYPE_MAPPINGS(logsOnDate[0].calIconType).iconColor,
       logs: logsOnDate,
     })
   )
