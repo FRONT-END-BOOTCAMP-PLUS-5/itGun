@@ -1,3 +1,4 @@
+import { CharacterAsset } from "@/app/types"
 import React from "react"
 export const sortAssets = <T extends { type: string }>(assets: T[]): T[] => {
   const getOrder = (type: string) => {
