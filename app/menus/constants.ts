@@ -1,6 +1,6 @@
 import { svgList } from "@/static/svgs/svgList"
 
-export const MENU_MAP: {
+export const MENU_MAPPINGS: {
   name: string
   iconName: keyof typeof svgList
   iconColor: string

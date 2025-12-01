@@ -5,7 +5,7 @@ import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useRouter } from "next/navigation"
-import { MENU_MAP } from "@/app/menus/constants"
+import { MENU_MAPPINGS } from "@/app/menus/constants"
 
 const MenuList = () => {
   const route = useRouter()
@@ -16,7 +16,7 @@ const MenuList = () => {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      {MENU_MAP.map((menu, index) => (
+      {MENU_MAPPINGS.map((menu, index) => (
         <React.Fragment key={index}>
           <Button
             variant="ghost"
