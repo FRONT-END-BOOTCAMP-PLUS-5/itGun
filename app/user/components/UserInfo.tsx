@@ -5,7 +5,7 @@ import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { UserInfoProps } from "../types"
-import { genderOptions, numberOptions } from "./constants"
+import { GENDER_OPTIONS, NUMBER_OPTIONS } from "../constants"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
 import { Request } from "@/services/user/info/updateUserInfo"
@@ -131,14 +131,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       </div>
       <Dropdown
         value={age}
-        options={numberOptions}
+        options={NUMBER_OPTIONS}
         readOnly={isEdit ? false : true}
         onChange={setAge}
         className={isEdit ? "!text-primary" : ""}
       />
       <Dropdown
         value={gender}
-        options={genderOptions}
+        options={GENDER_OPTIONS}
         readOnly={isEdit ? false : true}
         onChange={setGender}
         className={isEdit ? "!text-primary" : ""}
