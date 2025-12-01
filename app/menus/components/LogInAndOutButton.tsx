@@ -2,17 +2,15 @@
 
 import React from "react"
 import { Button } from "@/ds/components/atoms/button/Button"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import {
-  LogInAndOutButtonProps,
-  LogInAndOutButtonType,
-} from "@/app/menus/types"
+import { LogInAndOutButtonType } from "@/app/menus/types"
 
-const LogInAndOutButton = ({ type }: LogInAndOutButtonProps) => {
+const LogInAndOutButton = () => {
   const router = useRouter()
-  const handleLogout = () => {
-    if (type === 0) {
+  const { data: session } = useSession()
+  const handleClick = () => {
+    if (session?.user) {
       signOut({ callbackUrl: "/" })
     } else {
       router.push("/signin")
@@ -25,9 +23,9 @@ const LogInAndOutButton = ({ type }: LogInAndOutButtonProps) => {
         variant="underline"
         isFullWidth={true}
         size="xs"
-        onClick={handleLogout}
+        onClick={handleClick}
       >
-        {LogInAndOutButtonType[type]}
+        {LogInAndOutButtonType[session?.user ? 0 : 1]}
       </Button>
     </div>
   )
