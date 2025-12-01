@@ -1,4 +1,4 @@
-import ExerciseInfo from "./ExerciseInfo"
+import ExerciseInfo from "@/app/exercises/[id]/components/ExerciseInfo"
 
 const ExerciseDetailPage = async ({
   params,

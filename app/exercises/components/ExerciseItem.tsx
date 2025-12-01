@@ -1,6 +1,6 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import Image from "next/image"
-import { ExerciseItemProps } from "./types"
+import { ExerciseItemProps } from "@/app/exercises/types"
 import { useModalStore } from "@/hooks/useModalStore"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
