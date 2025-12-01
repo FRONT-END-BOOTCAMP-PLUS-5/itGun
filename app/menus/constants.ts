@@ -1,11 +1,13 @@
 import { svgList } from "@/static/svgs/svgList"
 
-export const MENU_MAPPINGS: {
+interface MenuMapping {
   name: string
   iconName: keyof typeof svgList
   iconColor: string
   pathName: string
-}[] = [
+}
+
+export const MENU_MAPPINGS: MenuMapping[] = [
   {
     name: "뱃지",
     iconName: "medal",
