@@ -1,4 +1,7 @@
-import { BODY_PART_MAPPINGS, EQUIPMENT_MAPPINGS } from "../constants"
+import {
+  BODY_PART_MAPPINGS,
+  EQUIPMENT_MAPPINGS,
+} from "@/app/exercises/constants"
 import FilterButton from "./FilterButton"
 
 const CategoryFilter = () => {

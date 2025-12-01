@@ -4,7 +4,7 @@ import { C2, H2 } from "@/ds/components/atoms/text/TextWrapper"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useGetExerciseInfo } from "@/hooks/useGetExerciseInfo"
-import { LabelProps } from "../../types"
+import { LabelProps } from "@/app/exercises/types"
 
 const Label = ({ text, filterType }: LabelProps) => {
   return (
