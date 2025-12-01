@@ -3,7 +3,7 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { C1 } from "@/ds/components/atoms/text/TextWrapper"
-import { DateTypeProps } from "./type"
+import { DateTypeProps } from "../types"
 import CustomDatePicker from "./DatePicker"
 
 const DateTimeInput = ({

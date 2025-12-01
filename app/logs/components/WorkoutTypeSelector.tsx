@@ -3,8 +3,7 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { IconProps } from "@/ds/components/atoms/icon/Icon.types"
 import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
-import { WorkoutTypeSelectorProps } from "./type"
-import { CalIconType } from "../types"
+import { WorkoutTypeSelectorProps, CalIconType } from "../types"
 
 const IconTypes = [
   {

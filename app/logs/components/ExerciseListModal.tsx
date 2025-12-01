@@ -1,6 +1,6 @@
 import ExercisesPage from "@/app/exercises/page"
 import { Header } from "@/ds/components/molecules/header/Header"
-import { ExerciseListModalProps } from "./type"
+import { ExerciseListModalProps } from "../types"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
