@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
 
 import { useSignupStore } from "@/hooks/useSignupStore"
-import { SignupData } from "../types"
+import { SignupData } from "@/app/signup/[steps]/types"
 
 function Step1Form() {
   const router = useRouter()

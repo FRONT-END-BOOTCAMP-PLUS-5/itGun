@@ -4,7 +4,10 @@ import React from "react"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { LogInAndOutButtonProps, LogInAndOutButtonType } from "../types"
+import {
+  LogInAndOutButtonProps,
+  LogInAndOutButtonType,
+} from "@/app/menus/types"
 
 const LogInAndOutButton = ({ type }: LogInAndOutButtonProps) => {
   const router = useRouter()

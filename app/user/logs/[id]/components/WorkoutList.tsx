@@ -3,7 +3,11 @@ import {
   WorkoutSetData,
   WorkoutType,
 } from "@/ds/components/molecules/workout/Workout.types"
-import { WorkoutGroup, WorkoutItem, WorkoutListProps } from "../types"
+import {
+  WorkoutGroup,
+  WorkoutItem,
+  WorkoutListProps,
+} from "@/app/user/logs/[id]/types"
 
 const getWorkoutType = (workout: WorkoutItem): WorkoutType => {
   const hasWeight = workout.weight != null

@@ -5,7 +5,7 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
-import { WorkoutLogSaveButtonProps, WorkoutData } from "../types"
+import { WorkoutLogSaveButtonProps, WorkoutData } from "@/app/logs/types"
 
 const WorkoutLogSaveButton = ({
   calIconType,

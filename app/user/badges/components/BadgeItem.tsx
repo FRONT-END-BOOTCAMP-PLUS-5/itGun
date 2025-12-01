@@ -1,6 +1,6 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import { BadgeItemProps } from "../types"
+import { BadgeItemProps } from "@/app/user/badges/types"
 import { colors } from "@/static/colors"
 
 const BadgeItem: React.FC<BadgeItemProps> = ({ index, badge, userBadge }) => {

@@ -1,6 +1,6 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import { ValidationItemProps } from "../types"
+import { ValidationItemProps } from "@/app/signup/[steps]/types"
 
 const ValidationItem = ({
   isValid,
