@@ -5,8 +5,9 @@ import { svgList } from "@/static/svgs/svgList"
 import { LogItemProps } from "@/app/user/logs/types"
 import React from "react"
 import { useRouter } from "next/navigation"
+import { CAL_TYPE_MAPPINGS } from "@/app/user/logs/constants"
 
-const LogItem = ({ log, calTypeMaps }: LogItemProps) => {
+const LogItem = ({ log }: LogItemProps) => {
   const router = useRouter()
   const logDate = new Date(log.logDate)
 
@@ -33,10 +34,10 @@ const LogItem = ({ log, calTypeMaps }: LogItemProps) => {
             <div className="justify-center flex items-center">
               <Icon
                 name={
-                  calTypeMaps(log.calIconType).iconName as keyof typeof svgList
+                  CAL_TYPE_MAPPINGS(log.calIconType).iconName as keyof typeof svgList
                 }
               />
-              <C2>{calTypeMaps(log.calIconType).calTypeKo}</C2>
+              <C2>{CAL_TYPE_MAPPINGS(log.calIconType).calTypeKo}</C2>
             </div>
             <div className="flex items-center justify-center">
               <Icon name="clock" />
