@@ -1,13 +1,6 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import { HTMLAttributes } from "react"
-
-interface ValidationItemProps {
-  isValid: boolean
-  label: string
-  showIcon?: boolean
-  className?: HTMLAttributes<HTMLDivElement>["className"]
-}
+import { ValidationItemProps } from "../types"
 
 const ValidationItem = ({
   isValid,

@@ -5,11 +5,7 @@ import { ChangeEvent, useState } from "react"
 import ValidationItem from "./ValidationItem"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
-
-interface ValidatePassword {
-  password: string
-  passwordConfirm: string
-}
+import { ValidatePassword } from "../types"
 
 const Step2Form = () => {
   const router = useRouter()
