@@ -1,8 +1,3 @@
-export interface GaugeItemProps {
-  label: string
-  gauge: number
-}
-
 export enum BODY_PART_KO {
   arms = "팔",
   legs = "다리",

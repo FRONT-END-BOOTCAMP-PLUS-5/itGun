@@ -3,7 +3,7 @@ import { Button } from "@/ds/components/atoms/button/Button"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { H2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSession } from "next-auth/react"
-import { UserProfileProps } from "../types"
+import { UserProfileProps } from "@/app/user/types"
 import { HexColorPicker } from "react-colorful"
 import { useState, useRef, useEffect } from "react"
 

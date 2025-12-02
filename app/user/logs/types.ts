@@ -1,10 +1,10 @@
-enum CalIconType {
+export enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
   LOWER = "lower",
 }
 
-type BodyPartsGroup =
+export type BodyPartsGroup =
   | "legs"
   | "back"
   | "chest"
