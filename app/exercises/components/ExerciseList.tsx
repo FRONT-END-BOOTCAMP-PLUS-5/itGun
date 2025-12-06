@@ -7,10 +7,12 @@ import { useLogsStore } from "@/hooks/useLogsStore"
 import { useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 import ExerciseItem from "./ExerciseItem"
+import { Exercise } from "@/services/exercises/getExercises"
+import { FormData, workoutTypes } from "@/app/logs/types"
 
 const ExerciseList = () => {
   const searchParams = useSearchParams()
-  const { mode, setOpen, setData } = useLogsStore()
+  const { mode, setOpen, setFormData } = useLogsStore()
   const q = searchParams.get("q") || ""
   const bodyPart = searchParams.get("bodyPart") || ""
   const equipment = searchParams.get("equipment") || ""
@@ -36,7 +38,27 @@ const ExerciseList = () => {
   const handleClickExercise = (exercise: object) => {
     if (mode === "exercises") return
     setOpen(false)
-    setData(exercise)
+    setFormData((prev) => [
+      ...prev,
+      {
+        title: (exercise as Exercise).name,
+        type: workoutTypes[
+          (exercise as Exercise).exerciseType
+        ] as FormData["type"],
+        exerciseInfo: {
+          exerciseId: (exercise as Exercise).exerciseId,
+          name: (exercise as Exercise).name,
+          imageUrl: (exercise as Exercise).imageUrl,
+          videoUrl: (exercise as Exercise).videoUrl,
+          bodyParts: (exercise as Exercise).bodyParts,
+          equipments: (exercise as Exercise).equipments,
+          exerciseType: (exercise as Exercise).exerciseType,
+          instructions: (exercise as Exercise).instructions,
+          exerciseTips: (exercise as Exercise).exerciseTips,
+        },
+        data: [{ setCount: 1 }],
+      },
+    ])
   }
 
   if (data?.pages[0].data.length === 0) {

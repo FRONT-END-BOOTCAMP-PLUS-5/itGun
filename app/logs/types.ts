@@ -64,16 +64,10 @@ export interface WorkoutTypeSelectorProps {
   setCalIconType: Dispatch<SetStateAction<CalIconType | null>>
 }
 
-export interface AddWorkoutFormProps {
-  formData: FormData[]
-  setFormData: Dispatch<SetStateAction<FormData[]>>
-}
-
 export interface WorkoutLogSaveButtonProps {
   calIconType: CalIconType | null
   date: string
   totalDuration: number
-  formData: FormData[]
 }
 
 export interface ExerciseListModalProps {

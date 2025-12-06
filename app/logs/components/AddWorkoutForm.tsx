@@ -1,12 +1,10 @@
+import { FormData } from "@/app/logs/types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import Workout from "@/ds/components/molecules/workout/Workout"
-import { useLogsStore } from "@/hooks/useLogsStore"
-import { Exercise } from "@/services/exercises/getExercises"
-import { useEffect } from "react"
-import { FormData, workoutTypes, AddWorkoutFormProps } from "@/app/logs/types"
 import { useDialogStore } from "@/hooks/useDialogStore"
-const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
-  const { exerciseData, setMode, setOpen, setInit } = useLogsStore()
+import { useLogsStore } from "@/hooks/useLogsStore"
+const AddWorkoutForm = () => {
+  const { setMode, setOpen, setFormData, formData } = useLogsStore()
   const { showDialog } = useDialogStore()
 
   const handleAddSet = (index: number) => {
@@ -92,37 +90,6 @@ const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
     setMode("logs")
     setOpen(true)
   }
-
-  useEffect(
-    function storeExerciseData() {
-      if (Object.keys(exerciseData).length > 0) {
-        setFormData((prev) => [
-          ...prev,
-          {
-            title: (exerciseData as Exercise).name,
-            type: workoutTypes[
-              (exerciseData as Exercise).exerciseType
-            ] as FormData["type"],
-            exerciseInfo: {
-              exerciseId: (exerciseData as Exercise).exerciseId,
-              name: (exerciseData as Exercise).name,
-              imageUrl: (exerciseData as Exercise).imageUrl,
-              videoUrl: (exerciseData as Exercise).videoUrl,
-              bodyParts: (exerciseData as Exercise).bodyParts,
-              equipments: (exerciseData as Exercise).equipments,
-              exerciseType: (exerciseData as Exercise).exerciseType,
-              instructions: (exerciseData as Exercise).instructions,
-              exerciseTips: (exerciseData as Exercise).exerciseTips,
-            },
-            data: [{ setCount: 1 }],
-          },
-        ])
-
-        setInit()
-      }
-    },
-    [exerciseData]
-  )
 
   return (
     <section className="flex flex-col items-center justify-center gap-7">
