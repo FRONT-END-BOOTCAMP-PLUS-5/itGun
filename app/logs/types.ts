@@ -70,10 +70,6 @@ export interface WorkoutLogSaveButtonProps {
   totalDuration: number
 }
 
-export interface ExerciseListModalProps {
-  setOpen: (open: boolean) => void
-}
-
 export interface DatePickerProps {
   date: string
   setDate: (date: string) => void

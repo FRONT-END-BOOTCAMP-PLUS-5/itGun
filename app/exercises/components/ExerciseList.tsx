@@ -4,15 +4,17 @@ import Loading from "@/app/loading"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useGetExercises } from "@/hooks/useGetExercises"
 import { useLogsStore } from "@/hooks/useLogsStore"
-import { useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 import ExerciseItem from "./ExerciseItem"
 import { Exercise } from "@/services/exercises/getExercises"
 import { FormData, workoutTypes } from "@/app/logs/types"
 
 const ExerciseList = () => {
+  const pathname = usePathname()
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const { mode, setOpen, setFormData } = useLogsStore()
+  const { setFormData } = useLogsStore()
   const q = searchParams.get("q") || ""
   const bodyPart = searchParams.get("bodyPart") || ""
   const equipment = searchParams.get("equipment") || ""
@@ -36,8 +38,7 @@ const ExerciseList = () => {
   }
 
   const handleClickExercise = (exercise: object) => {
-    if (mode === "exercises") return
-    setOpen(false)
+    if (pathname.startsWith("/exercises")) return
     setFormData((prev) => [
       ...prev,
       {
@@ -59,6 +60,7 @@ const ExerciseList = () => {
         data: [{ setCount: 1 }],
       },
     ])
+    router.push("/logs")
   }
 
   if (data?.pages[0].data.length === 0) {

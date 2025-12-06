@@ -2,14 +2,12 @@
 
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
-import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
 const SearchInput = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { mode } = useLogsStore()
 
   const q = searchParams.get("q") || ""
   const [searchValue, setSearchValue] = useState(q)
@@ -19,7 +17,7 @@ const SearchInput = () => {
     const currentParams = new URLSearchParams(searchParams)
     if (value) currentParams.set("q", value)
     else currentParams.delete("q")
-    router.replace(`/${mode}?${currentParams.toString()}`)
+    router.replace(`/logs/exercises?${currentParams.toString()}`)
   }
 
   const debouncedSearch = (value: string) => {
@@ -42,7 +40,7 @@ const SearchInput = () => {
     setSearchValue("")
     const currentParams = new URLSearchParams(searchParams)
     currentParams.delete("q")
-    router.replace(`/${mode}?${currentParams.toString()}`)
+    router.replace(`/logs/exercises?${currentParams.toString()}`)
   }
 
   const handleFormSubmit = (e: FormEvent) => {

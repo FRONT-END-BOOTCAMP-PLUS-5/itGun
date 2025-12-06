@@ -3,8 +3,10 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import Workout from "@/ds/components/molecules/workout/Workout"
 import { useDialogStore } from "@/hooks/useDialogStore"
 import { useLogsStore } from "@/hooks/useLogsStore"
+import { useRouter } from "next/navigation"
 const AddWorkoutForm = () => {
-  const { setMode, setOpen, setFormData, formData } = useLogsStore()
+  const router = useRouter()
+  const { setFormData, formData } = useLogsStore()
   const { showDialog } = useDialogStore()
 
   const handleAddSet = (index: number) => {
@@ -87,8 +89,7 @@ const AddWorkoutForm = () => {
   }
 
   const handleAddLog = () => {
-    setMode("logs")
-    setOpen(true)
+    router.push("/logs/exercises")
   }
 
   return (
