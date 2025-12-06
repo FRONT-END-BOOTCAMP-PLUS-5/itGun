@@ -1,7 +1,6 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import Image from "next/image"
 import { ExerciseItemProps } from "@/app/exercises/types"
-import { useModalStore } from "@/hooks/useModalStore"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useRouter } from "next/navigation"
@@ -13,7 +12,6 @@ const ExerciseItem = ({
   handleClickExercise,
 }: ExerciseItemProps) => {
   const router = useRouter()
-  const { openModal } = useModalStore()
 
   return (
     <div className="flex justify-between">
@@ -46,7 +44,9 @@ const ExerciseItem = ({
       <Button
         variant="ghost"
         size="xs"
-        onClick={() => router.push(`/exercises/${exercise.exerciseId}`)}
+        onClick={() => {
+          router.push(`/logs/exercises/${exercise.exerciseId}`)
+        }}
       >
         <Icon name="info" size={24} fillColor="primary" />
       </Button>
