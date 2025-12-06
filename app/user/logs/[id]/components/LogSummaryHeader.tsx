@@ -4,7 +4,7 @@ import { HeaderProps } from "@/app/user/logs/[id]/types"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useDialogStore } from "@/hooks/useDialogStore"
 import { useDeleteUserLog } from "@/hooks/useDeleteUserLog"
-import { dateToYmdSlash } from "@/utils/dateToYmdSlash"
+import { dateToYmdSlash } from "@/utils/transferDate"
 
 const LogSummaryHeader = ({ id, date, duration }: HeaderProps) => {
   const { showDialog } = useDialogStore()

@@ -1,7 +1,7 @@
 "use client"
 
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
-import { dateToYmdSlash } from "@/utils/dateToYmdSlash"
+import { dateToYmdSlash } from "@/utils/transferDate"
 import { LogListProps } from "@/app/user/logs/types"
 import React from "react"
 import LogItem from "@/app/user/logs/components/LogItem"
@@ -9,20 +9,15 @@ import Loading from "@/app/loading"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { useUserLogsStore } from "@/hooks/useUserLogsStore"
 
-const LogList = ({
-  isFetching,
-}: LogListProps) => {
+const LogList = ({ isFetching }: LogListProps) => {
   const logsToDisplay = useUserLogsStore((state) => state.logsToDisplay)
   const selectedDate = useUserLogsStore((state) => state.selectedDate)
   const isSlideUp = useUserLogsStore((state) => state.isSlideUp)
   const toggleSlideUp = useUserLogsStore((state) => state.toggleSlideUp)
-  
+
   return (
     <div className="relative flex h-full flex-col gap-[9px] overflow-hidden px-2 pt-4">
-      <div
-        className="sticky top-0 cursor-pointer px-2"
-        onClick={toggleSlideUp}
-      >
+      <div className="sticky top-0 cursor-pointer px-2" onClick={toggleSlideUp}>
         <S1 className="flex items-center gap-2">
           {selectedDate
             ? `${dateToYmdSlash(selectedDate)}의 운동기록`
@@ -43,11 +38,8 @@ const LogList = ({
       <div className="scrollbar-none flex-1 overflow-auto">
         {isFetching ? (
           <Loading />
-        ) :
-         (
-          logsToDisplay.map((log) => (
-            <LogItem key={log.id} log={log} />
-          ))
+        ) : (
+          logsToDisplay.map((log) => <LogItem key={log.id} log={log} />)
         )}
       </div>
     </div>
