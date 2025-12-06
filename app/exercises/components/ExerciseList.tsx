@@ -60,7 +60,7 @@ const ExerciseList = () => {
         data: [{ setCount: 1 }],
       },
     ])
-    router.push("/logs")
+    router.replace("/logs")
   }
 
   if (data?.pages[0].data.length === 0) {
