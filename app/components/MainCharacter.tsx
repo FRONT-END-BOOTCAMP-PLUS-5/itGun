@@ -13,6 +13,7 @@ import {
 import { burky } from "@/static/svgs/burky"
 import { useSession } from "next-auth/react"
 import { useCharacterStore } from "@/hooks/useCharacterStore"
+import { MainCharacterProps } from "@/app/types"
 
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,

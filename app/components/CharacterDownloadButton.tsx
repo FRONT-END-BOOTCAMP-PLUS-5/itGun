@@ -4,7 +4,7 @@ import { useState } from "react"
 import { downloadCurrentCharacter } from "@/utils/downloadCharacter"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
-import { CharacterDownloadButtonProps } from "@/app/components/CharacterDownloadButton.type"
+import { CharacterDownloadButtonProps } from "@/app/types"
 import { useToastStore } from "@/hooks/useToastStore"
 
 const CharacterDownloadButton: React.FC<CharacterDownloadButtonProps> = ({

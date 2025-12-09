@@ -1,5 +1,6 @@
 "use client"
-import { SignupData } from "@/app/signup/context/SignupContext.types"
+
+import { SignupData } from "@/app/signup/[steps]/types"
 import { create } from "zustand"
 
 interface DataState {

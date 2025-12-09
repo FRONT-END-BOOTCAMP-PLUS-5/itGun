@@ -3,7 +3,7 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
-import { FilterButtonProps } from "./types"
+import { FilterButtonProps } from "@/app/exercises/types"
 
 const FilterButton = ({ item, filterType }: FilterButtonProps) => {
   const searchParams = useSearchParams()

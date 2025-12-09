@@ -1,22 +1,8 @@
+import { BodyPartsGroup, CalIconType } from "@/app/user/logs/types"
 import {
   WorkoutSetData,
   WorkoutType,
 } from "@/ds/components/molecules/workout/Workout.types"
-
-enum CalIconType {
-  CARDIO = "cardio",
-  UPPER = "upper",
-  LOWER = "lower",
-}
-
-type BodyPartsGroup =
-  | "legs"
-  | "back"
-  | "chest"
-  | "shoulders"
-  | "arms"
-  | "core"
-  | "stamina"
 
 export interface WorkoutItem {
   id: number

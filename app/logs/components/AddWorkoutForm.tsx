@@ -3,8 +3,7 @@ import Workout from "@/ds/components/molecules/workout/Workout"
 import { useLogsStore } from "@/hooks/useLogsStore"
 import { Exercise } from "@/services/exercises/getExercises"
 import { useEffect } from "react"
-import { FormData, workoutTypes } from "../types"
-import { AddWorkoutFormProps } from "./type"
+import { FormData, workoutTypes, AddWorkoutFormProps } from "@/app/logs/types"
 import { useDialogStore } from "@/hooks/useDialogStore"
 const AddWorkoutForm = ({ formData, setFormData }: AddWorkoutFormProps) => {
   const { exerciseData, setMode, setOpen, setInit } = useLogsStore()
