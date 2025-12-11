@@ -1,3 +1,4 @@
+"use client"
 import { FormData } from "@/app/logs/types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import Workout from "@/ds/components/molecules/workout/Workout"

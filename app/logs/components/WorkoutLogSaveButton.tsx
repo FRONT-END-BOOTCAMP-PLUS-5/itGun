@@ -1,3 +1,4 @@
+"use client"
 import LoadingCharacter from "@/app/components/loading/LoadingCharacter"
 import LoadingText from "@/app/components/loading/LoadingText"
 import { Button } from "@/ds/components/atoms/button/Button"
