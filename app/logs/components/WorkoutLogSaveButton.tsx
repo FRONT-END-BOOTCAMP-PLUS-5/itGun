@@ -5,15 +5,11 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
-import { WorkoutLogSaveButtonProps, WorkoutData } from "@/app/logs/types"
+import { WorkoutData } from "@/app/logs/types"
 import { useLogsStore } from "@/hooks/useLogsStore"
 
-const WorkoutLogSaveButton = ({
-  calIconType,
-  date,
-  totalDuration,
-}: WorkoutLogSaveButtonProps) => {
-  const { formData } = useLogsStore()
+const WorkoutLogSaveButton = () => {
+  const { formData, calIconType, date, totalDuration } = useLogsStore()
   const [validation, setValidation] = useState({
     calIconType: false,
     date: false,

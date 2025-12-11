@@ -3,13 +3,12 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { IconProps } from "@/ds/components/atoms/icon/Icon.types"
 import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
-import { WorkoutTypeSelectorProps, CalIconType } from "@/app/logs/types"
+import { CalIconType } from "@/app/logs/types"
 import { ICON_TYPES } from "@/app/logs/constants"
+import { useLogsStore } from "@/hooks/useLogsStore"
 
-const WorkoutTypeSelector = ({
-  calIconType,
-  setCalIconType,
-}: WorkoutTypeSelectorProps) => {
+const WorkoutTypeSelector = () => {
+  const { calIconType, setCalIconType } = useLogsStore()
   return (
     <section className="flex flex-col items-center justify-center gap-7">
       <H1>오늘은 무슨 데이?</H1>

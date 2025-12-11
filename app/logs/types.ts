@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react"
-
 export enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
@@ -51,26 +49,4 @@ export type WorkoutData = {
   distance?: number
   durationSeconds?: number
   exerciseInfo: ExerciseInfo
-}
-
-export interface DateTypeProps {
-  date: string
-  setDate: Dispatch<SetStateAction<string>>
-  totalDuration: number
-  setTotalDuration: Dispatch<SetStateAction<number>>
-}
-export interface WorkoutTypeSelectorProps {
-  calIconType: CalIconType | null
-  setCalIconType: Dispatch<SetStateAction<CalIconType | null>>
-}
-
-export interface WorkoutLogSaveButtonProps {
-  calIconType: CalIconType | null
-  date: string
-  totalDuration: number
-}
-
-export interface DatePickerProps {
-  date: string
-  setDate: (date: string) => void
 }
