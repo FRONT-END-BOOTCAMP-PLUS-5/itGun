@@ -9,6 +9,7 @@ interface LogsStore extends LogsState {
   setFormData: (
     formData: FormData[] | ((prev: FormData[]) => FormData[])
   ) => void
+  setInit: () => void
 }
 
 const initialState: LogsState = {
@@ -25,4 +26,8 @@ export const useLogsStore = create<LogsStore>((set) => ({
         formData: newFormData,
       }
     }),
+  setInit: () =>
+    set(() => ({
+      formData: [],
+    })),
 }))
