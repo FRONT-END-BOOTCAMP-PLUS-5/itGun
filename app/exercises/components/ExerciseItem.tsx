@@ -4,6 +4,7 @@ import { ExerciseItemProps } from "@/app/exercises/types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useRouter } from "next/navigation"
+import { useExercisesPath } from "@/hooks/useExercisePath"
 
 const ExerciseItem = ({
   exercise,
@@ -11,7 +12,12 @@ const ExerciseItem = ({
   lastItemRef,
   handleClickExercise,
 }: ExerciseItemProps) => {
+  const exercisesPath = useExercisesPath()
   const router = useRouter()
+
+  const handleInfoClick = () => {
+    router.push(`${exercisesPath}/${exercise.exerciseId}`)
+  }
 
   return (
     <div className="flex justify-between">
@@ -41,13 +47,7 @@ const ExerciseItem = ({
           {exercise.bodyPartsKo.map((part) => part).join(" ")}
         </C2>
       </li>
-      <Button
-        variant="ghost"
-        size="xs"
-        onClick={() => {
-          router.push(`/logs/exercises/${exercise.exerciseId}`)
-        }}
-      >
+      <Button variant="ghost" size="xs" onClick={handleInfoClick}>
         <Icon name="info" size={24} fillColor="primary" />
       </Button>
     </div>

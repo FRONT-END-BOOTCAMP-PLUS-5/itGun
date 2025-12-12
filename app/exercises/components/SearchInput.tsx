@@ -4,8 +4,10 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
+import { useExercisesPath } from "@/hooks/useExercisePath"
 
 const SearchInput = () => {
+  const exercisesPath = useExercisesPath()
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -17,7 +19,7 @@ const SearchInput = () => {
     const currentParams = new URLSearchParams(searchParams)
     if (value) currentParams.set("q", value)
     else currentParams.delete("q")
-    router.replace(`/logs/exercises?${currentParams.toString()}`)
+    router.replace(`${exercisesPath}?${currentParams.toString()}`)
   }
 
   const debouncedSearch = (value: string) => {
@@ -40,7 +42,7 @@ const SearchInput = () => {
     setSearchValue("")
     const currentParams = new URLSearchParams(searchParams)
     currentParams.delete("q")
-    router.replace(`/logs/exercises?${currentParams.toString()}`)
+    router.replace(`${exercisesPath}?${currentParams.toString()}`)
   }
 
   const handleFormSubmit = (e: FormEvent) => {
