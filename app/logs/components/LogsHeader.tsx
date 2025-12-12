@@ -11,7 +11,8 @@ const LogsHeader = () => {
   const handleBack = () => {
     if (pathname === "/logs") {
       showDialog({
-        message: "작성 중인 기록이 저장되지 않습니다.\n정말 뒤로 가시겠습니까?",
+        message:
+          "작성 중인 기록이\n저장되지 않습니다.\n정말 뒤로 가시겠습니까?",
         variant: "error",
         buttons: [
           {
