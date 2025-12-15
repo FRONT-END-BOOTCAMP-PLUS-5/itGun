@@ -1,4 +1,3 @@
-import LogsInit from "./components/LogsInit"
 import LogsHeader from "./components/LogsHeader"
 
 export default function LogsLayout({
@@ -9,7 +8,6 @@ export default function LogsLayout({
   return (
     <>
       <LogsHeader />
-      <LogsInit />
       {children}
     </>
   )
