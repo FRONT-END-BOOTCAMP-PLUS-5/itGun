@@ -2,13 +2,13 @@
 import { Header } from "@/ds/components/molecules/header/Header"
 import { usePathname, useRouter } from "next/navigation"
 import { useDialogStore } from "@/hooks/useDialogStore"
-import { useLogsStore } from "@/hooks/useLogsStore"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
 const LogsHeader = () => {
   const pathname = usePathname()
   const router = useRouter()
   const { showDialog } = useDialogStore()
-  const { setInit } = useLogsStore()
+  const { setInit } = useExerciseLogStore()
 
   const handleBack = () => {
     if (pathname === "/logs") {

@@ -7,10 +7,10 @@ import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
 import { WorkoutData } from "@/app/logs/types"
-import { useLogsStore } from "@/hooks/useLogsStore"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
 const WorkoutLogSaveButton = () => {
-  const { formData, calIconType, date, totalDuration } = useLogsStore()
+  const { formData, calIconType, date, totalDuration } = useExerciseLogStore()
   const [validation, setValidation] = useState({
     calIconType: false,
     date: false,

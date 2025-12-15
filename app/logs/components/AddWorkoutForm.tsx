@@ -3,11 +3,11 @@ import { FormData } from "@/app/logs/types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import Workout from "@/ds/components/molecules/workout/Workout"
 import { useDialogStore } from "@/hooks/useDialogStore"
-import { useLogsStore } from "@/hooks/useLogsStore"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 import { useRouter } from "next/navigation"
 const AddWorkoutForm = () => {
   const router = useRouter()
-  const { setFormData, formData } = useLogsStore()
+  const { setFormData, formData } = useExerciseLogStore()
   const { showDialog } = useDialogStore()
 
   const handleAddSet = (index: number) => {

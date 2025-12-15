@@ -3,14 +3,14 @@ import { create } from "zustand"
 import { CalIconType } from "@/services/user/logs/createUserLogs"
 import dayjs from "dayjs"
 
-interface LogsState {
+interface ExerciseLogState {
   formData: FormData[]
   calIconType: CalIconType | null
   date: string
   totalDuration: number
 }
 
-interface LogsStore extends LogsState {
+interface ExerciseLogStore extends ExerciseLogState {
   setFormData: (
     formData: FormData[] | ((prev: FormData[]) => FormData[])
   ) => void
@@ -20,14 +20,14 @@ interface LogsStore extends LogsState {
   setInit: () => void
 }
 
-const initialState: LogsState = {
+const initialState: ExerciseLogState = {
   formData: [],
   calIconType: null,
   date: dayjs().format("YYYY.MM.DD"),
   totalDuration: 0,
 }
 
-export const useLogsStore = create<LogsStore>((set) => ({
+export const useExerciseLogStore = create<ExerciseLogStore>((set) => ({
   ...initialState,
   setFormData: (formData) =>
     set((state) => {

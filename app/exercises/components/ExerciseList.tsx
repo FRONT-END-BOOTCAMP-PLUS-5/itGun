@@ -3,7 +3,7 @@
 import Loading from "@/app/loading"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import { useGetExercises } from "@/hooks/useGetExercises"
-import { useLogsStore } from "@/hooks/useLogsStore"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Fragment, useRef } from "react"
 import ExerciseItem from "./ExerciseItem"
@@ -14,7 +14,7 @@ const ExerciseList = () => {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { setFormData } = useLogsStore()
+  const { setFormData } = useExerciseLogStore()
   const q = searchParams.get("q") || ""
   const bodyPart = searchParams.get("bodyPart") || ""
   const equipment = searchParams.get("equipment") || ""
