@@ -4,9 +4,10 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import dayjs from "dayjs"
 import Icon from "@/ds/components/atoms/icon/Icon"
-import { DatePickerProps } from "@/app/logs/types"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
-const CustomDatePicker = ({ date, setDate }: DatePickerProps) => {
+const CustomDatePicker = () => {
+  const { date, setDate } = useExerciseLogStore()
   const selectedDate = date ? dayjs(date, "YYYY.MM.DD").toDate() : new Date()
 
   const handleDateChange = (date: Date | null) => {

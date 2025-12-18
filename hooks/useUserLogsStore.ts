@@ -23,7 +23,7 @@ const initialState: UserLogState = {
 
 export const useUserLogsStore = create<UserLogsStore>((set) => ({
   ...initialState,
-  setLogsOnMonth: (logs) => set({ logsOnMonth: logs, logsToDisplay: logs}),
+  setLogsOnMonth: (logs) => set({ logsOnMonth: logs, logsToDisplay: logs, selectedDate: null}),
   toggleSlideUp: () => set((state) => ({ isSlideUp: !state.isSlideUp })),
   handleIconClick: (logs) => set({
     logsToDisplay: logs,
