@@ -1,3 +1,3 @@
-import { userGuagesHandlers } from "./handlers/userGuagesHandlers"
+import { userGaugesHandlers } from "./handlers/userGaugesHandlers"
 
-export const handlers = [...Object.values(userGuagesHandlers)]
+export const handlers = [...Object.values(userGaugesHandlers)]

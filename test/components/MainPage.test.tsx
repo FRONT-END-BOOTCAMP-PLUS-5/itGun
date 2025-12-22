@@ -3,10 +3,10 @@ import { render, waitFor } from "@testing-library/react"
 import MainPage from "@/app/components/MainPage"
 import { server } from "@/test/mocks/server"
 import {
-  checkUserGuagesNoRecentWorkoutMessage,
-  checkUserGuagesRecentWorkoutMessage,
-  checkUserGuagesNoWorkoutMessage,
-} from "@/test/mocks/handlers/userGuagesHandlers"
+  checkUserGaugesNoRecentWorkoutMessage,
+  checkUserGaugesNoWorkoutMessage,
+  checkUserGaugesRecentWorkoutMessage,
+} from "@/test/mocks/handlers/userGaugesHandlers"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 // 자식 컴포넌트 Mocking
@@ -67,8 +67,8 @@ describe("MainPage 통합 테스트", () => {
     MockMainCharacter.mockClear()
   })
 
-  it("시스템을 처음 사용하는 경우 MainCaracter가 보인다.", async () => {
-    server.use(checkUserGuagesNoWorkoutMessage())
+  it("시스템을 처음 사용하는 경우 MainCharacter가 보인다.", async () => {
+    server.use(checkUserGaugesNoWorkoutMessage())
     render(<MainPage />, { wrapper: createWrapper() })
 
     await waitFor(() => {
@@ -81,7 +81,7 @@ describe("MainPage 통합 테스트", () => {
   })
 
   it("14일 이내 운동 기록이 있는 경우 MainCharacter가 보인다.", async () => {
-    server.use(checkUserGuagesRecentWorkoutMessage())
+    server.use(checkUserGaugesRecentWorkoutMessage())
     render(<MainPage />, { wrapper: createWrapper() })
 
     await waitFor(() => {
@@ -94,7 +94,7 @@ describe("MainPage 통합 테스트", () => {
   })
 
   it("14일 이내 운동 기록이 없는 경우 MainCharacter가 '눈물'과 함께 보인다.", async () => {
-    server.use(checkUserGuagesNoRecentWorkoutMessage())
+    server.use(checkUserGaugesNoRecentWorkoutMessage())
     render(<MainPage />, { wrapper: createWrapper() })
 
     await waitFor(() => {
