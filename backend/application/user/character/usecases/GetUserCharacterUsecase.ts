@@ -3,7 +3,7 @@ import { GetUserCharacterDto } from "../dtos/GetUserCharacterDto"
 import { CharacterAssetRepository } from "@/backend/domain/repositories/CharacterAssetRepository"
 import { UserRepository } from "@/backend/domain/repositories/UserRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
-import { yymmddToDate } from "@/utils/yymmddToDate"
+import { yymmddToDate } from "@/utils/transferDate"
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
 
 export class GetUserCharacterUsecase {
