@@ -3,15 +3,11 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Input } from "@/ds/components/atoms/input/Input"
 import { C1 } from "@/ds/components/atoms/text/TextWrapper"
-import { DateTypeProps } from "@/app/logs/types"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 import CustomDatePicker from "./DatePicker"
 
-const DateTimeInput = ({
-  date,
-  setDate,
-  totalDuration,
-  setTotalDuration,
-}: DateTypeProps) => {
+const DateTimeInput = () => {
+  const { totalDuration, setTotalDuration } = useExerciseLogStore()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     const numberRegex = /^[0-9]{0,3}$/
@@ -25,7 +21,7 @@ const DateTimeInput = ({
     <section className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Icon name="calendar" size={24} />
-        <CustomDatePicker date={date} setDate={setDate} />
+        <CustomDatePicker />
       </div>
 
       <div className="flex items-center gap-2">

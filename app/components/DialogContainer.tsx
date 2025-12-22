@@ -19,12 +19,19 @@ const DialogContainer = () => {
         }))
 
         return (
-          <Dialog
+          <div
             key={dialog.id}
-            variant={dialog.variant}
-            message={dialog.message}
-            buttons={buttonsWithDismiss}
-          />
+            className="fixed inset-0 z-100"
+            onClick={() => dismissDialog(dialog.id)}
+          >
+            <div onClick={(e) => e.stopPropagation()}>
+              <Dialog
+                variant={dialog.variant}
+                message={dialog.message}
+                buttons={buttonsWithDismiss}
+              />
+            </div>
+          </div>
         )
       })}
     </>
