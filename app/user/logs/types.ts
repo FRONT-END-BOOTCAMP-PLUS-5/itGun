@@ -1,13 +1,10 @@
-import FullCalendar from "@fullcalendar/react"
-import React, { Dispatch, SetStateAction } from "react"
-
-enum CalIconType {
+export enum CalIconType {
   CARDIO = "cardio",
   UPPER = "upper",
   LOWER = "lower",
 }
 
-type BodyPartsGroup =
+export type BodyPartsGroup =
   | "legs"
   | "back"
   | "chest"
@@ -16,11 +13,6 @@ type BodyPartsGroup =
   | "core"
   | "stamina"
 
-export type CalTypeMaps = (calType: string) => {
-  calTypeKo: string
-  iconName: string
-  iconColor: string
-}
 export interface Log {
   id: number
   userId: string
@@ -30,34 +22,15 @@ export interface Log {
   gaugeChanges: Record<BodyPartsGroup, number>
 }
 
-export interface CalendarHeaderProps {
-  calendarRef: React.RefObject<FullCalendar | null>
-  calMonth: string
-  setCalMonth: Dispatch<SetStateAction<string>>
-  setSelectedDate: Dispatch<SetStateAction<string | null>>
-}
-
 export interface CalendarGridProps {
-  calendarRef: React.RefObject<FullCalendar | null>
-  logsOnMonth: Log[]
-  calTypeMaps: CalTypeMaps
-  onIconClick: (logs: Log[]) => void
+  year: string
+  month: string
 }
 
 export interface LogListProps {
   isFetching: boolean
-  logsToDisplay: Log[]
-  selectedDate: string | null
-  calTypeMaps: CalTypeMaps
-  isSlideUp: boolean
-  setIsSlideUp: Dispatch<SetStateAction<boolean>>
 }
 
 export interface LogItemProps {
   log: Log
-  calTypeMaps: (calType: string) => {
-    calTypeKo: string
-    iconName: string
-    iconColor: string
-  }
 }

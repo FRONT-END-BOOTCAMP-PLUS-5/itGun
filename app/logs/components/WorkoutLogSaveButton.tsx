@@ -1,3 +1,4 @@
+"use client"
 import LoadingCharacter from "@/app/components/loading/LoadingCharacter"
 import LoadingText from "@/app/components/loading/LoadingText"
 import { Button } from "@/ds/components/atoms/button/Button"
@@ -5,15 +6,11 @@ import Icon from "@/ds/components/atoms/icon/Icon"
 import { B1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useCreateUserLogs } from "@/hooks/useCreateUserLogs"
 import { useEffect, useState } from "react"
-import { WorkoutLogSaveButtonProps } from "./type"
-import { WorkoutData } from "../types"
+import { WorkoutData } from "@/app/logs/types"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
-const WorkoutLogSaveButton = ({
-  calIconType,
-  date,
-  totalDuration,
-  formData,
-}: WorkoutLogSaveButtonProps) => {
+const WorkoutLogSaveButton = () => {
+  const { formData, calIconType, date, totalDuration } = useExerciseLogStore()
   const [validation, setValidation] = useState({
     calIconType: false,
     date: false,

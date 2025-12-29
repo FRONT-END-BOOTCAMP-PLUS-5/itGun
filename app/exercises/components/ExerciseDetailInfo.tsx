@@ -3,7 +3,7 @@
 import { C2, H2 } from "@/ds/components/atoms/text/TextWrapper"
 import Image from "next/image"
 import { useState } from "react"
-import { DetailModalProps, LabelProps } from "./types"
+import { DetailModalProps, LabelProps } from "@/app/exercises/types"
 
 const Label = ({ text, filterType }: LabelProps) => {
   return (

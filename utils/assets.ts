@@ -1,3 +1,5 @@
+import { CharacterAsset } from "@/app/types"
+import React from "react"
 export const sortAssets = <T extends { type: string }>(assets: T[]): T[] => {
   const getOrder = (type: string) => {
     switch (type) {
@@ -26,4 +28,38 @@ export const matchAssetLevels = <T extends { type: string; level: number }>(
     },
     {} as Record<string, number>
   )
+}
+
+export const jsxToString = (element: React.JSX.Element): string => {
+  const { type, props } = element
+  const { children, ...attrs } = props
+
+  const tagString =
+    type.toString() === "Symbol(react.fragment)" ? "" : type.toString()
+
+  const attrsString = Object.entries(attrs)
+    .map(([key, value]) => `${key}="${value}"`)
+    .join(" ")
+
+  const childrenString = React.Children.toArray(children)
+    .map((child) => {
+      if (typeof child === "string") return child
+      if (React.isValidElement(child)) return jsxToString(child)
+      return ""
+    })
+    .join("")
+
+  return `<${tagString} ${attrsString}>${childrenString}</${tagString}>`
+}
+
+export const svgToCharacterAsset = (
+  type: string,
+  svg: React.JSX.Element,
+  level: number = 1
+) => {
+  return {
+    type: type,
+    level: level,
+    svg: jsxToString(svg),
+  } as CharacterAsset
 }

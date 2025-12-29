@@ -42,6 +42,7 @@ next-env.d.ts
 
 # prisma
 /prisma/migrations/*
+/prisma/generated/prisma/*
 
 # claude
 CLAUDE.md
@@ -49,3 +50,4 @@ CLAUDE.md
 # storybook
 *storybook.log
 storybook-static
+

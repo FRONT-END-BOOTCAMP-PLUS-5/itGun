@@ -3,39 +3,17 @@
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { IconProps } from "@/ds/components/atoms/icon/Icon.types"
 import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
-import { WorkoutTypeSelectorProps } from "./type"
-import { CalIconType } from "../types"
+import { CalIconType } from "@/app/logs/types"
+import { ICON_TYPES } from "@/app/logs/constants"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
-const IconTypes = [
-  {
-    type: "cardio",
-    icon: "hearts",
-    label: "유산소",
-    color: "secondary-pink",
-  },
-  {
-    type: "upper",
-    icon: "arm",
-    label: "상체",
-    color: "secondary-purple",
-  },
-  {
-    type: "lower",
-    icon: "leg",
-    label: "하체",
-    color: "secondary-blue",
-  },
-]
-
-const WorkoutTypeSelector = ({
-  calIconType,
-  setCalIconType,
-}: WorkoutTypeSelectorProps) => {
+const WorkoutTypeSelector = () => {
+  const { calIconType, setCalIconType } = useExerciseLogStore()
   return (
     <section className="flex flex-col items-center justify-center gap-7">
       <H1>오늘은 무슨 데이?</H1>
       <ul className="flex items-center gap-6">
-        {IconTypes.map(({ type, icon, label, color }) => (
+        {ICON_TYPES.map(({ type, icon, label, color }) => (
           <li
             key={type}
             className="flex flex-col items-center gap-4"

@@ -1,7 +1,7 @@
 import React from "react"
 import MenuHeader from "./components/MenuHeader"
 import MenuList from "./components/MenuList"
-import LogoutButton from "./components/LogoutButton"
+import LogInAndOutButton from "./components/LogInAndOutButton"
 
 const MenuPage = () => {
   return (
@@ -10,7 +10,7 @@ const MenuPage = () => {
         <MenuHeader />
         <MenuList />
       </div>
-      <LogoutButton />
+      <LogInAndOutButton />
     </div>
   )
 }

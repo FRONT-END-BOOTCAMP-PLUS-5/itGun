@@ -4,10 +4,18 @@ import { useSession } from "next-auth/react"
 import CharacterDownloadButton from "@/app/components/CharacterDownloadButton"
 import { useRouter } from "next/navigation"
 import { Button } from "@/ds/components/atoms/button/Button"
+import { useLoginGuard } from "@/hooks/useLoginGuard"
 
 const MainUserTitle = () => {
   const { data: session } = useSession()
+  const loginGuard = useLoginGuard()
   const router = useRouter()
+
+  const handleNicknameClick = () => {
+    loginGuard(() => {
+      router.push("/user")
+    })
+  }
 
   return (
     <div className="relative mt-[40px] flex items-center justify-center gap-3">
@@ -15,9 +23,7 @@ const MainUserTitle = () => {
         variant="ghost"
         size="xs"
         className="z-2"
-        onClick={() => {
-          router.push("/user")
-        }}
+        onClick={handleNicknameClick}
       >
         <H1>{session?.user?.nickName ?? "벌키"}님</H1>
       </Button>

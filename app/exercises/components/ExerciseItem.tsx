@@ -1,10 +1,10 @@
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import Image from "next/image"
-import { ExerciseItemProps } from "./types"
-import { useModalStore } from "@/hooks/useModalStore"
+import { ExerciseItemProps } from "@/app/exercises/types"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
-import ExerciseDetailInfo from "./ExerciseDetailInfo"
+import { useRouter } from "next/navigation"
+import { useExercisesPath } from "@/hooks/useExercisePath"
 
 const ExerciseItem = ({
   exercise,
@@ -12,7 +12,12 @@ const ExerciseItem = ({
   lastItemRef,
   handleClickExercise,
 }: ExerciseItemProps) => {
-  const { openModal } = useModalStore()
+  const exercisesPath = useExercisesPath()
+  const router = useRouter()
+
+  const handleInfoClick = () => {
+    router.push(`${exercisesPath}/${exercise.exerciseId}`)
+  }
 
   return (
     <div className="flex justify-between">
@@ -42,11 +47,7 @@ const ExerciseItem = ({
           {exercise.bodyPartsKo.map((part) => part).join(" ")}
         </C2>
       </li>
-      <Button
-        variant="ghost"
-        size="xs"
-        onClick={() => openModal(<ExerciseDetailInfo exercise={exercise} />)}
-      >
+      <Button variant="ghost" size="xs" onClick={handleInfoClick}>
         <Icon name="info" size={24} fillColor="primary" />
       </Button>
     </div>

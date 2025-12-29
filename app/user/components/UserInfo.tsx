@@ -4,8 +4,8 @@ import { B1, S2 } from "@/ds/components/atoms/text/TextWrapper"
 import { Dropdown } from "@/ds/components/molecules/dropdown/Dropdown"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { UserInfoProps } from "../types"
-import { genderOptions, numberOptions } from "./constants"
+import { UserInfoProps } from "@/app/user/types"
+import { GENDER_OPTIONS, NUMBER_OPTIONS } from "@/app/user/constants"
 import { useGetUserInfo } from "@/hooks/useGetUserInfo"
 import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
 import { Request } from "@/services/user/info/updateUserInfo"
@@ -86,7 +86,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   }
 
   return (
-    <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px]">
+    <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px] px-[4px]">
       <Input
         value={nickName}
         size={"lg"}
@@ -131,14 +131,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       </div>
       <Dropdown
         value={age}
-        options={numberOptions}
+        options={NUMBER_OPTIONS}
         readOnly={isEdit ? false : true}
         onChange={setAge}
         className={isEdit ? "!text-primary" : ""}
       />
       <Dropdown
         value={gender}
-        options={genderOptions}
+        options={GENDER_OPTIONS}
         readOnly={isEdit ? false : true}
         onChange={setGender}
         className={isEdit ? "!text-primary" : ""}

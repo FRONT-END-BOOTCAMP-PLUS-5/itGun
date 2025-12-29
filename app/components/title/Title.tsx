@@ -1,5 +1,5 @@
+import { TitleProps } from "@/app/types"
 import { B2, H2 } from "@/ds/components/atoms/text/TextWrapper"
-import { TitleProps } from "./Title.type"
 
 const Title: React.FC<TitleProps> = ({ title, subTitle }) => {
   return (

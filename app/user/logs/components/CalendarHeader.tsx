@@ -3,42 +3,43 @@
 import { Button } from "@/ds/components/atoms/button/Button"
 import { C1, H1 } from "@/ds/components/atoms/text/TextWrapper"
 import Icon from "@/ds/components/atoms/icon/Icon"
-import { CalendarHeaderProps } from "@/app/user/logs/types"
+import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation";
 
-export const CalendarHeader = ({
-  calendarRef,
-  calMonth,
-  setCalMonth,
-  setSelectedDate,
-}: CalendarHeaderProps) => {
-  const setNewMonthTitle = () => {
-    if (calendarRef.current) {
-      const date = calendarRef.current.getApi().getDate()
-      const newMonth = `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, "0")}`
-      setCalMonth(newMonth)
-      setSelectedDate(null)
-    }
+export const CalendarHeader = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const now = new Date()
+  const year = searchParams.get("year") || now.getFullYear().toString()
+  const month = searchParams.get("month") || (now.getMonth() + 1).toString()
+
+  const isCurrentMonth = () => {
+    return year === now.getFullYear().toString() && month === (now.getMonth() + 1).toString()
   }
 
   const handleNext = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().next()
-      setNewMonthTitle()
-    }
+    const date = new Date(parseInt(year), parseInt(month) - 1, 1)
+    date.setMonth(date.getMonth() + 1)
+
+    const newYear = date.getFullYear()
+    const newMonth = date.getMonth() + 1
+
+    router.replace(`/user/logs?year=${newYear}&month=${newMonth}`)
   }
 
   const handlePrev = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().prev()
-      setNewMonthTitle()
-    }
+    const date = new Date(parseInt(year), parseInt(month) - 1, 1)
+    date.setMonth(date.getMonth() - 1)
+
+    const newYear = date.getFullYear()
+    const newMonth = date.getMonth() + 1
+
+    router.replace(`/user/logs?year=${newYear}&month=${newMonth}`)
   }
 
   const handleToday = () => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().today()
-      setNewMonthTitle()
-    }
+    const now = new Date()
+    router.replace(`/user/logs?year=${now.getFullYear()}&month=${now.getMonth() + 1}`)
   }
   return (
     <div className="calendar-title-box grid w-full grid-cols-5 gap-2">
@@ -50,9 +51,9 @@ export const CalendarHeader = ({
           </Button>
         </div>
         <div className="title">
-          <H1>{calMonth}</H1>
+          <H1>{`${year}.${month.padStart(2, "0")}`}</H1>
         </div>
-        <div className="next-button">
+        <div className={`next-button ${isCurrentMonth() ? "invisible" : "visible"}`}>
           <Button variant="ghost" size="xs" onClick={handleNext}>
             <Icon name="rightArrow" size={24} />
           </Button>

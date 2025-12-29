@@ -3,10 +3,10 @@
 import { useGetUserLog } from "@/hooks/useGetUserLog"
 import WorkoutList from "./WorkoutList"
 import LogSummaryHeader from "./LogSummaryHeader"
-import { LogDetailProps } from "../types"
+import { LogDetailProps } from "@/app/user/logs/[id]/types"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import MainCharacter from "@/app/components/MainCharacter"
-import { dateToyymmdd } from "@/utils/dateToyymmdd"
+import { dateToyymmdd } from "@/utils/transferDate"
 
 const LogDetailPage = ({ id }: LogDetailProps) => {
   const { data, isLoading } = useGetUserLog(id)

@@ -17,6 +17,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  serverExternalPackages: ["openid-client"],
+
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = "eval-cheap-module-source-map"
+      config.optimization.runtimeChunk = true
+    }
+
+    return config
+  },
 }
 
-export default nextConfig
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+})
+
+module.exports = withBundleAnalyzer(nextConfig)

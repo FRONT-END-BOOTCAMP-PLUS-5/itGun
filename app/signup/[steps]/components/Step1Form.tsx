@@ -4,8 +4,9 @@ import { C2, S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { checkEmail } from "@/services/user/checkEmail"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
-import { SignupData } from "../../context/SignupContext.types"
+
 import { useSignupStore } from "@/hooks/useSignupStore"
+import { SignupData } from "@/app/signup/[steps]/types"
 
 function Step1Form() {
   const router = useRouter()
@@ -48,7 +49,7 @@ function Step1Form() {
         setValidation({ emailError: "", emailSuccess: true })
       } else {
         setValidation({
-          emailError: "이미 사용중인 이메일입니다",
+          emailError: result.message,
           emailSuccess: false,
         })
       }

@@ -11,13 +11,13 @@ const AuthFooter = () => {
   }
 
   const onClickSignin = () => {
-    router.push("/signin")
+    router.push("/")
   }
 
   return (
     <div className="fixed bottom-0 z-10 flex w-screen max-w-[430px] flex-col gap-[10px] bg-[var(--color-white-200)] px-[20px] py-[10px]">
       <Button isFullWidth={true} onClick={onClickSignin}>
-        <S1 variant="white-200">Sign in</S1>
+        <S1 variant="white-200">둘러보기</S1>
       </Button>
       <div className="flex items-center justify-between">
         <C1 variant="secondary">아직 회원이 아니신가요?</C1>

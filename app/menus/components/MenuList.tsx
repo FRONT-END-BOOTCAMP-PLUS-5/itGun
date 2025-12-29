@@ -4,23 +4,11 @@ import React from "react"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { Button } from "@/ds/components/atoms/button/Button"
-import { svgList } from "@/static/svgs/svgList"
 import { useRouter } from "next/navigation"
+import { MENU_MAPPINGS } from "@/app/menus/constants"
 
 const MenuList = () => {
   const route = useRouter()
-
-  const menuMap: {
-    name: string
-    iconName: keyof typeof svgList
-    iconColor: string
-    pathName: string
-  }[] = [
-    { name: "뱃지", iconName: "medal", iconColor: "secondary-yellow", pathName: "/user/badges" },
-    { name: "근육 성장률", iconName: "gauge", iconColor: "secondary-purple", pathName: "/user/gauges"},
-    { name: "근로그", iconName: "calendar", iconColor: "secondary-pink", pathName: "/user/logs"},
-    { name: "운동목록", iconName: "paper", iconColor: "secondary-blue", pathName: "/exercises"},
-  ]
 
   const handleMenuClick = (pathName: string) => {
     route.push(pathName)
@@ -28,7 +16,7 @@ const MenuList = () => {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      {menuMap.map((menu, index) => (
+      {MENU_MAPPINGS.map((menu, index) => (
         <React.Fragment key={index}>
           <Button
             variant="ghost"

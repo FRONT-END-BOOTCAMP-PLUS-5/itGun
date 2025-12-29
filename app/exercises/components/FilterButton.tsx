@@ -1,14 +1,14 @@
 "use client"
 
+import { FilterButtonProps } from "@/app/exercises/types"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import { useLogsStore } from "@/hooks/useLogsStore"
 import { useRouter, useSearchParams } from "next/navigation"
-import { FilterButtonProps } from "./types"
+import { useExercisesPath } from "@/hooks/useExercisePath"
 
 const FilterButton = ({ item, filterType }: FilterButtonProps) => {
+  const exercisesPath = useExercisesPath()
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { mode } = useLogsStore()
 
   const bodyPart = searchParams.get("bodyPart") || ""
   const equipment = searchParams.get("equipment") || ""
@@ -30,7 +30,7 @@ const FilterButton = ({ item, filterType }: FilterButtonProps) => {
     if (value) currentParams.set(type, value)
     else currentParams.delete(type)
 
-    router.replace(`/${mode}?${currentParams.toString()}`)
+    router.replace(`${exercisesPath}?${currentParams.toString()}`)
   }
 
   return (
