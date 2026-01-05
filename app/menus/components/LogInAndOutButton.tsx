@@ -5,28 +5,51 @@ import { Button } from "@/ds/components/atoms/button/Button"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { LogInAndOutButtonType } from "@/app/menus/types"
+import { C1 } from "@/ds/components/atoms/text/TextWrapper"
 
 const LogInAndOutButton = () => {
   const router = useRouter()
   const { data: session } = useSession()
-  const handleClick = () => {
+  const handleClickSignin = () => {
+    router.push("/signin")
+  }
+
+  const handleClickSignout = () => {
     if (session?.user) {
       signOut({ callbackUrl: "/" })
-    } else {
-      router.push("/signin")
     }
   }
 
+  const handleClickSignup = () => {
+    router.push("/signup")
+  }
+
   return (
-    <div className="p-[14px]">
+    <div className="flex w-full items-center justify-center gap-2 p-[14px]">
       <Button
         variant="underline"
-        isFullWidth={true}
+        isFullWidth={false}
         size="xs"
-        onClick={handleClick}
+        onClick={session?.user ? handleClickSignout : handleClickSignin}
       >
         {LogInAndOutButtonType[session?.user ? 0 : 1]}
       </Button>
+      {!session?.user && (
+        <>
+          <C1 variant="secondary" className="cursor-default">
+            {" "}
+            /{" "}
+          </C1>
+          <Button
+            variant="underline"
+            isFullWidth={false}
+            size="xs"
+            onClick={handleClickSignup}
+          >
+            회원가입
+          </Button>
+        </>
+      )}
     </div>
   )
 }
