@@ -15,7 +15,7 @@ export const useLoginGuard = () => {
     } else {
       showDialog({
         message: "로그인이 필요한 서비스 입니다. 로그인하시겠습니까?",
-        variant: "error",
+        variant: "primary",
         buttons: [
           {
             text: "로그인",
