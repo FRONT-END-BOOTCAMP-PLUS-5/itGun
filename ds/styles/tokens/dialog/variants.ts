@@ -13,6 +13,11 @@ export const dialogVariants: Record<string, DialogVariantConfig> = {
     text: "!text-[var(--color-white-100)]",
     buttons: "white-200",
   },
+  secondary: {
+    bg: "bg-[var(--color-secondary)]",
+    text: "!text-[var(--color-white-100)]",
+    buttons: "white-200",
+  },
   error: {
     bg: "bg-[var(--color-error)] border-2 border-[var(--color-primary)]",
     text: "!text-[var(--color-primary)]",
