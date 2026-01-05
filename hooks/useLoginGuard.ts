@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useDialogStore } from "./useDialogStore"
+import { useDialogStore } from "@/hooks/useDialogStore"
 import { useRouter } from "next/navigation"
 
 export const useLoginGuard = () => {
