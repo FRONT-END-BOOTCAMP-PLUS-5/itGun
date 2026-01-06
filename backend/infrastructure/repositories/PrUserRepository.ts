@@ -28,6 +28,12 @@ export class PrUserRepository implements UserRepository {
     )
   }
 
+  async findPasswordById(id: string): Promise<string | null> {
+    const user = await prisma.user.findUnique({ where: { id } })
+    if (!user) return null
+    return user.password
+  }
+
   async findCharacterInfoById(
     id: string
   ): Promise<{ id: number; color: string }> {
