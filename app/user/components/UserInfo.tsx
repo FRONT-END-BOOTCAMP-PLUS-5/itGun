@@ -48,7 +48,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       nickName,
       height: Number(height),
       weight: Number(weight),
-      age,
+      age: Number(age),
       gender: gender === "선택하지 않음" ? "none" : gender,
       characterColor: color,
     } as Request
