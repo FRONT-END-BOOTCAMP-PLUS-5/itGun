@@ -15,11 +15,13 @@ import { useSession } from "next-auth/react"
 import { useCharacterStore } from "@/hooks/useCharacterStore"
 import { MainCharacterProps } from "@/app/types"
 
+const EMPTY_DECORATIONS: CharacterAsset[] = []
+
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
   date,
-  decorations = [],
+  decorations = EMPTY_DECORATIONS,
 }) => {
   const { setOriginalCharacter } = useCharacterStore()
   const { data: session } = useSession()

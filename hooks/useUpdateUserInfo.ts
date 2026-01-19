@@ -7,22 +7,21 @@ export const useUpdateUserInfo = () => {
 
   return useMutation({
     mutationFn: (data: Request) => updateUserInfo(data),
-    onSuccess: (res) => {
-      if (res.message === "success") {
-        showToast({
-          message: "저장이 완료되었습니다!",
-          variant: "info",
-          position: "bottom",
-          duration: 3000,
-        })
-      } else if (res.message === "error") {
-        showToast({
-          message: "다시 시도해주세요😥",
-          variant: "error",
-          position: "bottom",
-          duration: 3000,
-        })
-      }
+    onSuccess: () => {
+      showToast({
+        message: "저장이 완료되었습니다!",
+        variant: "info",
+        position: "bottom",
+        duration: 3000,
+      })
+    },
+    onError: () => {
+      showToast({
+        message: "다시 시도해주세요😥",
+        variant: "error",
+        position: "bottom",
+        duration: 3000,
+      })
     },
   })
 }

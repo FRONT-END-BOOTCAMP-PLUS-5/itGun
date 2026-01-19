@@ -112,6 +112,7 @@ export async function POST(request: NextRequest) {
         { status: 200 }
       )
     } else {
+      console.log(`log creation failed : ${result.message}`);
       return NextResponse.json({ message: "error" }, { status: 400 })
     }
   } catch (error) {
