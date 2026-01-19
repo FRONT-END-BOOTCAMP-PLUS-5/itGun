@@ -5,7 +5,7 @@ import { getToken } from "next-auth/jwt"
 const protectedPrefixes = ["/api"]
 const protectedExact = ["/user"]
 const guestOnlyRoutes = ["/signup", "/signin"]
-const publicApiRoutes = ["/api/user/email", "/api/auth"]
+const publicApiRoutes = ["/api/user/email", "/api/auth", "/api/exercises"]
 
 function matchesRoutes(pathname: string, routes: string[]): boolean {
   return routes.some(
@@ -25,10 +25,7 @@ export async function middleware(request: NextRequest) {
     const isProtected =
       matchesRoutes(pathname, protectedPrefixes) ||
       protectedExact.includes(pathname)
-    if (
-      !matchesRoutes(pathname, publicApiRoutes) &&
-      isProtected
-    ) {
+    if (!matchesRoutes(pathname, publicApiRoutes) && isProtected) {
       return NextResponse.redirect(new URL("/landing", request.url))
     }
     return NextResponse.next()
