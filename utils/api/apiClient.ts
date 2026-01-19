@@ -15,7 +15,16 @@ class ApiClient {
       ...options,
     })
 
-    return response.json()
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        `HTTP ${response.status}: ${response.statusText}`
+      )
+    }
+
+    return data
   }
 
   async get<T>(endpoint: string): Promise<T> {
