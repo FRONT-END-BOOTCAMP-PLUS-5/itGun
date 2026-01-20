@@ -11,9 +11,13 @@ import { useUpdateUserInfo } from "@/hooks/useUpdateUserInfo"
 import { Request } from "@/services/user/info/updateUserInfo"
 import { useDeleteUserInfo } from "@/hooks/useDeleteUserInfo"
 import { useDialogStore } from "@/hooks/useDialogStore"
+import { useModalStore } from "@/hooks/useModalStore"
+import PasswordCheckModal from "./PasswordCheckModal"
+import PasswordInput from "./PasswordInput"
 
 const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
+  const [isAuth, setIsAuth] = useState<boolean>(false)
   const [nickName, setNickName] = useState<string>(
     session?.user?.nickName ?? ""
   )
@@ -27,11 +31,33 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   const [gender, setGender] = useState<number | string>(
     session?.user?.gender ?? "선택하지 않음"
   )
+  const [password, setPassword] = useState({
+    password: "",
+    passwordConfirm: "",
+  })
 
   const { showDialog } = useDialogStore()
   const { data } = useGetUserInfo()
   const { mutate: updateUserInfo } = useUpdateUserInfo()
   const { mutate: deleteUserInfo } = useDeleteUserInfo()
+  const { openModal, closeModal } = useModalStore()
+
+  const setInit = () => {
+    setNickName(session?.user?.nickName ?? "")
+    setHeight(session?.user?.height ?? "")
+    setWeight(session?.user?.weight ?? "")
+    setAge(session?.user?.age ?? 10)
+    setGender(session?.user?.gender ?? "선택하지 않음")
+    setIsAuth(false)
+    setPassword({
+      password: "",
+      passwordConfirm: "",
+    })
+  }
+
+  useEffect(() => {
+    setInit()
+  }, [session])
 
   useEffect(() => {
     if (data) {
@@ -43,6 +69,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (isAuth) {
+      closeModal()
+    }
+  }, [isAuth])
+
+  const handleClickPasswordCheck = () => {
+    openModal(<PasswordCheckModal setIsAuth={setIsAuth} />)
+  }
+
   const handleClickSave = () => {
     const payload = {
       nickName,
@@ -52,15 +88,12 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       gender: gender === "선택하지 않음" ? "none" : gender,
       characterColor: color,
     } as Request
-    updateUserInfo(payload)
-    if (session?.user) {
-      session.user.nickName = nickName
-      session.user.height = Number(height)
-      session.user.weight = Number(weight)
-      session.user.age = Number(age)
-      session.user.gender = String(gender)
-      session.user.characterColor = color
+
+    if (isAuth && password?.passwordConfirm) {
+      payload.password = password.password
     }
+    updateUserInfo(payload)
+    update({ user: payload })
     setIsEdit(false)
   }
 
@@ -86,87 +119,99 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   }
 
   return (
-    <div className="relative mt-[40px] flex h-full w-full flex-col gap-[40px] px-[4px]">
-      <Input
-        value={nickName}
-        size={"lg"}
-        className={isEdit ? "text-primary" : "text-secondary"}
-        isFullWidth={true}
-        readOnly={isEdit ? false : true}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setNickName(e.target.value)
-        }
-      />
-      <div
-        className={`border-secondary flex items-center justify-between border-b-1`}
-      >
+    <div className="relative mt-[40px] flex h-full w-full flex-col px-[4px]">
+      <div className="flex h-[calc(100%-100px)] w-full flex-col gap-[40px] overflow-y-scroll">
         <Input
-          value={height}
-          inputMode="numeric"
+          value={nickName}
           size={"lg"}
-          className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
+          className={isEdit ? "text-primary" : "text-secondary"}
           isFullWidth={true}
           readOnly={isEdit ? false : true}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setHeight(e.target.value)
+            setNickName(e.target.value)
           }
         />
-        <B1 variant={isEdit ? "primary" : "secondary"}>cm</B1>
-      </div>
-      <div
-        className={`border-secondary flex items-center justify-between border-b-1`}
-      >
-        <Input
-          value={weight}
-          inputMode="numeric"
-          size={"lg"}
-          className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
-          isFullWidth={true}
-          readOnly={isEdit ? false : true}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setWeight(e.target.value)
-          }
-        />
-        <B1 variant={isEdit ? "primary" : "secondary"}>kg</B1>
-      </div>
-      <Dropdown
-        value={age}
-        options={NUMBER_OPTIONS}
-        readOnly={isEdit ? false : true}
-        onChange={setAge}
-        className={isEdit ? "!text-primary" : ""}
-      />
-      <Dropdown
-        value={gender}
-        options={GENDER_OPTIONS}
-        readOnly={isEdit ? false : true}
-        onChange={setGender}
-        className={isEdit ? "!text-primary" : ""}
-      />
-
-      {isEdit && (
-        <div className="mt-[20px] flex w-full justify-end">
-          <Button variant="ghost" size="xs" onClick={handleClickWithdrawal}>
-            <B1 variant="disable" className="border-b">
-              탈퇴하기
-            </B1>
-          </Button>
+        <div
+          className={`border-secondary flex items-center justify-between border-b-1`}
+        >
+          <Input
+            value={height}
+            inputMode="numeric"
+            size={"lg"}
+            className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
+            isFullWidth={true}
+            readOnly={isEdit ? false : true}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setHeight(e.target.value)
+            }
+          />
+          <B1 variant={isEdit ? "primary" : "secondary"}>cm</B1>
         </div>
-      )}
+        <div
+          className={`border-secondary flex items-center justify-between border-b-1`}
+        >
+          <Input
+            value={weight}
+            inputMode="numeric"
+            size={"lg"}
+            className={`border-none ${isEdit ? "text-primary" : "text-secondary"}`}
+            isFullWidth={true}
+            readOnly={isEdit ? false : true}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setWeight(e.target.value)
+            }
+          />
+          <B1 variant={isEdit ? "primary" : "secondary"}>kg</B1>
+        </div>
+        <Dropdown
+          value={age}
+          options={NUMBER_OPTIONS}
+          readOnly={isEdit ? false : true}
+          onChange={setAge}
+          className={isEdit ? "!text-primary" : ""}
+        />
+        <Dropdown
+          value={gender}
+          options={GENDER_OPTIONS}
+          readOnly={isEdit ? false : true}
+          onChange={setGender}
+          className={isEdit ? "!text-primary" : ""}
+        />
+        {isEdit && (
+          <>
+            {isAuth ? (
+              <PasswordInput password={password} setPassword={setPassword} />
+            ) : (
+              <Button
+                variant="outline"
+                isFullWidth={true}
+                onClick={handleClickPasswordCheck}
+              >
+                비밀번호 변경하기
+              </Button>
+            )}
+            <div className="flex w-full justify-end">
+              <Button variant="ghost" size="xs" onClick={handleClickWithdrawal}>
+                <B1 variant="disable" className="border-b">
+                  탈퇴하기
+                </B1>
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
 
       {isEdit && (
-        <div className="absolute bottom-[10px] w-full">
-          <div className="-mx-3">
-            <Button
-              variant="primary"
-              isFullWidth={true}
-              onClick={handleClickSave}
-            >
-              <S2 variant="white-200" fontWeight="bold">
-                저장
-              </S2>
-            </Button>
-          </div>
+        <div className="absolute bottom-[10px] left-1/2 w-full -translate-x-1/2 px-[4px]">
+          <Button
+            variant="primary"
+            isFullWidth={true}
+            onClick={handleClickSave}
+          >
+            <S2 variant="white-200" fontWeight="bold">
+              저장
+            </S2>
+          </Button>
         </div>
       )}
     </div>
