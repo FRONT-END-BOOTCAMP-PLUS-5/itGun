@@ -101,7 +101,15 @@ export const authOptions: NextAuthOptions = {
     signIn: "/landing", //인증 만료시 랜딩페이지로 리다이랙트
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session?.user) {
+        token.nickName = session.user.nickName
+        token.height = session.user.height
+        token.weight = session.user.weight
+        token.age = session.user.age
+        token.gender = session.user.gender
+        token.characterColor = session.user.characterColor
+      }
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -115,7 +123,10 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token, trigger, newSession }) {
+      if (trigger === "update" && newSession?.name) {
+        session.user = newSession.user
+      }
       if (token && session.user) {
         session.user.id = token.id
         session.user.email = token.email
