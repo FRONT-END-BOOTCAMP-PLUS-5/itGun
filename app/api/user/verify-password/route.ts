@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
-import bcrypt from "bcryptjs"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 import { PostUserPasswordUsecase } from "@/backend/application/user/verify-password/usecases/PostUserPasswordUsecase"
 import { PrUserRepository } from "@/backend/infrastructure/repositories/PrUserRepository"
@@ -35,13 +34,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const isPasswordValid = await bcrypt.compare(password, currentPassword)
-
-    if (!isPasswordValid) {
-      return NextResponse.json({ valid: false }, { status: 200 })
-    }
-
-    return NextResponse.json({ valid: true }, { status: 200 })
+    return NextResponse.json(
+      { valid: password === currentPassword },
+      { status: 200 }
+    )
   } catch (error) {
     console.error("비밀번호 확인 오류:", error)
     return NextResponse.json({ error: "오류가 발생했습니다." }, { status: 500 })
