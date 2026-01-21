@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { authOptions } from "../../auth/[...nextauth]/auth"
 import { UpdateUserInfoDto } from "@/backend/application/user/info/dtos/UpdateUserInfoDto"
 import { DeleteUserDto } from "@/backend/application/user/info/dtos/DeleteUserDto"
+import bcrypt from "bcryptjs"
 
 export async function PUT(request: NextRequest) {
   try {
@@ -27,12 +28,15 @@ export async function PUT(request: NextRequest) {
       characterColor,
       characterId,
     } = body
+    const hashedPassword = password
+      ? await bcrypt.hash(password, 10)
+      : undefined
 
     const usecase = new UpdateUserInfoUsecase(new PrUserRepository())
     await usecase.execute(
       new UpdateUserInfoDto(
         userId,
-        password ?? undefined,
+        hashedPassword,
         nickName,
         height ?? undefined,
         weight ?? undefined,
