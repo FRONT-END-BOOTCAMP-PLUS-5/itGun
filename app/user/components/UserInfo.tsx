@@ -80,6 +80,31 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   }
 
   const handleClickSave = () => {
+    if (isAuth && !password?.passwordConfirm) {
+      showDialog({
+        message: `비밀번호 변경을 하지 않고
+        저장하시겠습니까?`,
+        variant: "error",
+        buttons: [
+          {
+            text: "네",
+            onClick: () => {
+              changeUserInfo()
+            },
+          },
+          {
+            text: "아니오",
+            onClick: () => {},
+          },
+        ],
+      })
+      return
+    }
+
+    changeUserInfo()
+  }
+
+  const changeUserInfo = () => {
     const payload = {
       nickName,
       height: Number(height),
