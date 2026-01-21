@@ -7,9 +7,11 @@ import { Input } from "@/ds/components/atoms/input/Input"
 import React, { useState } from "react"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { useCheckPassword } from "@/hooks/useCheckPassword"
+import Icon from "@/ds/components/atoms/icon/Icon"
 
 const PasswordCheckModal = ({ setIsAuth }: PasswordCheckModalProps) => {
   const [password, setPassword] = useState<string | undefined>("")
+  const [isOpenPassword, setIsOpenPassword] = useState<boolean>(false)
   const { mutate } = useCheckPassword({
     checkValid: () => setIsAuth(true),
   })
@@ -25,12 +27,12 @@ const PasswordCheckModal = ({ setIsAuth }: PasswordCheckModalProps) => {
   return (
     <div
       id="password-check-container"
-      className="flex h-[300px] w-full flex-col border-x-2 border-t-2 border-(--color-primary) bg-(--color-white-200) p-5"
+      className="relative flex h-[300px] w-full flex-col border-x-2 border-t-2 border-(--color-primary) bg-(--color-white-200) p-5"
     >
       <S1>비밀번호 확인</S1>
-      <div className="mt-6 flex flex-col gap-[20px]">
+      <div className="relative mt-6 flex flex-col gap-[20px]">
         <Input
-          type="password"
+          type={isOpenPassword ? "text" : "password"}
           value={password}
           size={"lg"}
           className="text-primary"
@@ -40,11 +42,21 @@ const PasswordCheckModal = ({ setIsAuth }: PasswordCheckModalProps) => {
             setPassword(e.target.value)
           }}
         />
-        <div className="flex justify-end">
-          <Button size="sm" onClick={checkPassword}>
-            Click me!
-          </Button>
-        </div>
+        <Button
+          size="xs"
+          variant="ghost"
+          className="absolute top-1/2 right-0 -translate-y-1/2"
+          onClick={() => {
+            setIsOpenPassword((prev) => !prev)
+          }}
+        >
+          <Icon name={isOpenPassword ? "eyeCrossed" : "eye"} />
+        </Button>
+      </div>
+      <div className="absolute right-5 bottom-6 flex">
+        <Button size="sm" onClick={checkPassword}>
+          Click me!
+        </Button>
       </div>
     </div>
   )
