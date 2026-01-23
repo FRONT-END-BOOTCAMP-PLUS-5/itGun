@@ -18,6 +18,7 @@ export interface PasswordCheckModalProps {
 export interface Password {
   password: string
   passwordConfirm: string
+  validate: boolean
 }
 
 export interface PasswordInputProps {

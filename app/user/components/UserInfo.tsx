@@ -34,6 +34,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   const [password, setPassword] = useState({
     password: "",
     passwordConfirm: "",
+    validate: false,
   })
 
   const { showDialog } = useDialogStore()
@@ -52,6 +53,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     setPassword({
       password: "",
       passwordConfirm: "",
+      validate: false,
     })
   }
 
@@ -80,7 +82,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
   }
 
   const handleClickSave = () => {
-    if (isAuth && !password?.passwordConfirm) {
+    if (isAuth && !password?.validate) {
       showDialog({
         message: `비밀번호 변경을 하지 않고
         저장하시겠습니까?`,
@@ -114,7 +116,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
       characterColor: color,
     } as Request
 
-    if (isAuth && password?.passwordConfirm) {
+    if (isAuth && password?.validate) {
       payload.password = password.password
     }
     updateUserInfo(payload)

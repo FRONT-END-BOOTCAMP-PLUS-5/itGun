@@ -1,5 +1,5 @@
 import { Input } from "@/ds/components/atoms/input/Input"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { Password, PasswordInputProps } from "@/app/user/types"
 import ValidationItem from "@/app/signup/[steps]/components/ValidationItem"
 
@@ -12,7 +12,7 @@ const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
     passwordSuccess: false,
   })
 
-  const validateCheck = ({ password, passwordConfirm }: Password) => {
+  const validateCheck = (password: string, passwordConfirm: string) => {
     const alphabet = /[a-zA-Z]/.test(password)
     const number = /[0-9]/.test(password)
     const length = password.length >= 8 && password.length <= 20
@@ -26,13 +26,16 @@ const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
     const { name, value } = e.target
     setPassword({ ...password, [name]: value })
 
-    const result = validateCheck({
-      password: name === "password" ? value : password.password,
-      passwordConfirm:
-        name === "passwordConfirm" ? value : password.passwordConfirm,
-    })
+    const result = validateCheck(
+      name === "password" ? value : password.password,
+      name === "passwordConfirm" ? value : password.passwordConfirm
+    )
     setValidation(result)
   }
+
+  useEffect(() => {
+    setPassword({ ...password, validate: validation.passwordSuccess })
+  }, [validation])
 
   return (
     <>
