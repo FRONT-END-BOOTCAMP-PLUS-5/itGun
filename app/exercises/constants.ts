@@ -12,7 +12,7 @@ export const EQUIPMENT_MAPPINGS: EquipmentMapping[] = [
   { label: "전체", value: "" },
   { label: "맨몸", value: "BODY WEIGHT" },
   { label: "덤벨", value: "DUMBBELL" },
-  { label: "바벨", value: "BARBELL" },
+  { label: "바벨", value: "BARBELL%2TRAP+BAR" },
   { label: "케틀벨", value: "KETTLEBELL" },
   { label: "케이블", value: "CABLE" },
   { label: "레버리지 머신", value: "LEVERAGE+MACHINE" },
