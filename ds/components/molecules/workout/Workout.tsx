@@ -107,9 +107,12 @@ const Workout: React.FC<WorkoutProps> = ({
                   : ""
               }
               onChange={(e) => {
-                const minutes = Number(e.target.value) || 0
-                const seconds = (Number(value) || 0) % 60
-                onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                const inputValue = e.target.value
+                if (/^[0-9]{0,3}$/.test(inputValue)) {
+                  const minutes = Number(inputValue) || 0
+                  const seconds = (Number(value) || 0) % 60
+                  onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                }
               }}
             />
             <C2 className="text-center">:</C2>
@@ -120,9 +123,12 @@ const Workout: React.FC<WorkoutProps> = ({
               className="scale-[62.5%] text-center text-[16px]"
               value={Number(value) > 0 ? (Number(value) % 60).toString() : ""}
               onChange={(e) => {
-                const seconds = Number(e.target.value) || 0
-                const minutes = Math.floor((Number(value) || 0) / 60)
-                onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                const inputValue = e.target.value
+                if (/^[0-5]?[0-9]?$/.test(inputValue)) {
+                  const seconds = Number(inputValue) || 0
+                  const minutes = Math.floor((Number(value) || 0) / 60)
+                  onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                }
               }}
             />
           </div>
