@@ -97,7 +97,7 @@ const Workout: React.FC<WorkoutProps> = ({
             className="flex items-center justify-center"
           >
             <Input
-              size="sm"
+              size="md"
               placeholder="분"
               inputMode="numeric"
               className="scale-[62.5%] text-center text-[16px]"
@@ -114,7 +114,7 @@ const Workout: React.FC<WorkoutProps> = ({
             />
             <C2 className="text-center">:</C2>
             <Input
-              size="sm"
+              size="md"
               placeholder="초"
               inputMode="numeric"
               className="scale-[62.5%] text-center text-[16px]"
@@ -145,14 +145,17 @@ const Workout: React.FC<WorkoutProps> = ({
           key={`${field}-${index}`}
         >
           <Input
-            size="sm"
+            size="md"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
             className="scale-[62.5%] text-center text-[16px]"
             inputMode="numeric"
             value={value || ""}
             onChange={(e) => {
               const inputValue = e.target.value
-              const numberRegex = /^[0-9]{0,3}$/
+              const isDecimalField = fieldConfig.fields[fieldIndex] === "weight" || fieldConfig.fields[fieldIndex] === "distance"
+              const numberRegex = isDecimalField 
+                ? /^[0-9]{0,3}(\.[0-9]{0,2})?$/
+                : /^[0-9]{0,3}$/
               if (numberRegex.test(inputValue)) {
                 onDataChange?.(index, field, inputValue, seq)
               }
