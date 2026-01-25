@@ -1,5 +1,5 @@
 import { ExerciseRepository } from "@/backend/domain/repositories/ExerciseRepository"
-import prisma from "../../../utils/prisma"
+import prisma from "@/utils/prisma"
 import { Exercise } from "@/backend/domain/entities/Exercise"
 import { TransactionClient } from "@/backend/domain/common/TransactionClient"
 
@@ -10,19 +10,24 @@ export class PrExerciseRepository implements ExerciseRepository {
     keywords?: string[]
     bodyParts?: string[]
     equipments?: string[]
+    tx?: TransactionClient
   }): Promise<{ exercises: Exercise[]; total: number } | null> {
-    const { page, limit, keywords, bodyParts, equipments } = options
+    const { page, limit, keywords, bodyParts, equipments, tx } = options
     let whereClause = "WHERE 1=1"
     const params: any[] = []
     let paramIndex = 1
 
+    // pov 제외
+    params.push(`%pov%`)
+    whereClause += ` AND name NOT ILIKE $${paramIndex++}`
+
     if (keywords && keywords.length > 0) {
       const keywordConditions = keywords
         .map((keyword) => {
-          params.push(`%${keyword}%`)
-          return `EXISTS (SELECT 1 FROM unnest(keywords_ko) AS kw WHERE kw LIKE $${paramIndex++})`
+          params.push(`%${keyword}%`, `%${keyword}%`)
+          return `(name ILIKE $${paramIndex++} OR name_ko ILIKE $${paramIndex++})`
         })
-        .join(" OR ")
+        .join(" AND ")
       whereClause += ` AND (${keywordConditions})`
     }
 
@@ -30,7 +35,7 @@ export class PrExerciseRepository implements ExerciseRepository {
       const bodyPartConditions = bodyParts
         .map((bodyPart) => {
           params.push(`%${bodyPart}%`)
-          return `EXISTS (SELECT 1 FROM unnest(body_parts) AS body_part WHERE body_part LIKE $${paramIndex++})`
+          return `EXISTS (SELECT 1 FROM unnest(body_parts) AS body_part WHERE body_part ILIKE $${paramIndex++})`
         })
         .join(" OR ")
       whereClause += ` AND (${bodyPartConditions})`
@@ -40,7 +45,7 @@ export class PrExerciseRepository implements ExerciseRepository {
       const equipmentConditions = equipments
         .map((equipment) => {
           params.push(`%${equipment}%`)
-          return `EXISTS (SELECT 1 FROM unnest(equipments) AS equipment WHERE equipment LIKE $${paramIndex++})`
+          return `EXISTS (SELECT 1 FROM unnest(equipments) AS equipment WHERE equipment ILIKE $${paramIndex++})`
         })
         .join(" OR ")
       whereClause += ` AND (${equipmentConditions})`
@@ -55,11 +60,10 @@ export class PrExerciseRepository implements ExerciseRepository {
       ORDER BY exercise_id 
       LIMIT $${paramIndex++} OFFSET $${paramIndex++}
     `
-
     params.push(limit, offset)
-
     try {
-      const exercisesData = await prisma.$queryRawUnsafe(dataQuery, ...params)
+      const client = tx || prisma
+      const exercisesData = await client.$queryRawUnsafe(dataQuery, ...params)
 
       if (
         !exercisesData ||
