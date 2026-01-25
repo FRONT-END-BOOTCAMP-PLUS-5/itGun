@@ -131,7 +131,7 @@ const Workout: React.FC<WorkoutProps> = ({
         const minutes = Math.floor((Number(value) || 0) / 60)
         const seconds = (Number(value) || 0) % 60
         return (
-          <C2 key={`${field}-${index}`} className="self-center">
+          <C2 key={`${field}-${index}`} className="flex self-center justify-center">
             {minutes}:{seconds.toString().padStart(2, "0")}
           </C2>
         )
