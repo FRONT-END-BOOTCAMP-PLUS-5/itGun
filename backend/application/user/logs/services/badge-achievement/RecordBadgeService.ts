@@ -61,11 +61,9 @@ export class RecordBadgeService {
   ): Promise<UserBadge[]> {
     const awardedBadges: UserBadge[] = []
 
-    const recordExerciseIds = Object.values(RECORD_EXERCISE_IDS)
+    const recordExerciseIds = Object.values(RECORD_EXERCISE_IDS).flat() as string[]
     const recordWorkouts = workouts.filter((workout) =>
-      recordExerciseIds.includes(
-        workout.exerciseInfo.exerciseId as (typeof recordExerciseIds)[number]
-      )
+      recordExerciseIds.includes(workout.exerciseInfo.exerciseId)
     )
 
     // 이번 로그에서의 최대값
@@ -74,8 +72,8 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId ===
-                RECORD_EXERCISE_IDS.BENCH_PRESS && workout.weight
+              (RECORD_EXERCISE_IDS.BENCH_PRESS as readonly string[]).includes(workout.exerciseInfo.exerciseId) && 
+              workout.weight
           )
           .map((workout) => workout.weight || 0),
         0
@@ -84,7 +82,7 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId === RECORD_EXERCISE_IDS.SQUAT &&
+              (RECORD_EXERCISE_IDS.SQUAT as readonly string[]).includes(workout.exerciseInfo.exerciseId) &&
               workout.weight
           )
           .map((workout) => workout.weight || 0),
@@ -94,8 +92,8 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId ===
-                RECORD_EXERCISE_IDS.DEADLIFT && workout.weight
+              (RECORD_EXERCISE_IDS.DEADLIFT as readonly string[]).includes(workout.exerciseInfo.exerciseId) && 
+              workout.weight
           )
           .map((workout) => workout.weight || 0),
         0
@@ -104,7 +102,7 @@ export class RecordBadgeService {
         ...recordWorkouts
           .filter(
             (workout) =>
-              workout.exerciseInfo.exerciseId === RECORD_EXERCISE_IDS.RUNNING &&
+              (RECORD_EXERCISE_IDS.RUNNING as readonly string[]).includes(workout.exerciseInfo.exerciseId) &&
               workout.distance
           )
           .map((workout) => workout.distance || 0),
