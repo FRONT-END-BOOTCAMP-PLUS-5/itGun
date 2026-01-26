@@ -123,10 +123,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, token, trigger, newSession }) {
-      if (trigger === "update" && newSession?.name) {
-        session.user = newSession.user
-      }
+    async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id
         session.user.email = token.email
