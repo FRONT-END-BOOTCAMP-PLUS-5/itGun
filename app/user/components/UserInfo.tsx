@@ -39,7 +39,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
 
   const { showDialog } = useDialogStore()
   const { data } = useGetUserInfo()
-  const { mutate: updateUserInfo } = useUpdateUserInfo()
+  const { mutateAsync: updateUserInfo } = useUpdateUserInfo()
   const { mutate: deleteUserInfo } = useDeleteUserInfo()
   const { openModal, closeModal } = useModalStore()
 
@@ -106,7 +106,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     changeUserInfo()
   }
 
-  const changeUserInfo = () => {
+  const changeUserInfo = async () => {
     const payload = {
       nickName,
       height: Number(height),
@@ -119,7 +119,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ isEdit, setIsEdit, color }) => {
     if (isAuth && password?.validate) {
       payload.password = password.password
     }
-    updateUserInfo(payload)
+    await updateUserInfo(payload)
     update({ user: payload })
     setIsEdit(false)
   }
