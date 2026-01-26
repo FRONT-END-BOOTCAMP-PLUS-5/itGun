@@ -11,7 +11,7 @@ export class CheckEmailUsecase {
 
       if (!email) {
         return {
-          status: 400,
+          status: 200,
           message: "이메일을 입력해주세요",
           isAvailable: false,
         }
@@ -20,7 +20,7 @@ export class CheckEmailUsecase {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(email)) {
         return {
-          status: 400,
+          status: 200,
           message: "올바른 이메일 형식이 아닙니다",
           isAvailable: false,
         }
@@ -30,7 +30,7 @@ export class CheckEmailUsecase {
 
       if (existingUser) {
         return {
-          status: 409,
+          status: 200,
           message: "이미 사용 중인 이메일입니다",
           isAvailable: false,
         }
