@@ -8,6 +8,6 @@ interface Response {
   valid: boolean
 }
 
-export const postUserPassword = async (data: Request) => {
+export const verifyUserPassword = async (data: Request) => {
   return await api.post<Response>("/user/verify-password", data)
 }

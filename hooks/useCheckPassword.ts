@@ -1,4 +1,4 @@
-import { postUserPassword } from "@/services/user/info/postUserPassword"
+import { verifyUserPassword } from "@/services/user/info/verifyUserPassword"
 import { useMutation } from "@tanstack/react-query"
 import { useToastStore } from "./useToastStore"
 
@@ -6,7 +6,7 @@ export const useCheckPassword = (options?: { checkValid?: () => void }) => {
   const { showToast } = useToastStore()
 
   return useMutation({
-    mutationFn: (password: string) => postUserPassword({ password }),
+    mutationFn: (password: string) => verifyUserPassword({ password }),
     onSuccess: (res) => {
       if (res.valid === true) {
         options?.checkValid?.()
