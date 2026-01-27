@@ -169,3 +169,13 @@ export const loadingDots = (ids: string[]) => {
     })
   }
 }
+
+export const slideup = (id: string, height: number, duration?: number) => {
+  if (isExistTarget([id])) {
+    gsap.fromTo(
+      `#${id}`,
+      { y: `+=${height}` },
+      { duration: duration ? duration : 1, y: `-=${height}` }
+    )
+  }
+}
