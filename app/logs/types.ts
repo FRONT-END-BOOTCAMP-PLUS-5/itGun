@@ -10,6 +10,7 @@ export const workoutTypes: Record<string, string> = {
   PLYOMETRICS: "duration",
   CARDIO: "distance-duration",
   WEIGHTLIFTING: "weight-reps",
+  STRETCH: "duration",
 }
 
 //workout 컴포넌트에 사용되는 타입

@@ -97,7 +97,7 @@ const Workout: React.FC<WorkoutProps> = ({
             className="flex items-center justify-center"
           >
             <Input
-              size="sm"
+              size="md"
               placeholder="분"
               inputMode="numeric"
               className="scale-[62.5%] text-center text-[16px]"
@@ -107,22 +107,28 @@ const Workout: React.FC<WorkoutProps> = ({
                   : ""
               }
               onChange={(e) => {
-                const minutes = Number(e.target.value) || 0
-                const seconds = (Number(value) || 0) % 60
-                onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                const inputValue = e.target.value
+                if (/^[0-9]{0,3}$/.test(inputValue)) {
+                  const minutes = Number(inputValue) || 0
+                  const seconds = (Number(value) || 0) % 60
+                  onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                }
               }}
             />
             <C2 className="text-center">:</C2>
             <Input
-              size="sm"
+              size="md"
               placeholder="초"
               inputMode="numeric"
               className="scale-[62.5%] text-center text-[16px]"
               value={Number(value) > 0 ? (Number(value) % 60).toString() : ""}
               onChange={(e) => {
-                const seconds = Number(e.target.value) || 0
-                const minutes = Math.floor((Number(value) || 0) / 60)
-                onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                const inputValue = e.target.value
+                if (/^[0-5]?[0-9]?$/.test(inputValue)) {
+                  const seconds = Number(inputValue) || 0
+                  const minutes = Math.floor((Number(value) || 0) / 60)
+                  onDataChange?.(index, field, minutes * 60 + seconds, seq)
+                }
               }}
             />
           </div>
@@ -131,7 +137,7 @@ const Workout: React.FC<WorkoutProps> = ({
         const minutes = Math.floor((Number(value) || 0) / 60)
         const seconds = (Number(value) || 0) % 60
         return (
-          <C2 key={`${field}-${index}`} className="self-center">
+          <C2 key={`${field}-${index}`} className="flex self-center justify-center">
             {minutes}:{seconds.toString().padStart(2, "0")}
           </C2>
         )
@@ -145,14 +151,17 @@ const Workout: React.FC<WorkoutProps> = ({
           key={`${field}-${index}`}
         >
           <Input
-            size="sm"
+            size="md"
             placeholder={fieldConfig.placeholders[fieldIndex] || ""}
             className="scale-[62.5%] text-center text-[16px]"
             inputMode="numeric"
             value={value || ""}
             onChange={(e) => {
               const inputValue = e.target.value
-              const numberRegex = /^[0-9]{0,3}$/
+              const isDecimalField = fieldConfig.fields[fieldIndex] === "weight" || fieldConfig.fields[fieldIndex] === "distance"
+              const numberRegex = isDecimalField 
+                ? /^[0-9]{0,3}(\.[0-9]{0,2})?$/
+                : /^[0-9]{0,3}$/
               if (numberRegex.test(inputValue)) {
                 onDataChange?.(index, field, inputValue, seq)
               }
