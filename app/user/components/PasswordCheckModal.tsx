@@ -53,7 +53,7 @@ const PasswordCheckModal = ({ setIsAuth }: PasswordCheckModalProps) => {
           <Icon name={isOpenPassword ? "eyeCrossed" : "eye"} />
         </Button>
       </div>
-      <div className="absolute right-5 bottom-6 flex">
+      <div className="mt-4 flex justify-end">
         <Button size="sm" onClick={checkPassword}>
           Click me!
         </Button>
