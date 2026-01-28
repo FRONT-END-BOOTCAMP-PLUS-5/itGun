@@ -8,56 +8,59 @@ import { ChangeEvent, useState, useTransition } from "react"
 import { useSignupStore } from "@/hooks/useSignupStore"
 import { SignupData } from "@/app/signup/[steps]/types"
 
+const emailErrorRules = [
+  {
+    when: (value: string) => value.trim() === "",
+    message: "이메일을 입력해주세요",
+  },
+  {
+    when: (value: string) =>
+      value.length > 0 &&
+      !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+    message: "올바른 이메일 형식이 아닙니다",
+  },
+]
+
 function Step1Form() {
   const router = useRouter()
   const { set1Data } = useSignupStore()
 
   const [isPending, startTransition] = useTransition()
   const [formData, setFormData] = useState({ email: "" })
-  const [validation, setValidation] = useState({
-    emailError: "",
-    emailSuccess: false,
+  const [isEmailValid, setIsEmailValid] = useState(false)
+  const [emailCheckResult, setEmailCheckResult] = useState({
+    message: "",
+    isAvailable: false,
   })
-
-  const validateCheck = (email: string) => {
-    if (!email) return "아이디를 입력해주세요"
-    else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      return "올바른 이메일 형식이 아닙니다"
-    }
-  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    const formatError = validateCheck(value)
-
     setFormData({ email: value })
-
-    if (formatError) {
-      setValidation({ emailError: formatError, emailSuccess: false })
-    } else {
-      setValidation({ emailError: "", emailSuccess: false })
-    }
+    setEmailCheckResult({ message: "", isAvailable: false })
   }
 
   const formAction = (formData: SignupData["step1"]) => {
     startTransition(async () => {
-      if (!formData.email) return
+      if (!formData.email || !isEmailValid) return
 
       const result = await checkEmail(formData.email)
 
       if (result.isAvailable) {
-        setValidation({ emailError: "", emailSuccess: true })
+        setEmailCheckResult({
+          message: result.message,
+          isAvailable: true,
+        })
       } else {
-        setValidation({
-          emailError: result.message,
-          emailSuccess: false,
+        setEmailCheckResult({
+          message: result.message,
+          isAvailable: false,
         })
       }
     })
   }
 
   const handleNext = () => {
-    if (!validation.emailSuccess || !formData.email) return
+    if (!emailCheckResult.isAvailable || !isEmailValid) return
 
     set1Data({ email: formData.email })
     router.push("/signup/step2")
@@ -72,15 +75,15 @@ function Step1Form() {
         placeholder="아이디를 입력"
         isFullWidth
         size="lg"
+        errorRules={emailErrorRules}
+        onValidationChange={setIsEmailValid}
       />
-      {validation.emailError && (
-        <C2 variant="error" className="mt-[5px]">
-          {validation.emailError}
-        </C2>
-      )}
-      {!validation.emailError && validation.emailSuccess && (
-        <C2 variant="success" className="mt-[5px]">
-          사용 가능한 이메일입니다.
+      {emailCheckResult.message && (
+        <C2
+          variant={emailCheckResult.isAvailable ? "success" : "error"}
+          className="mt-[5px]"
+        >
+          {emailCheckResult.message}
         </C2>
       )}
 
@@ -88,15 +91,15 @@ function Step1Form() {
         isFullWidth
         size="lg"
         className="mt-auto mb-6"
-        disabled={isPending || !!validation.emailError}
-        variant={validation.emailError ? "disable" : "primary"}
-        type={validation.emailSuccess ? "button" : "submit"}
+        disabled={isPending || !isEmailValid}
+        variant={!isEmailValid ? "disable" : "primary"}
+        type={emailCheckResult.isAvailable ? "button" : "submit"}
         onClick={handleNext}
       >
         <S1 variant="white-200">
           {isPending
             ? "중복확인 중..."
-            : validation.emailSuccess
+            : emailCheckResult.isAvailable
               ? "다음"
               : "중복확인"}
         </S1>

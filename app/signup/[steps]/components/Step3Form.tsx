@@ -5,10 +5,21 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
 import { SignupData, Gender } from "@/app/signup/[steps]/types"
-import ValidationItem from "./ValidationItem"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
+
+const nicknameValidations = [
+  {
+    label: "20자 이하",
+    validate: (value: string) => value.length >= 1 && value.length <= 20,
+  },
+  {
+    label: "특수문자 제외",
+    validate: (value: string) =>
+      !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(value),
+  },
+]
 
 const Step3Form = () => {
   const { data } = useSignupStore()
@@ -24,31 +35,11 @@ const Step3Form = () => {
     gender: undefined as Gender | undefined,
     age: "",
   })
-  const [validation, setValidation] = useState({
-    length: false,
-    simpleText: true,
-    infoSuccess: false,
-  })
-
-  const validateCheck = (value: string) => {
-    const length = value.length >= 1 && value.length <= 20
-    const simpleText = !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(value)
-    const infoSuccess = length && simpleText
-
-    return {
-      length,
-      simpleText,
-      infoSuccess,
-    }
-  }
+  const [isNicknameValid, setIsNicknameValid] = useState(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
-    if (name === "nickname") {
-      const result = validateCheck(value)
-      setValidation(result)
-    }
   }
 
   const handleDropdownChange = (name: string) => (value: string | number) => {
@@ -89,7 +80,7 @@ const Step3Form = () => {
         setTimeout(() => {
           router.push("/")
         }, 1500)
-      } catch (error) {
+      } catch {
         showToast({
           message: "회원가입 실패 😢 다시 확인해주세요",
           variant: "error",
@@ -101,24 +92,17 @@ const Step3Form = () => {
   return (
     <form action={() => formAction(formData)} className="flex h-full flex-col">
       <div className="flex flex-1 flex-col gap-10">
-        <div className="flex flex-col">
-          <Input
-            name="nickname"
-            value={formData.nickname}
-            onChange={handleChange}
-            placeholder="닉네임"
-            isFullWidth
-            size="lg"
-            readOnly={isReadOlny}
-          />
-          <div className="flex gap-5">
-            <ValidationItem label="20자 이하" isValid={validation.length} />
-            <ValidationItem
-              label="특수문자 제외"
-              isValid={validation.simpleText}
-            />
-          </div>
-        </div>
+        <Input
+          name="nickname"
+          value={formData.nickname}
+          onChange={handleChange}
+          placeholder="닉네임"
+          isFullWidth
+          size="lg"
+          readOnly={isReadOlny}
+          validations={nicknameValidations}
+          onValidationChange={setIsNicknameValid}
+        />
         <Input
           name="height"
           type="number"
@@ -169,8 +153,8 @@ const Step3Form = () => {
         isFullWidth
         size="lg"
         className="mb-6"
-        disabled={isPending || !validation.infoSuccess}
-        variant={isPending || !validation.infoSuccess ? "disable" : "primary"}
+        disabled={isPending || !isNicknameValid}
+        variant={isPending || !isNicknameValid ? "disable" : "primary"}
       >
         <S1 variant="white-200">{isPending ? "처리 중..." : "회원가입"}</S1>
       </Button>
