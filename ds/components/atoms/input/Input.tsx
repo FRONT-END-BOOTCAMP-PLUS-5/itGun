@@ -17,6 +17,7 @@ export const Input: React.FC<InputProps> = ({
   readOnly = false,
   className,
   onChange,
+  onValidationChange,
   ...props
 }) => {
   const [validationFeedback, setValidationFeedback] = useState<boolean[]>([])
@@ -31,6 +32,15 @@ export const Input: React.FC<InputProps> = ({
 
     const validationResults = validations.map((rule) => rule.validate(value))
     setValidationFeedback(validationResults)
+
+    if (onValidationChange) {
+      const isValid =
+        validationResults.length > 0
+          ? validationResults.every((result) => result === true)
+          : true
+      const hasError = !!matchedError
+      onValidationChange(isValid && !hasError)
+    }
 
     onChange?.(e)
   }

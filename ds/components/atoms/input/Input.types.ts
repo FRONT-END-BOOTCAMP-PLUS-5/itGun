@@ -18,4 +18,5 @@ export interface InputProps
   placeholder?: string
   validations?: ValidationRule[]
   errorRules?: ErrorRule[]
+  onValidationChange?: (isValid: boolean) => void
 }
