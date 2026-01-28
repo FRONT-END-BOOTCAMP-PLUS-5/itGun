@@ -25,6 +25,7 @@ export class GetLogUsecase {
         userId: log.userId,
         calIconType: log.calIconType,
         logDate: log.logDate,
+        createdAt: log.createdAt,
         totalDuration: log.totalDuration,
         gaugeChanges: log.gaugeChanges,
         workouts: this.mapWorkouts(log),

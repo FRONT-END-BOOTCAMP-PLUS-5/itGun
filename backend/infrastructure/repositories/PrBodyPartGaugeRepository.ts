@@ -23,22 +23,18 @@ export class PrBodyPartGaugeRepository implements BodyPartGaugeRepository {
 
   async findByUserId(
     id: string,
-    date?: Date,
+    earnedAt?: Date,
+    createdAt?: Date,
     tx?: TransactionClient
   ): Promise<BodyPartGauge | null> {
     const whereCondition: any = { userId: id }
 
-    if (date) {
-      const startDate = new Date(date)
-      startDate.setUTCHours(0, 0, 0, 0)
+    if (earnedAt) {
+      whereCondition.earnedAt = earnedAt
+    }
 
-      const endDate = new Date(startDate)
-      endDate.setUTCDate(startDate.getUTCDate() + 1)
-
-      whereCondition.earnedAt = {
-        gte: startDate,
-        lt: endDate,
-      }
+    if (createdAt) {
+      whereCondition.createdAt = createdAt
     }
 
     const client = tx || prisma
