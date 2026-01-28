@@ -5,14 +5,18 @@ import {
 } from "@/services/user/logs/createUserLogs"
 import { useToastStore } from "@/hooks/useToastStore"
 import { useRouter } from "next/navigation"
+import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
 
 export const useCreateUserLogs = () => {
   const { showToast } = useToastStore()
   const router = useRouter()
+  const { setInit } = useExerciseLogStore()
 
   return useMutation({
     mutationFn: (data: CreateLogRequest) => createUserLogs(data),
     onSuccess: (response) => {
+      setInit()
+
       if (response.awardedBadges && response.awardedBadges.length > 0) {
         router.push("/")
         showToast({
