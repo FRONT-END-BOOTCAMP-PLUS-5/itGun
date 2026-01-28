@@ -6,54 +6,39 @@ import ValidationItem from "./ValidationItem"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
 import { ValidatePassword } from "@/app/signup/[steps]/types"
+import { passwordValidations } from "@/utils/validation"
 
 const Step2Form = () => {
   const router = useRouter()
   const { set2Data } = useSignupStore()
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ValidatePassword>({
     password: "",
     passwordConfirm: "",
   })
-  const [validation, setValidation] = useState({
-    alphabet: false,
-    number: false,
-    length: false,
-    match: false,
-    passwordSuccess: false,
-  })
-
-  const validateCheck = ({ password, passwordConfirm }: ValidatePassword) => {
-    const alphabet = /[a-zA-Z]/.test(password)
-    const number = /[0-9]/.test(password)
-    const length = password.length >= 8 && password.length <= 20
-    const match = password === passwordConfirm && password !== ""
-    const passwordSuccess = alphabet && number && length && match
-
-    return { alphabet, number, length, match, passwordSuccess }
-  }
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false)
+  const [isPasswordMatch, setIsPasswordMatch] = useState<boolean>(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-
-    const result = validateCheck({
-      password: name === "password" ? value : formData.password,
-      passwordConfirm:
-        name === "passwordConfirm" ? value : formData.passwordConfirm,
-    })
-    setValidation(result)
+    const nextFormData = { ...formData, [name]: value }
+    setFormData(nextFormData)
+    setIsPasswordMatch(
+      nextFormData.passwordConfirm !== "" &&
+        nextFormData.password !== "" &&
+        nextFormData.passwordConfirm === nextFormData.password
+    )
   }
 
   const handleNext = () => {
-    if (!validation.passwordSuccess) return
+    if (!isPasswordValid || !isPasswordMatch) return
 
     set2Data({ password: formData.password })
     router.push("/signup/step3")
   }
 
   return (
-    <form className="flex flex-1 flex-col">
+    <form className="flex flex-1 flex-col gap-10">
       <Input
         name="password"
         type="password"
@@ -62,44 +47,28 @@ const Step2Form = () => {
         placeholder="비밀번호 입력"
         isFullWidth
         size="lg"
+        validations={passwordValidations}
+        onValidationChange={setIsPasswordValid}
       />
-      <div className="flex gap-5">
-        {[
-          { value: "alphabet", label: "영문포함" },
-          { value: "number", label: "숫자포함" },
-          { value: "length", label: "8자~20자" },
-        ].map(({ value, label }) => (
-          <ValidationItem
-            key={value}
-            isValid={validation[value as keyof typeof validation]}
-            label={label}
-          />
-        ))}
-      </div>
 
-      <Input
-        name="passwordConfirm"
-        type="password"
-        value={formData.passwordConfirm}
-        onChange={handleChange}
-        placeholder="비밀번호 확인"
-        className="mt-10"
-        isFullWidth
-        size="lg"
-      />
-      {formData.passwordConfirm && (
-        <ValidationItem
-          isValid={validation.match}
-          label="비밀번호 일치"
-          className="mt-2"
+      <div className="flex flex-col">
+        <Input
+          name="passwordConfirm"
+          type="password"
+          value={formData.passwordConfirm}
+          onChange={handleChange}
+          placeholder="비밀번호 확인"
+          isFullWidth
+          size="lg"
         />
-      )}
+        <ValidationItem isValid={isPasswordMatch} label="비밀번호 일치" />
+      </div>
 
       <Button
         type="button"
         size="lg"
-        disabled={!validation.passwordSuccess}
-        variant={!validation.passwordSuccess ? "disable" : "primary"}
+        disabled={!isPasswordValid || !isPasswordMatch}
+        variant={!isPasswordValid || !isPasswordMatch ? "disable" : "primary"}
         onClick={handleNext}
         className="mt-auto mb-6"
         isFullWidth
