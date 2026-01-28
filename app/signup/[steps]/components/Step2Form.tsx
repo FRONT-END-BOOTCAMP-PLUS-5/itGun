@@ -6,21 +6,7 @@ import ValidationItem from "./ValidationItem"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
 import { ValidatePassword } from "@/app/signup/[steps]/types"
-
-const passwordValidations = [
-  {
-    label: "영문포함",
-    validate: (value: string) => /[a-zA-Z]/.test(value),
-  },
-  {
-    label: "숫자포함",
-    validate: (value: string) => /[0-9]/.test(value),
-  },
-  {
-    label: "8자~20자",
-    validate: (value: string) => value.length >= 8 && value.length <= 20,
-  },
-]
+import { passwordValidations } from "@/utils/validation"
 
 const Step2Form = () => {
   const router = useRouter()

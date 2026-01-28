@@ -2,21 +2,7 @@ import { Input } from "@/ds/components/atoms/input/Input"
 import { ChangeEvent, useEffect, useState } from "react"
 import { PasswordInputProps } from "@/app/user/types"
 import ValidationItem from "@/app/signup/[steps]/components/ValidationItem"
-
-const passwordValidations = [
-  {
-    label: "영문포함",
-    validate: (value: string) => /[a-zA-Z]/.test(value),
-  },
-  {
-    label: "숫자포함",
-    validate: (value: string) => /[0-9]/.test(value),
-  },
-  {
-    label: "8자~20자",
-    validate: (value: string) => value.length >= 8 && value.length <= 20,
-  },
-]
+import { passwordValidations } from "@/utils/validation"
 
 const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
   const [isPasswordValid, setIsPasswordValid] = useState(false)

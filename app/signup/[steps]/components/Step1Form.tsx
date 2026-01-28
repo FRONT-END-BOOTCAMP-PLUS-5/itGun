@@ -7,19 +7,7 @@ import { ChangeEvent, useState, useTransition } from "react"
 
 import { useSignupStore } from "@/hooks/useSignupStore"
 import { SignupData } from "@/app/signup/[steps]/types"
-
-const emailErrorRules = [
-  {
-    when: (value: string) => value.trim() === "",
-    message: "이메일을 입력해주세요",
-  },
-  {
-    when: (value: string) =>
-      value.length > 0 &&
-      !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
-    message: "올바른 이메일 형식이 아닙니다",
-  },
-]
+import { emailErrorRules } from "@/utils/validation"
 
 function Step1Form() {
   const router = useRouter()

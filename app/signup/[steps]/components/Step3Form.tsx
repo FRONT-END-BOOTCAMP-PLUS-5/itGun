@@ -8,18 +8,7 @@ import { SignupData, Gender } from "@/app/signup/[steps]/types"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
-
-const nicknameValidations = [
-  {
-    label: "20자 이하",
-    validate: (value: string) => value.length >= 1 && value.length <= 20,
-  },
-  {
-    label: "특수문자 제외",
-    validate: (value: string) =>
-      !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(value),
-  },
-]
+import { nicknameValidations } from "@/utils/validation"
 
 const Step3Form = () => {
   const { data } = useSignupStore()
