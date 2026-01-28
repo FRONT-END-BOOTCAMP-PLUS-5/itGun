@@ -27,20 +27,18 @@ const PasswordCheckModal = ({ setIsAuth }: PasswordCheckModalProps) => {
       id="password-check-container"
       className="flex h-[300px] w-full flex-col border-x-2 border-t-2 border-(--color-primary) bg-(--color-white-200) p-5"
     >
-      <S1>비밀번호 확인</S1>
-      <div className="relative mt-6 flex flex-col gap-[20px]">
-        <Input
-          type="password"
-          value={password}
-          size={"lg"}
-          className="text-primary"
-          isFullWidth={true}
-          placeholder="기존 비밀번호를 입력하세요"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setPassword(e.target.value)
-          }}
-        />
-      </div>
+      <S1 className="mb-6">비밀번호 확인</S1>
+      <Input
+        type="password"
+        value={password}
+        size={"lg"}
+        className="text-primary"
+        isFullWidth={true}
+        placeholder="기존 비밀번호를 입력하세요"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setPassword(e.target.value)
+        }}
+      />
       <div className="mt-4 flex justify-end">
         <Button size="sm" onClick={checkPassword}>
           Click me!
