@@ -53,10 +53,10 @@ export class GetUserCharacterUsecase {
                 userGauges.back +
                 userGauges.core) /
                 4
-            ) + 1
+            )
           )
-          levels.arms = Math.min(4, Math.floor(userGauges.arms) + 1)
-          levels.legs = Math.min(4, Math.floor(userGauges.legs) + 1)
+          levels.arms = Math.min(4, Math.floor(userGauges.arms))
+          levels.legs = Math.min(4, Math.floor(userGauges.legs))
         }
       }
     }
