@@ -15,14 +15,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "error" }, { status: 401 })
   }
   const { searchParams } = new URL(req.url)
-  const date = searchParams.get("date")
+  const earnedAt = searchParams.get("earnedAt")
+  const createdAt = searchParams.get("createdAt")
 
   const usecase = new GetUserCharacterUsecase(
     new PrUserRepository(),
     new PrBodyPartGaugeRepository(),
     new PrCharacterAssetRepository()
   )
-  const queryDto = new GetUserCharacterQueryDto(userId, date)
+  const queryDto = new GetUserCharacterQueryDto(userId, earnedAt, createdAt)
   const result = await usecase.execute(queryDto)
 
   return NextResponse.json(result)

@@ -1,6 +1,7 @@
 export class GetUserCharacterQueryDto {
   constructor(
     public userId?: string,
-    public date?: string | null // yymmdd
+    public earnedAt?: string | null,
+    public createdAt?: string | null
   ) {}
 }
