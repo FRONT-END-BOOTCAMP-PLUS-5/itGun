@@ -23,15 +23,3 @@ export interface SignupContextType {
   updateStep1: (data: SignupData["step1"]) => void
   updateStep2: (data: SignupData["step2"]) => void
 }
-
-export interface ValidatePassword {
-  password: string
-  passwordConfirm: string
-}
-
-export interface ValidationItemProps {
-  isValid: boolean
-  label: string
-  showIcon?: boolean
-  className?: HTMLAttributes<HTMLDivElement>["className"]
-}
