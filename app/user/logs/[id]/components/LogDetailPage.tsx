@@ -6,7 +6,6 @@ import LogSummaryHeader from "./LogSummaryHeader"
 import { LogDetailProps } from "@/app/user/logs/[id]/types"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
 import MainCharacter from "@/app/components/MainCharacter"
-import { dateToyymmdd } from "@/utils/transferDate"
 
 const LogDetailPage = ({ id }: LogDetailProps) => {
   const { data, isLoading } = useGetUserLog(id)
@@ -24,7 +23,8 @@ const LogDetailPage = ({ id }: LogDetailProps) => {
       <MainCharacter
         isAnimation={false}
         isShadow={false}
-        date={dateToyymmdd(log.logDate)}
+        earnedAt={log.logDate}
+        createdAt={log.createdAt}
       />
       <WorkoutList workouts={log.workouts} />
     </div>

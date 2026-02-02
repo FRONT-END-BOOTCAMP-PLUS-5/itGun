@@ -34,10 +34,7 @@ const CalendarGrid = ({
 
   const groups: Record<string, Log[]> = {}
   logsOnMonth.forEach((log) => {
-    const dateKey =
-      log.logDate instanceof Date
-        ? log.logDate.toLocaleDateString()
-        : new Date(log.logDate).toLocaleDateString()
+    const dateKey = new Date(log.logDate).toLocaleDateString()
 
     if (!groups[dateKey]) {
       groups[dateKey] = []
@@ -48,10 +45,7 @@ const CalendarGrid = ({
   const events = (Object.entries(groups) as [string, Log[]][]).map(
     ([date, logsOnDate]) => ({
       title: date,
-      start:
-        logsOnDate[0].logDate instanceof Date
-          ? logsOnDate[0].logDate
-          : new Date(logsOnDate[0].logDate),
+      start: new Date(logsOnDate[0].logDate),
       iconName: CAL_TYPE_MAPPINGS(logsOnDate[0].calIconType).iconName,
       iconColor: CAL_TYPE_MAPPINGS(logsOnDate[0].calIconType).iconColor,
       logs: logsOnDate,

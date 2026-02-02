@@ -19,7 +19,8 @@ export interface Log {
   id: number
   userId: string
   calIconType: CalIconType
-  logDate: Date
+  logDate: string
+  createdAt: string
   totalDuration: number
   gaugeChanges: Record<BodyPartsGroup, number>
   workouts: WorkoutItem[]

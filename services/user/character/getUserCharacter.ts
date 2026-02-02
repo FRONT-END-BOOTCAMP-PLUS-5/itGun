@@ -12,12 +12,22 @@ export interface Response {
   assets: CharacterAsset[]
 }
 
-export const getUserCharacter = (date?: string) => {
-  const params = new URLSearchParams()
-  if (date) {
-    params.append("date", String(date))
+export interface GetUserCharacterParams {
+  earnedAt?: string
+  createdAt?: string
+}
+
+export const getUserCharacter = (params?: GetUserCharacterParams) => {
+  const searchParams = new URLSearchParams()
+
+  if (params?.earnedAt) {
+    searchParams.append("earnedAt", params.earnedAt)
   }
-  const queryString = params.toString()
+  if (params?.createdAt) {
+    searchParams.append("createdAt", params.createdAt)
+  }
+
+  const queryString = searchParams.toString()
   const endpoint = queryString
     ? `/user/character?${queryString}`
     : "/user/character"

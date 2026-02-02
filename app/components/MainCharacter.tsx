@@ -20,14 +20,18 @@ const EMPTY_DECORATIONS: CharacterAsset[] = []
 const MainCharacter: React.FC<MainCharacterProps> = ({
   isAnimation = true,
   isShadow = true,
-  date,
+  earnedAt,
+  createdAt,
   decorations = EMPTY_DECORATIONS,
 }) => {
   const { setOriginalCharacter } = useCharacterStore()
   const { data: session } = useSession()
-  const { data } = useGetUserCharacter(date ? { date } : undefined, {
-    enabled: session?.user ? true : false,
-  })
+  const { data } = useGetUserCharacter(
+    earnedAt || createdAt ? { earnedAt, createdAt } : undefined,
+    {
+      enabled: session?.user ? true : false,
+    }
+  )
   const { face, torso, arms, legs } = burky
   const [assets, setAssets] = useState<CharacterAsset[]>([
     svgToCharacterAsset("legs", legs),
