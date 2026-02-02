@@ -1,6 +1,6 @@
-import { Input } from "../../atoms/input/Input"
-import ValidationCheck from "../../atoms/validationCheck/ValidationCheck"
-import { InputWithValidationProps } from "./InputWithValidationProps.types"
+import { Input } from "@/ds/components/atoms/input/Input"
+import ValidationCheck from "@/ds/components/atoms/validationCheck/ValidationCheck"
+import { InputWithValidationProps } from "@/ds/components/molecules/inputWithValidation/InputWithValidationProps.types"
 
 const InputWithValidation = ({
   validations,

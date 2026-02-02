@@ -1,6 +1,6 @@
 import { ValidationCheckProps } from "@/ds/components/atoms/validationCheck/ValidationCheckProps.types"
-import { C2 } from "../text/TextWrapper"
-import Icon from "../icon/Icon"
+import { C2 } from "@/ds/components/atoms/text/TextWrapper"
+import Icon from "@/ds/components/atoms/icon/Icon"
 
 const ValidationCheck = ({
   isValid,
