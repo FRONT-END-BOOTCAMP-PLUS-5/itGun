@@ -16,10 +16,11 @@ const InputWithValidation = ({
   ...props
 }: InputWithValidationProps) => {
   return (
-    <>
+    <div>
       <Input
         name={name}
         type={type}
+        size={size}
         isFullWidth={isFullWidth}
         placeholder={placeholder}
         readOnly={readOnly}
@@ -36,7 +37,7 @@ const InputWithValidation = ({
           />
         ))}
       </div>
-    </>
+    </div>
   )
 }
 
