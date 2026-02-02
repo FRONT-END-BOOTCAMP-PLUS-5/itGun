@@ -12,17 +12,18 @@ const ModalContainer = () => {
   return (
     <div
       className="fixed inset-0 z-[1000] flex items-center justify-center"
+      id="modal-container"
       onClick={closeModal}
     >
       <div
-        className="scrollbar-none bg-white-200 absolute h-screen max-w-[430px] overflow-y-scroll px-6 py-15"
+        className="scrollbar-none absolute bottom-0 left-1/2 w-full max-w-[430px] -translate-x-1/2 transform overflow-y-scroll px-5 py-0"
         onClick={(e) => e.stopPropagation()}
       >
         {currentModal}
         <Button
           variant="ghost"
           size="xs"
-          className="absolute top-15 right-3"
+          className="absolute top-0 right-5"
           onClick={closeModal}
         >
           <Icon name="remove" size={24} fillColor="primary" />

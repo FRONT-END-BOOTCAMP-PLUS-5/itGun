@@ -10,3 +10,18 @@ export interface UserProfileProps {
   setColor: (color: string) => void
   color: string
 }
+
+export interface PasswordCheckModalProps {
+  setIsAuth: (flag: boolean) => void
+}
+
+export interface Password {
+  password: string
+  passwordConfirm: string
+  validate: boolean
+}
+
+export interface PasswordInputProps {
+  password: Password
+  setPassword: (password: Password) => void
+}
