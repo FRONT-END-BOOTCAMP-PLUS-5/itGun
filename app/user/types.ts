@@ -22,6 +22,6 @@ export interface Password {
 }
 
 export interface PasswordInputProps {
-  password: Password
+  password?: Password
   setPassword: (password: Password) => void
 }
