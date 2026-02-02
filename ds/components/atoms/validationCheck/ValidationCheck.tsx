@@ -1,13 +1,13 @@
-import Icon from "@/ds/components/atoms/icon/Icon"
+import { ValidationCheckProps } from "@/ds/components/atoms/validationCheck/ValidationCheckProps.types"
 import { C2 } from "@/ds/components/atoms/text/TextWrapper"
-import { ValidationItemProps } from "@/app/signup/[steps]/types"
+import Icon from "@/ds/components/atoms/icon/Icon"
 
-const ValidationItem = ({
+const ValidationCheck = ({
   isValid,
   label,
   showIcon = true,
   className,
-}: ValidationItemProps) => {
+}: ValidationCheckProps) => {
   const customClassName = `flex items-end gap-2 ${className}`
 
   return (
@@ -22,4 +22,4 @@ const ValidationItem = ({
   )
 }
 
-export default ValidationItem
+export default ValidationCheck

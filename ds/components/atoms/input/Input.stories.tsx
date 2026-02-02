@@ -46,31 +46,3 @@ export const Sizes: Story = {
     placeholder: "Enter text",
   },
 }
-
-// Validation 예시
-export const WithValidation: Story = {
-  args: {
-    placeholder: "Password",
-    type: "password",
-    validations: [
-      { label: "8자 이상", validate: (v: string) => v.length >= 8 },
-      { label: "숫자 포함", validate: (v: string) => /\d/.test(v) },
-      { label: "특수문자 포함", validate: (v: string) => /[!@#$%^&*]/.test(v) },
-    ],
-  },
-}
-
-// 에러 메시지 예시
-export const WithError: Story = {
-  args: {
-    placeholder: "Email",
-    type: "email",
-    errorRules: [
-      {
-        when: (v) => v.length > 0 && v.length < 4,
-        message: "4글자 이상 입력해주세요",
-      },
-      { when: (v) => /\s/.test(v), message: "공백은 사용할 수 없습니다" },
-    ],
-  },
-}

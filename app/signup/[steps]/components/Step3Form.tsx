@@ -5,10 +5,11 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useState, useTransition } from "react"
 import { SignupData, Gender } from "@/app/signup/[steps]/types"
-import ValidationItem from "./ValidationItem"
 import { Button } from "@/ds/components/atoms/button/Button"
 import { S1 } from "@/ds/components/atoms/text/TextWrapper"
 import { useSignupStore } from "@/hooks/useSignupStore"
+import InputWithValidation from "@/ds/components/molecules/inputWithValidation/InputWithValidation"
+import { USER_INFO_VALIDATION_LABELS } from "@/app/constants"
 
 const Step3Form = () => {
   const { data } = useSignupStore()
@@ -30,6 +31,10 @@ const Step3Form = () => {
     infoSuccess: false,
   })
 
+  const nicknameValidations = USER_INFO_VALIDATION_LABELS.map((item) => ({
+    label: item.label,
+    isValid: validation[item.value],
+  }))
   const validateCheck = (value: string) => {
     const length = value.length >= 1 && value.length <= 20
     const simpleText = !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(value)
@@ -101,24 +106,16 @@ const Step3Form = () => {
   return (
     <form action={() => formAction(formData)} className="flex h-full flex-col">
       <div className="flex flex-1 flex-col gap-10">
-        <div className="flex flex-col">
-          <Input
-            name="nickname"
-            value={formData.nickname}
-            onChange={handleChange}
-            placeholder="닉네임"
-            isFullWidth
-            size="lg"
-            readOnly={isReadOlny}
-          />
-          <div className="flex gap-5">
-            <ValidationItem label="20자 이하" isValid={validation.length} />
-            <ValidationItem
-              label="특수문자 제외"
-              isValid={validation.simpleText}
-            />
-          </div>
-        </div>
+        <InputWithValidation
+          validations={nicknameValidations}
+          name="nickname"
+          value={formData.nickname}
+          onChange={handleChange}
+          placeholder="닉네임"
+          isFullWidth
+          size="lg"
+          readOnly={isReadOlny}
+        />
         <Input
           name="height"
           type="number"
