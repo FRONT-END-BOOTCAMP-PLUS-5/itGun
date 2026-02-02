@@ -26,6 +26,7 @@ export class GetUserLogListUsecase {
       userId: log.userId,
       calIconType: log.calIconType,
       logDate: log.logDate,
+      createdAt: log.createdAt,
       totalDuration: log.totalDuration,
       gaugeChanges: log.gaugeChanges,
     }))

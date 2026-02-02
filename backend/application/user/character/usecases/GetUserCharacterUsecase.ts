@@ -3,7 +3,6 @@ import { GetUserCharacterDto } from "../dtos/GetUserCharacterDto"
 import { CharacterAssetRepository } from "@/backend/domain/repositories/CharacterAssetRepository"
 import { UserRepository } from "@/backend/domain/repositories/UserRepository"
 import { BodyPartGaugeRepository } from "@/backend/domain/repositories/BodyPartGaugeRepository"
-import { yymmddToDate } from "@/utils/transferDate"
 import { BodyPartGauge } from "@/backend/domain/entities/BodyPartGauge"
 
 export class GetUserCharacterUsecase {
@@ -32,10 +31,14 @@ export class GetUserCharacterUsecase {
         characterInfo.id = res.id
         characterInfo.color = res.color
 
-        const userGauges: BodyPartGauge | null = query.date
+        const earnedAtDate = query.earnedAt ? new Date(query.earnedAt) : undefined
+        const createdAtDate = query.createdAt ? new Date(query.createdAt) : undefined
+
+        const userGauges: BodyPartGauge | null = query.earnedAt || query.createdAt
           ? await this.bodyPartGaugeRepository.findByUserId(
               query.userId!!,
-              yymmddToDate(query.date)
+              earnedAtDate,
+              createdAtDate
             )
           : await this.bodyPartGaugeRepository.findLatestOneByUserId(
               query.userId!!
@@ -50,10 +53,10 @@ export class GetUserCharacterUsecase {
                 userGauges.back +
                 userGauges.core) /
                 4
-            ) + 1
+            )
           )
-          levels.arms = Math.min(4, Math.floor(userGauges.arms) + 1)
-          levels.legs = Math.min(4, Math.floor(userGauges.legs) + 1)
+          levels.arms = Math.min(4, Math.floor(userGauges.arms))
+          levels.legs = Math.min(4, Math.floor(userGauges.legs))
         }
       }
     }
