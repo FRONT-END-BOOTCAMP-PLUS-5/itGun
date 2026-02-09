@@ -32,8 +32,8 @@ const InputWithValidation = ({
         {validations.map(({ label, isValid }) => (
           <ValidationCheck
             key={`${label}_check`}
-            isValid={isValid}
             label={label}
+            variant={isValid ? "success" : "disable"}
           />
         ))}
       </div>
