@@ -38,10 +38,12 @@ export default async function RootLayout({
         >
           <ConditionHeader />
           <NextAuthSessionProviders session={session}>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
-            <ToastContainer />
-            <DialogContainer />
-            <ModalContainer />
+            <ReactQueryProvider>
+              {children}
+              <ToastContainer />
+              <DialogContainer />
+              <ModalContainer />
+            </ReactQueryProvider>
           </NextAuthSessionProviders>
         </div>
       </body>

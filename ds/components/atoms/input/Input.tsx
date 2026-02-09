@@ -1,35 +1,21 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import { InputProps } from "./Input.types"
 import { inputSizes } from "@/ds/styles/tokens/input/sizes"
-import { C2 } from "../text/TextWrapper"
-import Icon from "../icon/Icon"
 
 export const Input: React.FC<InputProps> = ({
   type = "text",
   size = "md",
   isFullWidth = false,
   placeholder,
-  validations = [],
-  errorRules = [],
   readOnly = false,
   className,
   onChange,
   ...props
 }) => {
-  const [validationFeedback, setValidationFeedback] = useState<boolean[]>([])
-  const [errorMessage, setErrorMessage] = useState<string>("")
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-
-    const matchedError = errorRules.find((rule) => rule.when(value))
-    setErrorMessage(matchedError ? matchedError.message : "")
-
-    const validationResults = validations.map((rule) => rule.validate(value))
-    setValidationFeedback(validationResults)
-
     onChange?.(e)
   }
 
@@ -51,30 +37,6 @@ export const Input: React.FC<InputProps> = ({
         readOnly={readOnly}
         {...props}
       />
-
-      {/* Error message */}
-      {errorMessage && <C2 variant="error">{errorMessage}</C2>}
-
-      {/* Validation */}
-      {validations.length > 0 && (
-        <div className="flex flex-wrap gap-5">
-          {validations.map((rule, idx) => (
-            <div className="flex flex-wrap items-center gap-[5px]">
-              <C2
-                key={idx}
-                variant={validationFeedback[idx] ? "success" : "disable"}
-              >
-                {rule.label}
-              </C2>
-              <Icon
-                name="check"
-                size={15}
-                color={validationFeedback[idx] ? "success" : "disable"}
-              />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   )
 }

@@ -1,102 +1,86 @@
 import { Button } from "@/ds/components/atoms/button/Button"
-import { Input } from "@/ds/components/atoms/input/Input"
-import { C2, S1 } from "@/ds/components/atoms/text/TextWrapper"
+import ValidationCheck from "@/ds/components/atoms/validationCheck/ValidationCheck"
+import { S1 } from "@/ds/components/atoms/text/TextWrapper"
+import InputWithValidation from "@/ds/components/molecules/inputWithValidation/InputWithValidation"
 import { checkEmail } from "@/services/user/checkEmail"
 import { useRouter } from "next/navigation"
-import { ChangeEvent, useState, useTransition } from "react"
+import { useTransition } from "react"
 
 import { useSignupStore } from "@/hooks/useSignupStore"
+import { useEmailValidation } from "@/hooks/useEmailValidation"
 import { SignupData } from "@/app/signup/[steps]/types"
+import { EMAIL_VALIDATION_LABELS } from "@/app/constants"
 
 function Step1Form() {
   const router = useRouter()
   const { set1Data } = useSignupStore()
-
   const [isPending, startTransition] = useTransition()
-  const [formData, setFormData] = useState({ email: "" })
-  const [validation, setValidation] = useState({
-    emailError: "",
-    emailSuccess: false,
-  })
 
-  const validateCheck = (email: string) => {
-    if (!email) return "아이디를 입력해주세요"
-    else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      return "올바른 이메일 형식이 아닙니다"
-    }
-  }
+  const {
+    formData,
+    validation,
+    handleChange,
+    checkResult,
+    setCheckResult,
+    emailFormatSuccess,
+  } = useEmailValidation()
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    const formatError = validateCheck(value)
-
-    setFormData({ email: value })
-
-    if (formatError) {
-      setValidation({ emailError: formatError, emailSuccess: false })
-    } else {
-      setValidation({ emailError: "", emailSuccess: false })
-    }
-  }
+  const emailValidations = EMAIL_VALIDATION_LABELS.map((item) => ({
+    label: item.label,
+    isValid: validation[item.value],
+  }))
 
   const formAction = (formData: SignupData["step1"]) => {
     startTransition(async () => {
       if (!formData.email) return
 
       const result = await checkEmail(formData.email)
-
-      if (result.isAvailable) {
-        setValidation({ emailError: "", emailSuccess: true })
-      } else {
-        setValidation({
-          emailError: result.message,
-          emailSuccess: false,
-        })
-      }
+      setCheckResult({
+        message: result.message,
+        isAvailable: result.isAvailable,
+      })
     })
   }
 
   const handleNext = () => {
-    if (!validation.emailSuccess || !formData.email) return
-
+    if (!checkResult?.isAvailable || !formData.email) return
     set1Data({ email: formData.email })
     router.push("/signup/step2")
   }
 
+  console.log(formData)
   return (
     <form action={() => formAction(formData)} className="flex flex-1 flex-col">
-      <Input
+      <InputWithValidation
         name="email"
         value={formData.email}
         onChange={handleChange}
-        placeholder="아이디를 입력"
+        placeholder="아이디를 입력 해주세요"
         isFullWidth
         size="lg"
+        validations={emailValidations}
       />
-      {validation.emailError && (
-        <C2 variant="error" className="mt-[5px]">
-          {validation.emailError}
-        </C2>
-      )}
-      {!validation.emailError && validation.emailSuccess && (
-        <C2 variant="success" className="mt-[5px]">
-          사용 가능한 이메일입니다.
-        </C2>
+      {checkResult && (
+        <ValidationCheck
+          label={checkResult.message}
+          variant={checkResult.isAvailable ? "success" : "error"}
+          showIcon={false}
+        />
       )}
 
       <Button
         isFullWidth
         size="lg"
         className="mt-auto mb-6"
-        disabled={isPending || !!validation.emailError}
-        variant={validation.emailError ? "disable" : "primary"}
-        type={validation.emailSuccess ? "button" : "submit"}
+        disabled={isPending || !emailFormatSuccess}
+        variant={!emailFormatSuccess ? "disable" : "primary"}
+        type={checkResult?.isAvailable ? "button" : "submit"}
         onClick={handleNext}
       >
         <S1 variant="white-200">
           {isPending
             ? "중복확인 중..."
-            : validation.emailSuccess
+            : checkResult?.isAvailable
               ? "다음"
               : "중복확인"}
         </S1>

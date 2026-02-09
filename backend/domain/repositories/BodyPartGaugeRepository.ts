@@ -5,7 +5,7 @@ export interface BodyPartGaugeRepository {
   findAll(tx?: TransactionClient): Promise<BodyPartGauge[]>
   findById(id: number, tx?: TransactionClient): Promise<BodyPartGauge | null>
   findLatestOneByUserId(userId: string, tx?: TransactionClient): Promise<BodyPartGauge | null>
-  findByUserId(id: string, date?: Date, tx?: TransactionClient): Promise<BodyPartGauge | null>
+  findByUserId(id: string, earnedAt?: Date, createdAt?: Date, tx?: TransactionClient): Promise<BodyPartGauge | null>
   save(bodyPartGauge: BodyPartGauge, tx?: TransactionClient): Promise<BodyPartGauge>
   update(
     id: number,

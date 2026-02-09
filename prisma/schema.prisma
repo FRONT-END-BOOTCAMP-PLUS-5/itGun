@@ -146,9 +146,9 @@ model Workout {
   seq              Int
   exerciseName     String @map("exercise_name")
   setCount         Int     @map("set_count")
-  weight           Int?
+  weight           Float?
   repetitionCount  Int?   @map("repetition_count")
-  distance         Int?
+  distance         Float?
   durationSeconds  Int?   @map("duration_seconds")
 
   // Relations

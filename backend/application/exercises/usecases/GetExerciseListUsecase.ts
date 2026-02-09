@@ -2,8 +2,8 @@ import { Exercise } from "@/backend/domain/entities/Exercise"
 import {
   ExerciseDto,
   GetExerciseListReponseDto,
-} from "../dtos/GetExerciseListReponseDto"
-import { GetExerciseListQueryDto } from "../dtos/GetExerciseListQueryDto"
+} from "@/backend/application/exercises/dtos/GetExerciseListReponseDto"
+import { GetExerciseListQueryDto } from "@/backend/application/exercises/dtos/GetExerciseListQueryDto"
 import { ExerciseRepository } from "@/backend/domain/repositories/ExerciseRepository"
 
 export class GetExerciseListUsecase {
@@ -17,14 +17,14 @@ export class GetExerciseListUsecase {
       const limit = query.limit || 10
 
       const bodyParts: string[] | undefined = query.bodyPart
-        ?.replace("+", " ")
+        ?.replaceAll("+", " ")
         .split("%2")
       const equipments: string[] | undefined = query.equipment
-        ?.replace("+", " ")
+        ?.replaceAll("+", " ")
         .split("%2")
       const keywords: string[] | undefined = query.q
-        ?.replace("+", " ")
-        .split("%2")
+        ?.replaceAll("+", " ")
+        .split(" ")
 
       const result = await this.exerciseRepository.find({
         page,

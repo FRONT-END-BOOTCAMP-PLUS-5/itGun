@@ -76,7 +76,7 @@ export const calculateGaugeUpdates = (
     }
 
     // CARDIO 타입 운동인지 확인
-    const isCardio = workout.exerciseInfo.exerciseType === "CARDIO"
+    const isCardio = workout.exerciseInfo.exerciseType === "CARDIO" || workout.exerciseInfo.bodyParts?.includes("cardio")
 
     if (isCardio) {
       // 유산소: 0.6은 stamina, 0.4는 bodyParts에 균등 분배
@@ -93,9 +93,8 @@ export const calculateGaugeUpdates = (
       gaugeUpdate.stamina += finalStaminaPoints
 
       // bodyParts 포인트를 각 부위에 균등 분배
-      const targetBodyParts = mapExerciseBodyPartsToProject(
-        workout.exerciseInfo.bodyParts
-      )
+      // const targetBodyParts = mapExerciseBodyPartsToProject(workout.exerciseInfo.bodyParts)
+      const targetBodyParts = BODY_PART_MAPPING["FULL BODY"] || []
 
       if (targetBodyParts.length > 0) {
         const pointsPerBodyPart = bodyPartsPoints / targetBodyParts.length

@@ -1,9 +1,9 @@
 // 신기록 관련 운동 ID 상수
 export const RECORD_EXERCISE_IDS = {
-  BENCH_PRESS: "exr_41n2hxnFMotsXTj3", // 나중에 실제 exerciseId로 교체
-  SQUAT: "exr_Gnfo4FM",
-  DEADLIFT: "exr_ila4NZS",
-  RUNNING: "exr_41n2hjkBReJMbDJk",
+  BENCH_PRESS: ["exr_EIeI8Vf",], // 바벨 벤치 프레스
+  SQUAT: ["exr_Gnfo4FM", "exr_qXTaZnJ"], // 바벨 하이바 스쿼트, 바벨 풀 스쿼트
+  DEADLIFT: ["exr_ila4NZS",], // 바벨 데드리프트
+  RUNNING: ["exr_oLrKqDH", "exr_y5p0H8a"], // 러닝, 러닝 (장비)
 } as const
 
 // 신기록 최소 기준
