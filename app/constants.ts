@@ -20,6 +20,20 @@ export const PASSWORD_CONFIRM_VALIDATION_LABEL: PasswordValidationRuleLabel[] =
   [{ label: "비밀번호 일치", value: "match" }]
 
 /**
+ * for email validation
+ * usage: app/signup/[steps]/components/Step1Form.tsx
+ */
+interface EmailValidationRuleLabel {
+  label: string
+  value: "hasValue" | "validFormat"
+}
+
+export const EMAIL_VALIDATION_LABELS: EmailValidationRuleLabel[] = [
+  { label: "아이디 입력", value: "hasValue" },
+  { label: "이메일 형식", value: "validFormat" },
+]
+
+/**
  * for user info validation
  * usage:
  *    app/signup/[step]/components/Step3Form.tsx
