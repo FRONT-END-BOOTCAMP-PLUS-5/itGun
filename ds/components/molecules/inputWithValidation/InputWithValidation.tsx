@@ -21,6 +21,7 @@ const InputWithValidation = ({
         name={name}
         type={type}
         size={size}
+        value={value}
         isFullWidth={isFullWidth}
         placeholder={placeholder}
         readOnly={readOnly}
