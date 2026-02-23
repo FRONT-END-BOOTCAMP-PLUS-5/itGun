@@ -5,6 +5,8 @@ import "react-datepicker/dist/react-datepicker.css"
 import dayjs from "dayjs"
 import Icon from "@/ds/components/atoms/icon/Icon"
 import { useExerciseLogStore } from "@/hooks/useExerciseLogStore"
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const CustomDatePicker = () => {
   const { date, setDate } = useExerciseLogStore()
